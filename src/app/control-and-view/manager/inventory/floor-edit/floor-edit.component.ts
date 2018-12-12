@@ -5,6 +5,7 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-floor-edit',
   templateUrl: './floor-edit.component.html',
@@ -39,7 +40,7 @@ export class FloorEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router,private _location: Location) {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
     this.route.params.subscribe(params => this.floorKey$ = params.Floor_Key);
   }
@@ -102,6 +103,9 @@ export class FloorEditComponent implements OnInit {
       this.flooroptions = data;
 
     });
+  }
+  goBack(){
+    this._location.back();
   }
 
 }

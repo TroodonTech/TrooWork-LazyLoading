@@ -79,8 +79,8 @@
           <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/INVENTORY--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Buildview']}}]"><b>Building</b></a>
-            <a class="dropdown-item" routerLink="/Floorview"><b>Floor</b></a>
-            <a class="dropdown-item" routerLink="/Zoneview"><b>Zone</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['FloorView']}}]"><b>Floor</b></a>
+            <a class="dropdown-item"[routerLink]="[{outlets:{ManagerOut:['ZoneView']}}]"><b>Zone</b></a>
             <a class="dropdown-item" routerLink="/roomView"><b>Room</b></a>
             <a class="dropdown-item" routerLink="/EquipmentView"><b>Equipment</b></a>
             <a class="dropdown-item" routerLink="/DepartmentView"><b>Department</b></a>

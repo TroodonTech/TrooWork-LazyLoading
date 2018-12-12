@@ -1,20 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
+
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { ZoneCreateComponent } from './zone-create.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
-import{ CreatebuildingComponent }   from './createbuilding.component';
+
+
+
 const routes: Routes = [
   {
     path: '',
-    component: CreatebuildingComponent
+    component: ZoneCreateComponent
   }
   
 ];
+
 
 @NgModule({
   imports: [
@@ -22,10 +28,9 @@ const routes: Routes = [
     HttpClientModule,
     MDBBootstrapModule,
     ManagerDashBoardModule,
-    
     FormsModule, ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CreatebuildingComponent]
+  declarations: []
 })
-export class CreatebuildingModule { }
+export class ZoneCreateModule { }

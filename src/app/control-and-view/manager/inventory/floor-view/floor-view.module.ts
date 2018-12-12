@@ -6,12 +6,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { FloorViewComponent } from './floor-view.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
-import{ CreatebuildingComponent }   from './createbuilding.component';
+
+
+
+
+
 const routes: Routes = [
   {
     path: '',
-    component: CreatebuildingComponent
+    component: FloorViewComponent
   }
   
 ];
@@ -26,6 +31,6 @@ const routes: Routes = [
     FormsModule, ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CreatebuildingComponent]
+  declarations: [FloorViewComponent]
 })
-export class CreatebuildingModule { }
+export class FloorViewModule { }
