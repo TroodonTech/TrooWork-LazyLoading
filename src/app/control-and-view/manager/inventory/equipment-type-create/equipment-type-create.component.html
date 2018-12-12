@@ -1,0 +1,40 @@
+<app-manager-dash-board></app-manager-dash-board>
+<div style="background-color: #FFFFFF;margin-left: 15rem;margin-right: 15rem;">
+  <br>
+  <div style="text-align:center">
+    <h3 style="color: #174a5e;"><strong>CREATE NEW EQUIPMENT TYPE</strong></h3>
+  </div>
+
+  <br>
+  <div class="col-md-12">
+    <div class="row col-md-12">
+      <h5  class="col-md-5"><label for="EquipmentType">Equipment Type Name:
+        </label></h5>
+      <div class=" col-md-7">
+        <input type="text" maxlength="40" placeholder="Equipment Type Name" style="background-color: #D4F4FF !important;width: 30rem" class="form-control" [(ngModel)]="EquipmentTypeName">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <h5  class="col-md-5"><label for="EquipmentTypeDescription">Equipment
+          Type Description: </label></h5>
+      <div class=" col-md-7">
+        <input type="text" maxlength="45" placeholder="Equipment Type Description" style="background-color: #D4F4FF !important;width: 30rem" class="form-control" [(ngModel)]="EquipmentTypeDescription">
+      </div>
+    </div>
+    <br>
+    <div class="row col-md-12">
+      <div class="col col-md-3"></div>
+      <div class="col-md-9">
+        <a style="color:white !important" class="btn btn-success" (click)="addEquipmentType()"><b>Create
+            Equipment Type</b>
+        </a>
+        <a routerLink="/EquipmentTypeView" class="btn btn-warning" style="color:white !important" routerLinkActive="active"><b>Go
+            Back
+          </b>
+        </a>
+      </div>
+    </div>
+  </div>
+ 
+</div>
