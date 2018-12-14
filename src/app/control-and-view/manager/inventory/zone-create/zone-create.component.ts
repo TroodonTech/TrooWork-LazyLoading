@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { ActivatedRoute, Router } from "@angular/router";
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-zone-create',
   templateUrl: './zone-create.component.html',
@@ -34,7 +35,7 @@ export class ZoneCreateComponent implements OnInit {
     }
     return window.atob(output);
   }
-  constructor(private inventoryService: InventoryService, private router: Router) { }
+  constructor(private inventoryService: InventoryService, private router: Router,private _location: Location) { }
 
   addZone(FacilityKey, FloorName, ZoneName,FloorKey) {
     if(FacilityKey=="--Select--"){
@@ -102,5 +103,7 @@ export class ZoneCreateComponent implements OnInit {
 
 
   }
-
+  goBack(){
+    this._location.back();
+  }
 }
