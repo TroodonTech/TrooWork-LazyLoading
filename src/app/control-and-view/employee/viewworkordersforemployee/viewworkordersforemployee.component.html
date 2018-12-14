@@ -1,4 +1,3 @@
-<app-employee-dashboard></app-employee-dashboard>
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading"  style="padding-left: 9rem;padding-right: 9rem;">
 <!-- <div style="width: 100%;height: 100%;">
@@ -12,11 +11,11 @@
                 <!-- <div class = "col-sm-4 col-md-4 col-lg-4"> -->
                 <label class="col-sm-2 col-md-2 col-lg-2 control-label"> On Date</label>
                 <div class="col-sm-2 col-md-2 col-lg-2">
-                    <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1" [(ngModel)]="WorkorderDate" (onSelection)="viewEmployeeWorkorderByFilter()"></igx-datePicker>
+                    <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1" [(ngModel)]="WorkorderDate" (onSelection)="viewEmployeeWorkorderByFilter()"></igx-datePicker> -->
                 </div>
                 <label class="col-sm-2 col-md-2 col-lg-2 control-label"> To Date</label>
                 <div class="col-sm-2 col-md-2 col-lg-2">
-                    <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1" [(ngModel)]="WorkorderDate2" (onSelection)="viewEmployeeWorkorderByFilter()"></igx-datePicker>
+                    <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date1" [(ngModel)]="WorkorderDate2" (onSelection)="viewEmployeeWorkorderByFilter()"></igx-datePicker> -->
                 </div>
                 <!-- </div>   -->
                 <!-- <div class = "col-sm-4 col-md-4 col-lg-4"> -->
@@ -66,7 +65,7 @@
             <form [formGroup]="searchform">
                 <div class="active-pink-3 active-pink-4 mb-4" style="margin-left: 1.5rem;margin-right: 1.5rem;">
                     <input class="form-control" name="searchwo" maxlength="20" specialIsAlphaNumeric minlength="3" type="text" placeholder="Search Workorder Type Name,Employee,Room,Notes"
-                        aria-label="Search" [(ngmodel)]="SearchWO" formControlName="SearchWO" (input)="searchWO($event.target.value);"
+                        aria-label="Search" [(ngModel)]="SearchWO" formControlName="SearchWO" (input)="searchWO($event.target.value);"
                         style="width: 100%;">
                     <div *ngIf="searchform.controls.SearchWO.errors?.minlength">Minimum 3 characters required.</div>
                 </div>

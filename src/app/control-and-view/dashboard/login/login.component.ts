@@ -115,10 +115,10 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['welcomePage'] } }]);
             }
             else if (profile.role === 'Employee' && this.IsSupervisor === 1 && this.isAuthenticated) {
-              this.router.navigateByUrl('/welcomeSupervisor');
+              this.router.navigate(['/SupervisorDashboard',{ outlets: { Superout: ['Supervisor_welcomePage'] } }]);
             }
             else if (profile.role === 'Employee' && this.IsSupervisor === 0 && this.isAuthenticated) {
-              this.router.navigateByUrl('/welcomeEmployee');
+              this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['Emp_welcomePage'] } }]);
             }
           }
         }
