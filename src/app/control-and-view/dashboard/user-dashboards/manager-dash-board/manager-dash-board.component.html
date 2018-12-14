@@ -69,8 +69,8 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/INSPECTION--2.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" routerLink="/InspectionCreate"><b>Create Inspection</b></a>
-            <a class="dropdown-item" routerLink="/InspectionView"><b>View Inspection</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]" ><b>Create Inspection</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]" ><b>View Inspection</b></a>
             <a class="dropdown-item" routerLink="/CreateInspectionTemplate"><b>Create Inspection Template</b></a>
             <a class="dropdown-item" routerLink="/InspectiontemplateandquestionsView"><b>View Inspection Template</b></a>
           </div>
@@ -83,7 +83,7 @@
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ZoneView']}}]"><b>Zone</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['roomView']}}]"><b>Room</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['EquipmentView']}}]"><b>Equipment</b></a>
-            <a class="dropdown-item" routerLink="/DepartmentView"><b>Department</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DepartmentView']}}]"><b>Department</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">

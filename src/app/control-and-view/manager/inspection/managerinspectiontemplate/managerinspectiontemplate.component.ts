@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { ActivatedRoute,Router } from '@angular/router';
+
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-managerinspectiontemplate',
   templateUrl: './managerinspectiontemplate.component.html',
@@ -118,7 +120,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   count = 0;
   saveInspection = {};
 
-  constructor(private inspectionService: InspectionService, private route: ActivatedRoute,private router: Router) {
+  constructor(private inspectionService: InspectionService, private route: ActivatedRoute,private router: Router,private _location: Location) {
     this.route.params.subscribe(params => this.inspKey$ = params.InspectionOrderKey);
   }
 
@@ -340,5 +342,9 @@ export class ManagerinspectiontemplateComponent implements OnInit {
      });
 
     }
+    
+  }
+  goBack(){
+    this._location.back();
   }
 }

@@ -9,7 +9,7 @@
     <div style="text-align:center">
       <a  [routerLink]="['EquipmentCreate']" class="btn btn-success" >Create New Equipment
       </a>
-      <a routerLink="/EquipmentTypeView" class="btn btn-success" style="width: 12.8rem;" routerLinkActive="active">View
+      <a  [routerLink]="['EquipmentTypeView']" class="btn btn-success" style="width: 12.8rem;" routerLinkActive="active">View
         Equipment Type
       </a>
     </div>
@@ -35,7 +35,7 @@
             <td>{{ x.EquipmentName }}</td>
             <td>{{ x.EquipmentDescription }}</td>
             <td>
-              <a routerLink="/EquipmentEdit/{{ x.EquipmentKey}}" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
+              <a  [routerLink]="['EquipmentEdit',x.EquipmentKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
               <a button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.show();deleteEquipPass(x.EquipmentKey); "
                 mdbWavesEffect><b>Delete</b></a>
             </td>

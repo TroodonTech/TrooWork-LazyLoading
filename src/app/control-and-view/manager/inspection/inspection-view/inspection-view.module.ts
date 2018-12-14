@@ -7,14 +7,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { EquipmentEditComponent } from './equipment-edit.component';
-import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
+import { CalendarModule } from 'primeng/calendar';
 
+import { InspectionViewComponent } from './inspection-view.component';
+import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: EquipmentEditComponent
+    component: InspectionViewComponent
   }
   
 ];
@@ -26,8 +27,9 @@ const routes: Routes = [
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
+    CalendarModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EquipmentEditComponent]
+  declarations: [InspectionViewComponent]
 })
-export class EquipmentEditModule { }
+export class InspectionViewModule { }

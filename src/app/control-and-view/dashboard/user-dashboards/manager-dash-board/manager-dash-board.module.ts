@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
- import { EquipmentCreateModule } from '../../../manager/inventory/equipment-create/equipment-create.module';
+ import { ManagerinspectiontemplateModule } from '../../../manager/inspection/managerinspectiontemplate/managerinspectiontemplate.module';
 
 
 const routes: Routes = [
@@ -134,6 +134,66 @@ const routes: Routes = [
         path: 'EquipmentView/EquipmentCreate',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/inventory/equipment-create/equipment-create.module#EquipmentCreateModule',
+        
+      },
+      {
+        path: 'EquipmentView/EquipmentEdit/:EquipKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/equipment-edit/equipment-edit.module#EquipmentEditModule',
+        
+      },
+      {
+        path: 'EquipmentView/EquipmentTypeView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/equipment-type-view/equipment-type-view.module#EquipmentTypeViewModule',
+        
+      },
+      {
+        path: 'EquipmentView/EquipmentTypeView/EquipmentTypeCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/equipment-type-create/equipment-type-create.module#EquipmentTypeCreateModule',
+        
+      },
+      {
+        path: 'EquipmentView/EquipmentTypeView/EquipmentTypeEdit/:EquipTypeKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/equipment-type-edit/equipment-type-edit.module#EquipmentTypeEditModule',
+        
+      },
+      {
+        path: 'DepartmentView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/department-view/department-view.module#DepartmentViewModule',
+        
+      },
+      {
+        path: 'DepartmentView/DepartmentCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/department-create/department-create.module#DepartmentCreateModule',
+        
+      },
+      {
+        path: 'DepartmentView/departmentEdit/:DeptKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inventory/department-edit/department-edit.module#DepartmentEditModule',
+        
+      },
+      {
+        path: 'InspectionCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspection-create/inspection-create.module#InspectionCreateModule',
+        
+      },
+      {
+        path: 'InspectionView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspection-view/inspection-view.module#InspectionViewModule',
+        
+      },
+      {
+        path: 'InspectionView/Managerinspectiontemplate/:InspectionOrderKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/managerinspectiontemplate/managerinspectiontemplate.module#ManagerinspectiontemplateModule',
         
       },
       // {

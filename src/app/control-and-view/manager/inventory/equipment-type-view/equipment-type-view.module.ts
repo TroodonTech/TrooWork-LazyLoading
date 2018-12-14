@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { EquipmentEditComponent } from './equipment-edit.component';
+import { EquipmentTypeViewComponent } from './equipment-type-view.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: EquipmentEditComponent
+    component: EquipmentTypeViewComponent
   }
   
 ];
@@ -28,6 +27,6 @@ const routes: Routes = [
     FormsModule, ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EquipmentEditComponent]
+  declarations: [EquipmentTypeViewComponent]
 })
-export class EquipmentEditModule { }
+export class EquipmentTypeViewModule { }
