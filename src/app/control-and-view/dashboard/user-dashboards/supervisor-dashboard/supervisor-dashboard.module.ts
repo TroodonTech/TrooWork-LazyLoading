@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { SupervisorDashboardComponent } from './supervisor-dashboard.component';
-import {  CreateWorkOrderModule } from '../../../supervisor/create-work-order/create-work-order.module';
+import {  SupervisorProfileModule } from '../../../dashboard/user-profiles/supervisor-profile/supervisor-profile.module';
 const routes: Routes = [
   {
     path: 'SupervisorDashboard',
@@ -23,7 +23,36 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../supervisor/create-work-order/create-work-order.module#CreateWorkOrderModule',
       },
-      
+      {
+        path: 'Createinspectionbysuprvsr',
+        outlet: 'Superout',
+        loadChildren: '../../../supervisor/createinspection/createinspection.module#CreateinspectionModule',
+      },
+      {
+        path: 'viewWorkOrderSupervisor',
+        outlet: 'Superout',
+        loadChildren:'../../../supervisor/view-work-order/view-work-order.module#ViewWorkOrderModule',
+      },
+      {
+        path: 'Viewinspctnbysprvsr',
+        outlet: 'Superout',
+        loadChildren:'../../../supervisor/viewinspctnbysprvsr/viewinspctnbysprvsr.module#ViewinspctnbysprvsrModule',
+      },
+      {
+        path: 'Training',
+        outlet: 'Superout',
+        loadChildren:'../../../supervisor/training/training.module#TrainingModule',
+      },
+      {
+        path: 'supervisorMyProfile',
+        outlet: 'Superout',
+        loadChildren:'../../../dashboard/user-profiles/supervisor-profile/supervisor-profile.module#SupervisorProfileModule',
+      },
+      {
+        path: 'supervisorMyProfile/changePasswordSupervisor/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'Superout',
+        loadChildren:'../../../dashboard/user-password-changes/supervisor-change-password/supervisor-change-password.module#SupervisorChangePasswordModule',
+      },
     ]
   }
 ];
