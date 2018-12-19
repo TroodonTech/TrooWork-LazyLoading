@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
- import { ManagerinspectiontemplateModule } from '../../../manager/inspection/managerinspectiontemplate/managerinspectiontemplate.module';
+ import { EditBatchWorkModule } from '../../../manager/scheduling/edit-batch-work/edit-batch-work.module';
 
 
 const routes: Routes = [
@@ -194,6 +194,84 @@ const routes: Routes = [
         path: 'InspectionView/Managerinspectiontemplate/:InspectionOrderKey',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/inspection/managerinspectiontemplate/managerinspectiontemplate.module#ManagerinspectiontemplateModule',
+        
+      },
+      {
+        path: 'ViewInspectionManager/:InspectionOrderKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/viewinspectionmanager/viewinspectiomanager.module#ViewinspectiomanagerModule',
+        
+      },
+      {
+        path: 'InspectiontemplateCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspectiontemplate-create/inspectiontemplate-create.module#InspectiontemplateCreateModule',
+        
+      },
+      {
+        path: 'InspectiontemplateandquestionsView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspectiontemplateandquestions-view/inspectiontemplateandquestions-view.module#InspectiontemplateandquestionsViewModule',
+        
+      },
+      {
+        path: 'InspectiontemplateandquestionsView/InspectiontemplateEdit',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspectiontemplate-edit/inspectiontemplate-edit.module#InspectiontemplateEditModule',
+        
+      },
+      {
+        path: 'InspectiontemplatedetailEdit/:TemplateID',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/inspection/inspectiontemplatedetail-edit/inspectiontemplatedetail-edit.module#InspectiontemplatedetailEditModule',
+        
+      },
+      {
+        path: 'DocumentfolderView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/documents/documentfolder-view/documentfolder-view.module#DocumentfolderViewModule',
+        
+      },
+      {
+        path: 'DocumentfolderView/NewdocumentfolderCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/documents/newdocumentfolder-create/newdocumentfolder-create.module#NewdocumentfolderCreateModule',
+        
+      },
+      {
+        path: 'DocumentfolderView/DocumentfolderEdit/:FormtypeId',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/documents/documentfolder-edit/documentfolder-edit.module#DocumentfolderEditModule',
+        
+      },
+      {
+        path: 'DocumentsUpload',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/documents/documents-upload/documents-upload.module#DocumentsUploadModule',
+        
+      },
+      {
+        path: 'ViewDocuments',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/documents/view-documents/view-documents.module#ViewDocumentsModule',
+        
+      },
+      {
+        path: 'SchedulingView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/scheduling-view/scheduling-view.module#SchedulingViewModule',
+        
+      },
+      {
+        path: 'SchedulingView/CreateBatchWork',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/create-batch-work/create-batch-work.module#CreateBatchWorkModule',
+        
+      },
+      {
+        path: 'SchedulingView/EditBatchWork/:WorkorderScheduleKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/edit-batch-work/edit-batch-work.module#EditBatchWorkModule',
         
       },
       // {

@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { Router } from '@angular/router';
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-inspectiontemplatedetail-edit',
   templateUrl: './inspectiontemplatedetail-edit.component.html',
@@ -42,7 +43,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
   temparray = [];
   insertObj;
 
-  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private router: Router) {
+  constructor(private route: ActivatedRoute, private inspectionService: InspectionService, private router: Router,private _location: Location) {
     this.route.params.subscribe(params => this.tempID = params.TemplateID);
   }
 
@@ -144,5 +145,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
       });
 
   }
-
+  goBack(){
+    this._location.back();
+  }
 }

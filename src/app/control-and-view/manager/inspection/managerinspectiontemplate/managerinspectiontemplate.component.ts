@@ -277,7 +277,9 @@ export class ManagerinspectiontemplateComponent implements OnInit {
         };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
-           this.router.navigate(['/ViewInspectionManager',this.inspKey$]);
+          //  this.router.navigate(['/ViewInspectionManager',this.inspKey$]);
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+          
       });
 
     }
@@ -338,7 +340,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
         };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
-          this.router.navigate(['/ViewInspectionManager',this.inspKey$]);
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
      });
 
     }

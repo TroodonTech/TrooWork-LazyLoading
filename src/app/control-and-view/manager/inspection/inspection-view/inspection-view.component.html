@@ -51,7 +51,7 @@
           <td>{{i.Inspectiondate}} {{i.InspectionTime}}</td>
           <td>{{i.LastName}},{{i.FirstName}} </td>
           <td>{{i.EmployeeName}}</td>
-          <td *ngIf="i.InspectionCompletedBy !== null"> <a routerLink="/ViewInspectionManager/{{i.InspectionOrderKey}}"
+          <td *ngIf="i.InspectionCompletedBy !== null"> <a (click)='GoView(i.InspectionOrderKey)'
               class="btn btn-primary"><b>Inspection Completed </b></a></td>
           <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)"> <a [routerLink]="['Managerinspectiontemplate',i.InspectionOrderKey]" 
               class="btn btn-primary"><b>Inspect</b></a></td>

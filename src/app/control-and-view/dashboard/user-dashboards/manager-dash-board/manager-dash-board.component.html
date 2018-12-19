@@ -53,7 +53,7 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/ASSIGNMENTS--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" routerLink="/SchedulingView"><b>Create/Edit Assignment Name</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulingView']}}]"><b>Create/Edit Assignment Name</b></a>
             <a class="dropdown-item" routerLink="/scheduleRoomView"><b>Create Assignment List</b></a>
             <a class="dropdown-item" routerLink="/CreateBatchSchedule"><b>Edit Assignment Schedule</b></a>
           </div>
@@ -61,9 +61,9 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/DOCUMENTS--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" routerLink="/DocumentfolderView"><b>Create New Document Folder</b></a>
-            <a class="dropdown-item" routerLink="/DocumentsUpload"><b>Upload Document</b></a>
-            <a class="dropdown-item" routerLink="/ViewDocuments"><b>View Document</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentfolderView']}}]"><b>Create New Document Folder</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentsUpload']}}]"><b>Upload Document</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewDocuments']}}]"><b>View Document</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
@@ -71,8 +71,8 @@
           <div class="dropdown-content" style="margin-left:1rem;">
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]" ><b>Create Inspection</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]" ><b>View Inspection</b></a>
-            <a class="dropdown-item" routerLink="/CreateInspectionTemplate"><b>Create Inspection Template</b></a>
-            <a class="dropdown-item" routerLink="/InspectiontemplateandquestionsView"><b>View Inspection Template</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create Inspection Template</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]" ><b>View Inspection Template</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
