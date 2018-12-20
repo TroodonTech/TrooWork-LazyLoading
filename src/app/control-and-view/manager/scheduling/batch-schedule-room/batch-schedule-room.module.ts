@@ -5,20 +5,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IgxDatePickerModule } from 'igniteui-angular';
 
 
-import { CreateBatchScheduleComponent } from './create-batch-schedule.component';
+
+import { BatchScheduleRoomComponent } from './batch-schedule-room.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateBatchScheduleComponent
+    component: BatchScheduleRoomComponent
   }
   
 ];
-
 @NgModule({
   imports: [
     CommonModule,
@@ -26,9 +25,9 @@ const routes: Routes = [
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
-    IgxDatePickerModule,
+   
     RouterModule.forChild(routes)
   ],
-  declarations: [CreateBatchScheduleComponent]
+  declarations: [BatchScheduleRoomComponent]
 })
-export class CreateBatchScheduleModule { }
+export class BatchScheduleRoomModule { }

@@ -6,29 +6,32 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
-
-
-import { CreateBatchScheduleComponent } from './create-batch-schedule.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { BrowserModule } from '@angular/platform-browser'
+import { DashboardReportComponent } from './dashboard-report.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateBatchScheduleComponent
+    component: DashboardReportComponent
   }
   
 ];
+
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
+    BrowserModule,
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
     IgxDatePickerModule,
+    NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forChild(routes)
   ],
-  declarations: [CreateBatchScheduleComponent]
+  declarations: [DashboardReportComponent]
 })
-export class CreateBatchScheduleModule { }
+export class DashboardReportModule { }

@@ -8,13 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 
 
-import { CreateBatchScheduleComponent } from './create-batch-schedule.component';
+import { BarcodeReportComponent } from './barcode-report.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateBatchScheduleComponent
+    component: BarcodeReportComponent
   }
   
 ];
@@ -29,6 +29,6 @@ const routes: Routes = [
     IgxDatePickerModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [CreateBatchScheduleComponent]
+  declarations: [BarcodeReportComponent]
 })
-export class CreateBatchScheduleModule { }
+export class BarcodeReportModule { }

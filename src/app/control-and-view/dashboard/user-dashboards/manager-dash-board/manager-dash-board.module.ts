@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
- import { EditBatchWorkModule } from '../../../manager/scheduling/edit-batch-work/edit-batch-work.module';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+ import { CreateEmployeeModule } from '../../../manager/people/create-employee/create-employee.module';
 
 
 const routes: Routes = [
@@ -269,9 +270,69 @@ const routes: Routes = [
         
       },
       {
-        path: 'SchedulingView/EditBatchWork/:WorkorderScheduleKey',
+        path: 'SchedulingView/EditBatchWork/:scheduleNameKey',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/scheduling/edit-batch-work/edit-batch-work.module#EditBatchWorkModule',
+        
+      },
+      {
+        path: 'BatchScheduleRoom',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/batch-schedule-room/batch-schedule-room.module#BatchScheduleRoomModule',
+        
+      },
+      {
+        path: 'editScheduleForReport/:scheduleKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/edit-assignment-schedule-for-report/edit-assignment-schedule-for-report.module#EditAssignmentScheduleForReportModule',
+        
+      },
+      {
+        path: 'CreateBatchSchedule',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/scheduling/create-batch-schedule/create-batch-schedule.module#CreateBatchScheduleModule',
+        
+      },
+      {
+        path: 'WorkorderReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/workorder-report/workorder-report.module#WorkorderReportModule',
+        
+      },
+      {
+        path: 'Batch-work-order-Report',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/batch-work-order-report/batch-work-order-report.module#BatchWorkOrderReportModule',
+        
+      },
+      {
+        path: 'BatchScheduleAssignment',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/batch-schedule-assignment-report/batch-schedule-assignment-report.module#BatchScheduleAssignmentReportModule',
+        
+      },
+      {
+        path: 'InspectionReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/inspection-report/inspection-report.module#InspectionReportModule',
+        
+      },
+      {
+        path: 'BarcodeReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/barcode-report/barcode-report.module#BarcodeReportModule',
+        
+      },
+      {
+        path: 'DashboardReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/dashboard-report/dashboard-report.module#DashboardReportModule',
+        
+      },
+      {
+        path: 'CreateEmployee',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/create-employee/create-employee.module#CreateEmployeeModule',
         
       },
       // {
@@ -285,7 +346,8 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [ManagerDashBoardComponent],
   exports: [ManagerDashBoardComponent]

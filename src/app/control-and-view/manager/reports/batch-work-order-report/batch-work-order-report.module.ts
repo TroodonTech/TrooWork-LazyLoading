@@ -8,17 +8,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 
 
-import { CreateBatchScheduleComponent } from './create-batch-schedule.component';
+import { BatchWorkOrderReportComponent } from './batch-work-order-report.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: CreateBatchScheduleComponent
+    component: BatchWorkOrderReportComponent
   }
   
 ];
-
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +27,8 @@ const routes: Routes = [
     FormsModule, ReactiveFormsModule,
     IgxDatePickerModule,
     RouterModule.forChild(routes)
+ 
   ],
-  declarations: [CreateBatchScheduleComponent]
+  declarations: [BatchWorkOrderReportComponent]
 })
-export class CreateBatchScheduleModule { }
+export class BatchWorkOrderReportModule { }
