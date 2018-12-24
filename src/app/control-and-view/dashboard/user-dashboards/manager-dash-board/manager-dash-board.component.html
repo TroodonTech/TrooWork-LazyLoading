@@ -14,28 +14,28 @@
     <div class="collapse navbar-collapse" id="navbarText" style="margin-left: 15%;">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <img class="imagesize nav-link" src="assets/icons/homepage.png" routerLink="/welcomePage">
+          <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{ManagerOut:['welcomePage']}}]">
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/work order.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" routerLink="/CreateWorkOrder"><b>Create Work Order</b></a>
-            <a class="dropdown-item" routerLink="/createQuickOrder"><b>Create Quick Order</b></a>
-            <a class="dropdown-item" routerLink="/ViewWorkOrder"><b>View Work Order</b></a>
-            <a class="dropdown-item" routerLink="/CreateBatchWorkOrder"><b>Create Batch Work Order</b></a>
-            <a class="dropdown-item" routerLink="/ViewBatchWorkorder"><b>View Batch Work Order</b></a>
-            <a class="dropdown-item" routerLink="/WorkOrderType"><b>Work-Order Type</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateWorkOrder']}}]"><b>Create Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createQuickOrder']}}]"><b>Create Quick Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewWorkOrder']}}]"><b>View Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchWorkOrder']}}]"><b>Create Batch Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewBatchWorkorder']}}]"><b>View Batch Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkOrderType']}}]"><b>Work-Order Type</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/PEOPLE--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateEmployee']}}]"><b>Create Employee</b></a>
-            <a class="dropdown-item" routerLink="/ViewEmployee"><b>View Employee</b></a>
-            <a class="dropdown-item" routerLink="/MeetingTrainingCreate"><b>Create Meeting/Training</b></a>
-            <a class="dropdown-item" routerLink="/MeetingTrainingView"><b>View Meeting/Training</b></a>
-            <a class="dropdown-item" routerLink="/JobTitleView"><b>Create Job-Title</b></a>
-            <a class="dropdown-item" routerLink="/manageLoginCredentials"><b>Manage Login Credentials</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewEmployee']}}]"><b>View Employee</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingCreate']}}]" ><b>Create Meeting/Training</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingView']}}]"><b>View Meeting/Training</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['JobTitileView']}}]"><b>Create Job-Title</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manageLoginCredentials']}}]"><b>Manage Login Credentials</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
@@ -89,7 +89,7 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/profile-2.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" routerLink="/managerMyProfile"><b>My Profile</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['managerMyProfile']}}]"><b>My Profile</b></a>
             <a class="dropdown-item" routerLink="/"><b>Log Out</b></a>
           </div>
         </li>

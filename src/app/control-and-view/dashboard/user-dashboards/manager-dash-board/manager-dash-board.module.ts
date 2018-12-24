@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
- import { CreateEmployeeModule } from '../../../manager/people/create-employee/create-employee.module';
+ import { ManagerChangePasswordModule } from '../../user-password-changes/manager-change-pass-word/manager-change-password.module'
 
 
 const routes: Routes = [
@@ -333,6 +333,156 @@ const routes: Routes = [
         path: 'CreateEmployee',
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/people/create-employee/create-employee.module#CreateEmployeeModule',
+        
+      },
+      {
+        path: 'Settingusernameandpswrdaftremplcreatebyman/:EmployeeKey/:str/:UserRoleTypeKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/settingusernameandpswrdaftremplcreatebyman/settingusernameandpswrdafter.module#SettingusernameandpswrdafterModule',
+        
+      },
+      {
+        path: 'ViewEmployee',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/view-employee/view-employee.module#ViewEmployeeModule',
+        
+      },
+      {
+        path: 'ViewEmployee/EditEmployeedetails/:EmployeeKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/edit-employeedetails/edit-employeedetails.module#EditEmployeedetailsModule',
+        
+      },
+      {
+        path: 'MeetingTrainingCreate',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/meeting-training-create/meeting-training-create.module#MeetingTrainingCreateModule',
+        
+      },
+      {
+        path: 'MeetingTrainingView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/meeting-training-view/meeting-training-view.module#MeetingTrainingViewModule',
+        
+      },
+      {
+        path: 'MeetingTrainingView/EventView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/event-view/event-view.module#EventViewModule',
+        
+      },
+      {
+        path: 'MeetingTrainingView/viewEventEmployees/:EventKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/meeting-training-edit/meeting-training-edit.module#MeetingTrainingEditModule',
+        
+      },
+      {
+        path: 'JobTitileView',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/job-title-view/job-titile-view.module#JobTitileViewModule',
+        
+      },
+      {
+        path: 'JobTitileView/JobTitleAdd',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/job-title-add/job-titile-add.module#JobTitileAddModule',
+        
+      },
+      {
+        path: 'JobTitileView/JobTitleEdit/:JobTitle_Key',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/job-title-edit/job-titile-edit.module#JobTitileEditModule',
+        
+      },
+      {
+        path: 'manageLoginCredentials',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/manage-login-credentials/manage-login-credentials.module#ManageLoginCredentialsModule',
+        
+      },
+      {
+        path: 'manageLoginCredentials/resetPassword/:EmpKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/reset-pass-word/reset-pass-word.module#ResetPassWordModule',
+        
+      },
+      {
+        path: 'CreateWorkOrder',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/create-workorder/create-work-order.module#CreateWorkOrderModule',
+        
+      },
+      {
+        path: 'createQuickOrder',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/create-quick-order/create-quick-order.module#CreateQuickOrderModule',
+        
+      },
+      {
+        path: 'ViewWorkOrder',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/view-work-orders/view-work-orders.module#ViewWorkOrdersModule',
+        
+      },
+      {
+        path: 'ViewWorkOrder/EditWorkOrder/:WorkorderKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/edit-work-order/edit-work-order.module#EditWorkOrderModule',
+        
+      },
+      {
+        path: 'ViewWorkOrder/UpdateRecurWorkorder/:WorkorderKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/update-recur-workorder/update-recur-workorder.module#UpdateRecurWorkorderModule',
+        
+      },
+      {
+        path: 'CreateBatchWorkOrder',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/create-batch-workorder/create-batch-workorder.module#CreateBatchWorkorderModule',
+        
+      },
+      {
+        path: 'ViewBatchWorkorder',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/view-batch-workorder/view-batch-work-order.module#ViewBatchWorkOrderModule',
+        
+      },
+      {
+        path: 'ViewBatchWorkorder/EditBatchWorkorder/:WorkorderScheduleKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/edit-batch-workorder/edit-batch-work-order.module#EditBatchWorkOrderModule',
+        
+      },
+      {
+        path: 'WorkOrderType',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/work-order-type/work-order-type.module#WorkOrderTypeModule',
+        
+      },
+      {
+        path: 'WorkOrderType/CreateWorkorderType',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/create-workorder-type/create-work-order-type.module#CreateWorkOrderTypeModule',
+        
+      },
+      {
+        path: 'WorkOrderType/EditWorkorderType/:WorkorderTypeKey',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/work-order/edit-workorder-type/edit-work-order-type.module#EditWorkOrderTypeModule',
+        
+      },
+      {
+        path: 'managerMyProfile',
+        outlet: 'ManagerOut',
+        loadChildren: '../../user-profiles/manager-myprofile/manager-myprofile-component.module#ManagerMyprofileComponentModule',
+        
+      },
+      {
+        path: 'managerMyProfile/changePasswordManager/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'ManagerOut',
+        loadChildren: '../../user-password-changes/manager-change-pass-word/manager-change-password.module#ManagerChangePasswordModule',
         
       },
       // {

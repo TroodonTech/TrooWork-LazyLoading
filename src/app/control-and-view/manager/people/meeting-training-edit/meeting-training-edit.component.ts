@@ -255,5 +255,7 @@ export class MeetingTrainingEditComponent implements OnInit {
     };
 
   }
-
+  goBack(){
+    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+  }
 }

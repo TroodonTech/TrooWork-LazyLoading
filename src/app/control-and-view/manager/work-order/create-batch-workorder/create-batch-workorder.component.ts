@@ -774,7 +774,9 @@ export class CreateBatchWorkorderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
                     alert("Batch work-order created successfully");
-                    this.router.navigateByUrl('/ViewBatchWorkorder')});
+                    
+                    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                  });
                 });
               }
           });
@@ -810,7 +812,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
     };
     this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
       alert("Batch work-order created successfully");
-      this.router.navigateByUrl('/ViewBatchWorkorder')});
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+    });
     }
   }
   createWorkorder2() {
@@ -1171,7 +1174,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res =>{
                     alert("Batch work-order created successfully"); 
-                    this.router.navigateByUrl('/ViewBatchWorkorder')
+                    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
                     });
                 });
             }
@@ -1208,7 +1211,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
     };
     this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res =>{
       alert("Batch work-order created successfully"); 
-      this.router.navigateByUrl('/ViewBatchWorkorder')
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
       });
     }
 
