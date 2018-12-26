@@ -80,7 +80,8 @@ export class EditemployeeComponent implements OnInit {
    
 
     this.PeopleServiceService
-      .DeleteEmployeeDetailsbySuperadmin(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => this.router.navigateByUrl('/Viewemployee'));
+      .DeleteEmployeeDetailsbySuperadmin(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res =>  this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }])
+      );
   }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
@@ -155,7 +156,7 @@ export class EditemployeeComponent implements OnInit {
     this.PeopleServiceService.UpdateEmployeeDetailsbySa(this.managerKey, this.empk$, this.OrganizationID, UserRoleTypeKey, EmployeeNumber, FirstName, LastName, MiddleName, birthdt, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, JobTitleKey, DepartmentKey, Gender)
     .subscribe((data: any[]) => {
       alert("Successfully Updated !");
-         this.router.navigateByUrl('/Viewemployee')
+      this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
         });
 
   }
@@ -250,5 +251,7 @@ export class EditemployeeComponent implements OnInit {
         this.jobtitle = data;
       });
   }
-
+  goBack(){
+    this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
+  }
 }

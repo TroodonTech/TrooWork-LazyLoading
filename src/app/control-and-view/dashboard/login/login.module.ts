@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import{ ManagerDashBoardModule  } from '../user-dashboards/manager-dash-board/manager-dash-board.module';
 import{ EmployeeDashbordModule  } from '../user-dashboards/employee-dashboard/employee-dashbord.module';
 import{ SupervisorDashboardModule  } from '../user-dashboards/supervisor-dashboard/supervisor-dashboard.module';
-
+import{ SuperadminDashboardModule } from '../user-dashboards/superadmin-dashboard/superadmin-dashboard.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -24,6 +24,7 @@ const routes: Routes = [
     CommonModule,
     ManagerDashBoardModule,
     EmployeeDashbordModule,
+    SuperadminDashboardModule,
     HttpClientModule,
     MDBBootstrapModule,
     FormsModule, ReactiveFormsModule,

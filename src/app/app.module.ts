@@ -11,8 +11,8 @@ import { AppRoutingModule } from './/app-routing.module';
 import { CalendarModule } from 'primeng/calendar';
 import { Time } from '@angular/common';
 import { IgxDatePickerModule } from 'igniteui-angular';
-// import { GooglePieChartService } from './extra-files/piechart-file/Services/google-pie-chart.service';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { GooglePieChartService } from './extra-files/piechart-file/Services/google-pie-chart.service';
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 // import { LoginComponent } from './control-and-view/dashboard/login/login.component';
 // import { WelcomepageComponent } from './control-and-view/dashboard/user-welcome-pages/welcomepage/welcomepage.component';
@@ -318,9 +318,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AppRoutingModule,
     CalendarModule,
     IgxDatePickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    // NgMultiSelectDropDownModule.forRoot()
   ],
-  // providers: [ GooglePieChartService],
+  providers: [ GooglePieChartService],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
 })

@@ -7,34 +7,29 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { AngularMultiSelectModule } from '../../../../extra-files/MultiSelect2/multiselect.component';
-
 import { BrowserModule } from '@angular/platform-browser'
-import { DashboardReportComponent } from './dashboard-report.component';
+import { CreateemployeeComponent } from './createemployee.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardReportComponent
+    component: CreateemployeeComponent
   }
   
 ];
-
-
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    // BrowserModule,
+    
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
     IgxDatePickerModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    // AngularMultiSelectModule,
+    
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardReportComponent]
+  declarations: [CreateemployeeComponent]
 })
-export class DashboardReportModule { }
+export class CreateemployeeModule { }

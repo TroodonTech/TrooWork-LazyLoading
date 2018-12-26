@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit {
             }
             else{
             if (profile.role === 'SuperAdmin' && this.isAuthenticated) {
-              this.router.navigateByUrl('/welcomeSuperAdmin');
+              this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['welcomePage'] } }]);
             }
             else if (profile.role === 'Admin' && this.isAuthenticated) {
               this.router.navigateByUrl('/welcomeAdmin');

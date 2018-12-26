@@ -49,7 +49,7 @@
         <th>Status</th>
       </thead>
       <tbody>
-        <tr *ngFor="let x of viewinspectionReport" [value]="x.InspectionOrderKey">
+        <tr *ngFor="let x of viewinspectionReport" >
           <td>{{x.TemplateName}}</td>
           <td>{{x.InspectionDate}}</td>
           <td>{{x.FacilityName}} - {{x.RoomId}}</td>

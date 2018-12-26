@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
- import { ManagerChangePasswordModule } from '../../user-password-changes/manager-change-pass-word/manager-change-password.module'
+// import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+ import { ViewEmployeesofEventModule } from '../../../manager/people/view-employeesof-event/view-employeesof-event.module'
 
 
 const routes: Routes = [
@@ -374,6 +374,12 @@ const routes: Routes = [
       {
         path: 'MeetingTrainingView/viewEventEmployees/:EventKey',
         outlet: 'ManagerOut',
+        loadChildren: '../../../manager/people/view-employeesof-event/view-employeesof-event.module#ViewEmployeesofEventModule',
+        
+      },
+      {
+        path: 'MeetingTrainingView/viewEventEmployees/:EventKey/MeetingTrainingEdit/:EventKey/:ActionKey',
+        outlet: 'ManagerOut',
         loadChildren: '../../../manager/people/meeting-training-edit/meeting-training-edit.module#MeetingTrainingEditModule',
         
       },
@@ -497,7 +503,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    NgMultiSelectDropDownModule.forRoot(),
+    // NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [ManagerDashBoardComponent],
   exports: [ManagerDashBoardComponent]

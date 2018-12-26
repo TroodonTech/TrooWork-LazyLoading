@@ -6,35 +6,33 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
+import { CalendarModule } from 'primeng/calendar';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { AngularMultiSelectModule } from '../../../../extra-files/MultiSelect2/multiselect.component';
 
-import { BrowserModule } from '@angular/platform-browser'
-import { DashboardReportComponent } from './dashboard-report.component';
+import { ViewEmployeesofEventComponent } from './view-employeesof-event.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardReportComponent
+    component: ViewEmployeesofEventComponent
   }
   
 ];
-
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    // BrowserModule,
     MDBBootstrapModule,
     ManagerDashBoardModule,
-    FormsModule, ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     IgxDatePickerModule,
+    CalendarModule,
     NgMultiSelectDropDownModule.forRoot(),
-    // AngularMultiSelectModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardReportComponent]
+  declarations: [ViewEmployeesofEventComponent]
 })
-export class DashboardReportModule { }
+export class ViewEmployeesofEventModule { }

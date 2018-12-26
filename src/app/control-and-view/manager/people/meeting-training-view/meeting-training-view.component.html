@@ -16,19 +16,19 @@
       <div class="col-md-6 ">
         <div class="form-group" style="margin-left: 0.7rem;width: 75%;">
           <label for="people">Job Title</label>
-          <!-- <ng-multiselect-dropdown [placeholder]="'Selectjobtitle'" [data]="jobTitle" [(ngModel)]="JobTitleKey"
-            [textField]="'JobTitleText'" [valueField]="'JobTitleKey'" [settings]="dropdownSettings" (onSelect)="filterMtngTrainingList()"
+          <ng-multiselect-dropdown [placeholder]="'Selectjobtitle'" [data]="jobTitle" [(ngModel)]="JobTitleKey"
+             [settings]="dropdownSettings" (onSelect)="filterMtngTrainingList()"
             (onSelectAll)="filterMtngTrainingList()">
-          </ng-multiselect-dropdown> -->
+          </ng-multiselect-dropdown>
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group " style="margin-left: 0.7rem;width: 75%;">
           <label for="people">Employee</label>
-          <!-- <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="EmployeeKey"
-            [textField]="'EmployeeText'" [valueField]="'EmployeeKey'" [settings]="dropdownSettings1" (onSelect)="filterMtngTrainingList()"
+          <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="EmployeeKey"
+             [settings]="dropdownSettings1" (onSelect)="filterMtngTrainingList()" (onDeSelect)='dashboardreportbyfilter()' 
             (onSelectAll)="filterMtngTrainingList()">
-          </ng-multiselect-dropdown> -->
+          </ng-multiselect-dropdown>
         </div>
       </div>
       <!-- </div>
