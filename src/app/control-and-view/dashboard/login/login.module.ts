@@ -22,13 +22,13 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    ManagerDashBoardModule,
-    EmployeeDashbordModule,
-    SuperadminDashboardModule,
+    ManagerDashBoardModule,//manger router paths are loaded
+    EmployeeDashbordModule,//employee router paths are loaded
+    SuperadminDashboardModule,//superadminDashboard router paths are loaded
+    SupervisorDashboardModule,//supervisor router paths are loaded
     HttpClientModule,
     MDBBootstrapModule,
     FormsModule, ReactiveFormsModule,
-    SupervisorDashboardModule,
     RouterModule.forChild(routes)
   ],
   declarations: [LoginComponent]

@@ -7,8 +7,8 @@ import {  EmployeeProfileModule } from '../../user-profiles/employee-profile/emp
  const routes: Routes = [
   {
     path: 'EmployeeDashboard',
-    component: EmployeeDashboardComponent,
-    children: [
+    component: EmployeeDashboardComponent,// varun - EmployeeDashboard as parent component
+    children: [ // varun- child components
       {
         path: 'Emp_welcomePage',
         outlet: 'EmployeeOut',

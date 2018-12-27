@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="navbarText" style="margin-left: 15%;">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <img class="imagesize nav-link" src="assets/icons/homepage.png"  routerLink="/welcomeSupervisor">
+          <img class="imagesize nav-link" src="assets/icons/homepage.png"  [routerLink]="[{outlets:{Superout:['Supervisor_welcomePage']}}]">
         </li>
         <li class="nav-item dropdown">
           <img class="imagesize nav-link" src="assets/icons/work order.png" >
@@ -49,5 +49,6 @@
   </nav>
   <div style="height:100%;background-color: #EBFAFF;">
     <router-outlet name="Superout"></router-outlet>
+    <!-- varun - child paths are loaded in  Superout outlet for lazy loading-->
   </div>
 </div>

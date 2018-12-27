@@ -9,8 +9,8 @@ import { ManagerDashBoardComponent } from './manager-dash-board.component';
 const routes: Routes = [
   {
     path: 'ManagerDashBoard',
-    component: ManagerDashBoardComponent,
-    children: [
+    component: ManagerDashBoardComponent,// varun - superadmindashboard as parent component
+    children: [ // varun- child components
       {
         path: 'Buildview',
         outlet: 'ManagerOut',

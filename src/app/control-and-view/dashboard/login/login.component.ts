@@ -86,39 +86,44 @@ export class LoginComponent implements OnInit {
               if (profile.role === 'Admin')
               {
                 this.router.navigate(['/changePasswordAdmin',this.employeekey, this.role, this.IsSupervisor]);
+                
               }
               else if (profile.role === 'SuperAdmin')
               {
-                this.router.navigate(['/changePasswordSuperAdmin',this.employeekey, this.role, this.IsSupervisor]);
+               
+                this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['changePasswordSuperAdmin',this.employeekey, this.role, this.IsSupervisor] } }]);
               }
               else if (profile.role === 'Manager')
               {
-                this.router.navigate(['/changePasswordManager',this.employeekey, this.role, this.IsSupervisor]);
+                
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['/changePasswordManager',this.employeekey, this.role, this.IsSupervisor] } }]);
               }
               else if (profile.role === 'Employee' && this.IsSupervisor === 1)
               {
-                this.router.navigate(['/changePasswordSupervisor',this.employeekey, this.role, this.IsSupervisor]);
+                
+                this.router.navigate(['/SupervisorDashboard',{ outlets: { Superout: ['changePasswordSupervisor',this.employeekey, this.role, this.IsSupervisor] } }]);
               }
               else if (profile.role === 'Employee' && this.IsSupervisor === 0)
               {
-                this.router.navigate(['/changePasswordEmployee',this.employeekey, this.role, this.IsSupervisor]);
+                
+                this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['changePasswordEmployee',this.employeekey, this.role, this.IsSupervisor] } }]);
               }
             }
             else{
             if (profile.role === 'SuperAdmin' && this.isAuthenticated) {
-              this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['welcomePage'] } }]);
+              this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['welcomePage'] } }]); // redirect to superadmin
             }
             else if (profile.role === 'Admin' && this.isAuthenticated) {
-              this.router.navigateByUrl('/welcomeAdmin');
+              this.router.navigateByUrl('/welcomeAdmin');            // redirect to Admin
             }
             else if (profile.role === 'Manager' && this.isAuthenticated) {
-              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['welcomePage'] } }]);
+              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['welcomePage'] } }]);  // redirect to Manager
             }
             else if (profile.role === 'Employee' && this.IsSupervisor === 1 && this.isAuthenticated) {
-              this.router.navigate(['/SupervisorDashboard',{ outlets: { Superout: ['Supervisor_welcomePage'] } }]);
+              this.router.navigate(['/SupervisorDashboard',{ outlets: { Superout: ['Supervisor_welcomePage'] } }]);  // redirect to supervisor
             }
             else if (profile.role === 'Employee' && this.IsSupervisor === 0 && this.isAuthenticated) {
-              this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['Emp_welcomePage'] } }]);
+              this.router.navigate(['/EmployeeDashboard', { outlets: { EmployeeOut: ['Emp_welcomePage'] } }]); // redirect to Employee
             }
           }
         }

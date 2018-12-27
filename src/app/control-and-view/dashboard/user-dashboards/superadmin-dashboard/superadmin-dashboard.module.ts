@@ -8,8 +8,8 @@ import { SuperadminDashboardComponent } from './superadmin-dashboard.component';
  const routes: Routes = [
   {
     path: 'SuperadminDashboard',
-    component: SuperadminDashboardComponent,
-    children: [
+    component: SuperadminDashboardComponent,// varun - superadmindashboard as parent component
+    children: [ // varun- child components
       {
         path: 'welcomePage',
         outlet: 'SuperAdminOut',
