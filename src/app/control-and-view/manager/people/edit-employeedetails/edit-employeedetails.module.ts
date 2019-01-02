@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IgxDatePickerModule } from 'igniteui-angular';
+import { NgDatepickerModule} from 'ng2-datepicker';
 
 
 import { EditEmployeedetailsComponent } from './edit-employeedetails.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
     ManagerDashBoardModule,
     FormsModule,
     ReactiveFormsModule,
-    IgxDatePickerModule,
+    NgDatepickerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [EditEmployeedetailsComponent]

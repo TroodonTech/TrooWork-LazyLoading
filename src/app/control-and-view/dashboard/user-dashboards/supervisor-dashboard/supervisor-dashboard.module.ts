@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { SupervisorDashboardComponent } from './supervisor-dashboard.component';
-import {  SupervisorProfileModule } from '../../../dashboard/user-profiles/supervisor-profile/supervisor-profile.module';
+import {  SupervsrinspectiontemplateModule } from '../../../supervisor/supervsrinspectiontemplate/supervsrinspectiontemplate.module';
 const routes: Routes = [
   {
     path: 'SupervisorDashboard',
@@ -37,6 +37,11 @@ const routes: Routes = [
         path: 'Viewinspctnbysprvsr',
         outlet: 'Superout',
         loadChildren:'../../../supervisor/viewinspctnbysprvsr/viewinspctnbysprvsr.module#ViewinspctnbysprvsrModule',
+      },
+      {
+        path: 'Viewinspctnbysprvsr/Supervsrinspectiontemplate/:InspectionOrderKey',
+        outlet: 'Superout',
+        loadChildren:'../../../supervisor/supervsrinspectiontemplate/supervsrinspectiontemplate.module#SupervsrinspectiontemplateModule',
       },
       {
         path: 'Training',

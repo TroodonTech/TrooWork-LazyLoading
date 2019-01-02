@@ -53,7 +53,7 @@ export class NewdocumentfolderCreateComponent implements OnInit {
      {
     this.documentService.CreateNewDocumentFolder(this.DocFolderName, this.employeekey,this.OrganizationID).subscribe((data: Documents[]) => {
       alert("Successfully Added");
-      this.router.navigateByUrl('/DocumentfolderView');
+      this._location.back();
     });
    }
    else

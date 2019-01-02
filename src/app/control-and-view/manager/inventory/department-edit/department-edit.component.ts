@@ -51,7 +51,7 @@ export class DepartmentEditComponent implements OnInit {
         else {
           this.inventoryService.UpdateDepartment(DepartmentName, this.deptKey$, this.employeekey, this.OrganizationID).subscribe(res =>{
             alert("Department updated successfully");
-             this.router.navigateByUrl('/DepartmentView')
+            this._location.back();
         });
         }
       });

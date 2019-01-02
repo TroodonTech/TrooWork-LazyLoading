@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { People } from '../../../model-class/People';
 import { ActivatedRoute, Router } from "@angular/router";
 import { PeopleServiceService } from '../../../service/people-service.service';
-
+import { DatepickerOptions } from 'ng2-datepicker';
 @Component({
   selector: 'app-edit-employee-details-admin',
   templateUrl: './edit-employee-details-admin.component.html',
@@ -54,12 +54,29 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
   // adding properties and methods that will be used by the igxDatePicker
   public date: Date = new Date(Date.now());
 
-  private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
-  private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
+  // private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
+  // private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
 
-  public formatter = (_: Date) => {
-    return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
-  }
+  // public formatter = (_: Date) => {
+  //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
+  // }
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    //locale: frLocale,
+    //minDate: new Date(Date.now()), // Minimal selectable date
+    //maxDate: new Date(Date.now()),  // Maximal selectable date
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
   convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
@@ -69,6 +86,22 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router) {
     this.route.params.subscribe(params => this.empk$ = params.EmployeeKey);
+  }
+
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  charValidation(event: any) {
+    const patternChar = /[a-zA-Z ]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !patternChar.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 
   editEmployee(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey) {
@@ -139,7 +172,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
     this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.managerKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
       .subscribe((data: Array<any>) => {
         alert("Employee Updated !");
-        this.router.navigateByUrl('/viewEmployeeAdmin');
+        this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
       });
 
   }
@@ -150,8 +183,11 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey)
       .subscribe((data: Array<any>) => {
         alert("Employee Deleted !");
-        this.router.navigateByUrl('/ViewEmployee')
+        this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
       });
+  }
+  goBack(){
+    this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
   }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;

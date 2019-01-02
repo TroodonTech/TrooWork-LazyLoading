@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { EmployeeDashboardComponent } from './employee-dashboard.component';
-import {  EmployeeProfileModule } from '../../user-profiles/employee-profile/employee-profile.module';
+import {  EmployeeChangePasswordModule } from '../../user-password-changes/employee-change-password/employee-change-password.module';
 
  const routes: Routes = [
   {
@@ -31,6 +31,12 @@ import {  EmployeeProfileModule } from '../../user-profiles/employee-profile/emp
         path: 'employeeMyProfile',
         outlet: 'EmployeeOut',
         loadChildren: '../../user-profiles/employee-profile/employee-profile.module#EmployeeProfileModule',
+
+      },
+      {
+        path: 'employeeMyProfile/changePasswordEmployee/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'EmployeeOut',
+        loadChildren: '../../user-password-changes/employee-change-password/employee-change-password.module#EmployeeChangePasswordModule',
 
       },
      ]

@@ -55,7 +55,7 @@ export class FloorTypeCreateComponent implements OnInit {
         else if (data.length == 0) {
           this.inventoryServ.addNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("FloorType created successfully");
-            this.router.navigateByUrl('/FloorTypeView');
+            this._location.back();
           });
         }
       });

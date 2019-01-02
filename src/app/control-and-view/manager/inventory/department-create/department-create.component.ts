@@ -55,7 +55,7 @@ export class DepartmentCreateComponent implements OnInit {
         else if (data.length == 0) {
           this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res =>{ 
             alert("Department created successfully");
-            this.router.navigateByUrl('/DepartmentView');
+            this._location.back();
         });
         }
       });

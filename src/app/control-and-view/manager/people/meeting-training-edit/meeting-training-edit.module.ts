@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 import { CalendarModule } from 'primeng/calendar';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
+import { NgDatepickerModule} from 'ng2-datepicker';
 import {  MeetingTrainingEditComponent} from './meeting-training-edit.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
@@ -28,7 +28,7 @@ const routes: Routes = [
     ManagerDashBoardModule,
     FormsModule,
     ReactiveFormsModule,
-    IgxDatePickerModule,
+    NgDatepickerModule,
     CalendarModule,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forChild(routes)

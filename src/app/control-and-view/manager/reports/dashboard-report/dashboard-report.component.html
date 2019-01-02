@@ -4,44 +4,46 @@
   <div class="row col-md-12 ">
     <h3 style="margin-left: 25rem;">DASHBOARD REPORT</h3>
   </div>
- 
+
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
-      <div class="form-group">
+      <div class="form-group" style="width: 85%;">
         <label>Employee</label>
-        <select [(ngModel)]="EmployeeKey" style="width: 85%; background-color: #d4f4ff;" class="form-control" (change)="dashboardreportbyfilter()">
+        <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control" (change)="dashboardreportbyfilter()">
           <option value="">--Select--</option>
           <option *ngFor="let e of employeeoption" [value]="e.EmployeeKey">
             {{e.EmployeeText}}
           </option>
         </select>
       </div>
-      <div class="form-group" style="width: 25rem;">
+      <div class="form-group" style="width: 20rem;">
         <label>From Date</label>
-        <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="fromdate" (onSelection)="dashboardreportbyfilter()"></igx-datePicker>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate" (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="fromdate" (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
       </div>
     </div>
     <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
       <div class="form-group" style="width: 85%;">
         <label>Workorder Type</label>
         <ng-multiselect-dropdown (change)="dashboardreportbyfilter()" [placeholder]="'Select'" [data]="workordertypeoption"
           [(ngModel)]="WorkorderTypeKey" [settings]="dropdownSettings"
           (onSelect)="dashboardreportbyfilter()" (onDeSelect)='dashboardreportbyfilter()' (onSelectAll)='dashboardreportbyfilter()' (onSelectAll)="dashboardreportbyfilter()">
         </ng-multiselect-dropdown>
-       
       </div>
-      <div class="form-group" style="width: 25rem;">
+      <div class="form-group" style="width: 20rem;">
         <label>To Date</label>
-        <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"
-          (onSelection)="dashboardreportbyfilter()"></igx-datePicker>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate" (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
+        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"
+          (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
       </div>
     </div>
   </div>
 </div>
 <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12" *ngIf="((reporttable?.length> 0)&&(!loading))"
   id="contentToConvert">
-  <div class="col-md-6" *ngIf="reporttable?.length> 0" style="border: 0px !important">
+  <div class="col-md-6" *ngIf="reporttable?.length> 0" style="border: 0px !important;">
 
     <div id="{{elementId1}}" style="width: 800px; height: 400px;"></div>
   </div>

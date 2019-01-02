@@ -53,7 +53,7 @@ export class EquipmentTypeCreateComponent implements OnInit {
         else if (this.dept[0].count == 0) {
           this.inventoryServ.addEquipmentType(this.EquipmentTypeName, this.EquipmentTypeDescription, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Equipment Type Created Successfully")
-            this.router.navigateByUrl('/EquipmentTypeView')
+            this._location.back();
           });
         }
       });

@@ -7,6 +7,8 @@ import { GooglePieChartService } from '../../../../extra-files/piechart-file/Ser
 declare var google: any;
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { DatepickerOptions } from 'ng2-datepicker';
+
 @Component({
   selector: 'app-dashboard-report',
   templateUrl: './dashboard-report.component.html',
@@ -22,7 +24,6 @@ export class DashboardReportComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -39,7 +40,24 @@ export class DashboardReportComponent implements OnInit {
     }
     return window.atob(output);
   }
-
+  //new date picker
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    //locale: frLocale,
+    //minDate: new Date(Date.now()), // Minimal selectable date
+    //maxDate: new Date(Date.now()),  // Maximal selectable date
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: { 'font-size': '18px', 'width': '156%',  'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
 
   title = 'Reusable charts sample';
   public arr: Array<any> = [{}];
@@ -54,12 +72,12 @@ export class DashboardReportComponent implements OnInit {
 
   public date: Date = new Date(Date.now());
 
-  private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
-  private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
+  // private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
+  // private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
 
-  public formatter = (_: Date) => {
-    return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
-  }
+  // public formatter = (_: Date) => {
+  //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
+  // }
   //export to pdf
   public captureScreen() {
     var data = document.getElementById('contentToConvert');
@@ -71,9 +89,17 @@ export class DashboardReportComponent implements OnInit {
       var heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      let pdf = new jspdf('p', 'mm'); // A4 size page of PDF  
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
       pdf.save('DashboardReport.pdf'); // Generated PDF   
     });
   }
@@ -109,7 +135,6 @@ export class DashboardReportComponent implements OnInit {
       EmployeeText: ['', Validators.required]
     });
   }
-
   ngOnInit() {
     this.loading = true;
     this.EmployeeKey = "";
@@ -147,7 +172,6 @@ export class DashboardReportComponent implements OnInit {
     };
     this.em_Key = null;
     this.Workorder_TypeKey = null;
-
     this.ReportServiceService
       .getdashboardreport(dateTemp_1, dateTemp_2, this.em_Key, this.Workorder_TypeKey, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
@@ -171,9 +195,9 @@ export class DashboardReportComponent implements OnInit {
         this.data1 = this.sampledata1;
         this.config1 = new PieChartConfig(' ', 0.4);
         this.elementId1 = 'piechart';
-        setTimeout(() => {  
+        setTimeout(() => {
           if (this.reporttable.length > 0) {
-            this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);  
+            this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);
           }
         }, 1000)
 
@@ -181,8 +205,6 @@ export class DashboardReportComponent implements OnInit {
   }
   onItemSelect(item: any) {
     console.log(item);
-
-
   }
   onSelectAll(items: any) {
     console.log(items);
@@ -234,36 +256,37 @@ export class DashboardReportComponent implements OnInit {
       }
     }
     this.ReportServiceService
-    .getdashboardreport(date1, date2, this.em_Key, workordertypeString, this.employeekey, this.OrganizationID)
-    .subscribe((data: Reports[]) => {
-      this.reporttable = data;
-      this.loading = false;
-    });
-
+      .getdashboardreport(date1, date2, this.em_Key, workordertypeString, this.employeekey, this.OrganizationID)
+      .subscribe((data: Reports[]) => {
+        this.reporttable = data;
+        this.loading = false;
+      });
     this.ReportServiceService
       .getvaluesfilterbypie(date1, date2, this.em_Key, workordertypeString, this.OrganizationID, this.employeekey)
       .subscribe((data: Reports[]) => {
         this.pievalues = data;
         this.sampledata2 = [['WorkorderStatus', 'count']];
+
         for (var i = 0; i < this.pievalues.length; i++) {
           var status = this.pievalues[i].reportpietext;
           var num = this.pievalues[i].totalItems;
           this.data3 = ([status, num]);
           this.sampledata2.push(this.data3);
+
+          if ((i == this.pievalues.length - 1) && (this.sampledata2.length == this.pievalues.length + 1)) {
+
+            setTimeout(() => {
+              if ((this.pievalues.length > 0)) {
+                this.data1 = this.sampledata2;
+                this.config1 = new PieChartConfig(' ', 0.4);
+                this.elementId1 = 'piechart';
+                this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);
+              }
+            }, 1000)
+          }
         }
-        setTimeout(() => {
-        if ((this.reporttable.length > 0) && (this.pievalues.length > 0)) {
-          this.data1 = this.sampledata2;
-          this.config1 = new PieChartConfig(' ', 0.4);
-          this.elementId1 = 'piechart';
-          this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);   
-        }
-      }, 1000)
-     
       });
   }
-
-
 }
 
 

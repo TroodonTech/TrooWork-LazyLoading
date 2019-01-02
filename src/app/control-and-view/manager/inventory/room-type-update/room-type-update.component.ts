@@ -75,7 +75,7 @@ export class RoomTypeUpdateComponent implements OnInit {
       this.inventoryService.updateRoomType(this.rTypeKey$, this.metricTypeKey, this.metricType, RoomTypeName, MetricTypeValue, this.employeekey, this.OrganizationID)
         .subscribe(res => {
           alert("RoomType updated successfully");
-          this.router.navigateByUrl('/roomTypeView');
+          this._location.back();
         });
     }
   }

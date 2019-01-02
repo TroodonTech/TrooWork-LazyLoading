@@ -7,7 +7,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IgxDatePickerModule } from 'igniteui-angular';
 import { CalendarModule } from 'primeng/calendar';
-
+import { NgDatepickerModule} from 'ng2-datepicker';
 import { ViewWorkOrdersComponent } from './view-work-orders.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
 
@@ -28,7 +28,7 @@ const routes: Routes = [
     FormsModule,
     CalendarModule,
     ReactiveFormsModule,
-    IgxDatePickerModule,
+    NgDatepickerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [ViewWorkOrdersComponent]

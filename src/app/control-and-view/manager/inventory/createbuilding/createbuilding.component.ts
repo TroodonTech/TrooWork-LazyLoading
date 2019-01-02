@@ -5,6 +5,7 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {Location} from '@angular/common';
 
+
 @Component({
   selector: 'app-createbuilding',
   templateUrl: './createbuilding.component.html',
@@ -65,7 +66,7 @@ export class CreatebuildingComponent implements OnInit {
       this.CreatebuildingService.createBuildings(newbuildingName, this.employeekey, this.OrganizationID)
         .subscribe((data: Inventory[]) => {
           alert("Building created successfully");
-          this.router.navigateByUrl('/Buildview');
+          this._location.back();
         });
     }
   });

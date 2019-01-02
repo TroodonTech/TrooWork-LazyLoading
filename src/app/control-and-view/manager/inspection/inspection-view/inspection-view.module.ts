@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgDatepickerModule} from 'ng2-datepicker';
 import { CalendarModule } from 'primeng/calendar';
 
 import { InspectionViewComponent } from './inspection-view.component';
@@ -27,6 +27,7 @@ const routes: Routes = [
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
+    NgDatepickerModule,
     CalendarModule,
     RouterModule.forChild(routes)
   ],

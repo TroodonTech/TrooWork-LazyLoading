@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NgDatepickerModule} from 'ng2-datepicker';
 import { IgxDatePickerModule } from 'igniteui-angular';
 
 import { EditAssignmentScheduleForReportComponent } from './edit-assignment-schedule-for-report.component';
@@ -26,7 +26,7 @@ const routes: Routes = [
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
-    IgxDatePickerModule,
+    NgDatepickerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [EditAssignmentScheduleForReportComponent]

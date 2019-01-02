@@ -55,7 +55,7 @@ export class EquipmentTypeEditComponent implements OnInit {
         else {
           this.inventoryService.UpdateEquipmentType(equipType, equipTypeDesc, equipTypeKey, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Equipment Type  updated successfully");
-            this.router.navigateByUrl('/EquipmentTypeView');
+            this._location.back();
           });
         }
       });

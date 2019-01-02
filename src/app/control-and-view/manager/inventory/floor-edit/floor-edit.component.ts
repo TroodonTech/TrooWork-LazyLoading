@@ -78,7 +78,7 @@ export class FloorEditComponent implements OnInit {
             .UpdateFloor(FacilityKey, FloorKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: Inventory[]) => {
               alert("Floor updated successfully");
-              this.router.navigateByUrl('/Floorview');
+              this._location.back();
             });
         }
       });

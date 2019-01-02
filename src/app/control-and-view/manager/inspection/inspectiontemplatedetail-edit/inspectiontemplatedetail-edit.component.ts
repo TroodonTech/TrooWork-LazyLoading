@@ -141,7 +141,7 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
     this.inspectionService
       .updateTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey).subscribe(() => {
         alert("Successfully Updated");
-        this.router.navigateByUrl('InspectiontemplateEdit');
+        this._location.back();
       });
 
   }

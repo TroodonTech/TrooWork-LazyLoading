@@ -8,7 +8,7 @@
     <div class="col-md-12">
       <div class="form-group" style="display: flex">
         <label class="col-sm-2 col-md-2 col-lg-2 " style="margin-left: -1rem;">Template Name*</label>
-        <span style="margin-left: 3.7rem"></span>
+        <span style="margin-left: 4.3rem"></span>
         <select style="background-color: #d4f4ff !important;" class="form-control col-sm-8 col-md-8 col-lg-8"
           [(ngModel)]="TemplateID">
           <option value="">--Select--</option>
@@ -24,6 +24,7 @@
         <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;"> Date</label>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" style="width: 75%;"
           [value]="date" [(ngModel)]="fromdate"></igx-datePicker> -->
+          <ng-datepicker [options]="options"   position="top-right"  [(ngModel)]="fromdate"></ng-datepicker >
       </div>
       <div class="form-group">
         <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Auditor*</label>
@@ -40,7 +41,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">Time*</label><br>
-        <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="time1" [timeOnly]="true"
+        <p-calendar [inputStyle]="{'width':'255%','margin-top':'1rem'}" [(ngModel)]="time1" [timeOnly]="true"
           hourFormat="12"></p-calendar>
       </div>
       <div class="form-group">
@@ -116,7 +117,7 @@
     <div class="col-md-6"></div>
     <div class="col-md-12"></div>
     <div class="col-md-6">
-      <div class="form-group">
+      <div class="form-group" style="margin-top: 2.5rem">
         <label class="form-check-label" for="materialInline1">Recurring Yes:</label> &nbsp;
         <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />
       </div>
@@ -126,6 +127,7 @@
         <label class="col-sm-3 col-md-3 col-lg-3 " style="margin-left: -1rem;">To Date</label>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" style="width: 75%;"
           [value]="date" [(ngModel)]="todate"></igx-datePicker> -->
+          <ng-datepicker [options]="options"   position="top-right"  [(ngModel)]="todate"></ng-datepicker >
       </div>
     </div>
     <div class="row col-md-12">

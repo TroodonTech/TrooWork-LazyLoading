@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IgxDatePickerModule } from 'igniteui-angular';
+import { NgDatepickerModule} from 'ng2-datepicker';
 import { CalendarModule } from 'primeng/calendar';
 
 import { EditWorkOrderComponent } from './edit-work-order.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
     FormsModule,
     CalendarModule,
     ReactiveFormsModule,
-    IgxDatePickerModule,
+    NgDatepickerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [EditWorkOrderComponent]

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { workorder } from '../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../service/work-order-service.service';
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
-
+import { DatepickerOptions } from 'ng2-datepicker';
 const URL = 'http://localhost:3000/api/upload_test';
 
 @Component({
@@ -78,13 +78,29 @@ export class ViewworkordersforemployeeComponent implements OnInit {
   // adding properties and methods that will be used by the igxDatePicker
 
   public date: Date = new Date(Date.now());
-  private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
-  private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
+  // private dayFormatter = new Intl.DateTimeFormat('en', { weekday: 'long' });
+  // private monthFormatter = new Intl.DateTimeFormat('en', { month: 'long' });
 
-  public formatter = (_: Date) => {
-    return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
-  }
-
+  // public formatter = (_: Date) => {
+  //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
+  // }
+  options: DatepickerOptions = {
+    minYear: 1970,
+    maxYear: 2030,
+    displayFormat: 'MM/DD/YYYY',
+    barTitleFormat: 'MMMM YYYY',
+    dayNamesFormat: 'dd',
+    firstCalendarDay: 0, // 0 - Sunday, 1 - Monday
+    //locale: frLocale,
+    //minDate: new Date(Date.now()), // Minimal selectable date
+    //maxDate: new Date(Date.now()),  // Maximal selectable date
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
+    addClass: '', // Optional, value to pass on to [ngClass] on the input field
+    addStyle: {'font-size':'18px','width':'75%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
+    useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
+  };
   convert_DT(str) {
     var date = new Date(str),
       mnth = ('0' + (date.getMonth() + 1)).slice(-2),
@@ -170,6 +186,9 @@ export class ViewworkordersforemployeeComponent implements OnInit {
       .getallFloorNames(facKey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.floorList = data;
+        this.ZoneKey='';
+        this.FloorKey='';
+        this.RoomTypeKey='';
       });
   }
 
@@ -178,12 +197,19 @@ export class ViewworkordersforemployeeComponent implements OnInit {
       .getallZones(this.facikey, flkey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.zoneList = data;
+        this.ZoneKey='';
+        this.RoomTypeKey='';
       });
     this.WorkOrderServiceService
       .getallRoomType(this.facikey, flkey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.roomtypeList = data;
+        this.ZoneKey='';
+        this.RoomTypeKey='';
       });
+  }
+  selectedZone(){
+    this.RoomTypeKey='';
   }
   searchWO(SearchValue) {
     var value=SearchValue.trim();
@@ -270,14 +296,14 @@ export class ViewworkordersforemployeeComponent implements OnInit {
     if(!(this.RoomTypeKey)){
       this.RoomTypeKey=null;
     }
-    this.WorkOrderServiceService
-      .getworkOrderTablewithOnDateOnly(this.pageNo,this.itemsPerPage,date1, this.toServeremployeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.WorkorderDetTable = data;
-        if(!this.WorkorderDate2){
-        this.loading = false;
-        }
-      });
+    // this.WorkOrderServiceService
+    //   .getworkOrderTablewithOnDateOnly(this.pageNo,this.itemsPerPage,date1, this.toServeremployeekey, this.OrganizationID)
+    //   .subscribe((data: any[]) => {
+    //     this.WorkorderDetTable = data;
+    //     if(!this.WorkorderDate2){
+    //     this.loading = false;
+    //     }
+    //   });
       
     this.WorkOrderServiceService
       .getworkOrderTablewithOnDateandToDateFilter(date1, date2, this.toServeremployeekey, this.OrganizationID, this.FacilityKey, this.FloorKey, this.RoomTypeKey, this.ZoneKey)
@@ -287,13 +313,25 @@ export class ViewworkordersforemployeeComponent implements OnInit {
         for (var i = 0; i < this.WorkorderDetTable.length; i++) {
           this.FinishButton[i] = true;
         }
+        if(!(this.FacilityKey)){
+          this.FacilityKey='';
+        }
+        if(!(this.FloorKey)){
+          this.FloorKey='';
+        }
+        if(!(this.ZoneKey)){
+          this.ZoneKey='';
+        }
+        if(!(this.RoomTypeKey)){
+          this.RoomTypeKey='';
+        }
       });
-    this.WorkOrderServiceService
-      .getworkOrderTablewithbuildingFilter(date1, date2, this.toServeremployeekey, this.OrganizationID, this.FacilityKey, this.FloorKey, this.RoomTypeKey, this.ZoneKey)
-      .subscribe((data: any[]) => {
-        this.WorkorderDetTable = data;
-        this.loading = false;
-      });
+    // this.WorkOrderServiceService
+    //   .getworkOrderTablewithbuildingFilter(date1, date2, this.toServeremployeekey, this.OrganizationID, this.FacilityKey, this.FloorKey, this.RoomTypeKey, this.ZoneKey)
+    //   .subscribe((data: any[]) => {
+    //     this.WorkorderDetTable = data;
+    //     this.loading = false;
+    //   });
 
   }
 

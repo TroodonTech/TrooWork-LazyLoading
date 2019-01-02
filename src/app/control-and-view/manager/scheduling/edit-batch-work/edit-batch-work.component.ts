@@ -68,14 +68,14 @@ export class EditBatchWorkComponent implements OnInit {
           .subscribe((data: any[]) => {
             if (data[0].count == 0) {
               this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
-                .subscribe(res => this.router.navigateByUrl('/SchedulingView'));
+                .subscribe(res =>  this._location.back());
             } else {
               alert("Schedule Name already present !");
             }
           });
       } else {
         this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
-          .subscribe(res => this.router.navigateByUrl('/SchedulingView'));
+          .subscribe(res =>  this._location.back());
       }
     }
   }

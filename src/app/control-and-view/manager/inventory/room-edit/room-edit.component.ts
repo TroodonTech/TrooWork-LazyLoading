@@ -139,7 +139,7 @@ export class RoomEditComponent implements OnInit {
                 this.inventoryService.updateRoom(this.update_Room)
               .subscribe(res => {
                 alert("Room updated successfully");
-                this.router.navigateByUrl('/roomView');
+                this._location.back();
               });
               }
             });
@@ -148,7 +148,7 @@ export class RoomEditComponent implements OnInit {
             this.inventoryService.updateRoom(this.update_Room)
               .subscribe(res => {
                 alert("Room updated successfully");
-                this.router.navigateByUrl('/roomView');
+                this._location.back();
               });
           }
         });

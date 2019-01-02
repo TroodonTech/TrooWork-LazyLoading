@@ -8,11 +8,18 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppRoutingModule } from './/app-routing.module';
+
+
 import { CalendarModule } from 'primeng/calendar';
 import { Time } from '@angular/common';
 import { IgxDatePickerModule } from 'igniteui-angular';
-import { GooglePieChartService } from './extra-files/piechart-file/Services/google-pie-chart.service';
 
+import { GooglePieChartService } from './extra-files/piechart-file/Services/google-pie-chart.service';
+// import { PieChartComponent } from './extra-files/piechart-file/Dashboard/Charts/piechart.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
+
+import { NgDatepickerModule} from 'ng2-datepicker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,8 +34,8 @@ import { GooglePieChartService } from './extra-files/piechart-file/Services/goog
     HttpClientModule,
     AppRoutingModule,
     CalendarModule,
-    IgxDatePickerModule,
-   
+    IgxDatePickerModule,NgDatepickerModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [ GooglePieChartService],
   bootstrap: [AppComponent],

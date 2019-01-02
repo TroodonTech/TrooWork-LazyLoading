@@ -9,6 +9,7 @@ import{ ManagerDashBoardModule  } from '../user-dashboards/manager-dash-board/ma
 import{ EmployeeDashbordModule  } from '../user-dashboards/employee-dashboard/employee-dashbord.module';
 import{ SupervisorDashboardModule  } from '../user-dashboards/supervisor-dashboard/supervisor-dashboard.module';
 import{ SuperadminDashboardModule } from '../user-dashboards/superadmin-dashboard/superadmin-dashboard.module';
+import{ AdminDashboardModule } from '../user-dashboards/admin-dashboard/admin-dashboard.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,6 +27,7 @@ const routes: Routes = [
     EmployeeDashbordModule,//employee router paths are loaded
     SuperadminDashboardModule,//superadminDashboard router paths are loaded
     SupervisorDashboardModule,//supervisor router paths are loaded
+    AdminDashboardModule,//admin router paths are loaded
     HttpClientModule,
     MDBBootstrapModule,
     FormsModule, ReactiveFormsModule,

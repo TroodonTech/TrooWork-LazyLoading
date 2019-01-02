@@ -88,7 +88,7 @@ export class ZoneEditComponent implements OnInit {
           this.inventoryService.updateZone(FacilityKey, FacilityName, FloorName, FloorKey, ZoneKey, ZoneName, this.employeekey, this.OrganizationID)
             .subscribe(res => {
               alert("Zone updated successfully");
-              this.router.navigateByUrl('/Zoneview');
+              this._location.back();
             });
 
 

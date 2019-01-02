@@ -75,7 +75,7 @@ export class FloorCreateComponent implements OnInit {
       this.inventoryService.createFloors(FacilityKey, FloorName, FloorDescription, this.employeekey, this.OrganizationID)
         .subscribe((data: Inventory[]) => {
           alert("Floor created successfully");
-          this.router.navigateByUrl('/Floorview');
+          this._location.back();
         });
     }
   });

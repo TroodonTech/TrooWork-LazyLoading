@@ -67,7 +67,7 @@ export class ZoneCreateComponent implements OnInit {
       this.inventoryService.createZones(FacilityKey, FloorName, ZoneName, this.employeekey, this.OrganizationID)
         .subscribe((data: Inventory[]) => {
           alert("Zone created successfully");
-          this.router.navigateByUrl('/Zoneview');
+          this._location.back();
         });
       }
     });

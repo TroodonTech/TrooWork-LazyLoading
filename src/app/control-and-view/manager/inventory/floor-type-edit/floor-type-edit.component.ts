@@ -49,7 +49,7 @@ export class FloorTypeEDitComponent implements OnInit {
         else {
           this.inventoryService.UpdateFloorType(FloorTypeName, this.flrTypeKey$, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("FloorType updated successfully");
-            this.router.navigateByUrl('/FloorTypeView');
+            this._location.back();
           });
         }
       });

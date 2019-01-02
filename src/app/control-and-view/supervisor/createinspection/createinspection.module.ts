@@ -6,7 +6,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SupervisorDashboardModule } from '../../dashboard/user-dashboards/supervisor-dashboard/supervisor-dashboard.module';
 import{ CreateinspectionComponent }   from './createinspection.component';
-import { IgxDatePickerModule } from 'igniteui-angular';
+import { NgDatepickerModule} from 'ng2-datepicker';
 import { CalendarModule } from 'primeng/calendar';
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
     // InventoryModule,
     FormsModule, ReactiveFormsModule,
     RouterModule.forChild(routes),
-    IgxDatePickerModule,
+    NgDatepickerModule,
     CalendarModule
   ],
   declarations: [CreateinspectionComponent]
