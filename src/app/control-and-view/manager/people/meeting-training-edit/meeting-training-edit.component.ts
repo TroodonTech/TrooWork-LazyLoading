@@ -200,7 +200,9 @@ export class MeetingTrainingEditComponent implements OnInit {
 
       this.peopleServ
         .updateMeetingTraining(ActionKey, Eventhost, Venue, newTime, newTime1, MeetingNotes, EmployeeKeyString, newDate, this.eventKey$, this.employeekey, this.OrganizationID)
-        .subscribe(res => this.router.navigateByUrl('/MeetingTrainingView'));
+        .subscribe(res =>
+           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }])
+           );
     }
 
   }

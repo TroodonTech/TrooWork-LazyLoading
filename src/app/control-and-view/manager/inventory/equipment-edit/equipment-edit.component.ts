@@ -85,7 +85,7 @@ export class EquipmentEditComponent implements OnInit {
           this.inventoryService.updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode, this.equipTypeKey, this.FacKey, this.FloorKey, this.equipKey$, this.employeekey, this.OrganizationID)
             .subscribe(res => {
               alert("Equipment updated successfully");
-              this.router.navigateByUrl('/EquipmentView');
+              this._location.back();
             });
         }
       });

@@ -93,7 +93,7 @@ export class EquipmentCreateComponent implements OnInit {
               this.inventoryService.addEquipment(EquipmentName, EquipmentDescription, barcode, EquipmentTypeKey, this.FacKey, this.FloorKey, this.employeekey, this.OrganizationID)
                 .subscribe(res => {
                   alert("Equipment created successfully");
-                  this.router.navigateByUrl('/EquipmentView');
+                  this._location.back();
                 });
             }
           });

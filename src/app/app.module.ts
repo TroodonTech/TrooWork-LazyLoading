@@ -29,13 +29,13 @@ import { NgDatepickerModule} from 'ng2-datepicker';
     BrowserModule,
     BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
-    FormsModule,
-    ReactiveFormsModule,
+    // FormsModule,
+    // ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    CalendarModule,
-    IgxDatePickerModule,NgDatepickerModule,
-    NgMultiSelectDropDownModule.forRoot()
+    // CalendarModule,
+    // IgxDatePickerModule,NgDatepickerModule,
+    // NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [ GooglePieChartService],
   bootstrap: [AppComponent],

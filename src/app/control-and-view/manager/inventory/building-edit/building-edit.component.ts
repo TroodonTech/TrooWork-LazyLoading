@@ -57,7 +57,7 @@ export class BuildingEditComponent implements OnInit {
     this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         alert("Building updated successfully");
-        this.router.navigateByUrl('/Buildview');
+        this._location.back();
       });
   }
 

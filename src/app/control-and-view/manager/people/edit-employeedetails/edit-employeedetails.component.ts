@@ -197,7 +197,9 @@ export class EditEmployeedetailsComponent implements OnInit {
 
   deleteEmployee() {
     this.PeopleServiceService
-      .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => this.router.navigateByUrl('/ViewEmployee'));
+      .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => 
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
+        );
   }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;

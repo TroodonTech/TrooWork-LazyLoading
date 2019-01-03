@@ -69,7 +69,11 @@ export class ViewEmployeesofEventComponent implements OnInit {
   deleteMeeting() {
     this.peopleServ
       .DeleteMeetingTraining(this.eventKey, this.OrganizationID)
-      .subscribe(res => this.router.navigateByUrl('/MeetingTrainingView'));
+      .subscribe(res => 
+       
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }])
+        );
+
   }
 
   ngOnInit() {
