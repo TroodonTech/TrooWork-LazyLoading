@@ -85,7 +85,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'137%','margin-top': '1rem', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '137%', 'margin-top': '1rem', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -633,7 +633,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           roomList2.push(this.roomTempList[j].RoomKey);
           FrequencyObj2.push(this.roomTempList[j].dailyFrequency);
 
-          if (this.roomTempList[j].check_mon === true) {
+          if (this.roomTempList[j].check_mon === true || this.roomTempList[j].check_mon === 1) {
             monObj2.push(this.roomTempList[j].check_mon);
           }
           else {
@@ -641,7 +641,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             monObj2.push(this.roomTempList[j].check_mon);
           }
 
-          if (this.roomTempList[j].check_tue === true) {
+          if (this.roomTempList[j].check_tue === true || this.roomTempList[j].check_tue === 1) {
             tueObj2.push(this.roomTempList[j].check_tue);
           }
           else {
@@ -649,7 +649,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             tueObj2.push(this.roomTempList[j].check_tue);
           }
 
-          if (this.roomTempList[j].check_wed === true) {
+          if (this.roomTempList[j].check_wed === true || this.roomTempList[j].check_wed === 1) {
             wedObj2.push(this.roomTempList[j].check_wed);
           }
           else {
@@ -657,7 +657,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             wedObj2.push(this.roomTempList[j].check_wed);
           }
 
-          if (this.roomTempList[j].check_thu === true) {
+          if (this.roomTempList[j].check_thu === true || this.roomTempList[j].check_thu === 1) {
             thuObj2.push(this.roomTempList[j].check_thu);
           }
           else {
@@ -665,7 +665,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             thuObj2.push(this.roomTempList[j].check_thu);
           }
 
-          if (this.roomTempList[j].check_fri === true) {
+          if (this.roomTempList[j].check_fri === true || this.roomTempList[j].check_fri === 1) {
             friObj2.push(this.roomTempList[j].check_fri);
           }
           else {
@@ -673,7 +673,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             friObj2.push(this.roomTempList[j].check_fri);
           }
 
-          if (this.roomTempList[j].check_sat === true) {
+          if (this.roomTempList[j].check_sat === true || this.roomTempList[j].check_sat === 1) {
             satObj2.push(this.roomTempList[j].check_sat);
           }
           else {
@@ -681,7 +681,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             satObj2.push(this.roomTempList[j].check_sat);
           }
 
-          if (this.roomTempList[j].check_sun === true) {
+          if (this.roomTempList[j].check_sun === true || this.roomTempList[j].check_sun === 1) {
             sunObj2.push(this.roomTempList[j].check_sun);
           }
           else {
@@ -689,7 +689,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             sunObj2.push(this.roomTempList[j].check_sun);
           }
 
-          if (this.roomTempList[j].barcodeReq === true) {
+          if (this.roomTempList[j].barcodeReq === true || this.roomTempList[j].barcodeReq === 1) {
             barObj2.push(this.roomTempList[j].barcodeReq);
           }
           else {
@@ -697,7 +697,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             barObj2.push(this.roomTempList[j].barcodeReq);
           }
 
-          if (this.roomTempList[j].photoReq === true) {
+          if (this.roomTempList[j].photoReq === true || this.roomTempList[j].photoReq === 1) {
             photoObj2.push(this.roomTempList[j].photoReq);
           }
           else {
@@ -780,7 +780,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
-    this.BatchScheduleNameKey="";
+    this.BatchScheduleNameKey = "";
     this.allViews = { day: false, month: true, year: true };
     this.scheduleService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)

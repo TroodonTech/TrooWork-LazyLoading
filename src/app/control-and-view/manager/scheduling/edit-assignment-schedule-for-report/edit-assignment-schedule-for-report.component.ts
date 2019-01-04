@@ -31,7 +31,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
   BatchScheduleNameKey;
   startDT: any;
   endDT: any;
-  WorkorderTypeKey; 
+  WorkorderTypeKey;
 
   //for table view..... starts......
   totalMonTime: any = 0;
@@ -88,7 +88,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -332,82 +332,82 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
 
   selectAllMon() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_mon = 1;
+      this.roomList[j].check_mon = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_mon = 1;
+      this.roomTempList[j].check_mon = true;
     }
     this.metricCal();
   }
   selectAllTue() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_tue = 1;
+      this.roomList[j].check_tue = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_tue = 1;
+      this.roomTempList[j].check_tue = true;
     }
     this.metricCal();
   }
   selectAllWed() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_wed = 1;
+      this.roomList[j].check_wed = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_wed = 1;
+      this.roomTempList[j].check_wed = true;
     }
     this.metricCal();
   }
   selectAllThu() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_thu = 1;
+      this.roomList[j].check_thu = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_thu = 1;
+      this.roomTempList[j].check_thu = true;
     }
     this.metricCal();
   }
   selectAllFri() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_fri = 1;
+      this.roomList[j].check_fri = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_fri = 1;
+      this.roomTempList[j].check_fri = true;
     }
     this.metricCal();
   }
   selectAllSat() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_sat = 1;
+      this.roomList[j].check_sat = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_sat = 1;
+      this.roomTempList[j].check_sat = true;
     }
     this.metricCal();
   }
   selectAllSun() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].check_sun = 1;
+      this.roomList[j].check_sun = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].check_sun = 1;
+      this.roomTempList[j].check_sun = true;
     }
     this.metricCal();
   }
   selectAllPhoto() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].photoReq = 1;
+      this.roomList[j].photoReq = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].photoReq = 1;
+      this.roomTempList[j].photoReq = true;
     }
     this.metricCal();
   }
   selectAllBarcode() {
     for (var j = 0; j < this.roomList.length; j++) {
-      this.roomList[j].barcodeReq = 1;
+      this.roomList[j].barcodeReq = true;
     }
     for (var j = 0; j < this.roomTempList.length; j++) {
-      this.roomTempList[j].barcodeReq = 1;
+      this.roomTempList[j].barcodeReq = true;
     }
     this.metricCal();
   }
@@ -476,13 +476,12 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           workorderkeyobj1.push(this.roomList[j].WorkorderTypeKey);
           roomList1.push(this.roomList[j].RoomKey);
           FrequencyObj1.push(this.roomList[j].dailyFrequency);
-
           if (this.roomList[j].check_mon === true || this.roomList[j].check_mon == 1) {
-            this.roomList[j].check_mon1 === true;
+            this.roomList[j].check_mon = true;
             monObj1.push(this.roomList[j].check_mon);
           }
           else {
-            this.roomList[j].check_mon === false;
+            this.roomList[j].check_mon = false;
             monObj1.push(this.roomList[j].check_mon);
           }
 
@@ -540,7 +539,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             sunObj1.push(this.roomList[j].check_sun);
           }
 
-          if (this.roomList[j].barcodeReq === true || this.roomList[j].barcodeReq == 1) {
+          if (this.roomList[j].barcodeReq === true || this.roomList[j].barcodeReq === 1) {
             this.roomList[j].barcodeReq = true;
             barObj1.push(this.roomList[j].barcodeReq);
           }
@@ -549,7 +548,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             barObj1.push(this.roomList[j].barcodeReq);
           }
 
-          if (this.roomList[j].photoReq === true || this.roomList[j].photoReq == 1) {
+          if (this.roomList[j].photoReq === true || this.roomList[j].photoReq === 1) {
             this.roomList[j].photoReq = true;
             photoObj1.push(this.roomList[j].photoReq);
           }
@@ -637,7 +636,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           roomList2.push(this.roomTempList[j].RoomKey);
           FrequencyObj2.push(this.roomTempList[j].dailyFrequency);
 
-          if (this.roomTempList[j].check_mon === true) {
+          if (this.roomTempList[j].check_mon === true || this.roomTempList[j].check_mon == 1) {
+            this.roomTempList[j].check_mon = true;
             monObj2.push(this.roomTempList[j].check_mon);
           }
           else {
@@ -645,7 +645,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             monObj2.push(this.roomTempList[j].check_mon);
           }
 
-          if (this.roomTempList[j].check_tue === true) {
+          if (this.roomTempList[j].check_tue === true || this.roomTempList[j].check_tue == 1) {
+            this.roomTempList[j].check_tue = true;
             tueObj2.push(this.roomTempList[j].check_tue);
           }
           else {
@@ -653,7 +654,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             tueObj2.push(this.roomTempList[j].check_tue);
           }
 
-          if (this.roomTempList[j].check_wed === true) {
+          if (this.roomTempList[j].check_wed === true || this.roomTempList[j].check_wed == 1) {
+            this.roomTempList[j].check_wed = true;
             wedObj2.push(this.roomTempList[j].check_wed);
           }
           else {
@@ -661,7 +663,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             wedObj2.push(this.roomTempList[j].check_wed);
           }
 
-          if (this.roomTempList[j].check_thu === true) {
+          if (this.roomTempList[j].check_thu === true || this.roomTempList[j].check_thu == 1) {
+            this.roomTempList[j].check_thu = true;
             thuObj2.push(this.roomTempList[j].check_thu);
           }
           else {
@@ -669,7 +672,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             thuObj2.push(this.roomTempList[j].check_thu);
           }
 
-          if (this.roomTempList[j].check_fri === true) {
+          if (this.roomTempList[j].check_fri === true || this.roomTempList[j].check_fri == 1) {
+            this.roomTempList[j].check_fri = true;
             friObj2.push(this.roomTempList[j].check_fri);
           }
           else {
@@ -677,7 +681,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             friObj2.push(this.roomTempList[j].check_fri);
           }
 
-          if (this.roomTempList[j].check_sat === true) {
+          if (this.roomTempList[j].check_sat === true || this.roomTempList[j].check_sat == 1) {
+            this.roomTempList[j].check_sat = true;
             satObj2.push(this.roomTempList[j].check_sat);
           }
           else {
@@ -685,7 +690,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             satObj2.push(this.roomTempList[j].check_sat);
           }
 
-          if (this.roomTempList[j].check_sun === true) {
+          if (this.roomTempList[j].check_sun === true || this.roomTempList[j].check_sun == 1) {
+            this.roomTempList[j].check_sun = true;
             sunObj2.push(this.roomTempList[j].check_sun);
           }
           else {
@@ -693,7 +699,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             sunObj2.push(this.roomTempList[j].check_sun);
           }
 
-          if (this.roomTempList[j].barcodeReq === true) {
+          if (this.roomTempList[j].barcodeReq === true || this.roomTempList[j].barcodeReq == 1) {
+            this.roomTempList[j].barcodeReq = true;
             barObj2.push(this.roomTempList[j].barcodeReq);
           }
           else {
@@ -701,7 +708,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             barObj2.push(this.roomTempList[j].barcodeReq);
           }
 
-          if (this.roomTempList[j].photoReq === true) {
+          if (this.roomTempList[j].photoReq === true || this.roomTempList[j].photoReq == 1) {
+            this.roomTempList[j].photoReq = true;
             photoObj2.push(this.roomTempList[j].photoReq);
           }
           else {
@@ -784,7 +792,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
-    this.WorkorderTypeKey="";
+    this.WorkorderTypeKey = "";
     this.allViews = { day: false, month: true, year: true };
     this.scheduleService
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)
