@@ -296,6 +296,13 @@ export class MeetingTrainingCreateComponent implements OnInit {
     };
 
   }
+  refreshValues(){
+    this.peopleServ
+      .getallEventList(this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.event = data;
+      });
+  }
   addNewMeeting(){
     var eventType;
     if (this.Event_Type){
