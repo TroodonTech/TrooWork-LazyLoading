@@ -1,5 +1,4 @@
- 
-<div  style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
+<div style="padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
   <div class="row col-md-12 ">
     <br>
     <h3 style="margin-left: 25rem;">EDIT MEETING/TRAINING/EVENT</h3>
@@ -37,18 +36,19 @@
     <div class="col-md-12">
       <div class="form-group">
         <label for="building">Date* </label>
-        <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="mtngDate"></igx-datePicker> -->
-        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="mtngDate"></ng-datepicker>
+        <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="mtngDate"></igx-datePicker>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">Start Time*</label>
-        <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="timeValue1" [timeOnly]="true" hourFormat="12"></p-calendar>
+        <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="timeValue1" [timeOnly]="true"
+          hourFormat="12"></p-calendar>
       </div>
       <div class="form-group">
         <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">End Time*</label>
-        <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="timeValue2" [timeOnly]="true" hourFormat="12"></p-calendar>
+        <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="timeValue2" [timeOnly]="true"
+          hourFormat="12"></p-calendar>
       </div>
     </div>
     <div class="col-md-6">
@@ -85,8 +85,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="Employee">Employee* </label>
-        <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="Employee" 
-           [settings]="dropdownSettings1">
+        <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="Employee" [settings]="dropdownSettings1">
         </ng-multiselect-dropdown>
       </div>
     </div>
@@ -94,7 +93,7 @@
       <a style="color:white !important" class="btn btn-success" (click)="updateMeetingTrainingEvent(
           mtngDetails.ActionKey,mtngDetails.Eventhost,mtngDetails.Venue,mtngDetails.MeetingNotes)"><b>Save</b>
       </a>
-      <a (click)='goBack()' class="btn btn-warning" style="color:white !important" ><b>Go
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back</b>
       </a>
     </div>

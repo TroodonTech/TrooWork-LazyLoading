@@ -1,4 +1,3 @@
-
 <div style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
     <h3 style="margin-left: 40%">CREATE BATCH WORK-ORDER</h3>
@@ -64,19 +63,19 @@
         <label style="margin-top: 2rem;">From When*</label>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date"
           [(ngModel)]="WorkorderStartDate"></igx-datePicker> -->
-          <ng-datepicker [options]="options"   position="top-right"  [(ngModel)]="WorkorderStartDate"></ng-datepicker >
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="WorkorderStartDate"></ng-datepicker>
       </div>
       <div class="form-group">
         <label>Workorder Notes</label>
-        <textarea class="form-control rounded-0" [(ngModel)]="workorderNotes" rows="6" style="resize: none;"></textarea>
+        <textarea class="form-control rounded-0" [(ngModel)]="workorderNotes" rows="6" style="resize: none;width: 100% !important;max-width: 100% !important;"></textarea>
       </div>
     </div>
 
     <div class="col-md-6">
       <div class="form-group row">
         <label class="col col-lg-12 col-md-12 col-sm-12">Workorder Type*</label><br>
-        <select *ngIf="!newType" style="background-color: #D4F4FF !important;margin-left: 1rem;width: 93.9% !important;margin-bottom: 0.4rem" class="form-control" (change)='checkfornewWOT(WorkorderTypeKey)'
-          [(ngModel)]="WorkorderTypeKey" required>
+        <select *ngIf="!newType" style="background-color: #D4F4FF !important;margin-left: 1rem;width: 93.9% !important;margin-bottom: 0.4rem"
+          class="form-control" (change)='checkfornewWOT(WorkorderTypeKey)' [(ngModel)]="WorkorderTypeKey" required>
           <option value="">--Select--</option>
           <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
             {{e.WorkorderTypeText}}
@@ -139,12 +138,13 @@
         </select>
       </div>
       <div class="form-group">
-        <label style="margin-top: 2rem;">Photo Required</label>&nbsp;&nbsp;
-        <input type="checkbox" [(ngModel)]="isPhotoRequired" data-md-icheck (change)="toggleVisibility_Photo($event)" />
+        <input type="checkbox" [(ngModel)]="isPhotoRequired" data-md-icheck (change)="toggleVisibility_Photo($event)" />&nbsp;
+        <label style="margin-top: 2rem;">Photo Required</label>
+
       </div>
       <div class="form-group">
+        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck (change)="toggleVisibility_Barcode($event)" />&nbsp;
         <label>Barcode Required</label>&nbsp;
-        <input type="checkbox" [(ngModel)]="isBarcodeRequired" data-md-icheck (change)="toggleVisibility_Barcode($event)" />
       </div>
       <div class="form-group">
         <input type="radio" name="recurringevent" [(ngModel)]="rec1" [value]="dailyrecurring" (click)='dailyrecurringChange()'>
@@ -163,7 +163,7 @@
         <label style="margin-top: 2rem;">End Date*</label>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date"
           [(ngModel)]="WorkorderEndDate"></igx-datePicker> -->
-          <ng-datepicker [options]="options"   position="top-right"  [(ngModel)]="WorkorderEndDate"></ng-datepicker >
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="WorkorderEndDate"></ng-datepicker>
       </div>
     </div>
     <!--Daily-Dropdowns-->
