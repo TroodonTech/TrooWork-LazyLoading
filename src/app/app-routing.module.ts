@@ -16,7 +16,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule, RouterModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes,{
+      // Tell the router to use the HashLocationStrategy.
+      useHash: true
+  })
   ],
   exports: [RouterModule],
   declarations: []
