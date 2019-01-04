@@ -29,7 +29,7 @@
           <td>{{ x.FloorName }}</td>
           <td>{{ x.FloorDescription }}</td>
           <td><a  [routerLink]="['Flooredit',x.FloorKey,x.FacilityKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a class="relative waves-light" (click)="basicModal.show();deleteFloorPass(x.FacilityKey,x.FloorKey); "><b>Delete</b></a></td>
+            <a class="btn btn-danger" (click)="basicModal.show();deleteFloorPass(x.FacilityKey,x.FloorKey); "><b>Delete</b></a></td>
         </tr>
         <tr *ngIf="floor?.length == 0">
           <td colspan="4" class="no-data-available">No records found</td>

@@ -16,6 +16,7 @@ export class GooglePieChartService extends GoogleChartsBaseService {
             sliceVisibilityThreshold:0.000000000000001,
             pieHole: config1.pieHole,
             'backgroundColor': 'transparent',
+            'width':500, 'height':500,                                                                                                                                                                                                                                                                                                                                                                                                                                                    
             'chartArea': {'width': '100%', 'height': '80%'}, 
             'colors': ['#ef0404', '#3552e0', '#9823a3', '#f9f502', '#0ab223','#efab34'],
             tooltip: { trigger: 'selection',text:'percentage'  },

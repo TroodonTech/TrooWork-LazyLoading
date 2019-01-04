@@ -29,7 +29,7 @@
             <td>{{ x.FloorTypeName }}</td>
             <td>
               <a  [routerLink]="['FloorTypeEdit',x.FloorTypeKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-              <a class="relative waves-light" (click)="basicModal.show();deleteFloorTypePass(x.FloorTypeKey); "><b>Delete</b></a>
+              <a class="btn btn-danger" (click)="basicModal.show();deleteFloorTypePass(x.FloorTypeKey); "><b>Delete</b></a>
             </td>
           </tr>
           <tr *ngIf="floorType?.length == 0">
