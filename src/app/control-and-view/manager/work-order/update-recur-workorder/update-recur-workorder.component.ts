@@ -880,6 +880,17 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         this.endDT = this.convert_DT(new Date());
       }
     }
+    var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    
+      if( this.intervaltype == 'w' && diffDays <7){
+        alert("Please Select One week Date Range!");
+        return;
+      }
+      if( this.intervaltype == 'm' && diffDays <31){
+        alert("Please Select One month Date Range!");
+        return;
+      }
 
     if (this.isRecurring == false) {
       console.log(this.timeValue);
@@ -957,11 +968,11 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       workordertypekey: this.wot,
       workordernote: this.notes,
       equipmentkey: this.eqp_key,
-      roomkeys: roomsString,
-      facilitykeys: facilityString,
-      floorkeys: floorString,
-      zonekeys: zoneString,
-      roomtypekeys: roomtypeString,
+      roomkeys: roomsString.toString(),
+      facilitykeys: facilityString.toString(),
+      floorkeys: floorString.toString(),
+      zonekeys: zoneString.toString(),
+      roomtypekeys: roomtypeString.toString(),
       employeekey: this.emp_key,
       priority: this.priority,
       fromdate: this.startDT,
@@ -1253,6 +1264,17 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         this.endDT = this.convert_DT(new Date());
       }
     }
+    var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    
+      if( this.intervaltype == 'w' && diffDays <7){
+        alert("Please Select One week Date Range!");
+        return;
+      }
+      if( this.intervaltype == 'm' && diffDays <31){
+        alert("Please Select One month Date Range!");
+        return;
+      }
     if (this.isRecurring == false) {
       if (this.timeValue) {
         this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();

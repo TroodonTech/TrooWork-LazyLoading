@@ -903,6 +903,17 @@ withoutequip_wo()
     } else {
       this.endDT = this.convert_DT(new Date());
     }
+    var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    
+      if( this.intervaltype == 'w' && diffDays <7){
+        alert("Please Select One week Date Range!");
+        return;
+      }
+      if( this.intervaltype == 'm' && diffDays <31){
+        alert("Please Select One month Date Range!");
+        return;
+      }
     if (this.dailyrecurring == true) {
       var timeset = [];
       var timeset_corr = [];
@@ -1265,7 +1276,17 @@ withoutequip_wo()
     } else {
       this.endDT = this.convert_DT(new Date());
     }
-
+    var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    
+      if( this.intervaltype == 'w' && diffDays <7){
+        alert("Please Select One week Date Range!");
+        return;
+      }
+      if( this.intervaltype == 'm' && diffDays <31){
+        alert("Please Select One month Date Range!");
+        return;
+      }
     if (this.dailyrecurring == true) {
       var timeset = [];
       var timeset_corr = [];
