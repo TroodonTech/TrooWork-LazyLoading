@@ -491,6 +491,12 @@ const routes: Routes = [
         loadChildren: '../../user-password-changes/manager-change-pass-word/manager-change-password.module#ManagerChangePasswordModule',
         
       },
+      {
+        path: 'changePasswordManager/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'ManagerOut',
+        loadChildren: '../../user-password-changes/manager-change-pass-word/manager-change-password.module#ManagerChangePasswordModule',
+        
+      },
       // {
       //   path: 'second',
       //   outlet: 'menucontent',

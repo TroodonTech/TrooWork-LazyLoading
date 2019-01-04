@@ -39,6 +39,12 @@ import {  EmployeeChangePasswordModule } from '../../user-password-changes/emplo
         loadChildren: '../../user-password-changes/employee-change-password/employee-change-password.module#EmployeeChangePasswordModule',
 
       },
+      {
+        path: 'changePasswordEmployee/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'EmployeeOut',
+        loadChildren: '../../user-password-changes/employee-change-password/employee-change-password.module#EmployeeChangePasswordModule',
+
+      },
      ]
   }
 ];

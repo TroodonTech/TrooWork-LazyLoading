@@ -98,6 +98,12 @@ const routes: Routes = [
         loadChildren: '../../user-password-changes/admin-change-password/admin-change-password.module#AdminChangePasswordModule',
 
       },
+      {
+        path: 'changePasswordAdmin/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'AdminOut',
+        loadChildren: '../../user-password-changes/admin-change-password/admin-change-password.module#AdminChangePasswordModule',
+
+      },
     ]
   }
 ];

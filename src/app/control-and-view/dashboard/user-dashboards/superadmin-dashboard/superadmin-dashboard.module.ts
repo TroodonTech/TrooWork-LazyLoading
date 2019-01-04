@@ -82,6 +82,12 @@ import { SuperadminDashboardComponent } from './superadmin-dashboard.component';
         loadChildren: '../../../dashboard/user-password-changes/supeadmin-change-password/superadmin-change-password.module#SuperadminChangePasswordModule',
 
       },
+      {
+        path: 'changePasswordSuperAdmin/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'SuperAdminOut',
+        loadChildren: '../../../dashboard/user-password-changes/supeadmin-change-password/superadmin-change-password.module#SuperadminChangePasswordModule',
+
+      },
     ]
   }
 ];

@@ -58,6 +58,11 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren:'../../../dashboard/user-password-changes/supervisor-change-password/supervisor-change-password.module#SupervisorChangePasswordModule',
       },
+      {
+        path: 'changePasswordSupervisor/:EmployeeKey/:UserRoleName/:IsSupervisor',
+        outlet: 'Superout',
+        loadChildren:'../../../dashboard/user-password-changes/supervisor-change-password/supervisor-change-password.module#SupervisorChangePasswordModule',
+      },
     ]
   }
 ];
