@@ -55,7 +55,7 @@ export class ViewworkordersforemployeeComponent implements OnInit {
   result;
   submitFlag;
   BarcodeValue;
-
+  SearchWO;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -241,7 +241,28 @@ export class ViewworkordersforemployeeComponent implements OnInit {
       this.WorkOrderServiceService
         .SearchwoByEmployee(value, date1, date2, this.toServeremployeekey, this.OrganizationID, this.FacilityKey, this.FloorKey, this.RoomTypeKey, this.ZoneKey).subscribe((data: any[]) => {
           this.WorkorderDetTable = data;
-
+       
+         if (this.SearchWO.trim().length == 0) {
+          
+            var curr_date = this.convert_DT(new Date());
+            this.WorkOrderServiceService
+              .getWOdetailsForEmployee(this.pageNo,this.itemsPerPage,curr_date, this.toServeremployeekey, this.OrganizationID)
+              .subscribe((data: any[]) => {
+                this.WorkorderDetTable = data;
+                this.loading = false;
+                if (this.WorkorderDetTable[0].totalItems > this.itemsPerPage) {
+                  this.showHide2 = true;
+                  this.showHide1 = false;
+                }
+                else if (this.WorkorderDetTable[0].totalItems <= this.itemsPerPage) {
+                  this.showHide2 = false;
+                  this.showHide1 = false;
+                }
+                for (var i = 0; i < this.WorkorderDetTable.length; i++) {
+                  this.FinishButton[i] = true;
+                }
+              });
+          }
         });
     }
     else if (value.length == 0) {
