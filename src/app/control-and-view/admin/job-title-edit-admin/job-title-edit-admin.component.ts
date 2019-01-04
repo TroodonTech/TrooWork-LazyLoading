@@ -57,8 +57,9 @@ export class JobTitleEditAdminComponent implements OnInit {
       alert('Job Title Description is not provided !');
       return;
     }
-    this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID)
+    this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
+  });
   }
 
   ngOnInit() {
