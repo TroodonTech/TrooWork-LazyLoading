@@ -108,7 +108,7 @@
           <td>{{ x.RoomName }}</td>
           <td>
             <a  [routerLink]="['RoomEdit', x.RoomKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;
-            <a class="relative waves-light" (click)="basicModal.show();deleteRoomPass(x.RoomKey); "><b>Delete</b></a>
+            <a class="btn btn-danger"  (click)="basicModal.show();deleteRoomPass(x.RoomKey); "><b>Delete</b></a>
           </td>
         </tr>
         <tr *ngIf="rooms?.length == 0">

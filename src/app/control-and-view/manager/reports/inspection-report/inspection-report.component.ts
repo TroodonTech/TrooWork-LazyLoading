@@ -4,6 +4,9 @@ import { Reports } from '../../../../model-class/reports';
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { ExcelserviceService } from '../../../../service/excelservice.service';
 import { DatepickerOptions } from 'ng2-datepicker';
+
+import * as FileSaver from 'file-saver';
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 @Component({
   selector: 'app-inspection-report',
   templateUrl: './inspection-report.component.html',
@@ -100,8 +103,11 @@ export class InspectionReportComponent implements OnInit {
         this.reportarray.push({ Template: temp_name, Date: ins_date, Location: locationname, Auditor: auditorname, Employee: employeename, Status: cur_status2 })
       }
     }
-
-    this.excelService.exportAsExcelFile(this.reportarray, 'Inspection_Report');
+    var blob = new Blob([document.getElementById('exportable1').innerHTML], {
+      type: EXCEL_TYPE
+  });
+  FileSaver.saveAs(blob, "inspection_Report.xls");
+    // this.excelService.exportAsExcelFile(this.reportarray, 'Inspection_Report');
   }
 
   ngOnInit() {

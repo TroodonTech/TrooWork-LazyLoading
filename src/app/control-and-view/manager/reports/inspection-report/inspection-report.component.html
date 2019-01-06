@@ -65,6 +65,36 @@
       </tbody>
     </table>
   </div>
+
+  <div id='exportable1' style="visibility: hidden !important;">
+    <table *ngIf='viewinspectionReport' cellspacing="0" 
+    rules="rows" 
+    border="1" 
+    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Template </th>
+        <th> Date </th>
+        <th> Location</th>
+        <th>Auditor</th>
+        <th> Employee</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewinspectionReport" >
+          <td>{{x.TemplateName}}</td>
+          <td>{{x.InspectionDate}}</td>
+          <td>{{x.FacilityName}} - {{x.RoomId}}</td>
+          <td>{{x.LastName}},{{x.FirstName}}</td>
+          <td>{{x.EmployeeName}}</td>
+          <td *ngIf="x.InspectionCompletedBy !== null">Inspection Completed</td>
+          <td *ngIf="x.InspectionCompletedBy === null "> Inspection Not Completed</td>
+        </tr>
+        <tr *ngIf="viewinspectionReport?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <br>
   <div style="text-align:center" *ngIf="viewinspectionReport?.length> 0">
     <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
