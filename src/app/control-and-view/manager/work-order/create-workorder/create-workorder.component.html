@@ -6,8 +6,14 @@
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem" class="row bg-info col-md-12">
     <div class="col-md-12">
       <div class="form-group">
-        <label class="col-sm-12 col-md-12 col-lg-12">Workorder Type*</label>
-        <select *ngIf="!newType" style="background-color: #D4F4FF !important;width: 48.6%" class="form-control"
+        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility_Equipment($event);change_values();" />&nbsp;
+        <label style="margin-top: 2rem;">Equipment Order</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group row">
+        <label class="col-md-12 col-lg-12 col-sm-12">Workorder Type*</label>
+        <select *ngIf="!newType" style="background-color: #D4F4FF !important;margin-left: 1rem;width: 94%;" class="form-control"
           (change)='checkfornewWOT(WorkorderTypeKey)' [(ngModel)]="WorkorderTypeKey" required>
           <option value="">--Select--</option>
           <option *ngFor="let e of workorderTypeList" [value]="e.WorkorderTypeKey">
@@ -15,15 +21,8 @@
           </option>
         </select>
         <input type="text" maxlength="30" *ngIf="newType" [(ngModel)]="newworkordertypetext" class="form-control "
-          style="width: 50%" placeholder="Enter new workordertype">
-        <input type="button" *ngIf="newType" (click)="GobacktoMenu()" class="btn btn-primary" value="Go Default" />
-      </div>
-    </div>
-    <div class="col-md-6" style="margin-top: 0.5rem">
-
-      <div class="form-group">
-        <label style="margin-top: 2rem;">Is Equipment</label>&nbsp;
-        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility_Equipment($event);change_values();" />
+          style="width: 70%;margin-left: 1rem" placeholder="Enter new workordertype">
+        <input type="button" *ngIf="newType" (click)="GobacktoMenu()" class="btn btn-primary button_style" style="margin-top: 0rem" value="Go Default" />
       </div>
       <div class="form-group">
         <label>Building*</label><br>
