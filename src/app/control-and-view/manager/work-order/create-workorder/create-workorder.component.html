@@ -185,7 +185,7 @@
     </div>
     <!--Daily-Dropdowns-->
     <div class="col-md-12">
-      <div class="form-group row" *ngIf="dailyrecurring==true">
+      <div class="form-group row" *ngIf="dailyrecurring==true && isRecurring==true ">
         <label style="margin-top: 1rem;" class="col-sm-2 col-md-2 col-lg-2 col">On Gap Of</label>
         <select [(ngModel)]="DailyrecurringGap" class="form-control col col-sm-3 col-md-3 col-lg-3" style="margin-top: 1rem;margin-left: -0.5rem">
           <option value="">--Select--</option>
@@ -203,7 +203,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group" *ngIf="((dailyrecurring==true)&&(dailyFrequency))">
+      <div class="form-group" *ngIf="((dailyrecurring==true && isRecurring==true)&&(dailyFrequency))">
         <p-calendar [inputStyle]="{'width':'105%','margin-top':'1rem'}" placeholder="TIME" [(ngModel)]="timetable.times[i]"
           *ngFor=" let field of timetable.times;let i = index" [timeOnly]="true" hourFormat="12" required>
           {{index+' '+field}}
@@ -214,7 +214,7 @@
     <!--Weekly-Dropdowns-->
     <div class="col-md-12">
 
-      <div class="form-group" *ngIf="weeklyrecurring==true">
+      <div class="form-group" *ngIf="weeklyrecurring==true && isRecurring==true">
         <label> Sun <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
         <label> Mon <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
         <label> Tue <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
@@ -232,12 +232,12 @@
     <!--Monthly-Dropdowns-->
     <div class="col-md-12">
 
-      <div class="form-group row" *ngIf="monthlyrecurring==true">
+      <div class="form-group row" *ngIf="monthlyrecurring==true && isRecurring==true">
         <label style="margin-top: 2rem;margin-left: 6rem;margin-right: 6.2rem;">Time*</label>
         <p-calendar [inputStyle]="{'width':'147%','margin-top':'1rem'}" [(ngModel)]="Time_monthly" [timeOnly]="true"
           hourFormat="12" required></p-calendar>
       </div>
-      <div class="form-group row" *ngIf="monthlyrecurring==true">
+      <div class="form-group row" *ngIf="monthlyrecurring==true && isRecurring==true">
         <input type="radio" name="recurringevent1" class="col-sm-1 col-md-1 col-lg-1 col" [checked]="monthlyreccradio1==true"
           [value]="monthlyreccradio1" (click)='monthlyreccradio1_change()'>
         <label class="col-sm-1 col-md-1 col-lg-1 col">Day</label>
@@ -257,7 +257,7 @@
         </select>
         <label class="col-sm-2 col-md-2 col-lg-2 col">Month(s)</label>
       </div>
-      <div class="form-group row" *ngIf="monthlyrecurring==true">
+      <div class="form-group row" *ngIf="monthlyrecurring==true && isRecurring==true">
         <input type="radio" name="recurringevent1" class="col col-sm-1 col-md-1 col-lg-1" [checked]="monthlyreccradio2==true"
           [value]="monthlyreccradio2" (click)='monthlyreccradio2_change()'>
         &nbsp;
