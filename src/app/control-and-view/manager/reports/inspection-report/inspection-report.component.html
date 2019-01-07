@@ -65,7 +65,10 @@
       </tbody>
     </table>
   </div>
-
+  <br>
+  <div style="text-align:center" *ngIf="viewinspectionReport?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
   <div id='exportable1' style="visibility: hidden !important;">
     <table *ngIf='viewinspectionReport' cellspacing="0" 
     rules="rows" 
@@ -94,9 +97,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <br>
-  <div style="text-align:center" *ngIf="viewinspectionReport?.length> 0">
-    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
 </div>

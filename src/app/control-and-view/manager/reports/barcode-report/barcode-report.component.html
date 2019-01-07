@@ -97,34 +97,6 @@
       </tr>
     </tbody>
   </table>
-  <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;"> 
-  <table  style="visibility: hidden !important;" cellspacing="0" 
-  rules="rows" 
-  border="1" 
-  style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
-    <thead class="tableHead">
-      <th> Room Name </th>
-      <th> Barcode </th>
-      <th> Building</th>
-      <th>Floor</th>
-      <th> Zone</th>
-      <th>Roomtype</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let x of viewBarcodeReport">
-        <td>{{x.RoomId}}</td>
-        <td>{{x.Barcode1}}</td>
-        <td>{{x.FacilityName}}</td>
-        <td>{{x.FloorName}}</td>
-        <td>{{x.ZoneName}}</td>
-        <td>{{x.RoomType}}</td>
-      </tr>
-      <tr *ngIf="viewBarcodeReport?.length == 0">
-        <td colspan="6" class="no-data-available">No records found</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
   <div style="text-align:center" *ngIf="!loading">
     <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
         TO EXCEL</b></button>
@@ -144,29 +116,56 @@
       </tr>
     </tbody>
   </table>
-  <div *ngIf='Equipmentflag' id='exportable1' style="visibility: hidden !important;">
-  <table   cellspacing="0" 
-  rules="rows" 
-  border="1" 
-  style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
-    <thead class="tableHead">
-      <th> Equpiment Name </th>
-      <th> Barcode </th>
-      <th> Equipment Type</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let x of viewBarcodeEquipment">
-        <td>{{x.EquipmentName}}</td>
-        <td>{{x.Barcode1}}</td>
-        <td>{{x.EquipmentType}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-  <br>
   <br>
   <div style="text-align:center" *ngIf="!loading">
     <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
       (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
+  <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;"> 
+    <table  style="visibility: hidden !important;" cellspacing="0" 
+    rules="rows" 
+    border="1" 
+    style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+      <thead class="tableHead">
+        <th> Room Name </th>
+        <th> Barcode </th>
+        <th> Building</th>
+        <th>Floor</th>
+        <th> Zone</th>
+        <th>Roomtype</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let x of viewBarcodeReport">
+          <td>{{x.RoomId}}</td>
+          <td>{{x.Barcode1}}</td>
+          <td>{{x.FacilityName}}</td>
+          <td>{{x.FloorName}}</td>
+          <td>{{x.ZoneName}}</td>
+          <td>{{x.RoomType}}</td>
+        </tr>
+        <tr *ngIf="viewBarcodeReport?.length == 0">
+          <td colspan="6" class="no-data-available">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div *ngIf='Equipmentflag' id='exportable1' style="visibility: hidden !important;">
+      <table   cellspacing="0" 
+      rules="rows" 
+      border="1" 
+      style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+        <thead class="tableHead">
+          <th> Equpiment Name </th>
+          <th> Barcode </th>
+          <th> Equipment Type</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of viewBarcodeEquipment">
+            <td>{{x.EquipmentName}}</td>
+            <td>{{x.Barcode1}}</td>
+            <td>{{x.EquipmentType}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 </div>
