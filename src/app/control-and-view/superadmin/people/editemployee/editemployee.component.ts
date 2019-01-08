@@ -23,6 +23,7 @@ export class EditemployeeComponent implements OnInit {
   HireDate: Date;
   delete_EmpKey: Number;
   employeedetailstable: People[];
+  Gender: String;
   role: String;
   name: String;
   employeekey: Number;
@@ -140,9 +141,8 @@ export class EditemployeeComponent implements OnInit {
       alert("Last Name is not provided !");
       return;
     }
-    if (!(Gender) ) {
-      alert("Gender is not provided !");
-      return;
+    if (!(Gender)) {
+      Gender=null;
     }
     if (!(EmployeeStatusKey) ) {
       alert("Employee Status is not provided !");

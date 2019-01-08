@@ -29,7 +29,7 @@ export class CreateBatchScheduleComponent implements OnInit {
   BatchScheduleNameKey;
   startDT: any;
   endDT: any;
-
+  CreateDis;
   //for table view..... starts......
   totalMonTime: any = 0;
   totalTuesTime: any = 0;
@@ -409,6 +409,8 @@ export class CreateBatchScheduleComponent implements OnInit {
   }
 
   createBatchReport() {
+    
+    this.CreateDis=true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
       this.startDT = this.convert_DT(this.workScheduleStartDate);
@@ -434,6 +436,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     if (this.wotypeFlag > 0) {
       alert(" Select required workorder type for all rooms before submitting");
+      this.CreateDis=false;
     }
     else if (this.wotypeFlag == 0) {
       //Updating the list of existing rooms in schedule.
@@ -748,6 +751,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           });
       }
     }
+    this.CreateDis=false;
   }
   reload() {
     // executeFlag
@@ -766,6 +770,8 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
+      alert("Batch Schedule Updated Sucessfully");
+      this.CreateDis=false;
     }
   }
   ngOnInit() {
@@ -778,7 +784,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-
+    this.CreateDis=false;
     //token ends
     this.BatchScheduleNameKey = "";
     this.allViews = { day: false, month: true, year: true };
