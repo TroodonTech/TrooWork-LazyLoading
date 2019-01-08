@@ -36,6 +36,9 @@
     </div>
   </div>
   <br>
+  <div style="text-align:center" *ngIf="reportarray?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;">
     <table *ngIf='reportarray' class="table table-hover table-responsive table-bordered table" style="display: inline-table"> 
       <thead class="tableHead"> 
@@ -110,9 +113,7 @@
     </table>
   </div>
   <br>
-  <div style="text-align:center" *ngIf="reportarray?.length> 0">
-    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
-  </div>
+
   <div id='exportable' style="visibility: hidden !important;">
       <table *ngIf='reportarray' cellspacing="0" 
       rules="rows" 

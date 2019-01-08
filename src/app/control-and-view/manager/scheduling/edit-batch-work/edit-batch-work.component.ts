@@ -39,7 +39,13 @@ export class EditBatchWorkComponent implements OnInit {
     }
     return window.atob(output);
   }
+  public convert_DT(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
 
+  }
   constructor(private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute,private _location: Location) {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleNameKey);
   }
@@ -57,7 +63,7 @@ export class EditBatchWorkComponent implements OnInit {
       alert("Employee Name is not provided !");
     } else {
       if (this.scheduleDetails.checkBoxValue == true) {
-        var scheduleDT = new Date();
+        var scheduleDT = this.convert_DT(new Date());
         this.scheduleService
           .assignChangesForWO(scheduleDT,this.employeekey, this.OrganizationID, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
           .subscribe();

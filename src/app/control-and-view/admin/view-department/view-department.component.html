@@ -27,8 +27,7 @@
           <td>{{ x.DepartmentName }}</td>
           <td>
             <a [routerLink]="['EditDepartment', x.DepartmentKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;&nbsp;
-            <a button type="button" mdbBtn color="danger" class="relative waves-light" (click)="basicModal.show();deleteDeptPass(x.DepartmentKey); "
-              mdbWavesEffect><b>Delete</b></a>
+            <a class="btn btn-danger" (click)="basicModal.show();deleteDeptPass(x.DepartmentKey); "><b>Delete</b></a>
           </td>
         </tr>
         <tr *ngIf="departments?.length == 0">

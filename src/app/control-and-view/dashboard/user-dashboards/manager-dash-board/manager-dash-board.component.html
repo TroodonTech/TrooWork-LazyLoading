@@ -1,4 +1,4 @@
-<div>
+<div >
   <div style="float: right;" class="col-md-3 col-sm-3 col-lg-3">
     <span style="color: steelblue"> <b>Welcome <u> {{empName}} !</u></b></span>
   </div>
@@ -22,8 +22,10 @@
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateWorkOrder']}}]"><b>Create Work Order</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['createQuickOrder']}}]"><b>Create Quick Order</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewWorkOrder']}}]"><b>View Work Order</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchWorkOrder']}}]"><b>Create Batch Work Order</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewBatchWorkorder']}}]"><b>View Batch Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchWorkOrder']}}]"><b>Create Batch
+                Work Order</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewBatchWorkorder']}}]"><b>View Batch Work
+                Order</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkOrderType']}}]"><b>Work-Order Type</b></a>
           </div>
         </li>
@@ -32,18 +34,23 @@
           <div class="dropdown-content" style="margin-left:1rem;">
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateEmployee']}}]"><b>Create Employee</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewEmployee']}}]"><b>View Employee</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingCreate']}}]" ><b>Create Meeting/Training</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingView']}}]"><b>View Meeting/Training</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingCreate']}}]"><b>Create
+                Meeting/Training</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['MeetingTrainingView']}}]"><b>View
+                Meeting/Training</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['JobTitileView']}}]"><b>Create Job-Title</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manageLoginCredentials']}}]"><b>Manage Login Credentials</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['manageLoginCredentials']}}]"><b>Manage Login
+                Credentials</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/reports.png">
           <div class="dropdown-content" style="margin-left:1rem;">
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkorderReport']}}]"><b>WorkOrder</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Batch-work-order-Report']}}]"><b>Batch Work-Order Report</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleAssignment']}}]"><b>View Batch-Schedule Assignment</b>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Batch-work-order-Report']}}]"><b>Batch
+                Work-Order Report</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleAssignment']}}]"><b>View
+                Batch-Schedule Assignment</b>
             </a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionReport']}}]"><b>Inspection</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BarcodeReport']}}]"><b>Barcode</b></a>
@@ -53,15 +60,19 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/ASSIGNMENTS--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulingView']}}]"><b>Create/Edit Assignment Name</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleRoom']}}]"><b>Create Assignment List</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchSchedule']}}]" ><b>Edit Assignment Schedule</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['SchedulingView']}}]"><b>Create/Edit
+                Assignment Name</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BatchScheduleRoom']}}]"><b>Create Assignment
+                List</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['CreateBatchSchedule']}}]"><b>Edit Assignment
+                Schedule</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/DOCUMENTS--3.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentfolderView']}}]"><b>Create New Document Folder</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentfolderView']}}]"><b>Create New
+                Document Folder</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DocumentsUpload']}}]"><b>Upload Document</b></a>
             <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['ViewDocuments']}}]"><b>View Document</b></a>
           </div>
@@ -69,10 +80,12 @@
         <li class="nav-item dropdown" style="margin-left: -1rem;">
           <img class="imagesize nav-link" src="assets/icons/INSPECTION--2.png">
           <div class="dropdown-content" style="margin-left:1rem;">
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]" ><b>Create Inspection</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]" ><b>View Inspection</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create Inspection Template</b></a>
-            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]" ><b>View Inspection Template</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionCreate']}}]"><b>Create Inspection</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionView']}}]"><b>View Inspection</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateCreate']}}]"><b>Create
+                Inspection Template</b></a>
+            <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectiontemplateandquestionsView']}}]"><b>View
+                Inspection Template</b></a>
           </div>
         </li>
         <li class="nav-item dropdown" style="margin-left: -1rem;">
