@@ -136,15 +136,15 @@ export class MeetingTrainingEditComponent implements OnInit {
   }
 
   updateMeetingTrainingEvent(ActionKey, Eventhost, Venue, MeetingNotes) {
-    if (!this.time1) {
+    if (!this.timeValue1) {
       alert("Start Time is not provided");
     }
-    else if (!this.time2) {
+    else if (!this.timeValue2) {
       alert("End Time is not provided");
     }
     else {
-      var time1 = new Date(this.time1);
-      var time2 = new Date(this.time2);
+      var time1 = new Date(this.timeValue1);
+      var time2 = new Date(this.timeValue2);
       var timediff = +time2 - +time1;
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
@@ -190,12 +190,12 @@ export class MeetingTrainingEditComponent implements OnInit {
           EmployeeKeyString = employeeKeList.join(',');
         }
       }
-      var q = this.time1.getHours();
-      var q1 = this.time1.getMinutes();
+      var q = this.timeValue1.getHours();
+      var q1 = this.timeValue1.getMinutes();
       var newTime = q + ":" + q1;
 
-      var q2 = this.time2.getHours();
-      var q3 = this.time2.getMinutes();
+      var q2 = this.timeValue2.getHours();
+      var q3 = this.timeValue2.getMinutes();
       var newTime1 = q2 + ":" + q3;
 
       this.peopleServ

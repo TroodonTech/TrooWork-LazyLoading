@@ -73,6 +73,14 @@
     </div>
   </div>
   <br>
+  <div style="text-align:center" *ngIf="!loading">
+    <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
+      (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
+  </div>
+  <div style="text-align:center" *ngIf="!loading">
+    <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
+        TO EXCEL</b></button>
+  </div>
   <!-- Table for generating barcode for rooms -->
   <table *ngIf='Roomflag' id="reportexport" class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
     <thead class="tableHead">
@@ -97,10 +105,7 @@
       </tr>
     </tbody>
   </table>
-  <div style="text-align:center" *ngIf="!loading">
-    <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
-        TO EXCEL</b></button>
-  </div>
+ 
   <!-- Table for generating barcode for Equipments -->
   <table *ngIf='Equipmentflag' id="reportexport" class="table table-hover table-responsive table-bordered table" style="margin-left: -1rem;display: inline-table">
     <thead class="tableHead">
@@ -117,10 +122,7 @@
     </tbody>
   </table>
   <br>
-  <div style="text-align:center" *ngIf="!loading">
-    <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
-      (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
-  </div>
+  
   <div *ngIf='Roomflag' id='exportable' style="visibility: hidden !important;"> 
     <table  style="visibility: hidden !important;" cellspacing="0" 
     rules="rows" 
@@ -137,7 +139,7 @@
       <tbody>
         <tr *ngFor="let x of viewBarcodeReport">
           <td>{{x.RoomId}}</td>
-          <td>{{x.Barcode1}}</td>
+          <td>{{x.Barcode}}</td>
           <td>{{x.FacilityName}}</td>
           <td>{{x.FloorName}}</td>
           <td>{{x.ZoneName}}</td>
@@ -162,7 +164,7 @@
         <tbody>
           <tr *ngFor="let x of viewBarcodeEquipment">
             <td>{{x.EquipmentName}}</td>
-            <td>{{x.Barcode1}}</td>
+            <td>{{x.Barcode}}</td>
             <td>{{x.EquipmentType}}</td>
           </tr>
         </tbody>

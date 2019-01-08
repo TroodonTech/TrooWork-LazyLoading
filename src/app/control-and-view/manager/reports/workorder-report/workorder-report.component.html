@@ -93,6 +93,10 @@
       </div>
     </div>
     <br>
+    
+  </div>
+  <div style="text-align:center" *ngIf="viewWorkorderReport?.length> 0">
+    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
   <br>
   <div style="margin-left: 1.5rem;width: 100%">
@@ -132,9 +136,7 @@
     </table>
   </div>
   <br>
-  <div style="text-align:center" *ngIf="viewWorkorderReport?.length> 0">
-    <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
-  </div>
+  
 </div>
 <div id='exportable1' style="visibility: hidden !important;">
   <table *ngIf='viewWorkorderReport'  cellspacing="0" 
