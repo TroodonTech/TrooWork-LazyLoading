@@ -18,7 +18,7 @@
             <div class="col-md-6 bg-info">
               <div class="form-group">
                 <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">Score</label>
-                <select style="background-color: #d4f4ff !important;width: 50%;" [(ngModel)]='Scoringtype.rating_yn[item.TemplateQuestionID]'
+                <select style="background-color: #d4f4ff !important;width: 50%;" class="form-control" [(ngModel)]='Scoringtype.rating_yn[item.TemplateQuestionID]'
                   (change)="saveRatings(item.TemplateQuestionID,item.ScoreName)">
                   <option>--Select--</option>
                   <option *ngFor="let w of names" [value]="w">
@@ -47,7 +47,7 @@
             <div class="col-md-6 bg-info"> 
               <div class="form-group">
                 <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">Score</label>
-                <select style="background-color: #d4f4ff !important;width: 50%;" [(ngModel)]='Scoringtype.rating_yn[item.TemplateQuestionID]'
+                <select style="background-color: #d4f4ff !important;width: 50%;" class="form-control" [(ngModel)]='Scoringtype.rating_yn[item.TemplateQuestionID]'
                   (change)="saveRatings(item.TemplateQuestionID,item.ScoreName)">
                   <option [value]="Pass">Pass</option>
                   <option *ngFor="let w of names" [value]="w">
