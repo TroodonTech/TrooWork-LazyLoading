@@ -1,4 +1,3 @@
-
 <div style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
     <h3 style="margin-left: 40%">EDIT THIS WORK ORDER INSTANCE</h3>
@@ -6,6 +5,11 @@
 
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem;padding-bottom: 1rem" class="row bg-info col-md-12">
     <div class="col-md-6">
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility($event);change_values();" />&nbsp;
+        <label style="margin-top: 2rem;">Equipment Order</label>&nbsp;
+      </div>
+
       <div class="form-group">
         <label>Workorder Type*</label><br>
         <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="workordertypekey"
@@ -16,10 +20,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group">
-        <label style="margin-top: 2rem;">Is Equipment</label>&nbsp;
-        <input type="checkbox" [(ngModel)]="showEqTypes" data-md-icheck (change)="toggleVisibility($event);change_values();" />
-      </div>
+
       <div class="form-group">
         <label>Building*</label><br>
         <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FacilityKey" (change)="getFloorDisp($event.target.value);"
@@ -221,13 +222,20 @@
     <div class="col-md-12">
 
       <div class="form-group" *ngIf="weeklyrecurring==true && isRecurring==true">
-          <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sun </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Mon </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Tue </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_four" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Wed </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_five" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Thu </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_six" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Fri </label>&nbsp;
-          <input type="checkbox" [(ngModel)]="weektable_seven" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sat </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Sun </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Mon </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Tue </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_four" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Wed </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_five" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Thu </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_six" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Fri </label>&nbsp;
+        <input type="checkbox" [(ngModel)]="weektable_seven" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label>
+          Sat </label>&nbsp;
         <label style="margin-top: 2rem;margin-left: 8.5rem;margin-right: 3rem;">Time*</label>
         <p-calendar [inputStyle]="{'width':'150%','margin-top':'1rem'}" [(ngModel)]="Time_weekly" [timeOnly]="true"
           hourFormat="12" required></p-calendar>
@@ -295,7 +303,7 @@
     <div style="margin-left:35%">
       <button type="button" class="btn btn-success" (click)=UpdateWO()><b>UPDATE</b></button>
 
-      <a (click)='goBack()' class="btn btn-warning" style="color:white !important" ><b>Go
+      <a (click)='goBack()' class="btn btn-warning" style="color:white !important"><b>Go
           Back
         </b>
       </a>

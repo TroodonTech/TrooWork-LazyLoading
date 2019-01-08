@@ -84,8 +84,8 @@
 
         </td>
         <td>
-          <span *ngIf="x.MetricType == 'Minutes Per'">{{x.MetricValue}}</span>
-          <span *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area}}</span>
+          <span *ngIf="x.MetricType == 'Minutes Per'">{{x.MetricValue| number:'1.2-2'}}</span>
+          <span *ngIf="x.MetricType != 'Minutes Per'">{{x.MetricValue * x.Area| number:'1.2-2'}}</span>
         </td>
         <td>
           <select style="background-color: #D4F4FF !important" class="form-control" [(ngModel)]="x.dailyFrequency">
