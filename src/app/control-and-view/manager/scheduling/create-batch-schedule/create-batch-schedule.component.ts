@@ -751,7 +751,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           });
       }
     }
-    this.CreateDis=false;
+    
   }
   reload() {
     // executeFlag
