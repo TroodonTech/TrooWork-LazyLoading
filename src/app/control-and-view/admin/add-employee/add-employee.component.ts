@@ -143,8 +143,7 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
     if (!(this.Gender) ) {
-      alert("Gender is not provided !");
-      return;
+      this.Gender=null;
     }
     if (!(this.PrimaryPhone) ) {
       alert("Primary Phone is not provided !");
