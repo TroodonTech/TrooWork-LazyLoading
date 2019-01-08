@@ -93,14 +93,15 @@
       </div>
     </div>
     <br>
-    
+
   </div>
   <div style="text-align:center" *ngIf="viewWorkorderReport?.length> 0">
     <button type="button" class="btn btn-success" (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
   <br>
   <div style="margin-left: 1.5rem;width: 100%">
-    <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table">
+    <table *ngIf='viewWorkorderReport' id="reportexport" class="table table-hover table-responsive table-bordered table"
+      style="display: inline-table">
       <thead class="tableHead">
         <th> Work-Order Type Name </th>
         <th> Date and Time </th>
@@ -136,13 +137,10 @@
     </table>
   </div>
   <br>
-  
+
 </div>
 <div id='exportable1' style="visibility: hidden !important;">
-  <table *ngIf='viewWorkorderReport'  cellspacing="0" 
-  rules="rows" 
-  border="1" 
-  style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
+  <table *ngIf='viewWorkorderReport' cellspacing="0" rules="rows" border="1" style="color:Black;background-color:White;border-color:#CCCCCC;border-width:1px;border-style:None;width:100%;border-collapse:collapse;font-size:11pt;text-align:center;">
     <thead class="tableHead">
       <th> Work-Order Type Name </th>
       <th> Date and Time </th>

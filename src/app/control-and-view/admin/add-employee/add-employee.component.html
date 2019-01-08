@@ -56,13 +56,13 @@
             <ng-datepicker [options]="options" position="top-right" [(ngModel)]="HireDate"></ng-datepicker>
           </div>
           <div class="form-check form-check-inline" style="margin-top: 2.2rem">
-            <label class="form-check-label" for="materialInline1">SuperVisor</label> &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />
+            <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+            <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group" style="margin-left: 1.2rem;">
-            <label>Job Title</label><br>
+            <label>Job Title*</label><br>
             <select name="jobtitle" style="background-color: #d4f4ff;width: 79%;max-width: 100%;" [(ngModel)]="JobTitleKey"
               class="form-control col-sm-9 col-md-9 col-lg-9">
               <option value="" placeholder>--Select--</option>
@@ -73,7 +73,7 @@
           </div>
 
           <div class="form-group" style="margin-left: 1.2rem;">
-            <label>Department</label><br>
+            <label>Department*</label><br>
             <select name="department" style="background-color: #d4f4ff;width: 79%;max-width: 100%;" class="form-control col-sm-9 col-md-9 col-lg-9"
               [(ngModel)]="DepartmentKey">
               <option value="">--Select--</option>

@@ -38,8 +38,8 @@
         </select>
       </div>
       <div class="form-check form-check-inline" style="margin-bottom: 2rem;margin-top: 2rem">
-        <label class="form-check-label" for="materialInline1">SuperVisor</label> &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" [(ngModel)]="editempdtails.IsSupervisor" data-md-icheck (change)="toggleVisibility($event)" />
+        <input type="checkbox" [(ngModel)]="editempdtails.IsSupervisor" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+        <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;
       </div>
 
     </div>
@@ -55,7 +55,7 @@
         </select>
       </div>
       <div class="form-group" *ngIf="marked && !(editempdtails.IsSupervisor==true)">
-        <label>SuperVisor</label><br>
+        <label>Supervisor</label><br>
         <select name="supervisor" style="background-color: #d4f4ff;" [(ngModel)]="editempdtails.SupervisorKey" class="form-control col-sm-9 col-md-9 col-lg-9">
           <option value="">--Select--</option>
           <option *ngFor="let s of supervisor" [value]="s.SupervisorKey">
