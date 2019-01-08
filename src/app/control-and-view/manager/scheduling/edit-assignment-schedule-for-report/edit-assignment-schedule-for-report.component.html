@@ -1,7 +1,7 @@
-<div style="margin-left: 8rem;margin-right: 5rem; width: 100%">
+<div style="margin-left: 1rem; width: 100%">
   <br>
   <div style="text-align:center">
-    <h3 style="color: #174a5e;"><strong>EDIT ASSIGNMENT SCHEDULE</strong></h3>
+    <h5 style="color: #174a5e;"><strong>EDIT ASSIGNMENT SCHEDULE</strong></h5>
   </div>
 
   <div class="col-md-12" style="background-color: white; width: 99%">
@@ -45,7 +45,7 @@
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="workScheduleStartDate"></ng-datepicker>
       </div>
       <div class="col-md-1"></div>
-      <span class="col-md-2"><label for="scheduling">End Date: </label></span>
+      <span style="margin-top: 2rem;" class="col-md-2"><label for="scheduling">End Date: </label></span>
       <div class="col-md-3">
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" item-width="25%" label="" cancelButtonLabel="cancel"
           todayButtonLabel="today" [(ngModel)]="workScheduleEndDate" [formatter]="formatter"></igx-datePicker> -->
@@ -55,8 +55,8 @@
   </div>
 
   <!-- Table for generating barcode for BatchSchedule -->
-  <div *ngIf="roomList?.length > 0||roomTempList?.length > 0">
-    <table class="table table-hover table-responsive table-bordered table" style="margin-top: 2rem;">
+  <div *ngIf="roomList?.length > 0||roomTempList?.length > 0" style="padding-right: 0.5rem">
+    <table class="table table-hover table-responsive table-bordered table" style="margin-top: 2rem;display: inline-table;">
       <thead class="tableHead">
         <th> Building </th>
         <th>Room</th>

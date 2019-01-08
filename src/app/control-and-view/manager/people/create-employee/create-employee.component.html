@@ -57,7 +57,7 @@
       </div>
 
       <div class="form-group" *ngIf="marked">
-        <label>SuperVisor</label><br>
+        <label>Supervisor</label><br>
         <select name="supervisor" style="background-color: #d4f4ff;width: 75% !important" [(ngModel)]="SupervisorKey"
           class="form-control col-sm-9 col-md-9 col-lg-9">
           <option value="">--Select--</option>
@@ -69,8 +69,8 @@
     </div>
     <div class="col-md-6">
       <div class="form-check form-check-inline">
-        <label class="form-check-label" for="materialInline1">SuperVisor</label> &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />
+          <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+        <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;&nbsp;
       </div>
     </div>
 
@@ -106,7 +106,7 @@
     <div class="col-md-12" style="margin-bottom: 2rem;">
       <div class="col-md-6">
         <div class="form-group" style="margin-left:-1rem;">
-          <label>Gender*</label><br>
+          <label>Gender</label><br>
           <select name="Gender" [(ngModel)]="Gender" class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value"
             style="background-color: #d4f4ff;">
             <option value="">--Select--</option>

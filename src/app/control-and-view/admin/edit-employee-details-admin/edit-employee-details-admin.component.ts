@@ -123,8 +123,7 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       return;
     }
     if (!(this.editempdtails.Gender)) {
-      alert("Gender is not provided !");
-      return;
+      Gender=null;
     }
     if (!(this.editempdtails.EmployeeStatusKey)) {
       alert("Employee Status is not provided !");

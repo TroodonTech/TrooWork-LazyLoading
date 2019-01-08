@@ -477,7 +477,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           FrequencyObj1.push(this.roomList[j].dailyFrequency);
 
           if (this.roomList[j].check_mon === true || this.roomList[j].check_mon == 1) {
-            this.roomList[j].check_mon1 === true;
+            this.roomList[j].check_mon = true;
             monObj1.push(this.roomList[j].check_mon);
           }
           else {

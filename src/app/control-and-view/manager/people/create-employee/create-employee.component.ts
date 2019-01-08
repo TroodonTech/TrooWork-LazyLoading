@@ -134,8 +134,7 @@ export class CreateEmployeeComponent implements OnInit {
       return;
     }
     if (!(this.Gender) ) {
-      alert("Gender Not provided !");
-      return;
+      this.Gender = null;
     }
     if (!(this.PrimaryPhone) ) {
       alert("Primary Phone is not provided !");

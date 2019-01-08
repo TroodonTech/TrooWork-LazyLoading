@@ -43,7 +43,7 @@
       <div class="col-md-6" *ngIf="showManager">
         <div class="form-group " style="margin-left: 1rem;">
           <label>Manager*</label>
-          <select name="userroletype" style=" background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          <select name="userroletype" style=" background-color: #d4f4ff;width: 78%;max-width: 100%;" class="form-control col-sm-9 col-md-9 col-lg-9"
             [(ngModel)]="ManagerKey">
             <option value="" placeholder>--Select--</option>
             <option *ngFor="let u of managerList" [value]="u.ManagerKey">
@@ -61,8 +61,8 @@
           <ng-datepicker [options]="options" position="top-right" [(ngModel)]="HireDate"></ng-datepicker>
         </div>
         <div class="form-check form-check-inline" style="margin-top: 2.2rem">
-          <label class="form-check-label" for="materialInline1">SuperVisor</label> &nbsp;&nbsp;&nbsp;
-          <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />
+          <input type="checkbox" [(ngModel)]="theCheckbox" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;
+          <label class="form-check-label" for="materialInline1">Supervisor</label> &nbsp;&nbsp;
         </div>
       </div>
       <div class="col-md-6">
@@ -123,7 +123,7 @@
     <div class="col-md-12" style="margin-bottom: 2rem;">
       <div class="col-md-6">
         <div class="form-group" style="margin-left:-1rem;">
-          <label>Gender*</label><br>
+          <label>Gender</label><br>
           <select name="Gender" [(ngModel)]="Gender" class="form-control col-sm-9 col-md-9 col-lg-9" [value]="value"
             style="background-color: #d4f4ff;width: 76%;max-width: 100%;">
             <option value="">--Select--</option>
