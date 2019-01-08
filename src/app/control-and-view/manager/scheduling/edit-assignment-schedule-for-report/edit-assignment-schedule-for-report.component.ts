@@ -413,7 +413,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
   }
 
   createBatchReport() {
-    this.CreateDis=true;
+    this.CreateDis = true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
       this.startDT = this.convert_DT(this.workScheduleStartDate);
@@ -439,7 +439,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
     if (this.wotypeFlag > 0) {
       alert(" Select required workorder type for all rooms before submitting");
-      this.CreateDis=false;
+      this.CreateDis = false;
     }
     else if (this.wotypeFlag == 0) {
       //Updating the list of existing rooms in schedule.
@@ -762,7 +762,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           });
       }
     }
-    
+
   }
   reload() {
     // executeFlag
@@ -781,8 +781,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Batch Schedule Create Sucessfully");
-      this.CreateDis=false;
+      alert("Batch Schedule Created Sucessfully");
+      this.CreateDis = false;
     }
   }
   ngOnInit() {
@@ -795,7 +795,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-    this.CreateDis=false;
+    this.CreateDis = false;
     //token ends
     this.WorkorderTypeKey = "";
     this.allViews = { day: false, month: true, year: true };
