@@ -212,7 +212,7 @@
         <td colspan="4"></td>
       </tr>
     </table>
-    <button (click)="createBatchReport()" class="btn btn-success" style="margin-left: 40rem;">Save</button>
+    <button (click)="createBatchReport()" [disabled]='CreateDis' class="btn btn-success" style="margin-left: 40rem;">Save</button>
   </div>
   <div *ngIf="roomList?.length == 0 && roomTempList?.length == 0" style="padding-right: 0.5rem">
     <table class="table table-hover table-responsive table-bordered table" style="margin-top: 2rem;display: inline-table;">
