@@ -216,13 +216,13 @@
     <div class="col-md-12">
 
       <div class="form-group" *ngIf="weeklyrecurring==true && isRecurring==true">
-        <label> Sun <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Mon <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Tue <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Wed <input type="checkbox" [(ngModel)]="weektable_four" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Thu <input type="checkbox" [(ngModel)]="weektable_five" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Fri <input type="checkbox" [(ngModel)]="weektable_six" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
-        <label> Sat <input type="checkbox" [(ngModel)]="weektable_seven" data-md-icheck (change)="toggleVisibility($event)" /></label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_one" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sun </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_two" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Mon </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_three" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Tue </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_four" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Wed </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_five" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Thu </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_six" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Fri </label>&nbsp;
+          <input type="checkbox" [(ngModel)]="weektable_seven" data-md-icheck (change)="toggleVisibility($event)" />&nbsp;<label> Sat </label>&nbsp;
         <label style="margin-top: 2rem;margin-left: 8.5rem;margin-right: 3rem;">Time*</label>
         <p-calendar [inputStyle]="{'width':'150%','margin-top':'1rem'}" [(ngModel)]="Time_weekly" [timeOnly]="true"
           hourFormat="12" required></p-calendar>
