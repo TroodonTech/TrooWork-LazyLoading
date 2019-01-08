@@ -1,4 +1,3 @@
-
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" class="py-5" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
@@ -140,12 +139,12 @@
         <th>Check-Out Time</th>
         <th>Duration (Minutes)</th>
         <th>Delay Time (Minutes)</th>
-        <th>Notes</th>
-        <th>View</th>
+        <th>Action</th>
         <th *ngIf="checkflag==false">Delete</th>
         <th *ngIf="checkflag==true"> <button class="btn btn-danger button_style" type="button" (click)="basicModal.show();">
             Delete</button></th>
-        <th>Action</th>
+        <th>Notes</th>
+        <th>View</th>
       </thead>
       <tbody>
         <tr *ngFor="let x of workorderList; let i=index">
@@ -165,30 +164,32 @@
           <td>{{x.checkout}}</td>
           <td>{{x.duration}}</td>
           <td>{{x.DelayTime}}</td>
+          <td *ngIf="((x.IsReccurring === 0) && ( x.WorkorderTypeKey !== -1))"><a [routerLink]="['EditWorkOrder',x.WorkorderKey]"
+              class="btn btn-success" style="color:white !important" routerLinkActive="active"><b>INSTANCE
+              </b>
+            </a></td>
+          <td *ngIf="x.IsReccurring === 1 && x.IsSchedule === 0 "><a [routerLink]="['EditWorkOrder',x.WorkorderKey]"
+              class="btn btn-success" style="color:white !important" routerLinkActive="active"><b>INSTANCE
+              </b>
+            </a><a *ngIf="x.WorkorderStatus==='Scheduled'" [routerLink]="['UpdateRecurWorkorder',x.WorkorderKey]" class="btn btn-primary"
+              style="color:white !important" routerLinkActive="active"><b>RECURRING
+              </b>
+            </a></td>
+          <td *ngIf="x.IsReccurring === 1 && x.IsSchedule === 1"><a [routerLink]="['EditWorkOrder',x.WorkorderKey]"
+              class="btn btn-success" style="color:white !important" routerLinkActive="active"><b>INSTANCE
+              </b>
+            </a></td>
+          <td *ngIf="x.WorkorderStatus !== 'Scheduled'"></td>
+          <td *ngIf="x.WorkorderStatus === 'Scheduled'"> <input type="checkbox" [(ngModel)]="x.workorderCheckValue"
+              (change)="toggleVisibility($event);checkBoxValueForDelete(i,x.workorderCheckValue, x.WorkorderKey);"></td>
+
           <td style="width:15%;word-break: break-all;">{{x.WorkorderNotes}}</td>
           <td> <a href="pho1/{{x.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
                               return false;">
               <button type="button" class="btn btn-default btn-xs" *ngIf="x.IsPhotoRequired === 1 && x.WorkorderStatus === 'Completed'">View
                 Image</button>
             </a> </td>
-          <td *ngIf="x.WorkorderStatus !== 'Scheduled'"></td>
-          <td *ngIf="x.WorkorderStatus === 'Scheduled'"> <input type="checkbox" [(ngModel)]="x.workorderCheckValue"
-              (change)="toggleVisibility($event);checkBoxValueForDelete(i,x.workorderCheckValue, x.WorkorderKey);"></td>
-          <td *ngIf="((x.IsReccurring === 0) && ( x.WorkorderTypeKey !== -1))"><a [routerLink]="['EditWorkOrder',x.WorkorderKey]" class="btn btn-success"
-              style="color:white !important" routerLinkActive="active"><b>INSTANCE
-              </b>
-            </a></td>
-          <td *ngIf="x.IsReccurring === 1 && x.IsSchedule === 0 "><a [routerLink]="['EditWorkOrder',x.WorkorderKey]" class="btn btn-success"
-              style="color:white !important" routerLinkActive="active"><b>INSTANCE
-              </b>
-            </a><a *ngIf="x.WorkorderStatus==='Scheduled'" [routerLink]="['UpdateRecurWorkorder',x.WorkorderKey]"  class="btn btn-primary" style="color:white !important"
-              routerLinkActive="active"><b>RECURRING
-              </b>
-            </a></td>
-            <td *ngIf="x.IsReccurring === 1 && x.IsSchedule === 1"><a [routerLink]="['EditWorkOrder',x.WorkorderKey]" class="btn btn-success"
-              style="color:white !important" routerLinkActive="active"><b>INSTANCE
-              </b>
-            </a></td>
+
         </tr>
         <tr *ngIf="workorderList?.length == 0">
           <td colspan="15" class="no-data-available">No records found</td>
