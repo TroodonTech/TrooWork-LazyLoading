@@ -481,7 +481,7 @@ export class CreateBatchScheduleComponent implements OnInit {
             monObj1.push(this.roomList[j].check_mon);
           }
           else {
-            this.roomList[j].check_mon === false;
+            this.roomList[j].check_mon = false;
             monObj1.push(this.roomList[j].check_mon);
           }
 
