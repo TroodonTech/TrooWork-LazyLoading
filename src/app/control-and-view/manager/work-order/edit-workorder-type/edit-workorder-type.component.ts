@@ -16,7 +16,7 @@ export class EditWorkorderTypeComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+//token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -38,7 +38,7 @@ export class EditWorkorderTypeComponent implements OnInit {
   workorderTypeList: workorder[];
   update_WO;
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
-    this.route.params.subscribe(params => this.WOT_Key = params.WorkorderTypeKey);
+    this.route.params.subscribe(params => this.WOT_Key = params.WorkorderTypeKey);//getting WorkorderTypeKey for edited workordertype
   }
 
   ngOnInit() {
@@ -57,6 +57,7 @@ export class EditWorkorderTypeComponent implements OnInit {
         this.workorderTypeList = data;
       });
   }
+  //function for updating workordertype
   updateWOT(WOTName, WOTKey) {
     if(!WOTName)
     {
@@ -74,14 +75,14 @@ export class EditWorkorderTypeComponent implements OnInit {
       WorkorderTime: null,
       OrganizationID: this.OrganizationID
     };
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//check if wokordertype is already existing
       .checkforWOT(WOTName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
        if(data[0].count!=0)
        {
         alert("Work-order type already exists!");
        }
-        else if (data[0].count == 0) {
+        else if (data[0].count == 0) {//add new workordertype
           this.WorkOrderServiceService
             .UpdateWOT(this.update_WO)
             .subscribe((data: any[]) => {

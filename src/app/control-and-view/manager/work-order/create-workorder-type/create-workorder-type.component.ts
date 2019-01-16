@@ -16,7 +16,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+//token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -47,6 +47,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
   }
+  //function for creating new workordertype
   addWOT(WorkOrderTypeName) {
     if(!WorkOrderTypeName)
     {
@@ -64,14 +65,14 @@ export class CreateWorkorderTypeComponent implements OnInit {
       OrganizationID: this.OrganizationID,
       empkey: this.employeekey
     };
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//check if wot is already existing
       .checkforWOT(WorkOrderTypeName, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         if(data[0].count!=0)
        {
         alert("Work-order type already exists!");
        }
-        else if (data[0].count == 0) {
+        else if (data[0].count == 0) {//if not add new wot
           this.WorkOrderServiceService.createWOT(this.add_WOT)
             .subscribe((data: any[]) => {
               alert("Work-order type created successfully");

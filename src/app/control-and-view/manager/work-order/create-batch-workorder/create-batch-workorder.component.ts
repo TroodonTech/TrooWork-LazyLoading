@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { Router } from "@angular/router";
-import { DatepickerOptions } from 'ng2-datepicker';
+import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 @Component({
   selector: 'app-create-batch-workorder',
   templateUrl: './create-batch-workorder.component.html',
@@ -54,7 +54,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
   startDT;
   endDT;
   workTime;
-  dailyRecc_gap; // dailyreccuringGap
+  dailyRecc_gap; // dailyrecurringGap
   is_PhotoRequired;
   is_BarcodeRequired;
   occurenceinstance;
@@ -72,11 +72,11 @@ export class CreateBatchWorkorderComponent implements OnInit {
   monthlyreccradio2;
   newType = false;
   //recurr variables
-  monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-  recurringFrequency = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-  weekDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  weekPosition = [{ id: 'First', value: '1' }, { id: 'Second', value: '2' }, { id: 'Third', value: '3' }, { id: 'Fourth', value: '4' }, { id: 'Fifth', value: '5' }, { id: 'Last', value: '-1' }];
-  timetable = { times: [] };
+  monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];//for selecting day of a month in recurring option(on gap of dropdown)
+  recurringFrequency = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];//for selecting a month in recurring option
+  weekDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];//monthly recurring- for selecting day of week
+  weekPosition = [{ id: 'First', value: '1' }, { id: 'Second', value: '2' }, { id: 'Third', value: '3' }, { id: 'Fourth', value: '4' }, { id: 'Fifth', value: '5' }, { id: 'Last', value: '-1' }];//for seleting week position in monthly recurring 
+  timetable = { times: [] };//for daily recurring timepicker
   dailyFrequency;
   WorkorderStartDate;
   WorkorderEndDate;
@@ -104,6 +104,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
   name: String;
   IsSupervisor: Number;
   employeekey;
+
+  //converting date from GMT to yyyy/mm/dd
   public convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -120,6 +122,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
 
   // }
+  //adding datepicker option
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -139,7 +142,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
   };
 
   constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
-  url_base64_decode(str) {
+  url_base64_decode(str) {//token decoding function
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
       case 0:
@@ -186,29 +189,29 @@ export class CreateBatchWorkorderComponent implements OnInit {
     this.month1 = "";
     this.month2 = "";
     this.pos2 = "";
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all building names
       .getallFacility(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.facilitylist = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all workordertypes
       .getallworkorderType(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         var newArray = data.slice(0); //clone the array, or you'll end up with a new "None" option added to your "values" array on every digest cycle.
         newArray.unshift({ WorkorderTypeText: "Create New", WorkorderTypeKey: "-99" });
         this.workorderTypeList = newArray;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all priority names
       .getallPriority(this.org_id)
       .subscribe((data: any[]) => {
         this.priorityList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting schedulenames
       .getallScheduleName(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.scheduleList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting employeenames
       .getallEmployee(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
@@ -279,7 +282,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
     this.day1="";
     this.month1="";
   }
-  getEquiment(floor_key, facility_key) {
+  getEquiment(floor_key, facility_key) {//getting equipment based on facility key,floor key
     if(floor_key&&facility_key)
     {
     this.WorkOrderServiceService
@@ -297,7 +300,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.EquipmentTypeKey="";
     }
   }
-  getFloorDisp(facilityName) {
+  getFloorDisp(facilityName) {//getting floors for selected facility
     if(facilityName)
    {
     this.WorkOrderServiceService
@@ -322,7 +325,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
-  getZoneRoomTypeRoom(floor, facility) {
+  getZoneRoomTypeRoom(floor, facility) {//getting zone,roomtype,room based on facility key,floor key
     if (floor && facility) {
       if ((this.FloorKey) && (this.showEqTypes == true)) {
         this.ZoneKey = -1;
@@ -330,19 +333,19 @@ export class CreateBatchWorkorderComponent implements OnInit {
         this.RoomKey = -1;
       }
       else {
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting zones
           .getzone_facilityfloor(floor, facility, this.org_id)
           .subscribe((data: any[]) => {
             this.zonelist = data;
             this.ZoneKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting roomtype lists
           .getroomType_facilityfloor(floor, facility, this.org_id)
           .subscribe((data: any[]) => {
             this.RoomTypeList = data;
             this.RoomTypeKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting roomlist
           .getRoom_facilityfloor(floor, facility, this.org_id)
           .subscribe((data: any[]) => {
             this.RoomList = data;
@@ -358,16 +361,16 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
-  getRoomTypeRoom(zone, facility, floor) {
+  getRoomTypeRoom(zone, facility, floor) {//get roomtype,room based on zone,facility,floor
     if(zone&&facility&&floor)
     {
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomtype lists
       .getRoomtype_zone_facilityfloor(zone, floor, facility, this.org_id)
       .subscribe((data: any[]) => {
         this.RoomTypeList = data;
         this.RoomTypeKey="";
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomlist
       .getRoom_zone_facilityfloor(zone, floor, facility, this.org_id)
       .subscribe((data: any[]) => {
         this.RoomList = data;
@@ -380,10 +383,10 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.RoomKey="";
     }
   }
-  getRoom(roomtype, zone, facility, floor) {
+  getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
     if(roomtype && zone && facility && floor)
     {
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomlist
       .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.org_id)
       .subscribe((data: any[]) => {
         this.RoomList = data;
@@ -395,7 +398,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.RoomKey="";
     }
   }
-  showEquipment_typechange(equip_type, facility, floor) {
+  showEquipment_typechange(equip_type, facility, floor) {//for getting equipment names
     if(equip_type&&facility&&floor)
     {
     this.WorkOrderServiceService
@@ -410,7 +413,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
-  getEmployee(schedulename) {
+  getEmployee(schedulename) {//for getting employee for selected schedulename
     if(schedulename)
     {
     this.WorkOrderServiceService
@@ -424,13 +427,14 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.EmployeeKey="  ";
     }
   }
+  //function for creating workorder
   createWorkOrder() {
     if (this.showEqTypes === false) {
-      this.createWorkorder1();
+      this.createWorkorder1();//function for creating workorder without equipment
       console.log('Equipment***Not');
 
     } else {
-      this.createWorkorder2();
+      this.createWorkorder2();//function for creating workorder with equipment
 
     }
   }
@@ -524,6 +528,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       }
     }
   }
+  //function for creating workorder without equipment
   withoutequip_wo()
   {
     var roomlistObj = [];
@@ -761,18 +766,18 @@ export class CreateBatchWorkorderComponent implements OnInit {
         }
       }
     }
-    if (this.newType == true) {
+    if (this.newType == true) {//checking for new workorder type
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
-          .checkforcheckForWorkOrderType(this.newworkordertypetext, this.emp_key, this.org_id)
+          .checkforcheckForWorkOrderType(this.newworkordertypetext, this.emp_key, this.org_id)//check if the workordertype is already existing
           .subscribe((data: any[]) => {
-            if (data[0].count == 0) {
+            if (data[0].count == 0) {//if the service returns count=0 means no such workordertype existing
               this.addWOT = {
                 WorkorderType: this.newworkordertypetext,
                 employeekey: this.emp_key,
                 OrganizationID: this.org_id
               };
-              this.WorkOrderServiceService
+              this.WorkOrderServiceService//service for adding new workordertype
                 .AddnewWOT(this.addWOT)
                 .subscribe((data: any[]) => {
                   this.wot = data[0].WorkOrderTypeKey;
@@ -813,7 +818,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
 
     }
     else
-    {
+    {//creating workorder for already existing workordertype
     this.workorderCreation = {
       scheduleKey: this.BatchScheduleNameKey,
       occursontime: this.workTime,
@@ -939,6 +944,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       }
     }
   }
+  //function for creating workorder withequip
   withequip_wo()
   {
     var roomlistObj = [];
