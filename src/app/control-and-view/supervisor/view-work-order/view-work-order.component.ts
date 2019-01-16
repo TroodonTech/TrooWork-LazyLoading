@@ -4,7 +4,8 @@ import { workorder } from '../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../service/work-order-service.service';
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 import { DatepickerOptions } from 'ng2-datepicker';
-const URL = 'http://localhost:3000/api/upload_test';
+import { ConectionSettings } from '../../../service/ConnectionSetting';
+const url = ConectionSettings.Url+'/upload_test';
 
 @Component({
   selector: 'app-view-work-order',
@@ -443,7 +444,7 @@ export class ViewWorkOrderComponent implements OnInit {
     this.addUrl = '?Workorderkey=' + WorkorderKey + '&EmployeeKey=' + this.toServeremployeekey + '&OrganizationID=' + this.OrganizationID;
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
-      item.url = URL + this.addUrl;
+      item.url = url + this.addUrl;
     }
   }
   workorderFinish(i) {
