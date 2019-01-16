@@ -6,7 +6,7 @@
     <br>
     <div style="width: 92%;height: 100%;margin-left: 2.6rem" class="row bg-info col-md-12">
         <div class="col-md-6">
-            <h3 style="text-align: right"></h3>
+            <h4 style="text-align: right"></h4>
             <div class="form-group">
                 <label>On Date</label><br>
                 <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date"
@@ -26,8 +26,7 @@
             <div class="form-group">
                 <label>Zone</label><br>
                 <select style="background-color: #D4F4FF !important;width: 75%" class="form-control" [(ngModel)]="ZoneKey"
-                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();selectedZone()"
-                    required>
+                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();selectedZone()" required>
                     <option value="">--Select--</option>
                     <option *ngFor="let b of zoneList" [value]="b.ZoneKey">
                         {{b.ZoneName}}
@@ -36,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h3 style="text-align: right"></h3>
+            <h4 style="text-align: right"></h4>
             <div class="form-group">
                 <label>To Date</label><br>
                 <!-- <igx-datePicker style="margin-top: -0.7rem" cancelButtonLabel="CANCEL" todayButtonLabel="TODAY"
@@ -57,8 +56,7 @@
             <div class="form-group">
                 <label>Room Type</label><br>
                 <select style="background-color: #D4F4FF !important;width: 75%" class="form-control" [(ngModel)]="RoomTypeKey"
-                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();"
-                    required>
+                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();" required>
                     <option value="">--Select--</option>
                     <option *ngFor="let b of roomtypeList" [value]="b.RoomTypeKey">
                         {{b.RoomTypeName}}
@@ -110,7 +108,7 @@
                                     (click)="workorderFinish(i)"><b>Finish</b></button>
                             </div>
                             <div *ngIf="showbutton[i] == true && showbutton[i] !== false">
-                                <button type="button" *ngIf="countCancel1" class="btn btn-warning" (click)="cancelWorkorderSubmission(i)">Cancel</button>
+                                <button type="button" *ngIf="countCancel1" class="btn btn-warning" (click)="cancelWorkorderSubmission(i)">Cancel</button>&nbsp;
 
                                 <div *ngIf="w.IsBarcodeRequired == 1">
                                     <label for="barcode" class="col-sm-3 control-label">Barcode</label>
@@ -128,8 +126,7 @@
                                     </button>
                                 </div>
                                 <!-- <div> -->
-                                <button type="submit" *ngIf="submitFlag" class="btn btn-success" (click)="workorderCompleted(i,w.IsBarcodeRequired,w.IsPhotoRequired,w.WorkorderKey,file)"
-                                    style="width:86px;margin-top: 7px;margin-left: -2px">SUBMIT</button>
+                                <button type="submit" *ngIf="submitFlag" class="btn btn-success" (click)="workorderCompleted(i,w.IsBarcodeRequired,w.IsPhotoRequired,w.WorkorderKey,file)">SUBMIT</button>
                             </div>
                         </td>
                     </tr>

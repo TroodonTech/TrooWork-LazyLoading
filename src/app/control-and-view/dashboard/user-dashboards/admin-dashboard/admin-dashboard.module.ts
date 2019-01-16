@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminDashboardComponent} from './admin-dashboard.component';
 import { AdminChangePasswordModule } from '../../user-password-changes/admin-change-password/admin-change-password.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 const routes: Routes = [
   {
     path: 'AdminDashboard',
@@ -110,7 +111,8 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MDBBootstrapModule.forRoot()
   ],
   declarations: [AdminDashboardComponent]
 })

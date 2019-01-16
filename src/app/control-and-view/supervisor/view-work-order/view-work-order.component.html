@@ -1,4 +1,3 @@
-
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
     <!-- <div style="width: 100%;height: 100%;">
@@ -28,8 +27,7 @@
             <div class="form-group">
                 <label>Zone</label><br>
                 <select style="background-color: #D4F4FF !important;width: 75%" class="form-control" [(ngModel)]="ZoneKey"
-                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();selectedZone()"
-                    required>
+                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();selectedZone()" required>
                     <option value="">--Select--</option>
                     <option *ngFor="let b of zoneList" [value]="b.ZoneKey">
                         {{b.ZoneName}}
@@ -59,8 +57,7 @@
             <div class="form-group">
                 <label>Room Type</label><br>
                 <select style="background-color: #D4F4FF !important;width: 75%" class="form-control" [(ngModel)]="RoomTypeKey"
-                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();"
-                    required>
+                    [disabled]="!FloorKey" (change)="viewEmployeeWorkorderByFilter();" required>
                     <option value="">--Select--</option>
                     <option *ngFor="let b of roomtypeList" [value]="b.RoomTypeKey">
                         {{b.RoomTypeName}}
@@ -109,10 +106,10 @@
                         <td>
                             <div *ngIf="FinishButton[i] == true ">
                                 <button type="button" class="btn btn-xs button-brown-{{w.WorkorderStatus !== 'Completed'}}"
-                                    (click)="workorderFinish(i)"><b>FINISH</b></button>
+                                    (click)="workorderFinish(i)"><b>FINISH</b></button>&nbsp;
                             </div>
                             <div *ngIf="showbutton[i] == true && showbutton[i] !== false">
-                                <button type="button" *ngIf="countCancel1" class="btn btn-warning" (click)="cancelWorkorderSubmission(i)"><b>CANCEL</b></button>
+                                <button type="button" *ngIf="countCancel1" class="btn btn-warning" (click)="cancelWorkorderSubmission(i)"><b>CANCEL</b></button>&nbsp;
 
                                 <div *ngIf="w.IsBarcodeRequired == 1">
                                     <label for="barcode" class="col-sm-3 control-label">Barcode</label>
@@ -130,8 +127,7 @@
                                     </button>
                                 </div>
                                 <!-- <div> -->
-                                <button type="submit" *ngIf="submitFlag" class="btn btn-success" (click)="workorderCompleted(i,w.IsBarcodeRequired,w.IsPhotoRequired,w.WorkorderKey,file)"
-                                    style="width:86px;margin-top: 7px;margin-left: -2px"><b>SUBMIT</b></button>
+                                <button type="submit" *ngIf="submitFlag" class="btn btn-success" (click)="workorderCompleted(i,w.IsBarcodeRequired,w.IsPhotoRequired,w.WorkorderKey,file)"><b>SUBMIT</b></button>
                             </div>
                         </td>
                     </tr>

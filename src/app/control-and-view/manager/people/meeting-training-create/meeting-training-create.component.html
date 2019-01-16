@@ -1,6 +1,6 @@
 <div style="overflow-x: hidden;padding-left: 9rem;padding-right: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;">
     <!-- <div class="row col-md-12 ">
-        <h3 style="margin-left: 25rem;">ASSIGN MEETING/TRAINING/EVENT</h3>
+        <h3 style="margin-left: 40%;">ASSIGN MEETING/TRAINING/EVENT</h3>
     </div> -->
     <div style="text-align:center">
         <h4 class="refer"><b>CREATE MEETING/TRAINING/EVENT</b> </h4>
@@ -56,15 +56,12 @@
                 <label class="col-sm-3 col-md-3 col-lg-3 ">Start Time*</label><br>
                 <p-calendar [inputStyle]="{'width':'208%'}" [(ngModel)]="time1" [timeOnly]="true" hourFormat="12"></p-calendar>
             </div>
+
+        </div>
+        <div class="col-md-6">
             <div class="form-group" style="margin-top: -1rem">
                 <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">End Time*</label><br>
                 <p-calendar [inputStyle]="{'width':'208%'}" [(ngModel)]="time2" [timeOnly]="true" hourFormat="12"></p-calendar>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Notes</label>
-                <textarea class="form-control rounded-0 col-sm-9 col-md-9 col-lg-9" [(ngModel)]="Notes" rows="5" style="resize: none;"></textarea>
             </div>
         </div>
         <h4 class="col-md-12"><label>SELECT EMPLOYEES</label></h4>
@@ -95,13 +92,19 @@
         <div class="col-md-6">
             <div class="form-group" style="width: 75.8%">
                 <label for="Employee">Employee* </label>
-                <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="empList" [(ngModel)]="Employee"
-                    [settings]="dropdownSettings1">
+                <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
+                    [(ngModel)]="Employee" [settings]="dropdownSettings1">
                 </ng-multiselect-dropdown>
 
             </div>
         </div>
-        <div class="row col-md-12" style="margin-left: 30rem;">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea class="form-control rounded-0 col-sm-9 col-md-9 col-lg-9" [(ngModel)]="Notes" rows="5" style="resize: none;"></textarea>
+            </div>
+        </div>
+        <div class="row col-md-12" style="margin-left: 40%;">
             <a style="color:white !important" class="btn btn-success" (click)="addMeetingTrainingEvent()"><b>Save</b>
             </a>
         </div>

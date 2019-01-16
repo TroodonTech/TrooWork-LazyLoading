@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ConectionSettings } from './ConnectionSetting';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,8 +10,8 @@ export class ReviewService {
  
   submitReview(obj)
   {
-    const uri = "http://localhost:3000/api/addReview";
-    return this.http.post(uri, obj);
+    const url = ConectionSettings.Url+"/addReview";
+    return this.http.post(url, obj);
   }
 
 }
