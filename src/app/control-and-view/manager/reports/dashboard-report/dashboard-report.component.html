@@ -1,8 +1,7 @@
- 
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
-    <h3 style="margin-left: 25rem;">DASHBOARD REPORT</h3>
+    <h4 style="margin-left: 42%;">DASHBOARD REPORT</h4>
   </div>
 
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem" class="row bg-info col-md-12">
@@ -28,8 +27,8 @@
       <div class="form-group" style="width: 85%;">
         <label>Workorder Type</label>
         <ng-multiselect-dropdown (change)="dashboardreportbyfilter()" [placeholder]="'Select'" [data]="workordertypeoption"
-          [(ngModel)]="WorkorderTypeKey" [settings]="dropdownSettings"
-          (onSelect)="dashboardreportbyfilter()" (onSelectAll)="dashboardreportbyfilter()">
+          [(ngModel)]="WorkorderTypeKey" [settings]="dropdownSettings" (onSelect)="dashboardreportbyfilter()"
+          (onSelectAll)="dashboardreportbyfilter()">
         </ng-multiselect-dropdown>
       </div>
       <div class="form-group" style="width: 20rem;">
@@ -38,6 +37,15 @@
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"
           (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
       </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12">
+  <div style="text-align:right" id="content" #content>
+    <div style="text-align:center;margin-left: 35rem;" *ngIf="((reporttable?.length> 0)&&(!loading))">
+      <input style="margin-left: 35rem;" type="button" style="float:right" class="btn btn-success" value="CONVERT TO PDF"
+        (click)="captureScreen()" />
     </div>
   </div>
 </div>
@@ -74,12 +82,4 @@
 </div>
 <div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12" *ngIf="((reporttable?.length== 0)&&(!loading))">
   <span style="margin-left: 35rem;"><b>No Records Found</b></span>
-</div>
-<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12">
-  <div style="text-align:center" id="content" #content>
-    <div style="text-align:center;margin-left: 35rem;" *ngIf="((reporttable?.length> 0)&&(!loading))">
-      <input style="margin-left: 35rem;" type="button" style="float:right" class="btn btn-success" value="CONVERT TO PDF"
-        (click)="captureScreen()" />
-    </div>
-  </div>
 </div>
