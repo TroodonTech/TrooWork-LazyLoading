@@ -14,7 +14,7 @@
         <span class="navbar-toggler-icon"></span>
       </button> -->
     <links>
-      <div class="collapse navbar-collapse" id="navbarText" style="margin-left: 57%;">
+      <div style="margin-left: 57%;">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <img class="imagesize nav-link" src="assets/icons/homepage.png" [routerLink]="[{outlets:{EmployeeOut:['Emp_welcomePage']}}]">
@@ -43,8 +43,8 @@
       </div>
     </links>
   </mdb-navbar>
-  <div style="height:100%;background-color: #EBFAFF;">
+  <!-- <div style="height:100%;background-color: #EBFAFF;"> -->
     <router-outlet name="EmployeeOut"></router-outlet>
     <!-- varun - child paths are loaded in  EmployeeOut outlet for lazy loading-->
-  </div>
+  <!-- </div> -->
 </div>
