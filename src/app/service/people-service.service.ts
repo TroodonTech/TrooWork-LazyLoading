@@ -381,7 +381,7 @@ export class PeopleServiceService {
   }
   selectEmpWithJobTSprvsrAndDept(employeekey,OrganizationID,JobTitle,Supervisor,DepartmentKey)
   {
-    const uri = "http://localhost:3000/api/empSelectWithFilterInMeetCreate";
+    const uri = ConectionSettings.Url+'/empSelectWithFilterInMeetCreate';
     const obj = {
       emKey: employeekey,
       OrgID: OrganizationID,

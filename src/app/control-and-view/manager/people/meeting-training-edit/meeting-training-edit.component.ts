@@ -212,7 +212,8 @@ export class MeetingTrainingEditComponent implements OnInit {
     }
 
   }
- //Pooja's code for selecting employees with jobtitle,Supervisor and department filter starts
+ //Pooja's code starts
+ //for selecting employees with jobtitle,Supervisor and department filter starts
   selectEmp()
   {
     if(!(this.JobTitle))
@@ -247,7 +248,8 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
   this.empList=data;
 });
   }
-//Pooja's code for selecting employees with jobtitle,Supervisor and department filter ends
+// for selecting employees with jobtitle,Supervisor and department filter ends
+  //Pooja's code ends
   ngOnInit() {
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
