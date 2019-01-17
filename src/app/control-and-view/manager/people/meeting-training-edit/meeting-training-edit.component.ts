@@ -34,6 +34,12 @@ export class MeetingTrainingEditComponent implements OnInit {
   OrganizationID: Number;
   timeValue1;
   timeValue2;
+  department;
+  DepartmentKey;
+  dropdownSettings2 = {};
+  Supervisor = [];
+  JobTitle;
+  
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -206,7 +212,42 @@ export class MeetingTrainingEditComponent implements OnInit {
     }
 
   }
+ //Pooja's code for selecting employees with jobtitle,Supervisor and department filter starts
+  selectEmp()
+  {
+    if(!(this.JobTitle))
+    {
+      this.JobTitle = null;
+    }
+    if(this.Supervisor.length==0)
+    {
+      var sup=null ;
+    }
+    else {
+      var SupervisorList = [];
+      var SupervisorListObj = this.Supervisor;
 
+      if (SupervisorListObj.length > 0) {
+        if (SupervisorListObj) {
+          for (var j = 0; j < SupervisorListObj.length; j++) {
+            SupervisorList.push(SupervisorListObj[j].SupervisorKey);
+          }
+        }
+        sup = SupervisorList.join(',');
+      }
+    }
+    if(!(this.DepartmentKey))
+    {
+      this.DepartmentKey = null;
+    }
+    
+
+this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.OrganizationID,this.JobTitle,sup,this.DepartmentKey)
+.subscribe((data:any[])=>{
+  this.empList=data;
+});
+  }
+//Pooja's code for selecting employees with jobtitle,Supervisor and department filter ends
   ngOnInit() {
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
@@ -216,6 +257,8 @@ export class MeetingTrainingEditComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+
+    this.DepartmentKey="";
     this.peopleServ
       .getJobTitleList(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -263,8 +306,13 @@ export class MeetingTrainingEditComponent implements OnInit {
       .subscribe((data: People[]) => {
         this.Employee = data;
       });
-
-
+      // Pooja's code for Department dropdown starts
+      this.peopleServ
+      .getDepartment(this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.department = data;
+      });
+    // Pooja's code for Department dropdown ends
     this.dropdownSettings1 = {
       singleSelection: false,
       idField: 'EmployeeKey',
@@ -274,7 +322,17 @@ export class MeetingTrainingEditComponent implements OnInit {
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
-
+// Pooja's code for Supervisor Multiselect dropdown starts
+    this.dropdownSettings2 = {
+      singleSelection: false,
+      idField: 'SupervisorKey',
+      textField: 'SupervisorText',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+};
+// Pooja's code for Supervisor Multiselect dropdown ends
   }
   goBack(){
     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);

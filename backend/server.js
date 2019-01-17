@@ -2836,6 +2836,7 @@ app.post(securedpath + '/addTemplatequestion', supportCrossOriginScript, functio
         connection.release();
     });
 });
+
 //add addTemplatequestion - :Pooja's code ends
 
 app.get(securedpath + '/viewInspection', function (req, res) {
@@ -4148,6 +4149,37 @@ app.post(securedpath + '/updateFloor', supportCrossOriginScript, function (req, 
                 else {
                     //            console.log(JSON.stringify(rows));
                     res.end(JSON.stringify(rows));
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/empSelectWithFilterInMeetCreate', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var emKey = req.body.emKey;
+    var OrgID = req.body.OrgID;
+    var JobT = req.body.JobT;
+    var Sup = req.body.Sup;
+    var DeptKey = req.body.DeptKey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @emKey=?;set @OrgID=?;set @JobT=?;set @Sup=?;set @DeptKey=?; call usp_empSelectWithFilterInMeetCreate(@emKey,@OrgID,@JobT,@Sup,@DeptKey)', [emKey,OrgID,JobT,Sup,DeptKey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    // console.log("editSupervisor_scheduling " + JSON.stringify(rows[1]));
+                    res.end(JSON.stringify(rows[5]));
+
 
                 }
             });
@@ -13142,7 +13174,10 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
     var search_DT2 = newWOObj.search_DT2;
     var employees = newWOObj.employees;
     var jobs = newWOObj.jobs;
-
+    var OrgID = newWOObj.OrgID;
+    var DeptKey = newWOObj.DeptKey;
+    var Evntype = newWOObj.Evntype;
+  
     //    var workorderTypeKey = newWOObj.workorderTypeKey;
     //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
 
@@ -13155,14 +13190,14 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query(" set @search_DT=?; set@search_DT2=?; set@employees=?; set@jobs=?; set @empKey=?;call usp_viewMeettingTrainingByAllFilter(@search_DT,@search_DT2,@employees,@jobs,@empKey)", [search_DT, search_DT2, employees, jobs, empKey], function (err, rows) {
+            connection.query(" set @search_DT=?; set@search_DT2=?; set@employees=?; set@jobs=?; set @empKey=?; set @DeptKey=?; set @Evntype=?;set @OrgID=?;call usp_viewMeettingTrainingByAllFilter(@search_DT,@search_DT2,@employees,@jobs,@empKey,@DeptKey,@Evntype,@OrgID)", [search_DT, search_DT2, employees, jobs, empKey,DeptKey,Evntype,OrgID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
                     // console.log("Printing viewworkorder");
                     //            console.log("ROWS" + JSON.stringify(rows));
-                    res.end(JSON.stringify(rows[5]));
+                    res.end(JSON.stringify(rows[8]));
                 }
             });
         }

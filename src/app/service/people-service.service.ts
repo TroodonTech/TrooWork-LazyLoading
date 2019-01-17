@@ -65,7 +65,7 @@ export class PeopleServiceService {
 
   }
 
-  viewMtngTrainingbyFilter(fromDate, toDate, JobList, EmpList, empKey, OrgID) {
+  viewMtngTrainingbyFilter(fromDate, toDate, JobList, EmpList, empKey, OrgID,DepartmentKey,EventType) {
 
     const uri = "http://localhost:3000/api/viewMeettingTrainingByAllFilter";
     const obj = {
@@ -74,7 +74,9 @@ export class PeopleServiceService {
       search_DT2: toDate,
       employees: EmpList,
       jobs: JobList,
-      OrganizationID: OrgID
+      OrganizationID: OrgID,
+      DeptKey:DepartmentKey,
+      Evntype:EventType
     };
     return this.http.post(uri, obj);
   }
@@ -375,6 +377,18 @@ export class PeopleServiceService {
     return this
       .http
       .get('http://localhost:3000/api/empDetails?SearchKey=' + empk + '&OrganizationID=' + orgid);
+  }
+  selectEmpWithJobTSprvsrAndDept(employeekey,OrganizationID,JobTitle,Supervisor,DepartmentKey)
+  {
+    const uri = "http://localhost:3000/api/empSelectWithFilterInMeetCreate";
+    const obj = {
+      emKey: employeekey,
+      OrgID: OrganizationID,
+      JobT: JobTitle,
+      Sup: Supervisor,
+      DeptKey:DepartmentKey
+    }; 
+    return this.http.post(uri, obj);
   }
   // ****@Pooja's Code Ends here****
 

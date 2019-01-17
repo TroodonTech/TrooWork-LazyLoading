@@ -31,6 +31,30 @@
           </ng-multiselect-dropdown>
         </div>
       </div>
+      <div class="col-md-6">
+        <div class="form-group " style="margin-left: 0.7rem;width: 75%;">
+          <label for="people">Department</label>
+          <select style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="DepartmentKey" (change)="filterMtngTrainingList()">
+          <option value="">--Select--</option>
+          <option *ngFor="let d of department" [value]="d.DepartmentKey">
+              {{d.DepartmentName}}
+          </option>
+      </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group " style="margin-left: 0.7rem;width: 75%;">
+          <label for="people">Event Name</label>
+          <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;width: 75%" class="form-control"
+          [(ngModel)]="EventType" (change)="filterMtngTrainingList()">
+          <option value="">--Select--</option>
+          <option *ngFor="let b of event" [value]="b.ActionKey">
+              {{b.ActionType}} - {{b.Action}}
+          </option>
+      </select>
+        </div>
+      </div>
       <!-- </div>
     <div class="form-row col-md-12"> -->
       <div class="col-md-6 ">

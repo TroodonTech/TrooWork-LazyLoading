@@ -93,7 +93,8 @@ export class InspectionCreateComponent implements OnInit {
   };
 
   constructor(private inspectionService: InspectionService) { }
-  
+  //Pooja's code starts
+  // for getting the floor when building is selected.
   selectFloorfromBuildings(facKey) {
     this.facikey = facKey;
     this.inspectionService
@@ -102,6 +103,7 @@ export class InspectionCreateComponent implements OnInit {
         this.floors = data;
       });
   }
+  // for getting the zone,room and roomtype after building and floor are selected.
   selectZoneRoomRoomtypefromFloor(flkey) {
     this.inspectionService
       .getallZones(this.facikey, flkey, this.OrganizationID)
@@ -119,7 +121,7 @@ export class InspectionCreateComponent implements OnInit {
         this.roomtype = data;
       });
   }
-  
+  // To get Rooms by applying different combination of filters. 
 selectroomfromRoomtype(RoomType,ZoneKey)
 {
 
@@ -210,6 +212,7 @@ selectroomtypefromZone(Zone,Floor)
   // });
 }
 
+//Pooja's code for Creating inspection starts
 
   createInspection() {
 
@@ -312,6 +315,10 @@ selectroomtypefromZone(Zone,Floor)
     });
 
   }
+
+  
+//Pooja's code for Creating inspection ends
+
   ngOnInit() {
 
 
@@ -324,6 +331,9 @@ selectroomtypefromZone(Zone,Floor)
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
+// Pooja's code starts
+// Code for binding current date and '--Select--' while page is initially loaded
+    
     this.fromdate = new Date();
     this.TemplateID = "";
     this.Building = "";
@@ -332,6 +342,8 @@ selectroomtypefromZone(Zone,Floor)
     this.RoomKey = "";
     this.Employee = "";
     this.RoomType = "";
+    
+// Services used by dropdowns while the create inspection page is loaded 
 
     this.inspectionService
       .getTemplateName(this.employeekey, this.OrganizationID)
@@ -354,6 +366,7 @@ selectroomtypefromZone(Zone,Floor)
       .subscribe((data: Inspection[]) => {
         this.building = data;
       });
+ //Pooja's code ends
   }
   toggleVisibility(e) {
     if (e.target.checked) {

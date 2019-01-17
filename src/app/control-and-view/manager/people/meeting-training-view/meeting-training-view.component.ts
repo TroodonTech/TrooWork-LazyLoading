@@ -35,6 +35,10 @@ export class MeetingTrainingViewComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  department;
+  DepartmentKey;
+  EventType;
+  event;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -130,21 +134,29 @@ export class MeetingTrainingViewComponent implements OnInit {
       }
     }
 
-    if (!this.fromdate) {
+    if (!(this.fromdate)) {
       var dateFrom = this.convert_DT(new Date());
     }
     else {
       dateFrom = this.convert_DT(this.fromdate);
     }
-    if (!this.todate) {
+    if (!(this.todate)) {
       var date2 = dateFrom;
     }
     else {
       date2 = this.convert_DT(this.todate);
     }
+    if(!(this.DepartmentKey))
+    {
+      this.DepartmentKey = null;
+    }
+    if(!(this.EventType))
+    {
+      this.EventType = null;
+    }
 
     this.peopleServ
-      .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID)
+      .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID,this.DepartmentKey,this.EventType)
       .subscribe((data: People[]) => {
         this.meetingTraining = data;
       });
@@ -210,7 +222,7 @@ export class MeetingTrainingViewComponent implements OnInit {
         this.loading = true;
       }
       this.peopleServ
-        .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID)
+        .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID,this.DepartmentKey,this.EventType)
         .subscribe((data: People[]) => {
           this.meetingTraining = data;
           this.loading=false;
@@ -228,6 +240,9 @@ export class MeetingTrainingViewComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+
+    this.DepartmentKey="";
+    this.EventType="";
 
     this.searchform = this.formBuilder.group({
       SearchMeetingTraining: ['', Validators.required]
@@ -273,6 +288,22 @@ export class MeetingTrainingViewComponent implements OnInit {
       allowSearchFilter: true
     };
     // multi select ends....
+
+    this.peopleServ
+      .getallEventList(this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.event = data;
+      });
+
+    // Pooja's code for Department dropdown starts
+
+    this.peopleServ
+    .getDepartment(this.employeekey, this.OrganizationID)
+    .subscribe((data: People[]) => {
+      this.department = data;
+    });
+
+// Pooja's code for Department dropdown ends
   }
 
 }

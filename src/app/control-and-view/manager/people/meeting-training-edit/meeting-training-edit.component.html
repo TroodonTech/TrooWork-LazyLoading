@@ -84,13 +84,17 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="floorname">Supervisor </label>
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.SupervisorKey"
+        <ng-multiselect-dropdown [placeholder]="'Select Supervisor'" [data]="supervisor" [(ngModel)]="Supervisor"
+                [settings]="dropdownSettings2" (onSelect)="selectEmp()"
+                (onSelectAll)="selectEmp()">
+            </ng-multiselect-dropdown>
+        <!-- <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.SupervisorKey"
           (change)="selectEmpOfSupervisor($event.target.value)">
           <option value="0">--Select--</option>
           <option *ngFor="let f of supervisor" [value]="f.SupervisorKey">
             {{f.SupervisorText}}
           </option>
-        </select>
+        </select> -->
       </div>
     </div>
     <div class="col-md-6">
@@ -100,6 +104,18 @@
         </ng-multiselect-dropdown>
       </div>
     </div>
+    <div class="col-md-6">
+      <div class="form-group">
+          <label for="Employee">Department </label>
+          <select style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="DepartmentKey" (change)="selectEmp()">
+          <option value="">--Select--</option>
+          <option *ngFor="let d of department" [value]="d.DepartmentKey">
+              {{d.DepartmentName}}
+          </option>
+      </select>
+      </div>
+  </div>
     <div class="row col-md-12" style="margin-left: 30rem;">
       <a style="color:white !important" class="btn btn-success" (click)="updateMeetingTrainingEvent(
           mtngDetails.ActionKey,mtngDetails.Eventhost,mtngDetails.Venue,mtngDetails.MeetingNotes)"><b>Update</b>
