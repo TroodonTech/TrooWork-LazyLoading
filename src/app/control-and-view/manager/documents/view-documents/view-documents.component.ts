@@ -4,7 +4,7 @@ import { Documents } from '../../../../model-class/Documents';
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 // import {saveAs as importedSaveAs} from "file-saver";
 // import { Http, ResponseContentType } from '@angular/http';
-
+// import {  } from '../../../../../../uploads';
 @Component({
   selector: 'app-view-documents',
   templateUrl: './view-documents.component.html',

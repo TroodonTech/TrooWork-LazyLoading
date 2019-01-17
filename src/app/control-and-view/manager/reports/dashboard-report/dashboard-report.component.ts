@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Reports } from '../../../../model-class/reports';
 import { ReportServiceService } from '../../../../service/report-service.service';
-import { PieChartConfig } from '../../../../extra-files/piechart-file/Models/PieChartConfig';
-import { GooglePieChartService } from '../../../../extra-files/piechart-file/Services/google-pie-chart.service';
-declare var google: any;
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
+import { PieChartConfig } from '../../../../extra-files/piechart-file/Models/PieChartConfig';//for piechart
+import { GooglePieChartService } from '../../../../extra-files/piechart-file/Services/google-pie-chart.service';//for piechart
+declare var google: any;//for piechart
+import * as jspdf from 'jspdf';//for pdf
+import html2canvas from 'html2canvas';//for pdf
 import { DatepickerOptions } from 'ng2-datepicker';
-
+import 'jspdf-autotable';//for pdf
+import { interval, Subscription } from 'rxjs';//for calling function on regular interval
 @Component({
   selector: 'app-dashboard-report',
   templateUrl: './dashboard-report.component.html',
@@ -24,6 +25,8 @@ export class DashboardReportComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  subscription: Subscription;
+
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -54,7 +57,7 @@ export class DashboardReportComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: { 'font-size': '18px', 'width': '125%',  'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '125%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -62,7 +65,7 @@ export class DashboardReportComponent implements OnInit {
   title = 'Reusable charts sample';
   public arr: Array<any> = [{}];
   public samplearr: Array<any> = [{}];
-  public convert_DT(str) {
+  public convert_DT(str) { //converting date to yyyy/mm/dd format
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
@@ -79,30 +82,70 @@ export class DashboardReportComponent implements OnInit {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
   // }
   //export to pdf
+  // public captureScreen() {
+  //   var data = document.getElementById('contentToConvert');
+  //   html2canvas(data).then(canvas => {
+  //     // Few necessary setting options  
+  //     var imgWidth = 208;
+  //     var pageHeight = 295;
+  //     var imgHeight = canvas.height * imgWidth / canvas.width;
+  //     var heightLeft = imgHeight;
+
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+  //     heightLeft -= pageHeight;
+
+  //     while (heightLeft >= 0) {
+  //       position = heightLeft - imgHeight;
+  //       pdf.addPage();
+  //       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     pdf.save('DashboardReport.pdf'); // Generated PDF   
+  //   });
+  // }
+  //sudina-code for exporting to pdf starts//
   public captureScreen() {
-    var data = document.getElementById('contentToConvert');
+    const doc = new jspdf();
+    var data = document.getElementById('part1');
     html2canvas(data).then(canvas => {
-      // Few necessary setting options  
+      const img = canvas.toDataURL('image/png');
       var imgWidth = 208;
-      var pageHeight = 295;
       var imgHeight = canvas.height * imgWidth / canvas.width;
-      var heightLeft = imgHeight;
+      // doc.addPage();
+      doc.addImage(img, 'PNG', 0, 0, imgWidth, imgHeight);
+      doc.addPage();
+      // doc.autoTable({
+      //   head: [['Employee Name', 'Completed(%)', 'WorkOrder Type', 'Total WorkOrder', ' Quantity Left']],
+      //   // margin: {top: 70},
+      //   // styles: {
+      //   //     cellPadding: 3,
+      //   //     fontSize: 15,
+      //   //     valign: 'middle',
 
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
-      pdf.save('DashboardReport.pdf'); // Generated PDF   
+      //   //     overflow: 'linebreak',
+      //   //     tableWidth: 'auto',
+      //   //     //fileColor: [30, 30, 30],
+      //   //     lineWidth: 0,
+      //   // },
+      // //  columnStyles: {
+      // //     0: {columnWidth: 30},
+      // //     1: {columnWidth: 10},
+      // //     2: {columnWidth: 30,halign:'center'},
+      // //     3: {columnWidth: 50},
+      // //     4: {columnWidth: 10},
+      // //     // etc
+      // //   }
+      // });
+      doc.autoTable({
+        html: '#contentToConvert',
+      });
+      doc.save('table.pdf');
     });
   }
+  //code for exporting to pdf ends//
   employeeoption: Reports[];
   dashboardreport: FormGroup;
   workordertypeoption: Reports[];
@@ -161,7 +204,7 @@ export class DashboardReportComponent implements OnInit {
       .subscribe((data: Reports[]) => {
         this.workordertypeoption = data;
       });
-    this.dropdownSettings = {
+    this.dropdownSettings = {//for multiselect dropdown
       singleSelection: false,
       idField: 'WorkorderTypeKey',
       textField: 'WorkorderTypeText',
@@ -169,17 +212,17 @@ export class DashboardReportComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true
-    };
+    };//
     this.em_Key = null;
     this.Workorder_TypeKey = null;
-    this.ReportServiceService
+    this.ReportServiceService//service for fetching table values
       .getdashboardreport(dateTemp_1, dateTemp_2, this.em_Key, this.Workorder_TypeKey, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.reporttable = data;
         this.loading = false;
       });
 
-    this.ReportServiceService
+    this.ReportServiceService//service for fetching pie chart values
       .getpievalues(dateTemp_1, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.pievalues = data;
@@ -197,11 +240,14 @@ export class DashboardReportComponent implements OnInit {
         this.elementId1 = 'piechart';
         setTimeout(() => {
           if (this.reporttable.length > 0) {
-            this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);
+            this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);//drawing piechart on pageload by calling piechart service
           }
         }, 1000)
 
       });
+
+    const source = interval(900000);  //sudina-code for calling filter function after regular interval
+    this.subscription = source.subscribe(val => this.dashboardreportbyfilter());
   }
   onItemSelect(item: any) {
     console.log(item);
@@ -209,7 +255,7 @@ export class DashboardReportComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
-
+  //function for filter
   dashboardreportbyfilter() {
     this.pievalues = [];
     this.reporttable = [];
@@ -241,7 +287,7 @@ export class DashboardReportComponent implements OnInit {
     if (this.WorkorderTypeKey.length == 0) {
       workordertypeString = null;
     }
-    else {
+    else {//converting workordertype list to comma separated string
 
       var workordertypeList = [];
       var workordertypeListObj = this.WorkorderTypeKey;
@@ -255,17 +301,17 @@ export class DashboardReportComponent implements OnInit {
         workordertypeString = workordertypeList.join(',');
       }
     }
-    this.ReportServiceService
+    this.ReportServiceService//service for fetching values for table
       .getdashboardreport(date1, date2, this.em_Key, workordertypeString, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.reporttable = data;
         this.loading = false;
       });
-    this.ReportServiceService
+    this.ReportServiceService//service for fetching values for piechart
       .getvaluesfilterbypie(date1, date2, this.em_Key, workordertypeString, this.OrganizationID, this.employeekey)
       .subscribe((data: Reports[]) => {
         this.pievalues = data;
-        this.sampledata2 = [['WorkorderStatus', 'count']];
+        this.sampledata2 = [['WorkorderStatus', 'count']];//converting array to json format for piechart
 
         for (var i = 0; i < this.pievalues.length; i++) {
           var status = this.pievalues[i].reportpietext;
@@ -280,12 +326,15 @@ export class DashboardReportComponent implements OnInit {
                 this.data1 = this.sampledata2;
                 this.config1 = new PieChartConfig(' ', 0.4);
                 this.elementId1 = 'piechart';
-                this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);
+                this._pieChartService.BuildPieChart(this.elementId1, this.data1, this.config1);//call for building piechart
               }
             }, 1000)
           }
         }
       });
+  }
+  ngOnDestroy() {//unsubscribing from calling filter function after regular interval
+    this.subscription.unsubscribe();
   }
 }
 

@@ -62,14 +62,14 @@ export class CreateQuickOrderComponent implements OnInit {
     return window.atob(output);
   }
   constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
-
+  //Function for converting date from GMT to yyyy/mm/dd format
   convert_DT(str) {
     var date = new Date(str),
       mnth = ('0' + (date.getMonth() + 1)).slice(-2),
       day = ('0' + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join('-');
   }
-
+  //
   toggleVisibility(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -77,6 +77,7 @@ export class CreateQuickOrderComponent implements OnInit {
       this.marked = false;
     }
   }
+  //function for creating quick work order
   saveQuickWorkOrder() {
     if(!(this.EmployeeKey))
     {
@@ -175,20 +176,21 @@ export class CreateQuickOrderComponent implements OnInit {
     this.name = profile.username;
     this.emp_key = profile.employeekey;
     this.org_id = profile.OrganizationID;
+    //setting default dropdown values to select
     this.FacilityKey="";
     this.EmployeeKey="";
     this.PriorityKey="";
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting employee names
       .getallEmployee(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting building names
       .getallFacility(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.facilitylist = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting priority list
       .getallPriority(this.org_id)
       .subscribe((data: any[]) => {
         this.prioritylist = data;

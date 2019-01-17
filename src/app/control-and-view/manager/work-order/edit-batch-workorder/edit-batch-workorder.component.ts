@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
 import { ActivatedRoute, Router } from "@angular/router";
-import { DatepickerOptions } from 'ng2-datepicker';
+import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 @Component({
   selector: 'app-edit-batch-workorder',
   templateUrl: './edit-batch-workorder.component.html',
@@ -67,10 +67,10 @@ export class EditBatchWorkorderComponent implements OnInit {
 
   workorderCreation;
   timetable = { times: [] };
-  monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-  recurringFrequency = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-  weekDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  weekPosition = [{ id: 'First', value: '1' }, { id: 'Second', value: '2' }, { id: 'Third', value: '3' }, { id: 'Fourth', value: '4' }, { id: 'Fifth', value: '5' }, { id: 'Last', value: '-1' }];
+  monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];//for selecting day of a month in recurring option(on gap of dropdown)
+  recurringFrequency = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];//for selecting a month in recurring option
+  weekDay = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];//monthly recurring- for selecting day of week
+  weekPosition = [{ id: 'First', value: '1' }, { id: 'Second', value: '2' }, { id: 'Third', value: '3' }, { id: 'Fourth', value: '4' }, { id: 'Fifth', value: '5' }, { id: 'Last', value: '-1' }];//for seleting week position in monthly recurring 
   dailyrecurring;
   dailyFrequency;
   WorkorderStartDate;
@@ -126,7 +126,7 @@ export class EditBatchWorkorderComponent implements OnInit {
   }
 
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
-    this.route.params.subscribe(params => this.BatchWO_Key = params.WorkorderScheduleKey);
+    this.route.params.subscribe(params => this.BatchWO_Key = params.WorkorderScheduleKey);//getting key for edited batchworkorder
   }
   // adding properties and methods that will be used by the igxDatePicker
   public date: Date = new Date(Date.now());
@@ -137,6 +137,7 @@ export class EditBatchWorkorderComponent implements OnInit {
   // public formatter = (_: Date) => {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
   // }
+  //adding datepicker option
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -154,13 +155,13 @@ export class EditBatchWorkorderComponent implements OnInit {
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
-  convert_DT(str) {
+  convert_DT(str) {//converting date from GMT to yyyy/mm/dd
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
       day = ("0" + date.getDate()).slice(- 2);
     return [date.getFullYear(), mnth, day].join("-");
   };
-  tConvert (time) {
+  tConvert (time) {//function for converting time
     // Check correct time format and split into components
     time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
   
@@ -198,7 +199,7 @@ export class EditBatchWorkorderComponent implements OnInit {
     this.month1 = "";
     this.month2 = "";
     this.pos2 = "";
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting edit details for selected batchworkorder
       .getBatchWO_edit(this.BatchWO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.WOEditList = data[0];
@@ -220,6 +221,7 @@ export class EditBatchWorkorderComponent implements OnInit {
             this.RoomNameList = data[0].RoomText;
           });
         }
+        //services for populating dropdown with floornames,zone names,roomtype names,room names,equipment names,schedule names
         this.WorkOrderServiceService
           .getEquipmentNameList(this.WOEditList.WorkorderScheduleKey, this.OrganizationID)
           .subscribe((data: any[]) => {
@@ -292,6 +294,7 @@ export class EditBatchWorkorderComponent implements OnInit {
                   this.EquipmentKey = this.WOEditList.EquipmentKey;
                 });
             });
+            //
         }
         if (this.WOEditList.IsPhotoRequired == 1) {
           this.isPhotoRequired = true;
@@ -323,6 +326,7 @@ export class EditBatchWorkorderComponent implements OnInit {
           var y = this.WOEditList.WorkorderTime;
           count = y.split(',');
           this.dailyFrequency = count.length;
+          //converting time from am/pm format to GMT
           if (count.length > 0) {
 
             this.timetable = { times: [] };
@@ -444,28 +448,29 @@ export class EditBatchWorkorderComponent implements OnInit {
           }
         }
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting facility
       .getallFacility(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.facilitylist = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting floor
       .getallworkorderType(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.workorderTypeList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting prioritylist
       .getallPriority(this.OrganizationID)
       .subscribe((data: any[]) => {
         this.priorityList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting employeelist
       .getallEmployee(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
       });
 
   }
+  //function called when checkbox value is changed
   toggleVisibility(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -473,7 +478,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.marked = false;
     }
   }
-  getEquiment(floor_key, facility_key) {
+  getEquiment(floor_key, facility_key) {//for getting equipment based on facility,floor
     if(floor_key&&facility_key)
     {
     this.WorkOrderServiceService
@@ -491,7 +496,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.EquipmentTypeKey="";
     }
   }
-  getFloorDisp(facilityName) {
+  getFloorDisp(facilityName) {//getting floor based on facility
     if(facilityName)
    {
     this.WorkOrderServiceService
@@ -516,7 +521,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
-  getZoneRoomTypeRoom(floor, facility) {
+  getZoneRoomTypeRoom(floor, facility) {//getting zone,roomtype,room based on facility key,floor key
     if (floor && facility) {
       if ((this.FloorKey) && (this.showEqTypes == true)) {
         this.ZoneKey = -1;
@@ -524,19 +529,19 @@ export class EditBatchWorkorderComponent implements OnInit {
         this.RoomKey = -1;
       }
       else {
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting zones
           .getzone_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.zonelist = data;
             this.ZoneKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting roomtype
           .getroomType_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.RoomTypeList = data;
             this.RoomTypeKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting rooms
           .getRoom_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.RoomList = data;
@@ -552,16 +557,16 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
-  getRoomTypeRoom(zone, facility, floor) {
+  getRoomTypeRoom(zone, facility, floor) {//get roomtype,room based on zone,facility,floor
     if(zone&&facility&&floor)
     {
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomtype lists
       .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomTypeList = data;
         this.RoomTypeKey="";
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomlist
       .getRoom_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomList = data;  
@@ -574,10 +579,10 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.RoomKey="";
     }
   }
-  getRoom(roomtype, zone, facility, floor) {
+  getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
     if(roomtype && zone && facility && floor)
     {
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting roomlist
       .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomList = data;
@@ -589,7 +594,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.RoomKey="";
     }
   }
-  showEquipment_typechange(equip_type, facility, floor) {
+  showEquipment_typechange(equip_type, facility, floor) {//for getting equipment names
     if(equip_type&&facility&&floor)
     {
     this.WorkOrderServiceService
@@ -604,6 +609,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       this.EquipmentKey="";
     }
   }
+  //function called on radio button change
   dailyrecurringChange() {
     this.weeklyrecurring = false;
     this.monthlyrecurring = false;
@@ -632,6 +638,7 @@ export class EditBatchWorkorderComponent implements OnInit {
     this.day1="";
     this.month1="";
   }
+  //function for deleting current workorder
   DeleteWO() {
     this.deleteWO = {
       workorderSchedulekey: this.BatchWO_Key,
@@ -644,17 +651,18 @@ export class EditBatchWorkorderComponent implements OnInit {
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
       });
   }
+  //function for updating workorder
   UpdateWO() {
     if (this.showEqTypes === false) {
-      this.createWorkorder1();
+      this.createWorkorder1();//function for updatewo without equipment
       console.log('Equipment***Not');
 
     } else {
-      this.createWorkorder2();
+      this.createWorkorder2();//function for updatewo wit equipment
 
     }
   }
-  createWorkorder1() {
+  createWorkorder1() {//function for updatewo without equipment
     if (!(this.BatchScheduleNameKey)) {
       alert("Please select schedule name!");
     }
@@ -737,7 +745,7 @@ export class EditBatchWorkorderComponent implements OnInit {
       }
     }
   }
-
+//function for creating workorder without equipment
 withoutequip_wo()
 {
 
@@ -1004,12 +1012,12 @@ withoutequip_wo()
       occursonday: this.occurs_on,
       occurstype: this.occurs_type
     };
-    this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
+    this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {//service for updating wo
       this.deleteWO = {
         workorderSchedulekey: this.BatchWO_Key,
         OrganizationID: this.OrganizationID
       };
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//if updated successfully delete the current batchwo
       .deleteCurrent_BatchWO(this.deleteWO)
       .subscribe((data: any[]) => {
       alert("Batch work-order updated successfully"); 
@@ -1017,6 +1025,7 @@ withoutequip_wo()
     });
   });
   }
+  //function for creating workorder with equip
   createWorkorder2() {
 
     if (!(this.BatchScheduleNameKey)) {

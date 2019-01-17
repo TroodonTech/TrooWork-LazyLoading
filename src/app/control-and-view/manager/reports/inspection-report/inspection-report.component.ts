@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Reports } from '../../../../model-class/reports';
 import { ReportServiceService } from '../../../../service/report-service.service';
 import { ExcelserviceService } from '../../../../service/excelservice.service';
-import { DatepickerOptions } from 'ng2-datepicker';
+import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 
-import * as FileSaver from 'file-saver';
+import * as FileSaver from 'file-saver';//for excel
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 @Component({
   selector: 'app-inspection-report',
@@ -39,13 +39,14 @@ export class InspectionReportComponent implements OnInit {
     return window.atob(output);
   }
 
-
+//convert date to yyyy-mm-dd format
   public convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join("-");
   }
+  //
   fromdate: Date;
 
   // adding properties and methods that will be used by the igxDatePicker
@@ -56,6 +57,7 @@ export class InspectionReportComponent implements OnInit {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
 
   // }
+  //adding options to ng2 datepicker
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -73,6 +75,7 @@ export class InspectionReportComponent implements OnInit {
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
+  //
   supervisoroptions: Reports[];
   inspectionreport: FormGroup;
   viewinspectionReport: Reports[];
@@ -86,7 +89,7 @@ export class InspectionReportComponent implements OnInit {
       SupervisorText: ['', Validators.required]
     });
   }
-  //export to excel 
+  //function for exporting to excel 
   exportToExcel(): void {
     for (var i = 0; i < this.viewinspectionReport.length; i++) {
       var temp_name = (this.viewinspectionReport[i].TemplateName);
@@ -124,13 +127,13 @@ export class InspectionReportComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
 
-    this.ReportServiceService
+    this.ReportServiceService//service for getting supervisor names
       .getallsupervisor(this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.supervisoroptions = data;
       });
   }
-
+//function for genaerating report
   generateInspectionReport(from_date, to_date, SupervisorKey) {
     this.loading = true;
     if (!from_date) {
@@ -153,7 +156,7 @@ export class InspectionReportComponent implements OnInit {
       alert("Please check your Start Date!");
       return;
     }
-    if (!SupervisorKey) {
+    if (!SupervisorKey) {//inspection report for supervisorkey=null
       this.ReportServiceService
         .getinspectionreport_bydate(fromdate, todate, this.employeekey, this.OrganizationID)
         .subscribe((data: Reports[]) => {
@@ -161,7 +164,7 @@ export class InspectionReportComponent implements OnInit {
           this.loading = false;
         });
     }
-    else {
+    else {//inspection report for selected supervisor
       this.ReportServiceService
         .getinspectionreport(fromdate, todate, SupervisorKey, this.OrganizationID)
         .subscribe((data: Reports[]) => {

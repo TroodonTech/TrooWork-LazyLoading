@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { EmployeeDashboardComponent } from './employee-dashboard.component';
 import {  EmployeeChangePasswordModule } from '../../user-password-changes/employee-change-password/employee-change-password.module';
-
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
  const routes: Routes = [
   {
     path: 'EmployeeDashboard',
@@ -52,7 +52,8 @@ import {  EmployeeChangePasswordModule } from '../../user-password-changes/emplo
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    MDBBootstrapModule.forRoot()
   ],
   declarations: [EmployeeDashboardComponent],
   exports: [EmployeeDashboardComponent]

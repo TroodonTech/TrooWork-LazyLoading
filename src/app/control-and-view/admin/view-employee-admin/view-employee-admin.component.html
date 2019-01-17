@@ -1,7 +1,7 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
-    <h3 style="margin-left: 25rem;">VIEW EMPLOYEE DETAILS</h3>
+    <h4 style="margin-left: 42%;">VIEW EMPLOYEE DETAILS</h4>
   </div>
 
 
@@ -9,7 +9,7 @@
     <div class="row col-md-12">
       <br>
       <div class="row col-md-6">
-        <h5 style="text-align:right"><label for="building">Job Title</label></h5>
+        <h5 style="text-align:right"><label for="building">Job Title</label></h5> &nbsp;
         <select [(ngModel)]="JobTitleKey" style="background-color: #d4f4ff;width: 25rem" class="form-control" (change)="getempdettablewithselectedJobtitle()">
           <option value="" selected>--Select--</option>
           <option *ngFor="let j of jobtitle" [value]="j.JobTitleKey">
@@ -18,7 +18,7 @@
         </select>
       </div>
       <div class="row col-md-6" style="margin-left: 2.8rem;">
-        <h5 style="text-align:right"><label for="building">Managers</label></h5>
+        <h5 style="text-align:right"><label for="building">Managers</label></h5> &nbsp;
         <select [(ngModel)]="ManagerKey" style="background-color: #d4f4ff;width: 25rem" class="form-control" (change)="getempdettablewithselectedJobtitle()">
           <option value="" selected>--Select--</option>
           <option *ngFor="let k of managerList" [value]="k.ManagerKey">
