@@ -10,7 +10,7 @@
         <div class="col-md-6 ">
             <label for="mtngTrainingEvent">Meeting/Training/Event*</label>
 
-            <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;width: 75%" class="form-control"
+            <select name="eventtype" style="background-color: #d4f4ff;margin-left: 0.1rem;" class="form-control"
                 [(ngModel)]="EventType">
                 <option value="">--Select--</option>
                 <option *ngFor="let b of event" [value]="b.ActionKey">
@@ -30,14 +30,14 @@
             <div class="col-md-6 ">
                 <div class="form-group">
                     <label>Event Host* </label>
-                    <input type="text" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+                    <input type="text" style="background-color: #D4F4FF !important;" class="form-control "
                         [(ngModel)]="eventHost">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group " style="margin-left: 1rem;">
                     <label>Venue*</label>
-                    <input type="text" style="background-color: #D4F4FF !important;max-width: 100%;width: 77%;" class="form-control col-sm-9 col-md-9 col-lg-9"
+                    <input type="text" style="background-color: #D4F4FF !important;" class="form-control "
                         [(ngModel)]="Venue">
                 </div>
             </div>
@@ -54,21 +54,21 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label class="col-sm-3 col-md-3 col-lg-3 ">Start Time*</label><br>
-                <p-calendar [inputStyle]="{'width':'208%'}" [(ngModel)]="time1" [timeOnly]="true" hourFormat="12"></p-calendar>
+                <p-calendar [inputStyle]="{'width':'277%'}" [(ngModel)]="time1" [timeOnly]="true" hourFormat="12"></p-calendar>
             </div>
 
         </div>
         <div class="col-md-6">
-            <div class="form-group" style="margin-top: -1rem">
-                <label style="margin-top: 2rem;" class="col-sm-3 col-md-3 col-lg-3 ">End Time*</label><br>
-                <p-calendar [inputStyle]="{'width':'208%'}" [(ngModel)]="time2" [timeOnly]="true" hourFormat="12"></p-calendar>
+            <div class="form-group">
+                <label class="col-sm-3 col-md-3 col-lg-3 ">End Time*</label><br>
+                <p-calendar [inputStyle]="{'width':'277%'}" [(ngModel)]="time2" [timeOnly]="true" hourFormat="12"></p-calendar>
             </div>
         </div>
         <h4 class="col-md-12"><label>SELECT EMPLOYEES</label></h4>
         <div class="col-md-6">
             <div class="form-group">
                 <label for="floorname">Job Title </label>
-                <select style="background-color: #D4F4FF !important;width: 75.8%;max-width: 100%;" class="form-control col-sm-9 col-md-9 col-lg-9"
+                <select style="background-color: #D4F4FF !important;" class="form-control "
                     [(ngModel)]="JobTitle" (change)="selectEmp()">
                     <option value="">--Select--</option>
                     <option *ngFor="let f of jobTitle" [value]="f.JobTitleKey">
@@ -78,13 +78,12 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="form-group" style="width: 75.8%">
+            <div class="form-group">
                 <label for="floorname">Supervisor </label>
                 <ng-multiselect-dropdown [placeholder]="'Select Supervisor'" [data]="supervisor" [(ngModel)]="Supervisor"
-                [settings]="dropdownSettings2" (onSelect)="selectEmp()"
-                (onSelectAll)="selectEmp()">
-            </ng-multiselect-dropdown>
-                <!-- <select style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+                    [settings]="dropdownSettings2" (onSelect)="selectEmp()" (onSelectAll)="selectEmp()">
+                </ng-multiselect-dropdown>
+                <!-- <select style="background-color: #D4F4FF !important;" class="form-control "
                     [(ngModel)]="Supervisor" (change)="selectEmpOfSupervisor($event.target.value)">
                     <option value="">--Select--</option>
                     <option *ngFor="let f of supervisor" [value]="f.SupervisorKey">
@@ -96,17 +95,17 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="Employee">Department </label>
-                <select style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
-                [(ngModel)]="DepartmentKey" (change)="selectEmp()">
-                <option value="">--Select--</option>
-                <option *ngFor="let d of department" [value]="d.DepartmentKey">
-                    {{d.DepartmentName}}
-                </option>
-            </select>
+                <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="DepartmentKey"
+                    (change)="selectEmp()">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let d of department" [value]="d.DepartmentKey">
+                        {{d.DepartmentName}}
+                    </option>
+                </select>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="form-group" style="width: 75.8%">
+            <div class="form-group">
                 <label for="Employee">Employee* </label>
                 <ng-multiselect-dropdown [placeholder]="'Select Employee'" defaultOpen="true" [data]="empList"
                     [(ngModel)]="Employee" [settings]="dropdownSettings1">
@@ -117,7 +116,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>Notes</label>
-                <textarea class="form-control rounded-0 col-sm-9 col-md-9 col-lg-9" [(ngModel)]="Notes" rows="5" style="resize: none;"></textarea>
+                <textarea class="form-control rounded-0 " [(ngModel)]="Notes" rows="5" style="resize: none;"></textarea>
             </div>
         </div>
         <div class="row col-md-12" style="margin-left: 40%;">
@@ -129,15 +128,15 @@
         <div class="row col-md-12">
             <h5 style="text-align:right" class="col-md-4"><label for="eventHost">Event Type* </label></h5>
             <div class=" col-md-8" style="text-align:left">
-                <input type="text" placeholder="Event Type" style="background-color: #D4F4FF !important;width: 76%"
-                    class="form-control" [(ngModel)]="Event_Type">
+                <input type="text" placeholder="Event Type" style="background-color: #D4F4FF !important;" class="form-control"
+                    [(ngModel)]="Event_Type">
             </div>
         </div>
         <div class="row col-md-12">
             <h5 style="text-align:right" class="col-md-4"><label for="Venue">Event Name* </label></h5>
             <div class=" col-md-8" style="text-align:left">
-                <input type="text" placeholder="Event Name" style="background-color: #D4F4FF !important;width: 76%"
-                    class="form-control" [(ngModel)]="Event_Name">
+                <input type="text" placeholder="Event Name" style="background-color: #D4F4FF !important;" class="form-control"
+                    [(ngModel)]="Event_Name">
             </div>
         </div>
         <div class="row col-md-12">
