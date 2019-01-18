@@ -2,13 +2,14 @@ import { Component, OnInit, OnChanges, Directive, HostListener, ElementRef, Inpu
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { workorder } from '../../../../model-class/work-order';
 import { WorkOrderServiceService } from '../../../../service/work-order-service.service';
-import { DatepickerOptions } from 'ng2-datepicker';
+import { DatepickerOptions } from 'ng2-datepicker';//for datepicker
 @Component({
   selector: 'app-view-work-orders',
   templateUrl: './view-work-orders.component.html',
   styleUrls: ['./view-work-orders.component.scss']
 })
 export class ViewWorkOrdersComponent implements OnInit {
+  //converting date from GMT to yyyy/mm/dd
   public convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -24,6 +25,7 @@ export class ViewWorkOrdersComponent implements OnInit {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
 
   // }
+  //adding datepicker options
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -85,10 +87,11 @@ export class ViewWorkOrdersComponent implements OnInit {
   searchform: FormGroup;
   workorderCheckValue;
   checkflag:boolean;
+  //code for special character restriction
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
   constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
-
+//function for token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -105,7 +108,7 @@ export class ViewWorkOrdersComponent implements OnInit {
     }
     return window.atob(output);
   }
-
+//
 
   @HostListener('keypress', ['$event']) onKeyPress(event) {
     return new RegExp(this.regexStr).test(event.key);
@@ -123,6 +126,7 @@ export class ViewWorkOrdersComponent implements OnInit {
     }, 100)
 
   }
+  //code for pagination
   previousPage() {
     var on_date = this.convert_DT(new Date());
     this.pageno = +this.pageno - 1;
@@ -164,6 +168,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         }
       });
   }
+  //
   ngOnInit() {
     this.loading = true;
     this.checkflag=false;
@@ -187,32 +192,32 @@ export class ViewWorkOrdersComponent implements OnInit {
     this.WorkorderStatusKey = "";
     this.BatchScheduleNameKey = "";
     this.ondate = new Date(Date.now());
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting facility names
       .getallFacility(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.facilitylist = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting employee names
       .getallEmployeeName(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting all schedule names
       .getallScheduleName(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.scheduleList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting all workstatus
       .getallworkStatus(this.domain_name, this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.workStatusList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting all workordertype list
       .getallworkorderType(this.emp_key, this.org_id)
       .subscribe((data: any[]) => {
         this.workorderTypeList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for getting currentday workorders on pageload
       .getworkorder(on_date, this.emp_key, this.pageno, this.items_perpage, this.org_id)
       .subscribe((data: any[]) => {
         this.workorderList = data;
@@ -235,6 +240,7 @@ export class ViewWorkOrdersComponent implements OnInit {
     });
 
   }
+     //function called on checkbox value change
   toggleVisibility(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -242,7 +248,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       this.marked = false;
     }
   }
-  getFloorDisp(facilityName) {
+  getFloorDisp(facilityName) {//getting floors for selected facility
 
     if (facilityName) {
       this.WorkOrderServiceService
@@ -259,21 +265,21 @@ export class ViewWorkOrdersComponent implements OnInit {
       this.RoomKey = "";
     }
   }
-  getZoneRoomTypeRoom(floor, facility) {
+  getZoneRoomTypeRoom(floor, facility) {//getting zone,roomtype,room based on facility key,floor key
     if (floor && facility) {
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting zones
         .getzone_facilityfloor(floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.zonelist = data;
           this.ZoneKey = "";
         });
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomtype lists
         .getroomType_facilityfloor(floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.RoomTypeList = data;
           this.RoomTypeKey = "";
         });
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomlist
         .getRoom_facilityfloor(floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.RoomList = data;
@@ -286,15 +292,15 @@ export class ViewWorkOrdersComponent implements OnInit {
       this.RoomKey = "";
     }
   }
-  getRoomTypeRoom(zone, facility, floor) {
+  getRoomTypeRoom(zone, facility, floor) {//get roomtype,room based on zone,facility,floor
     if (zone && facility && floor) {
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomtype lists
         .getRoomtype_zone_facilityfloor(zone, floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.RoomTypeList = data;
           this.RoomTypeKey = "";
         });
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomlist
         .getRoom_zone_facilityfloor(zone, floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.RoomList = data;
@@ -306,9 +312,9 @@ export class ViewWorkOrdersComponent implements OnInit {
       this.RoomKey = "";
     }
   }
-  getRoom(roomtype, zone, facility, floor) {
+  getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
     if (roomtype && zone && facility && floor) {
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomlist
         .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.org_id)
         .subscribe((data: any[]) => {
           this.RoomList = data;
@@ -319,6 +325,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       this.RoomKey = "";
     }
   }
+  //function called when filter is applied
   viewWO_Filter() {
     if ((this.todate) && (this.convert_DT(this.ondate )> this.convert_DT(this.todate))) {
       alert("Please check your start date!");
@@ -429,7 +436,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         OrganizationID: this.org_id,
         floorKey: floor_key
       };
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for viewing wo when filter is applied
         .getWoFilter(this.viewWorkOrder)
         .subscribe((data: any[]) => {
           this.workorderList = data;
@@ -439,6 +446,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         });
     }
   }
+  //for deleting workorder
   checkBoxValueForDelete(index, CheckValue, WorkorderKey) {
     this.checkValue[index] = CheckValue;
     this.workorderKey[index] = WorkorderKey;
@@ -461,6 +469,7 @@ export class ViewWorkOrdersComponent implements OnInit {
         }
       }
   }
+    //function called on search
   searchworkType_emp_room(search_value) {
     var value = search_value.trim();
     var fac_key;
@@ -568,7 +577,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       floorKey: floor_key,
       searchWO: value
     };
-    if (value.length >= 3) {
+    if (value.length >= 3) {//service called only when searchvalue length>3
       this.WorkOrderServiceService
         .search_WO(this.searchWorkorder)
         .subscribe((data: any[]) => {
@@ -578,7 +587,7 @@ export class ViewWorkOrdersComponent implements OnInit {
           this.showHide1 = false;
         });
     }
-    else if (value.length == 0) {
+    else if (value.length == 0) {//if length=0 the previous table is displayed
       if ((value.length == 0) && (search_value.length == 0)) {
         this.loading = true;
       }
@@ -600,6 +609,8 @@ export class ViewWorkOrdersComponent implements OnInit {
 
     }
   }
+
+  //function for deleting multiple workorders checked
   deleteWorkOrdersPage() {
 
     var deleteWorkOrderList = [];
@@ -617,7 +628,7 @@ export class ViewWorkOrdersComponent implements OnInit {
       employeekey: this.emp_key,
       OrganizationID: this.org_id
     };
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//service for deleting workorders
       .delete_WO(this.deleteWO)
       .subscribe((data: any[]) => {
         this.workorderList.workorderCheckValue = false;

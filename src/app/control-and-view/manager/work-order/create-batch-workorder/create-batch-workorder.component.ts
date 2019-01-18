@@ -218,6 +218,7 @@ export class CreateBatchWorkorderComponent implements OnInit {
       });
 
   }
+  //function called on checkbox value change
   toggleVisibility_Equipment(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -253,7 +254,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
       this.marked = false;
     }
   }
-
+//
+//function called on radiobutton change
   dailyrecurringChange() {
     this.weeklyrecurring = false;
     this.monthlyrecurring = false;

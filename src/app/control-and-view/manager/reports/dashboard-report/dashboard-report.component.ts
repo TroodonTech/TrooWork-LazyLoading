@@ -106,17 +106,11 @@ export class DashboardReportComponent implements OnInit {
   //     pdf.save('DashboardReport.pdf'); // Generated PDF   
   //   });
   // }
-  //sudina-code for exporting to pdf starts//
+  // sudina-code for exporting to pdf starts
   public captureScreen() {
     const doc = new jspdf();
     var data = document.getElementById('part1');
     html2canvas(data).then(canvas => {
-      const img = canvas.toDataURL('image/png');
-      var imgWidth = 208;
-      var imgHeight = canvas.height * imgWidth / canvas.width;
-      // doc.addPage();
-      doc.addImage(img, 'PNG', 0, 0, imgWidth, imgHeight);
-      doc.addPage();
       // doc.autoTable({
       //   head: [['Employee Name', 'Completed(%)', 'WorkOrder Type', 'Total WorkOrder', ' Quantity Left']],
       //   // margin: {top: 70},
@@ -139,12 +133,19 @@ export class DashboardReportComponent implements OnInit {
       // //     // etc
       // //   }
       // });
+      const img = canvas.toDataURL('image/png');
+      var imgWidth = 208;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      // doc.addPage();
+      doc.addImage(img, 'PNG', 0, 0, imgWidth, imgHeight);
+      doc.addPage();
       doc.autoTable({
         html: '#contentToConvert',
       });
       doc.save('table.pdf');
     });
   }
+ 
   //code for exporting to pdf ends//
   employeeoption: Reports[];
   dashboardreport: FormGroup;

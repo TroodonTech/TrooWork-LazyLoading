@@ -7,8 +7,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 const routes: Routes = [
   {
     path: 'SupervisorDashboard',
-    component: SupervisorDashboardComponent,
-    children: [
+    component: SupervisorDashboardComponent,// sudina - superadmindashboard as parent component
+    children: [//child components
       {
         path: 'Supervisor_welcomePage',
         outlet: 'Superout',

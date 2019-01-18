@@ -16,6 +16,7 @@ export class EditWorkOrderComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   delete_curwo;
+  //for token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -86,7 +87,7 @@ export class EditWorkOrderComponent implements OnInit {
   occursonday;
   emp_key;
   workorderCreation;
-  timetable = { times: [] };
+  timetable = { times: [] };//for daily recurring timepicker
   count = 0;
   constructor(private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService) {
     this.route.params.subscribe(params => this.WO_Key = params.WorkorderKey);
@@ -101,6 +102,7 @@ export class EditWorkOrderComponent implements OnInit {
   // public formatter = (_: Date) => {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
   // }
+  //adding datepicker option
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -118,6 +120,7 @@ export class EditWorkOrderComponent implements OnInit {
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
+   //converting date from GMT to yyyy/mm/dd
   convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(- 2),
@@ -146,26 +149,26 @@ export class EditWorkOrderComponent implements OnInit {
 
     this.WorkOrderServiceService
       .getWO_edit(this.WO_Key, this.OrganizationID)
-      .subscribe((data: any[]) => {
+      .subscribe((data: any[]) => {//service for getting edited work order details
         this.WOEditList = data[0];
         this.WorkOrderServiceService
           .getallFloor(this.WOEditList.FacilityKey, this.OrganizationID)
-          .subscribe((data: any[]) => {
+          .subscribe((data: any[]) => {//for getting all floor names
             this.FloorList = data;
           });
         this.WorkOrderServiceService
           .getzone_facilityfloor(this.WOEditList.FloorKey, this.WOEditList.FacilityKey, this.OrganizationID)
-          .subscribe((data: any[]) => {
+          .subscribe((data: any[]) => {//for getting all zone names
             this.zonelist = data;
           });
         this.WorkOrderServiceService
           .getroomType_facilityfloor(this.WOEditList.FloorKey, this.WOEditList.FacilityKey, this.OrganizationID)
-          .subscribe((data: any[]) => {
+          .subscribe((data: any[]) => {//service for getting roomtype lists
             this.RoomTypeList = data;
           });
         this.WorkOrderServiceService
           .getRoom_facilityfloor(this.WOEditList.FloorKey, this.WOEditList.FacilityKey, this.OrganizationID)
-          .subscribe((data: any[]) => {
+          .subscribe((data: any[]) => {//service for getting roomlist
             this.RoomList = data;
           });
 
@@ -186,12 +189,12 @@ export class EditWorkOrderComponent implements OnInit {
 
               this.floorvalue = parseInt(data[0].FloorKeyList);
               this.FloorKey = this.floorvalue;
-              this.WorkOrderServiceService
+              this.WorkOrderServiceService//service for getting equipment type list
                 .getallEquipment(this.WOEditList.FacilityKey, this.floorvalue, this.OrganizationID)
                 .subscribe((data: any[]) => {
                   this.EquipmentTypeList = data;
                 });
-              this.WorkOrderServiceService
+              this.WorkOrderServiceService//service for getting equipment list
                 .getEquipment_typechange(this.WOEditList.EquipmentTypeKey, this.WOEditList.FacilityKey, this.floorvalue, this.OrganizationID)
                 .subscribe((data: any[]) => {
                   this.EquipmentList = data;
@@ -235,28 +238,29 @@ export class EditWorkOrderComponent implements OnInit {
         this.timeValue = today;
       });
 
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all building names
       .getallFacility(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.facilitylist = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all workordertypes
       .getallworkorderType(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.workorderTypeList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting all priority names
       .getallPriority(this.OrganizationID)
       .subscribe((data: any[]) => {
         this.priorityList = data;
       });
-    this.WorkOrderServiceService
+    this.WorkOrderServiceService//for getting employeenames
       .getallEmployee(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.EmployeeOption = data;
       });
 
   }
+  //function called on checkbox value change
   toggleVisibility(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -264,7 +268,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.marked = false;
     }
   }
-  getFloorDisp(facilityName) {
+  getFloorDisp(facilityName) {//getting floors for selected facility
     if (facilityName) {
       this.WorkOrderServiceService
         .getallFloor(facilityName, this.OrganizationID)
@@ -287,7 +291,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.EquipmentKey = "";
     }
   }
-  getZoneRoomTypeRoom(floor, facility) {
+  getZoneRoomTypeRoom(floor, facility) {//getting zone,roomtype,room based on facility key,floor key
     if (floor && facility) {
       if ((this.FloorKey) && (this.showEqTypes == true)) {
         this.ZoneKey = -1;
@@ -295,19 +299,19 @@ export class EditWorkOrderComponent implements OnInit {
         this.RoomKey = -1;
       }
       else {
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting zones
           .getzone_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.zonelist = data;
             this.ZoneKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting roomtype lists
           .getroomType_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.RoomTypeList = data;
             this.RoomTypeKey = "";
           });
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for getting roomlist
           .getRoom_facilityfloor(floor, facility, this.OrganizationID)
           .subscribe((data: any[]) => {
             this.RoomList = data;
@@ -323,15 +327,15 @@ export class EditWorkOrderComponent implements OnInit {
       this.EquipmentKey = "";
     }
   }
-  getRoomTypeRoom(zone, facility, floor) {
+  getRoomTypeRoom(zone, facility, floor) {//get roomtype,room based on zone,facility,floor
     if (zone && facility && floor) {
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomtype lists
         .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
         .subscribe((data: any[]) => {
           this.RoomTypeList = data;
           this.RoomTypeKey = "";
         });
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomlist
         .getRoom_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
         .subscribe((data: any[]) => {
           this.RoomList = data;
@@ -343,9 +347,9 @@ export class EditWorkOrderComponent implements OnInit {
       this.RoomKey = "";
     }
   }
-  getRoom(roomtype, zone, facility, floor) {
+  getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
     if (roomtype && zone && facility && floor) {
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for getting roomlist
         .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
         .subscribe((data: any[]) => {
           this.RoomList = data;
@@ -356,7 +360,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.RoomKey = "";
     }
   }
-  showEquipment_typechange(equip_type, facility, floor) {
+  showEquipment_typechange(equip_type, facility, floor) {//for getting equipment names
     if (equip_type && facility && floor) {
       this.WorkOrderServiceService
         .getEquipment_typechange(equip_type, facility, floor, this.OrganizationID)
@@ -369,7 +373,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.EquipmentKey = "";
     }
   }
-  getEquiment(floor_key, facility_key) {
+  getEquiment(floor_key, facility_key) {//service for getting equipment based on facility & floor
     if (floor_key && facility_key) {
       this.WorkOrderServiceService
         .getallEquipment(facility_key, floor_key, this.OrganizationID)
@@ -385,6 +389,7 @@ export class EditWorkOrderComponent implements OnInit {
       this.EquipmentTypeKey = "";
     }
   }
+  //function for deleting workorder
   DeleteWO() {
     this.deleteWO = {
       workorderkey: this.WO_Key,
@@ -397,13 +402,14 @@ export class EditWorkOrderComponent implements OnInit {
         this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
       });
   }
+   //function for updating workorder
   UpdateWO() {
     if (this.showEqTypes === false) {
-      this.createWorkorder1();
+      this.createWorkorder1();//function for updating workorder without equipment
       console.log('Equipment***Not');
 
     } else {
-      this.createWorkorder2();
+      this.createWorkorder2();//function for updating workorder with equipment
     }
   }
   createWorkorder1() {
@@ -606,12 +612,12 @@ export class EditWorkOrderComponent implements OnInit {
       repeatinterval: 1,
       occursonday: null
     };
-    this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {
+    this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
       this.deleteWO = {
         workorderkey: this.WO_Key,
         OrganizationID: this.OrganizationID
       };
-      this.WorkOrderServiceService
+      this.WorkOrderServiceService//service for deleting current workorder after updating
         .deleteCurrent_WO(this.deleteWO)
         .subscribe((data: any[]) => {
           alert("Work-order updated successfully");
@@ -619,7 +625,7 @@ export class EditWorkOrderComponent implements OnInit {
         });
     });
   }
-
+//function for creating workorder with equipment
   createWorkorder2() {
     if (!this.workordertypekey) {
       alert("Please select work-order type!");
@@ -842,12 +848,12 @@ export class EditWorkOrderComponent implements OnInit {
         repeatinterval: 1,
         occursonday: null
       };
-      this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {
+      this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
         this.deleteWO = {
           workorderkey: this.WO_Key,
           OrganizationID: this.OrganizationID
         };
-        this.WorkOrderServiceService
+        this.WorkOrderServiceService//service for deleting existing workorder after updating
           .deleteCurrent_WO(this.deleteWO)
           .subscribe((data: any[]) => {
             alert("Work-order updated successfully");
