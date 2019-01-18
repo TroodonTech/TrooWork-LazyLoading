@@ -1,11 +1,10 @@
- 
-<div class="py-5 bg-info" style="padding-left: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;margin-left: 2rem">
+<div class="py-5" style="padding-left: 9rem; padding-top:0rem !important; padding-bottom:0rem !important;margin-left: 2rem">
   <br>
   <div class="row col-md-12 ">
     <h4 style="margin-left: 42%;">UPDATE ROOM</h4>
   </div><br>
 
-  <div class="row bg-info col-md-12">
+  <div class="row bg-info col-md-12" style="padding-top: 2rem">
     <br>
     <div class="col-md-6">
       <div class="form-group">
@@ -42,7 +41,8 @@
       </div>
       <div class="form-group">
         <label>Zone Name*</label>
-        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.ZoneKey" (change)="setZoneName($event.target.value)">
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.ZoneKey"
+          (change)="setZoneName($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let f of zone" [value]="f.ZoneKey">
             {{f.ZoneName}}
@@ -65,17 +65,20 @@
       </div>
       <div class="form-group">
         <label>Room Name*</label>
-        <input type="text" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.RoomName">
+        <input type="text" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="room.RoomName">
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label>Square Foot* </label>
-        <input type="text" maxlength="19" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.Area">
+        <input type="text" maxlength="19" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="room.Area">
       </div>
       <div class="form-group">
         <label>Barcode* </label>
-        <input type="text" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.Barcode">
+        <input type="text" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+          [(ngModel)]="room.Barcode">
       </div>
 
     </div>
@@ -87,7 +90,7 @@
           Room
         </b>
       </a>
-      <a (click)='goback();' class="btn btn-warning" style="color:white !important" ><b>Go Back
+      <a (click)='goback();' class="btn btn-warning" style="color:white !important"><b>Go Back
         </b>
       </a>
     </div>

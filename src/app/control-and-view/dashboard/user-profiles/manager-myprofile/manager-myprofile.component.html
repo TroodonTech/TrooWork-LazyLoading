@@ -3,10 +3,10 @@
   <div class="container-fluid">
    
     <div *ngFor="let profile of profile">
-      <div style="margin-left: 25rem;">
+      <div style="margin-left: 50%;">
         <h4 class="refer"><strong>{{profile.FirstName}} {{profile.MiddleName}} {{profile.LastName}}
             : Profile</strong></h4>
-        <div style="margin-left: 5rem;">
+        <div style="margin-left: 10%;">
           <div *ngIf="profile.IsSupervisor === 1 && profile.UserRoleName==='Employee'">
             <h4 class="refer"><strong>Supervisor</strong></h4>
           </div>

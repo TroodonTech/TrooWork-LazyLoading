@@ -1835,7 +1835,7 @@ app.post(securedpath + '/deleteWorkOrderType', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var WorkorderTypeKey = req.body.WorkorderTypeKey;
     var OrganizationID = req.body.OrganizationID;
-//   var DepartmentKey = req.body.DepartmentKey;
+    //   var DepartmentKey = req.body.DepartmentKey;
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2238,18 +2238,18 @@ app.post(securedpath + '/updateSelectedJobTitle', function (req, res) {
 
 app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-//    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
-//    var jobtittlekey = url.parse(req.url, true).query['jobtittlekey'];
+    //    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
+    //    var jobtittlekey = url.parse(req.url, true).query['jobtittlekey'];
     var WorkorderTypeKey = req.body.WorkorderTypeKey;
     var WorkorderTypeName = req.body.WorkorderTypeName;
     var RoomTypeKey = req.body.RoomTypeKey;
     var Frequency = req.body.Frequency;
     var Repeatable = req.body.Repeatable;
     var WorkorderTime = req.body.WorkorderTime;
-     var OrganizationID = req.body.OrganizationID;
-//    var jobtittlekey = req.body.JobTitleKey;
-//    var jobtittle = req.body.JobTitle;
-//    var jobdescription = req.body.JobTitleDescription;
+    var OrganizationID = req.body.OrganizationID;
+    //    var jobtittlekey = req.body.JobTitleKey;
+    //    var jobtittle = req.body.JobTitle;
+    //    var jobdescription = req.body.JobTitleDescription;
     console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -4171,7 +4171,7 @@ app.post(securedpath + '/empSelectWithFilterInMeetCreate', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @emKey=?;set @OrgID=?;set @JobT=?;set @Sup=?;set @DeptKey=?; call usp_empSelectWithFilterInMeetCreate(@emKey,@OrgID,@JobT,@Sup,@DeptKey)', [emKey,OrgID,JobT,Sup,DeptKey], function (err, rows) {
+            connection.query('set @emKey=?;set @OrgID=?;set @JobT=?;set @Sup=?;set @DeptKey=?; call usp_empSelectWithFilterInMeetCreate(@emKey,@OrgID,@JobT,@Sup,@DeptKey)', [emKey, OrgID, JobT, Sup, DeptKey], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -5661,7 +5661,7 @@ app.get(securedpath + '/barcodeRoom_Ang', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @workdetail =?;set @barcode=?; set @empkey=?; set @updatetype=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdateByBarcode_Ang6(@workdetail,@barcode,@empkey,@updatetype,@OrganizationID,@complete_Time)", [workorderkey, barcode, employeekey, updatetype, OrganizationID,complete_Time], function (err, rows) {
+            connection.query("set @workdetail =?;set @barcode=?; set @empkey=?; set @updatetype=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdateByBarcode_Ang6(@workdetail,@barcode,@empkey,@updatetype,@OrganizationID,@complete_Time)", [workorderkey, barcode, employeekey, updatetype, OrganizationID, complete_Time], function (err, rows) {
                 if (err) {
                     console.log(err);
                 }
@@ -5775,7 +5775,7 @@ app.get(securedpath + '/workCompleted_Ang6', function (req, res) {
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var work_det_key = url.parse(req.url, true).query['wkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-      var complete_Time = url.parse(req.url, true).query['complete_Time'];
+    var complete_Time = url.parse(req.url, true).query['complete_Time'];
     // console.log("work completed=" + work_det_key + "..." + employeekey);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -5784,7 +5784,7 @@ app.get(securedpath + '/workCompleted_Ang6', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @workdetail =?; set @employeekey=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdate_Ang6(@workdetail,@employeekey,@OrganizationID,@complete_Time)", [work_det_key, employeekey,OrganizationID,complete_Time], function (err, rows) {
+            connection.query("set @workdetail =?; set @employeekey=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdate_Ang6(@workdetail,@employeekey,@OrganizationID,@complete_Time)", [work_det_key, employeekey, OrganizationID, complete_Time], function (err, rows) {
                 if (err) {
                     console.log(err);
                 }
@@ -5861,7 +5861,7 @@ app.get(securedpath + '/updateWorkorderByPhoto_Ang6', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query(" set @wdk=?;set @imgname=?; set @employeekey=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdateByPhoto(@wdk,@imgname,@employeekey,@OrganizationID,@complete_Time)", [wdkey, pho, employeekey, OrganizationID,complete_Time], function (err, rows) {
+            connection.query(" set @wdk=?;set @imgname=?; set @employeekey=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdateByPhoto(@wdk,@imgname,@employeekey,@OrganizationID,@complete_Time)", [wdkey, pho, employeekey, OrganizationID, complete_Time], function (err, rows) {
                 if (err) {
                     console.log(err);
                 }
@@ -6960,19 +6960,17 @@ app.post(securedpath + '/addworkorderSchedule', supportCrossOriginScript, functi
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @scheduleKey=?; set @workorderkey=?;set @workordertypekey=?;set @equipmentkey=?;set @roomkeys=?; set @employeekey=?; set @priority=?; set @fromdate=?; set @todate=?;set @intervaltype=?; set @repeatinterval=?;set @occursonday =?;set @occursontime =?;set @occurstype =?; set @workordernotes =?;set @isbar=?;set @isphoto=?;set @metaupdatedby=?; set @facilitykeys=?; set @floorkeys=?; set @zonekeys=?; set @roomtypekeys=?;set @OrganizationID=?; call usp_BatchScheduleAdd(@scheduleKey,@workorderkey,@workordertypekey,@equipmentkey,@roomkeys,@employeekey,@priority,@fromdate,@todate,@intervaltype,@repeatinterval,@occursonday,@occursontime,@occurstype,@workordernotes,@isbar,@isphoto,@metaupdatedby,@facilitykeys,@floorkeys,@zonekeys,@roomtypekeys,@OrganizationID) ', [scheduleKey,workorderkey, workordertypekey, equipmentkey, roomkeys, employeekey, priority, fromdate, todate, intervaltype, repeatinterval, occursonday, occursontime, occurstype, workordernote, isbar, isphoto, metaupdatedby, facilitykeys, floorkeys, zonekeys, roomtypekeys,OrganizationID], function (err, rows)
-    {
-        if (err) {
-            console.log(err);
+            connection.query('set @scheduleKey=?; set @workorderkey=?;set @workordertypekey=?;set @equipmentkey=?;set @roomkeys=?; set @employeekey=?; set @priority=?; set @fromdate=?; set @todate=?;set @intervaltype=?; set @repeatinterval=?;set @occursonday =?;set @occursontime =?;set @occurstype =?; set @workordernotes =?;set @isbar=?;set @isphoto=?;set @metaupdatedby=?; set @facilitykeys=?; set @floorkeys=?; set @zonekeys=?; set @roomtypekeys=?;set @OrganizationID=?; call usp_BatchScheduleAdd(@scheduleKey,@workorderkey,@workordertypekey,@equipmentkey,@roomkeys,@employeekey,@priority,@fromdate,@todate,@intervaltype,@repeatinterval,@occursonday,@occursontime,@occurstype,@workordernotes,@isbar,@isphoto,@metaupdatedby,@facilitykeys,@floorkeys,@zonekeys,@roomtypekeys,@OrganizationID) ', [scheduleKey, workorderkey, workordertypekey, equipmentkey, roomkeys, employeekey, priority, fromdate, todate, intervaltype, repeatinterval, occursonday, occursontime, occurstype, workordernote, isbar, isphoto, metaupdatedby, facilitykeys, floorkeys, zonekeys, roomtypekeys, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[23]));
+                }
+                // console.log(JSON.stringify(res));
+            });
+            // res.end("success");
         }
-        else
-        {
-            res.end(JSON.stringify(rows[23])); 
-        }
-        // console.log(JSON.stringify(res));
-    });
-    // res.end("success");
-    }
         connection.release();
     });
 
@@ -7097,19 +7095,17 @@ app.post(securedpath + '/addworkorderSchedulewithEquipment', supportCrossOriginS
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @scheduleKey=?; set @workorderkey=?;set @workordertypekey=?;set @equipmentkey=?;set @roomkeys=?; set @employeekey=?; set @priority=?; set @fromdate=?; set @todate=?;set @intervaltype=?; set @repeatinterval=?;set @occursonday =?;set @occursontime =?;set @occurstype =?; set @workordernotes =?;set @isbar=?;set @isphoto=?;set @metaupdatedby=?; set @facilitykeys=?; set @floorkeys=?; set @zonekeys=?; set @roomtypekeys=?;set @OrganizationID=?; call usp_addworkorderSchedulewithEquipment(@scheduleKey,@workorderkey,@workordertypekey,@equipmentkey,@roomkeys,@employeekey,@priority,@fromdate,@todate,@intervaltype,@repeatinterval,@occursonday,@occursontime,@occurstype,@workordernotes,@isbar,@isphoto,@metaupdatedby,@facilitykeys,@floorkeys,@zonekeys,@roomtypekeys,@OrganizationID) ', [scheduleKey,workorderkey, workordertypekey, equipmentkey, roomkeys, employeekey, priority, fromdate, todate, intervaltype, repeatinterval, occursonday, occursontime, occurstype, workordernote, isbar, isphoto, metaupdatedby, facilitykeys, floorkeys, zonekeys, roomtypekeys,OrganizationID], function (err, rows)
-    {
-        if (err) {
-            console.log(err);
+            connection.query('set @scheduleKey=?; set @workorderkey=?;set @workordertypekey=?;set @equipmentkey=?;set @roomkeys=?; set @employeekey=?; set @priority=?; set @fromdate=?; set @todate=?;set @intervaltype=?; set @repeatinterval=?;set @occursonday =?;set @occursontime =?;set @occurstype =?; set @workordernotes =?;set @isbar=?;set @isphoto=?;set @metaupdatedby=?; set @facilitykeys=?; set @floorkeys=?; set @zonekeys=?; set @roomtypekeys=?;set @OrganizationID=?; call usp_addworkorderSchedulewithEquipment(@scheduleKey,@workorderkey,@workordertypekey,@equipmentkey,@roomkeys,@employeekey,@priority,@fromdate,@todate,@intervaltype,@repeatinterval,@occursonday,@occursontime,@occurstype,@workordernotes,@isbar,@isphoto,@metaupdatedby,@facilitykeys,@floorkeys,@zonekeys,@roomtypekeys,@OrganizationID) ', [scheduleKey, workorderkey, workordertypekey, equipmentkey, roomkeys, employeekey, priority, fromdate, todate, intervaltype, repeatinterval, occursonday, occursontime, occurstype, workordernote, isbar, isphoto, metaupdatedby, facilitykeys, floorkeys, zonekeys, roomtypekeys, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[23]));
+                }
+                // console.log(JSON.stringify(res));
+            });
+            // res.end("success");
         }
-        else
-        {
-            res.end(JSON.stringify(rows[23]));
-        }
-        // console.log(JSON.stringify(res));
-    });
-    // res.end("success");
-    }
         connection.release();
     });
 
@@ -9269,9 +9265,9 @@ app.post(securedpath + '/deleteSelectedTemplateQuestion', supportCrossOriginScri
     res.header("Access-Control-Allow-Origin", "*");
     // var templateID = url.parse(req.url, true).query['templateID'];
     // var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-      var templateID = req.body.templateID;
+    var templateID = req.body.templateID;
     var OrganizationID = req.body.OrganizationID;
-//    var updatedBy = url.parse(req.url, true).query['updatedBy'];
+    //    var updatedBy = url.parse(req.url, true).query['updatedBy'];
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10839,7 +10835,7 @@ app.post(securedpath + '/pho1_Ang6', supportCrossOriginScript, function (req, re
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query(" set @wdk=?;set @imgname=?; set @employeekey=?; set @OrganizationID=?; set @complete_Time=?; call usp_WorkorderStatusUpdateByPhoto_Ang6(@wdk,@imgname,@employeekey,@OrganizationID,@complete_Time)", [wdkey, newPath, employeekey, OrganizationID,complete_Time], function (err, rows) {
+            connection.query(" set @wdk=?;set @imgname=?; set @employeekey=?; set @OrganizationID=?; set @complete_Time=?; call usp_WorkorderStatusUpdateByPhoto_Ang6(@wdk,@imgname,@employeekey,@OrganizationID,@complete_Time)", [wdkey, newPath, employeekey, OrganizationID, complete_Time], function (err, rows) {
                 if (err) {
                     console.log(err);
                 }
@@ -12721,11 +12717,11 @@ app.get(securedpath + '/getRoomTypeListForRoomEdit', function (req, res) {
 app.post(securedpath + '/deleteWorkOrderBatchSchedule', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var workschedulekey = req.body.workorderSchedulekey;
-   var OrganizationID = req.body.OrganizationID;
-    
-  
-  pool.getConnection(function (err, connection) {
-     if (err) {
+    var OrganizationID = req.body.OrganizationID;
+
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
@@ -13177,7 +13173,7 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
     var OrgID = newWOObj.OrgID;
     var DeptKey = newWOObj.DeptKey;
     var Evntype = newWOObj.Evntype;
-  
+
     //    var workorderTypeKey = newWOObj.workorderTypeKey;
     //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
 
@@ -13190,7 +13186,7 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query(" set @search_DT=?; set@search_DT2=?; set@employees=?; set@jobs=?; set @empKey=?; set @DeptKey=?; set @Evntype=?;set @OrgID=?;call usp_viewMeettingTrainingByAllFilter(@search_DT,@search_DT2,@employees,@jobs,@empKey,@DeptKey,@Evntype,@OrgID)", [search_DT, search_DT2, employees, jobs, empKey,DeptKey,Evntype,OrgID], function (err, rows) {
+            connection.query(" set @search_DT=?; set@search_DT2=?; set@employees=?; set@jobs=?; set @empKey=?; set @DeptKey=?; set @Evntype=?;set @OrgID=?;call usp_viewMeettingTrainingByAllFilter(@search_DT,@search_DT2,@employees,@jobs,@empKey,@DeptKey,@Evntype,@OrgID)", [search_DT, search_DT2, employees, jobs, empKey, DeptKey, Evntype, OrgID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -14102,12 +14098,12 @@ app.post(securedpath + '/getEmployeeForPie', function (req, res) {
 
 app.options('/addReview', supportCrossOriginScript);
 app.post(securedpath + '/addReview', supportCrossOriginScript, function (request, res) {
-  
+
     var Orgid = request.body.Orgid;
     var roomKey = request.body.roomKey;
     var starValue = request.body.starValue;
     var Comments = request.body.Comments;
-    var feedback_time = request.body.feedback_time; 
+    var feedback_time = request.body.feedback_time;
     // var Metacreated_dt = request.body.Metacreated_dt;
 
     pool.getConnection(function (err, connection) {
@@ -14117,7 +14113,7 @@ app.post(securedpath + '/addReview', supportCrossOriginScript, function (request
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @Orgid=?; set @roomKey=?; set @starValue=?; set @Comments=?; set @feedback_time=?; call usp_addReviews(@Orgid,@roomKey,@starValue,@Comments,@feedback_time)', [Orgid,roomKey,starValue,Comments,feedback_time], function (err, rows) {
+            connection.query('set @Orgid=?; set @roomKey=?; set @starValue=?; set @Comments=?; set @feedback_time=?; call usp_addReviews(@Orgid,@roomKey,@starValue,@Comments,@feedback_time)', [Orgid, roomKey, starValue, Comments, feedback_time], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
@@ -14951,6 +14947,58 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
 
 //Scheduled rooms by Prakash Ends Here
 
+//Code for manual cronjob procedure call by Rodney starts here
+
+//Cronjob for MST
+app.get(securedpath + '/cronjobMST', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('call usp_workOrdersBatchAddByEvent()', [], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("cronjobMST " + JSON.stringify(rows[0]));
+                    console.log("cronjob mst success");
+                    res.end(JSON.stringify(rows[0]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+//Cronjob for CST
+app.get(securedpath + '/cronjobCST', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('call usp_workOrdersBatchAddByEvent_CST()', [], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("cronjobCST " + JSON.stringify(rows[0]));
+                    console.log("cronjob cst success");
+                    res.end(JSON.stringify(rows[0]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+//Code for manual cronjob procedure call by Rodney ends here
 // Sendmail route
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
@@ -15044,26 +15092,24 @@ rule1.dayOfWeek = new scheduler.Range(0, 6);
 //                        var dailyJob = scheduler.scheduleJob(date, function(){
 //                         console.log('I run on days at 12:01 pm');
 //                        });
-scheduler.scheduleJob(rule1, function() {
-//var j = schedule.scheduleJob(rule, function(){
+scheduler.scheduleJob(rule1, function () {
+    //var j = schedule.scheduleJob(rule, function(){
 
-    pool.getConnection(function(err, connection) {
+    pool.getConnection(function (err, connection) {
         if (err) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-//            console.log("WoooooW!!!!****************************Scheduler Works");
-            connection.query('call usp_workOrdersBatchAddByEvent_CST()', [], function(err, rows) {
-//                                    connection.query('insert into trooworkdb.a_test_table (Roomkey)values(1001); ', [], function (err, rows) {
+            //            console.log("WoooooW!!!!****************************Scheduler Works");
+            connection.query('call usp_workOrdersBatchAddByEvent_CST()', [], function (err, rows) {
+                //                                    connection.query('insert into trooworkdb.a_test_table (Roomkey)values(1001); ', [], function (err, rows) {
 
-                if (err)
-                {
+                if (err) {
                     console.log("Problem with MySQL" + err);
                 }
-                else
-                {
+                else {
                     console.log("Scheduler...from server..");
-//                    res.end(JSON.stringify(rows[0]));
+                    //                    res.end(JSON.stringify(rows[0]));
                 }
             });
         }

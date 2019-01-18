@@ -1,20 +1,20 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
-<div *ngIf="!loading" style="background-color: #FFFFFF;margin-left: 10.5rem;margin-right: 15rem; padding-bottom: 2rem;width: 74.5%">
+<div *ngIf="!loading" style="margin-left: 10.5rem;margin-right: 15rem; padding-bottom: 2rem;width: 74.5%">
 
   <div style="text-align:center">
-    <h4 style="color: #174a5e;"><strong>VIEW DOCUMENTS</strong></h4>
+    <h4 style="color: #174a5e;">VIEW DOCUMENTS</h4>
   </div>
   <br>
-  <div class="row col-md-12">
-    <label class="col-sm-3 col-md-3 col-lg-3" style="margin-right: -2rem"> Document Folder</label><br>
-    <select style="background-color: #D4F4FF !important;" class="form-control col-sm-6 col-md-6 col-lg-6" [(ngModel)]="FormtypeId"
-      (change)="showFileDetailsTablebydropdown($event.target.value)">
+  <div class="row col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 2rem">
+    <label class="col-sm-3 col-md-3 col-lg-3 col" style="margin-right: -2rem"> Document Folder</label><br>
+    <select style="background-color: #D4F4FF !important;" class="form-control col-sm-6 col-md-6 col-lg-6 col"
+      [(ngModel)]="FormtypeId" (change)="showFileDetailsTablebydropdown($event.target.value)">
       <option value="">--Select--</option>
       <option *ngFor="let d of documentsList" [value]="d.FormtypeId">
         {{d.FormType}}
       </option>
     </select>
-    <button type="button" class="btn btn-primary col-sm-3 col-md-3 col-lg-3" style="margin-left: 1rem;margin-top: 0rem"
+    <button type="button" class="btn btn-primary col-sm-3 col-md-3 col-lg-3 col" style="margin-left: 1rem;margin-top: 0rem"
       (click)="RecentUpdates()"><b>SHOW
         RECENT
         UPLOADS</b></button>

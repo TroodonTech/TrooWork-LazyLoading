@@ -9,7 +9,7 @@ export class OrganizationService {
   constructor(private http: HttpClient) { }
 
   createOrganization(OrgName, OrgDesc, Location, State, Country, updatedby, TenName, OrgEmail, tenID) {
-    const url = ConectionSettings.Url+'/organizationAdd';
+    const url = ConectionSettings.Url + '/organizationAdd';
     const obj = {
       OrganizationName: OrgName,
       OrganizationDescription: OrgDesc,
@@ -28,10 +28,10 @@ export class OrganizationService {
   getOrganization(page, itemCount) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getOrganizationDetails?itemsPerPage=' + itemCount + '&pageNumber=' + page);
+      .get(ConectionSettings.Url + '/getOrganizationDetails?itemsPerPage=' + itemCount + '&pageNumber=' + page);
   }
   DeleteOrganization(orgkey, updatedby) {
-    const url = ConectionSettings.Url+'/deleteOrganizationDetailsByID';
+    const url = ConectionSettings.Url + '/deleteOrganizationDetailsByID';
     const obj = {
       OrganizationID: orgkey,
       metaUpdatedBy: updatedby
@@ -43,10 +43,10 @@ export class OrganizationService {
   ViewOrgDetailsforedit(OrgId) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getOrganizationDetailsByID?OrganizationID=' + OrgId);
+      .get(ConectionSettings.Url + '/getOrganizationDetailsByID?OrganizationID=' + OrgId);
   }
   UpdateOrganizationDetails(OName, ODesc, state, tid, loc, country, tename, email, updatedby, orgid) {
-    const url = ConectionSettings.Url+'/updateOrganizationDetailsByID';
+    const url = ConectionSettings.Url + '/updateOrganizationDetailsByID';
     const obj = {
       OrganizationName: OName,
       OrganizationDescription: ODesc,
@@ -67,6 +67,18 @@ export class OrganizationService {
   checkForTenantId(TenantID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/checkForTenantId?TenantID=' + TenantID);
+      .get(ConectionSettings.Url + '/checkForTenantId?TenantID=' + TenantID);
+  }
+
+  cronJob_MST() {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/cronjobMST');
+  }
+
+  cronJob_CST() {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/cronjobCST');
   }
 }

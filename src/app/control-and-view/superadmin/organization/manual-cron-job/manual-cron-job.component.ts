@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { OrganizationService } from '../../../../service/organization.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-manual-cron-job',
   templateUrl: './manual-cron-job.component.html',
@@ -7,7 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManualCronJobComponent implements OnInit {
 
-  constructor() { }
+  constructor(private organizationService: OrganizationService) { }
+
+  cronJobMST() {
+    /*
+    calling api from controller...
+    */
+    // return this
+    //   .http
+    //   .get(ConectionSettings.Url + '/cronjobMST').subscribe((data: any[]) => {
+    //     console.log("Success.. MST");
+    //   });
+
+    this.organizationService.cronJob_MST().subscribe((data: any[]) => { });
+  }
+
+  cronJobCST() {
+    this.organizationService.cronJob_CST().subscribe((data: any[]) => { });
+  }
 
   ngOnInit() {
   }

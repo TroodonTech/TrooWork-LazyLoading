@@ -1,15 +1,14 @@
- 
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <!-- <div class="bg-dark" style="width: 100%;height: 100%;"> -->
- 
-  <h4 class="refer"><b> ROOM</b> </h4>
+
+  <h4 class="refer"> ROOM </h4>
   <br>
   <div style="text-align:center">
     <a [routerLink]="['RoomCreate']" style="width: 13rem" class="btn btn-success" routerLinkActive="active">Create Room
     </a>
-    <a [routerLink]="['RoomTypeView']"  class="btn btn-success" routerLinkActive="active">Create/View Room Type
+    <a [routerLink]="['RoomTypeView']" class="btn btn-success" routerLinkActive="active">Create/View Room Type
     </a>
     <a [routerLink]="['FloorTypeView']" class="btn btn-success" routerLinkActive="active">Create/View FloorType
     </a>
@@ -107,8 +106,8 @@
           <td>{{ x.RoomTypeText }}</td>
           <td>{{ x.RoomName }}</td>
           <td>
-            <a  [routerLink]="['RoomEdit', x.RoomKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;
-            <a class="btn btn-danger"  (click)="basicModal.show();deleteRoomPass(x.RoomKey); "><b>Delete</b></a>
+            <a [routerLink]="['RoomEdit', x.RoomKey]" class="btn btn-primary"><b>Edit</b></a>&nbsp;
+            <a class="btn btn-danger" (click)="basicModal.show();deleteRoomPass(x.RoomKey); "><b>Delete</b></a>
           </td>
         </tr>
         <tr *ngIf="rooms?.length == 0">
