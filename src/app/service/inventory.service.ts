@@ -126,6 +126,18 @@ export class InventoryService {
       .http
       .get(ConectionSettings.Url+'/allfacility?empkey=' + empKey + '&OrganizationID=' + OrgID);
   }
+  CheckNewBuilding(FacilityName,type,employeekey,OrganizationID)
+  {
+    return this
+    .http
+    .get(ConectionSettings.Url+'/checkForNewInventory?checkValue=' + FacilityName + '&type=' + type+'&employeekey='+employeekey+ '&OrganizationID=' + OrganizationID);
+  }
+  CheckRoomType(RoomTypeName,type,employeekey,OrganizationID)
+  {
+    return this
+    .http
+    .get(ConectionSettings.Url+'/checkForNewInventory?checkValue=' + RoomTypeName + '&type=' + type+'&employeekey='+employeekey+ '&OrganizationID=' + OrganizationID);
+  }
 
   getallFloorList(facKey, OrgID) {
     return this

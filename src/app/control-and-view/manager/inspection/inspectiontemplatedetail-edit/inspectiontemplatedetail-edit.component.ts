@@ -138,12 +138,18 @@ export class InspectiontemplatedetailEditComponent implements OnInit {
 
         });
     }
+    this.inspectionService.checkforTemplate(this.TemplateEditDetails.TemplateName,this.OrganizationID).subscribe(res => {
+      if (res[0].count == 0){
     this.inspectionService
       .updateTemplateDetails(this.TemplateEditDetails.TemplateName, this.tempID, this.OrganizationID, this.TemplateEditDetails.ScoreTypeKey).subscribe(() => {
         alert("Successfully Updated");
         this._location.back();
       });
-
+    }
+    else{
+      alert("Template Name already exists !");
+    }
+  });
   }
   goBack(){
     this._location.back();
