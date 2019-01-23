@@ -57,10 +57,21 @@ export class JobTitleEditAdminComponent implements OnInit {
       alert('Job Title Description is not provided !');
       return;
     }
+    else {
+      this.peopleServiceService.CheckNewJobtitle(JobTitle,this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+        if (data[0].count > 0) {
+          alert("Job title already present !");
+          return;
+        }
+        else{
     this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+      alert('Job title  successfully updated !');
     this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['JobTitleViewAdmin'] } }]);
   });
+}
+});
   }
+}
 
   ngOnInit() {
     var token = localStorage.getItem('token');

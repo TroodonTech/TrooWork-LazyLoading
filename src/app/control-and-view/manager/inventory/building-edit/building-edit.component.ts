@@ -23,6 +23,7 @@ export class BuildingEditComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+ 
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -46,6 +47,9 @@ export class BuildingEditComponent implements OnInit {
   }
 
   updateBuilding(FacilityName, FacilityKey) {
+
+    var type= 'facility';
+ 
     if(!FacilityName){
       alert("Please Enter Building Name!");
         return;
@@ -54,12 +58,22 @@ export class BuildingEditComponent implements OnInit {
         alert("Please Enter Building Name!");
         return;
       }
+      else {
+        this.inventoryService.CheckNewBuilding(FacilityName,type,this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+          if (data.length > 0) {
+            alert("Building already present !");
+            return;
+          }
+          else{
     this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         alert("Building updated successfully");
         this._location.back();
       });
+    }
+    });
   }
+}
 
   ngOnInit() {
 

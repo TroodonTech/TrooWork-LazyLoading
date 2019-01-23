@@ -242,7 +242,12 @@ export class PeopleServiceService {
 
   }
   // ****@Pooja's Code Starts here****
-
+  CheckNewJobtitle(JobTitle,employeekey,OrganizationID)
+  {
+    return this
+    .http
+    .get(ConectionSettings.Url+'/checkForNewJobTittle?JobTitle='+ JobTitle+'&employeekey='+employeekey+'&OrganizationID='+OrganizationID);
+  }
   getManagerForEmployeeForSuperAdmin(OrgID)
   {
     return this
