@@ -15,7 +15,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
   public allViews;
 
   scheduleNameKey$: Object;
-
+  time1;
   scheduleNameList: Scheduling[];
   scheduleDetails: Scheduling[];
   role: String;
@@ -259,7 +259,11 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         } else {
           this.workScheduleEndDate = new Date(Date.now());
         }
-
+        var cur_time = new Date(Date.now());
+        var timeValue1 = this.scheduleDetails[0].BatchScheduleTime;
+        var test1 = timeValue1.split(":");
+        var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+        this.time1 = start;
       });
     this.scheduleService
       .getRoomDetailsForSchedule(scheduleKey, this.employeekey, this.OrganizationID)
@@ -471,7 +475,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var PhotCheck1;
         var workordertkey1;
         var workorderroomstring1;
-
+        var q = this.time1.getHours();
+        var q1 = this.time1.getMinutes();
+        var newTime = q + ":" + q1;
         for (var j = 0; j < this.roomList.length; j++) {
 
           workorderroomobj1.push(this.roomList[j].WorkOrderScheduleRoomID);
@@ -592,7 +598,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           WorkorderNotes: this.WorkorderNotes,
           OrganizationID: this.OrganizationID,
           fromdate: this.startDT,
-          todate: this.endDT
+          todate: this.endDT,
+          scheduleTime: newTime
         }
         this.scheduleService
           .setUpdateScheduleReport(this.scheduleUpdate).subscribe(res => {
@@ -630,7 +637,9 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var PHotCheck2;
         var WOrkordertkey2;
         var TEmproomidobj2;
-
+        var q = this.time1.getHours();
+        var q1 = this.time1.getMinutes();
+        var newTime = q + ":" + q1;
         for (var j = 0; j < this.roomTempList.length; j++) {
 
           temproomobj2.push(this.roomTempList[j].Temp_workorderbatchscheduleroomID);
@@ -751,7 +760,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           WorkorderNotes: this.WorkorderNotes,
           OrganizationID: this.OrganizationID,
           fromdate: this.startDT,
-          todate: this.endDT
+          todate: this.endDT,
+          scheduleTime: newTime
         }
 
 
@@ -829,7 +839,11 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         } else {
           this.workScheduleEndDate = new Date(Date.now());
         }
-
+        var cur_time = new Date(Date.now());
+        var timeValue1 = this.scheduleDetails[0].BatchScheduleTime;
+        var test1 = timeValue1.split(":");
+        var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+        this.time1 = start;
       });
     this.scheduleService
       .getRoomDetailsForSchedule(this.scheduleNameKey$, this.employeekey, this.OrganizationID)

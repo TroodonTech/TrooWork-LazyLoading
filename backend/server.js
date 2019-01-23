@@ -13109,7 +13109,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
     var OrganizationID = newWOObj.OrganizationID;
     var fromdate = newWOObj.fromdate;
     var todate = newWOObj.todate;
-
+    var scheduledTime = newWOObj.scheduleTime;
     //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
     // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
     pool.getConnection(function (err, connection) {
@@ -13119,7 +13119,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @temproomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?; call usp_saveScheduleReport(@temproomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate)", [temproomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate], function (err, rows) {
+            connection.query("set @temproomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?; call usp_saveScheduleReport(@temproomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime)", [temproomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -14919,7 +14919,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
     var OrganizationID = newWOObj.OrganizationID;
     var fromdate = newWOObj.fromdate;
     var todate = newWOObj.todate;
-
+    var scheduledTime = newWOObj.scheduleTime;
     //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
     // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
     pool.getConnection(function (err, connection) {
@@ -14929,7 +14929,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @workorderroomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?; call usp_updateScheduleReport(@workorderroomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate)", [workorderroomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate], function (err, rows) {
+            connection.query("set @workorderroomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?; call usp_updateScheduleReport(@workorderroomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime)", [workorderroomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -14999,6 +14999,31 @@ app.get(securedpath + '/cronjobCST', function (req, res) {
     });
 });
 //Code for manual cronjob procedure call by Rodney ends here
+//CronJob Details- Rodney starts here
+app.get(securedpath + '/cronjobworkorderCount', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('call usp_cronjob_workordersTotalcount()', [], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("cronjobworkorderCount " + JSON.stringify(rows[0]));
+                    res.end(JSON.stringify(rows[0]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+//CronJob Details- Rodney ends here
+
 // Sendmail route
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');

@@ -7,7 +7,7 @@
   <div class="col-md-12" style="background-color: white; width: 99%">
 
     <div class="row col-md-12">
-      <h5 style="margin-top: 2rem;" class="col-md-2"><label for="scheduling">Assignment Name: </label></h5>
+      <span style="margin-top: 2rem;" class="col-md-2"><label for="scheduling">Assignment Name: </label></span>
       <div class="md-form col-md-4" style="text-align:left">
         <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKey"
           (change)="getScheduleDetails($event.target.value)">
@@ -31,6 +31,11 @@
             Notes: </label></span>
         <div class=" col-md-3 ">
           <textarea cols="40" rows="4" [(ngModel)]="WorkorderNotes" class="form-control" maxlength="200" style=" margin-left: -0.6rem;width: 141% !important;"></textarea>
+        </div>
+        <span style="margin-top: 2rem;margin-left: 6.35rem" class="col-md-2"><label for="scheduling">Time: </label></span>
+        <div class=" col-md-4 ">
+          <p-calendar [inputStyle]="{'width':'222%','margin-top':'2rem','margin-left':'0.2rem'}" [(ngModel)]="time1"
+            [timeOnly]="true" hourFormat="12"></p-calendar>
         </div>
       </div>
     </div>

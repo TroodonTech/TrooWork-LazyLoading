@@ -81,4 +81,10 @@ export class OrganizationService {
       .http
       .get(ConectionSettings.Url + '/cronjobCST');
   }
+
+  cronJob_workordersCount() {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/cronjobworkorderCount');
+  }
 }

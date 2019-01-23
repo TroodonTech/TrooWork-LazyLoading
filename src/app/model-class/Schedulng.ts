@@ -7,4 +7,5 @@ export interface Scheduling {
     WorkorderNotes: String;
     workScheduleEndDate: Date;
     workScheduleStartDate: Date;
+    BatchScheduleTime: any;
 }

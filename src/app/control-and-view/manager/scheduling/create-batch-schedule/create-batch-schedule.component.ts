@@ -30,6 +30,7 @@ export class CreateBatchScheduleComponent implements OnInit {
   startDT: any;
   endDT: any;
   CreateDis;
+  time1;
   //for table view..... starts......
   totalMonTime: any = 0;
   totalTuesTime: any = 0;
@@ -255,7 +256,11 @@ export class CreateBatchScheduleComponent implements OnInit {
         } else {
           this.workScheduleEndDate = new Date(Date.now());
         }
-
+        var cur_time = new Date(Date.now());
+        var timeValue1 = this.scheduleDetails[0].BatchScheduleTime;
+        var test1 = timeValue1.split(":");
+        var start = new Date(cur_time.getFullYear(), cur_time.getMonth(), cur_time.getDate(), test1[0], test1[1], 0);
+        this.time1 = start;
       });
     this.scheduleService
       .getRoomDetailsForSchedule(scheduleKey, this.employeekey, this.OrganizationID)
@@ -468,7 +473,9 @@ export class CreateBatchScheduleComponent implements OnInit {
         var PhotCheck1;
         var workordertkey1;
         var workorderroomstring1;
-
+        var q = this.time1.getHours();
+        var q1 = this.time1.getMinutes();
+        var newTime = q + ":" + q1;
         for (var j = 0; j < this.roomList.length; j++) {
 
           workorderroomobj1.push(this.roomList[j].WorkOrderScheduleRoomID);
@@ -590,7 +597,8 @@ export class CreateBatchScheduleComponent implements OnInit {
           WorkorderNotes: this.WorkorderNotes,
           OrganizationID: this.OrganizationID,
           fromdate: this.startDT,
-          todate: this.endDT
+          todate: this.endDT,
+          scheduleTime: newTime
         }
         this.scheduleService
           .setUpdateScheduleReport(this.scheduleUpdate).subscribe(res => {
@@ -628,7 +636,9 @@ export class CreateBatchScheduleComponent implements OnInit {
         var PHotCheck2;
         var WOrkordertkey2;
         var TEmproomidobj2;
-
+        var q = this.time1.getHours();
+        var q1 = this.time1.getMinutes();
+        var newTime = q + ":" + q1;
         for (var j = 0; j < this.roomTempList.length; j++) {
 
           temproomobj2.push(this.roomTempList[j].Temp_workorderbatchscheduleroomID);
@@ -740,7 +750,8 @@ export class CreateBatchScheduleComponent implements OnInit {
           WorkorderNotes: this.WorkorderNotes,
           OrganizationID: this.OrganizationID,
           fromdate: this.startDT,
-          todate: this.endDT
+          todate: this.endDT,
+          scheduleTime: newTime
         }
 
 
@@ -751,7 +762,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           });
       }
     }
-    
+
   }
   reload() {
     // executeFlag
