@@ -12,9 +12,9 @@ var fs = require('fs');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var bodyParser = require('body-parser');
-
-//var index = require('./routes/index');
-//var users = require('./routes/users');
+var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
+var scheduler = require('node-schedule');
 
 function supportCrossOriginScript(req, res, next) {
     res.status(200);
@@ -29,13 +29,9 @@ var jwtsecret = config.app.jwtsecret;
 var viewpath = config.app.views; // setting webui tree location.
 var securedpath = config.app.securedpath;
 console.log('--------------------->' + securedpath);
-// view engine setup
-//app.engine('.html', require('ejs').renderFile);
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     //    res.header("Access-Control-Allow-Origin", "http://localhost:8100");
@@ -49,33 +45,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, config.app.views)));
 
-//app.use('/', index);
-//app.use('/users', users);
 
-// catch 404 and forward to error handler
-/*
- app.use(function(req, res, next) {
- var err = new Error('Not Found');
- err.status = 404;
- next(err);
- });
- */
-/*
- // error handler
- app.use(function(err, req, res, next) {
- // set locals, only providing error in development
- res.locals.message = err.message;
- res.locals.error = req.app.get('env') === 'development' ? err : {};
- 
- // render the error page
- res.status(err.status || 500);
- res.render('error');
- });
- */
 
 app.get('/', function (req, res) {
-    //res.sendFile(__dirname + "/index.html");
-    //res.send('Index page');
+    
     res.sendStatus(200);
 });
 
@@ -104,49 +77,6 @@ app.get('/file/:name', function (req, res, next) {
 });
 
 
-//var connection = mysql.createConnection({
-//    host: config.db.host,
-//    user: config.db.user,
-//    password: config.db.password,
-//    database: config.db.database,
-//    multipleStatements: true
-//});
-//
-//function DBConnectionTry(req, res, next) {
-//    connection.connect(function (error) {
-//        if (error) {
-////            connection.release();
-//            console.log("Failed! Connection with Database spicnspan without pool failed");
-//            DBConnectionTry();
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan without pool succeeded");
-//        }
-//    });
-//}
-//DBConnectionTry();
-
-//var connection = mysql.createConnection({
-//    host: config.db.host,
-//    user: config.db.user,
-//    password: config.db.password,
-//    database: config.db.database,
-//    multipleStatements: true
-//});
-//
-//function DBConnectionTry(req, res, next) {
-//    connection.connect(function (error) {
-//        if (error) {
-////            connection.release();
-//            console.log("Failed! Connection with Database spicnspan without pool failed");
-////            DBConnectionTry();
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan without pool succeeded");
-//        }
-//    });
-//}
-//DBConnectionTry();
 
 
 var pool = mysql.createPool({
@@ -187,48 +117,6 @@ DBPoolConnectionTry();
 
 
 
-//BEGIN - rest resource end points definition ******************************************************************
-/*****************firstname***************/
-/*
- app.get('/firstnamex', function (req, res) {
- res.header("Access-Control-Allow-Origin", "*");
- pool.query("SELECT * from employee", function (err, rows) {
- if (err){
- console.log("Problem with MySQL" + err);
- }
- else{
- res.end(JSON.stringify(rows));
- }
- });
- });
- 
- app.get('/lastnamex', function (req, res) {
- res.header("Access-Control-Allow-Origin", "*");
- var user_query = 'SELECT EmployeeKey, LastName from employee';
- 
- pool.getConnection(function(err, connectionx) {
- if (err) {
- connectionx.release();
- res.json({ "code": 100, "status": "Error in establishing database connection" });
- return;
- }
- 
- connectionx.query(user_query, function(err, rows, fields, next) {
- if (err) next(err);
- //if (err) console.log(err.message);    return;
- 
- if (rows.length == 0) {
- console.log("No device token found for user: " + 16182);
- res.json({ "code": 100, "status": "No data returned from database" });
- //callback(null, null);
- } else {
- res.end(JSON.stringify(rows));
- }
- }
- )});
- });
- */
-//END - rest resource end points definition ********************************************************************
 
 /*************START MIGRATE CODE**********************************************************/
 var user_return = '';
@@ -241,20 +129,14 @@ app.options('/authenticate', supportCrossOriginScript);
 
 app.post('/authenticate', supportCrossOriginScript, function (req, res) {
 
-    //var userid = url.parse(req.url, true).query['uname'];
+    
     var userid = req.body.uname;
-    // console.log("inside server username= " + userid);
-    //var password = url.parse(req.url, true).query['pwd'];
+   
     var password = req.body.pwd;
     var tenantId = req.body.tid;
-    // console.log("inside server password= " + password);
+    
     var profile = {};
-    //     var encr_pass = md5(pwd);
-    //      console.log("inside server password= " + encr_pass);
-
-    //var id_return = '';
-    //pool.query("SELECT * from login where username='" + u_name + "' and password='" + pwdd + "' ", [u_name, pwdd], function (err, employees)
-    //   DBConnectionTry();
+    
     DBPoolConnectionTry();
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -268,12 +150,9 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
                     console.log("INSIDE errr() condition in /authenticate " + JSON.stringify(err));
                 }
                 console.log("entire response  " + JSON.stringify(employees));
-                //        console.log("userid "+userid+" password "+password+" tenantid"+tenantid);
-                //        console.log("DEMANDED VALUES GOT " + JSON.stringify(employees[2][0]));
-                //        console.log("Inside server " + JSON.stringify(employees[2][0]));
+             
                 if (!employees[3][0]) {// if returns a void json like '[]'
-                    // 
-                    // res.status(401).send('Wrong user or password');
+                    
                     console.log('Wrong user or password');
 
                     res.end('Wrong user or password');
@@ -283,27 +162,16 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
 
                     user_return = employees[3][0]["UserId"];
                     organization = employees[3][0]["OrganizationName"];
-                    //            pass_return = employees[2][0]["Password"];
+                    
                     username_return = employees[3][0]["UserName"];
                     role_return = employees[3][0]["UserRole"];
-                    //            id_return = employees[2][0]["Idlogin"];
+                   
                     employeekey_return = employees[3][0]["EmployeeKey"];
                     isSupervisor = employees[3][0]["IsSupervisor"];
                     organizationID = employees[3][0]["OrganizationID"];
 
 
-                    // console.log('Employee key again : ' + employeekey_return);
-                    // console.log('Employee name again : ' + user_return);
-                    // console.log('Employee role again : ' + role_return);
-                    // console.log('Employee username again : ' + username_return);
-                    // console.log('IsSupervisor: ' + isSupervisor);
-                    //            profile={
-                    //                
-                    //            }
-                    //             var token = jwt.sign(user_return,pass_return,secret, {expiresInMinutes: 60 * 5});
-
-                    //        res.json({token: token});
-                    //        console.log(token);
+                   
                     profile = {
                         user: user_return,
                         username: username_return,
@@ -317,7 +185,7 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
                 }
                 // We are sending the profile inside the token
                 var jwttoken = jwt.sign(profile, jwtsecret, { expiresIn: '4h' });
-                //                var jwttoken = jwt.sign(profile, jwtsecret, {expiresIn: '60000'});
+               
                 res.cookie('refresh-token', jwttoken, 'httpOnly', 'secure')   //, 'secure','httpOnly')  '1h' //use for https
                     .json({ token: jwttoken });
                 console.log("jwttoken" + jwttoken);
@@ -327,22 +195,6 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
     });
 });
 
-// app.all('/*', function (req, res, next) {
-// // CORS headers
-//     response.addHeader("Access-Control-Allow-Origin", "*");
-//     res.addHeader("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-// // Set custom headers for CORS
-//     res.header('Access-Control-Allow-Headers', 'Authorization,Content-type,Accept,X-Access-Token,X-Key');
-
-//     if (req.method === 'OPTIONS') {
-//         res.status(200).end();
-//     } else {
-//         next();
-//     }
-// });
-// We are going to protect /api routes and hookup with jwtCheck
 
 
 //method to verify jwt token. all secured path will pass thru here
@@ -380,24 +232,10 @@ app.post('/authenticate', supportCrossOriginScript, function (req, res) {
 
 // app.use(securedpath, jwtCheck);
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: true}));
-// //app.use('/', express.static(__dirname + '/'));
-// app.use(function (err, req, res, next) {
-//     if (err.name === 'UnauthorizedError') {
-//         res.send(401, 'invalid token.');
-//     }
-//  else
-//      callRestricted();
-// });
+
 // *********************code for form uploads-web starts **********************
 //var multerUploadPath_photo = './webui/pho1';// use ../webui/uploads for cloud.
 var locationinTable = 'pho1/';
-//if (config.db.host === 'us-cdbr-azure-west-b.cleardb.com') {
-//    var locationinTable = 'pho1/';
-//} else { 
-//    var locationinTable = 'pho1/';
-//}
 
 //var multerUploadPath = './webui/uploads';// use ../webui/uploads for cloud.
 var multerUploadPath = '';
@@ -417,10 +255,9 @@ var storage = multer.diskStorage({
             var formDesc = url.parse(req.url, true).query['formDesc'];
             var empkey = url.parse(req.url, true).query['empkey'];
             var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-            //            var datetimestamp = Date.now();
-            //            var filename = datetimestamp + '.' + file.originalname;
+         
             var filename = file.originalname;
-            //            var emp = '100';
+            
             console.log(" SSSSSSSSSSSSSSSSSS fid fdesc fname are  " + formtypeId + " " + formDesc + " " + filename + " " + multerUploadPath);
             callback(null, file.originalname);
 
@@ -441,13 +278,11 @@ var storage = multer.diskStorage({
         }
         else if (url.parse(req.url, true).query['Workorderkey']) {
             console.log("VVVVVVVVVVVVVVVV inside storage_WOPhoto XXXXXXXXXXXXXXXXXXXXXXXXX" + multerUploadPath);
-            //            var datetimestamp = Date.now();
-            //            var filename = datetimestamp + '.' + file.originalname;
+      
             var filename = file.originalname;
             var wdkey = url.parse(req.url, true).query['Workorderkey'];
             var employeekey = url.parse(req.url, true).query['EmployeeKey'];
-            //            var newPath = "" + locationinTable;
-            //            newPath = newPath + filename;
+           
             var newPath = filename;
             callback(null, filename);
             console.log("pho " + filename + " wdkey " + wdkey + " employeekey " + employeekey);
@@ -521,13 +356,12 @@ var storage_WOPhoto = multer.diskStorage({
     },
     filename: function (req, file, callback) {
         console.log("TRYING DB INSERTION");
-        //        var datetimestamp = Date.now();
+     
         var filename = file.originalname;
 
         var wdkey = url.parse(req.url, true).query['Workorderkey'];
         var employeekey = url.parse(req.url, true).query['EmployeeKey'];
-        //        var newPath = "" + locationinTable;
-        //        newPath = newPath + filename;
+       
         var newPath = filename;
         console.log("pho" + filename + " wdkey " + wdkey + " employeekey " + employeekey);
         pool.getConnection(function (err, connection) {
@@ -564,7 +398,7 @@ app.get('/', function (req, res) {
 });
 
 app.post(securedpath + '/photo', function (req, res, file) {
-    //     var datetimestamp = Date.now();
+ 
     var fname = file.fieldname;
 
     upload(req, res, function (err) {
@@ -661,18 +495,14 @@ app.get(securedpath + '/equ', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[0]));
-                    // console.log("JSON.stringify(rows)");
-                    // console.log(JSON.stringify(rows));
+                    
                 }
             });
         }
         connection.release();
     });
 });
-//floortype name
 
-
-//ZoneName
 
 app.get(securedpath + '/zone', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -689,7 +519,7 @@ app.get(securedpath + '/zone', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[0]));
-                    // console.log(JSON.stringify(rows));
+                   
                 }
             });
         }
@@ -697,7 +527,6 @@ app.get(securedpath + '/zone', function (req, res) {
     });
 });
 
-//RoomType
 
 app.get(securedpath + '/room', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -714,7 +543,7 @@ app.get(securedpath + '/room', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[0]));
-                    // console.log(JSON.stringify(rows));
+                 
                 }
             });
         }
@@ -722,7 +551,7 @@ app.get(securedpath + '/room', function (req, res) {
     });
 });
 
-//RoomId
+
 
 
 app.get(securedpath + '/roomid', function (req, res) {
@@ -740,7 +569,7 @@ app.get(securedpath + '/roomid', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[0]));
-                    // console.log(JSON.stringify(rows));
+                    
                 }
             });
         }
@@ -750,7 +579,7 @@ app.get(securedpath + '/roomid', function (req, res) {
 
 
 
-//ShiftType
+
 
 
 app.get(securedpath + '/empList', function (req, res) {
@@ -768,8 +597,7 @@ app.get(securedpath + '/empList', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[0]));
-                    //  console.log("INSIDE EMPLOYEE FETCH");
-                    //  console.log(JSON.stringify(rows));
+                    
                 }
             });
         }
@@ -779,12 +607,10 @@ app.get(securedpath + '/empList', function (req, res) {
 
 
 
-//viewworkorder_Filter
 
 
 
 
-//dropdown departmentname
 
 app.get(securedpath + '/department', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -803,7 +629,7 @@ app.get(securedpath + '/department', function (req, res) {
                 }
                 else {
                     res.end(JSON.stringify(rows[2]));
-                    //console.log("department" +rows)
+                    
                 }
             });
         }
@@ -828,7 +654,7 @@ app.get(securedpath + '/getroomType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log("RoomType......" + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[0]));
                 }
             });
@@ -842,7 +668,7 @@ app.get(securedpath + '/roomtype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fkey = url.parse(req.url, true).query['fkey'];
 
-    // console.log("Fac key for rooom" + fkey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -855,7 +681,7 @@ app.get(securedpath + '/roomtype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -875,7 +701,6 @@ app.get(securedpath + '/roomtypeByFacility_Zone', function (req, res) {
     var zon = url.parse(req.url, true).query['zonekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    // console.log("Fac key for roomtypene" + fkey);
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -888,7 +713,7 @@ app.get(securedpath + '/roomtypeByFacility_Zone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -935,7 +760,7 @@ app.get(securedpath + '/allequipmenttype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //   console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[0]));
                 }
             });
@@ -948,7 +773,7 @@ app.get(securedpath + '/equipByEquiptype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var etype = url.parse(req.url, true).query['eqtype'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("eq type key for eqtype" + etype);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -961,7 +786,7 @@ app.get(securedpath + '/equipByEquiptype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log("equipByEquiptype...." + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -973,13 +798,13 @@ app.get(securedpath + '/equipByEquiptype', function (req, res) {
 app.options('/addNewTemplates_Question', supportCrossOriginScript);
 app.post(securedpath + '/addNewTemplates_Question', supportCrossOriginScript, function (req, res) {
     var question = url.parse(req.url, true).query['question'];
-    // console.log("question" + question);
+    
     var templateId = url.parse(req.url, true).query['TemplateID'];
-    // console.log("TemplateID" + templateId);
+  
     var ScoringTypeKey = url.parse(req.url, true).query['ScoringTypeKey'];
-    // console.log("scoringkey" + ScoringTypeKey);
+   
     var frequency = url.parse(req.url, true).query['frequency'];
-    // console.log("frequency" + frequency);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1006,7 +831,7 @@ app.get(securedpath + '/getShiftInCharge', function (req, res) {
     var zone = url.parse(req.url, true).query['zone'];
     var startDate = url.parse(req.url, true).query['startDate'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("for shift in charge values are " + shift + " " + zone+ " "+startDate);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1019,7 +844,7 @@ app.get(securedpath + '/getShiftInCharge', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //   console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -1073,8 +898,7 @@ app.get(securedpath + '/scanforWorkorder_emp', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //   console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -1105,7 +929,7 @@ app.get(securedpath + '/getUniqueFloorName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[0]));
 
                 }
@@ -1130,7 +954,7 @@ app.get(securedpath + '/getUniqueZoneName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows));
+                
                     res.end(JSON.stringify(rows[0]));
 
                 }
@@ -1155,7 +979,7 @@ app.get(securedpath + '/getUniqueRoomTypeName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[0]));
 
                 }
@@ -1179,7 +1003,7 @@ app.get(securedpath + '/getUniqueRoomName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[0]));
 
                 }
@@ -1205,7 +1029,7 @@ app.get(securedpath + '/getEquipmentTypeName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getEquipmentTypeName"+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -1218,23 +1042,6 @@ app.get(securedpath + '/getEquipmentTypeName', function (req, res) {
 
 
 
-//app.get('/getInspectionorderBY_inspectionorderDate', function (req, res) {
-//    var inspectionorderDate = url.parse(req.url, true).query['inspectionorderDate'];
-//
-//    pool.query('set @inspectionorderDate=?;call tm_getInspectionorderBY_inspectionorderDate(@inspectionorderDate)', [inspectionorderDate], function (err, rows)
-//    {
-//        if (err)
-//        {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else
-//        {
-//            console.log("getInspectionorderBY_inspectionorderDate " + JSON.stringify(rows[1]));
-//            res.end(JSON.stringify(rows[1]));
-//
-//        }
-//    });
-//});
 
 
 app.get(securedpath + '/getAllEquipment', function (req, res) {
@@ -1281,7 +1088,7 @@ app.get(securedpath + '/getFloorZoneByRTypeRoom', function (req, res) {
                 }
                 else {
 
-                    //            console.log("editEmp_scheduling " + JSON.stringify(rows));
+               
                     res.end(JSON.stringify(rows));
 
 
@@ -1297,35 +1104,35 @@ app.options('/workorder_creation', supportCrossOriginScript);
 
 app.post(securedpath + '/workorder_creation', supportCrossOriginScript, function (request, response) {
     var workordertypekey = url.parse(request.url, true).query['workordertypekey'];
-    // console.log("inside server wot= " + workordertypekey);
+    
     var equipmentkey = url.parse(request.url, true).query['equipmenttypekey'];
-    // console.log("inside server equipmentkey= " + equipmentkey);
+ 
     var roomkeys = url.parse(request.url, true).query['roomkeys'];
-    // console.log("inside server roomkey= " + roomkeys);
+    
     var employeekey = url.parse(request.url, true).query['employeekey'];
-    // console.log("inside server empkey= " + employeekey);
+    
     var priority = url.parse(request.url, true).query['priority'];
-    // console.log("inside server priority= " + priority);
+  
     var isrecurring = url.parse(request.url, true).query['isrecurring'];
-    // console.log("inside server isrecurring= " + isrecurring);
+    
     var fromdate = url.parse(request.url, true).query['fromdate'];
-    // console.log("inside server fromdate= " + fromdate);
+    
     var todate = url.parse(request.url, true).query['todate'];
-    // console.log("inside server todate= " + todate);
+   
     var intervaltype = url.parse(request.url, true).query['intervaltype'];
-    // console.log("inside server intervaltype= " + intervaltype);
+    
     var repeatinterval = url.parse(request.url, true).query['repeatinterval'];
-    // console.log("inside server repeatinterval= " + repeatinterval);
+   
     var occurenceinstance = url.parse(request.url, true).query['occurenceinstance'];
-    // console.log("inside server occurenceinstance= " + occurenceinstance);
+    
     var occurenceday = url.parse(request.url, true).query['occurenceday'];
-    // console.log("inside server occurenceday= " + occurenceday);
+    
     var occurenceat = url.parse(request.url, true).query['occurenceat'];
-    // console.log("inside server occurenceat= " + occurenceat);
+ 
     var note = url.parse(request.url, true).query['note'];
     var isbar = url.parse(request.url, true).query['isbar'];
     var isphoto = url.parse(request.url, true).query['isphoto'];
-    // console.log("3 VAlues are tot=16 " + note + " " + isbar + " " + isphoto);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1337,7 +1144,7 @@ app.post(securedpath + '/workorder_creation', supportCrossOriginScript, function
                 if (err) {
                     console.log(err);
                 }
-                // console.log(JSON.stringify(res));
+                
             });
         }
         connection.release();
@@ -1378,69 +1185,7 @@ app.post(securedpath + '/workorder_creation', supportCrossOriginScript, function
 
 //Jeffy code Starts
 
-// app.post('/authenticate', function (req, res) {
 
-//     var userid = url.parse(req.url, true).query['uname'];
-//     console.log("inside server username= " + userid);
-//     var password = url.parse(req.url, true).query['pwd'];
-//     console.log("inside server password= " + password);
-//     var profile = {};
-// //     var encr_pass = md5(pwd);
-// //      console.log("inside server password= " + encr_pass);
-
-//     //var id_return = '';
-//     //pool.query("SELECT * from login where username='" + u_name + "' and password='" + pwdd + "' ", [u_name, pwdd], function (err, employees)
-//     pool.query("set @u_name=?;set @pwdd=?;call usp_userLogin(@u_name,@pwdd)", [userid, password], function (err, employees)
-//     {
-//         if (err) {
-//             console.log(err);
-//         }
-//         console.log("DEMANDED VALUES GOT " + JSON.stringify(employees[2][0]));
-// //        console.log("Inside server " + JSON.stringify(employees[2][0]));
-//         if (!employees[2][0]) {// if returns a void json like '[]'
-// // 
-//             res.status(401).send('Wrong user or password');
-//             console.log('Wrong user or password');
-//             return;
-//         } else {
-// //            console.log('Employee : ' + employees[2][0]["UserName"]);
-
-//             user_return = employees[2][0]["UserId"];
-// //            pass_return = employees[2][0]["Password"];
-//             username_return = employees[2][0]["UserName"];
-//             role_return = employees[2][0]["UserRole"];
-// //            id_return = employees[2][0]["Idlogin"];
-//             employeekey_return = employees[2][0]["EmployeeKey"];
-//             isSupervisor = employees[2][0]["IsSupervisor"];
-
-//             console.log('Employee key again : ' + employeekey_return);
-//             console.log('Employee name again : ' + user_return);
-//             console.log('Employee role again : ' + role_return);
-//             console.log('Employee username again : ' + username_return);
-//             console.log('IsSupervisor: ' + isSupervisor);
-// //            profile={
-// //                
-// //            }
-// //             var token = jwt.sign(user_return,pass_return,secret, {expiresInMinutes: 60 * 5});
-
-// //        res.json({token: token});
-// //        console.log(token);
-//             profile = {
-//                 user: user_return,
-//                 username: username_return,
-//                 role: role_return,
-//                 employeekey: employeekey_return,
-// //            password: pass_return,
-//                 IsSupervisor: isSupervisor
-
-//             };
-//         }
-//         // We are sending the profile inside the token
-//         var token = jwt.sign(profile,secret, {expiresInMinutes: 60 * 5});
-
-//         res.json({token: token});
-//     });
-// });
 
 app.get(securedpath + '/empSearchTable', function (req, res) {// not using now 
     res.header("Access-Control-Allow-Origin", "*");
@@ -1460,7 +1205,7 @@ app.get(securedpath + '/empSearchTable', function (req, res) {// not using now
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log(JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -1490,7 +1235,7 @@ app.post(securedpath + '/removeEmployee', supportCrossOriginScript, function (re
                 }
                 else {
 
-                    // console.log("removeEmployee " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[3]));
 
 
@@ -1504,7 +1249,7 @@ app.post(securedpath + '/removeEmployee', supportCrossOriginScript, function (re
 
 app.get(securedpath + '/meetingTraining', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    // console.log("inside server");
+    
     var empKey = url.parse(req.url, true).query['empKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -1519,7 +1264,7 @@ app.get(securedpath + '/meetingTraining', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -1557,7 +1302,7 @@ app.post(securedpath + '/sharedStatusButton', supportCrossOriginScript, function
                 }
                 else {
 
-                    // console.log("removeEmployee " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
 
 
@@ -1570,8 +1315,7 @@ app.post(securedpath + '/sharedStatusButton', supportCrossOriginScript, function
 });
 app.get(securedpath + '/selectShift', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside server");
-    //    connection.query("SELECT * from shifttype;", function (err, rows) {
+    
     var domainkey = "shifttypes";
     var empkey = 100;// shift types are not org boounded
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -1617,7 +1361,7 @@ app.get(securedpath + '/allfacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("I GOT FACILITIES AS " + JSON.stringify(rows[2]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -1626,7 +1370,7 @@ app.get(securedpath + '/allfacility', function (req, res) {
         connection.release();
     });
 
-    //    res.end();
+   
 });
 
 app.get(securedpath + '/viewScheduleNameList', function (req, res) {
@@ -1648,7 +1392,7 @@ app.get(securedpath + '/viewScheduleNameList', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("I GOT FACILITIES AS " + JSON.stringify(rows[3]));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
                 res.end();
@@ -1664,7 +1408,7 @@ app.get(securedpath + '/viewScheduleNameList', function (req, res) {
 app.get(securedpath + '/scoringtype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
 
-    //    connection.query('SELECT * from scoringtype', function (err, rows)
+    
     var domainkey = "scoretypes";
     var empkey = 100;
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -1683,7 +1427,7 @@ app.get(securedpath + '/scoringtype', function (req, res) {
                 else {
 
                     res.end(JSON.stringify(rows[3]));
-                    //            console.log(JSON.stringify(rows[1]));
+                    
                 }
             });
         }
@@ -1694,7 +1438,7 @@ app.get(securedpath + '/scoringtype', function (req, res) {
 
 app.get(securedpath + '/selectJobtitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside selectJobtitle");
+  
     var domainkey = "jobtitles";
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -1712,8 +1456,7 @@ app.get(securedpath + '/selectJobtitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside selectJobtitle");
-                    // console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -1725,9 +1468,7 @@ app.get(securedpath + '/addNewJobTitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
+   
     //  
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -1742,8 +1483,7 @@ app.get(securedpath + '/addNewJobTitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -1755,8 +1495,7 @@ app.post(securedpath + '/deleteJobTitleSelected', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var jobTitlekey = req.body.JobTitleKey;
     var OrganizationID = req.body.OrganizationID;
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1777,33 +1516,7 @@ app.post(securedpath + '/deleteJobTitleSelected', function (req, res) {
         connection.release();
     });
 });
-//app.post(securedpath + '/deleteJobTitleSelected', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var jobTitlekey = url.parse(req.url, true).query['JobTitleKey'];
-////   var jobTitlekey = req.body.JobTitleKey;
-//    console.log("FOR DELETION JOB TITLE KEY IS " + jobTitlekey);
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query('set @jobTitlekey=?; call usp_deleteJobTitleSelected(@jobTitlekey)', [jobTitlekey], function (err, rows) {
-//        if (err) {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else {
-//            console.log("deleteForm  is  " + JSON.stringify(rows));
-//
-//            res.end(JSON.stringify(rows));
-//        }
-//        res.end();
-//    });
-//    }
-//        connection.release();
-//    });
-//});
+
 app.post(securedpath + '/deleteDepartment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var DepartmentKey = req.body.DepartmentKey;
@@ -1835,7 +1548,7 @@ app.post(securedpath + '/deleteWorkOrderType', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var WorkorderTypeKey = req.body.WorkorderTypeKey;
     var OrganizationID = req.body.OrganizationID;
-    //   var DepartmentKey = req.body.DepartmentKey;
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1861,7 +1574,7 @@ app.post(securedpath + '/deleteWorkOrderType', function (req, res) {
 app.post(securedpath + '/deleteWorkorderstatus', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var WorkorderStatusKey = url.parse(req.url, true).query['WorkorderStatusKey'];
-    //   var DepartmentKey = req.body.DepartmentKey;
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1888,7 +1601,7 @@ app.post(securedpath + '/getWorkorderstatusbyId', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var StatusKey = url.parse(req.url, true).query['StatusKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //   var DepartmentKey = req.body.DepartmentKey;
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1930,8 +1643,7 @@ app.get(securedpath + '/viewDepartmentpage', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -1941,10 +1653,7 @@ app.get(securedpath + '/viewDepartmentpage', function (req, res) {
 });
 app.get(securedpath + '/viewDepartment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
-    //  
+    
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -1960,8 +1669,7 @@ app.get(securedpath + '/viewDepartment', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -1976,10 +1684,7 @@ app.get(securedpath + '/viewWorkorderType', function (req, res) {
     var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
-    //  
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1993,8 +1698,7 @@ app.get(securedpath + '/viewWorkorderType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -2004,11 +1708,7 @@ app.get(securedpath + '/viewWorkorderType', function (req, res) {
 });
 app.post(securedpath + '/addJobTitleNew', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
-    //var jobtittle = url.parse(req.url, true).query['jobtittle'];
-    //var jobdesciption = url.parse(req.url, true).query['jobdesciption'];
+    
     var JobTitle = req.body.JobTitle;
     var JobTitleDescription = req.body.JobTitleDescription;
     console.log(JobTitle + "" + JobTitleDescription);
@@ -2027,8 +1727,7 @@ app.post(securedpath + '/addJobTitleNew', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -2038,12 +1737,7 @@ app.post(securedpath + '/addJobTitleNew', function (req, res) {
 });
 app.post(securedpath + '/addNewWorkordertype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
-    //var jobtittle = url.parse(req.url, true).query['jobtittle'];
-    //var jobdesciption = url.parse(req.url, true).query['jobdesciption'];
-    //    var WorkorderTypeKey = req.body.WorkorderTypeKey;
+    
     var WorkorderTypeName = req.body.WorkorderTypeName;
     var Repeatable = req.body.Repeatable;
     var Frequency = req.body.Frequency;
@@ -2070,8 +1764,7 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[7]));
                 }
             });
@@ -2081,15 +1774,11 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
 });
 app.post(securedpath + '/addNewDepartment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    console.log("inside addNewJobTitle");
-    //    var domainkey = "jobtitles";
-    //    var empkey = 100;
-    //var jobtittle = url.parse(req.url, true).query['jobtittle'];
-    //var jobdesciption = url.parse(req.url, true).query['jobdesciption'];
+    
     var DepartmentName = req.body.DepartmentName;
     var empkey = req.body.empkey;
     var OrganizationID = req.body.OrganizationID;
-    //    var jobdesciption = req.body.jobdesciption;
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2103,8 +1792,7 @@ app.post(securedpath + '/addNewDepartment', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log("inside addNewJobTitle");
-                    // console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -2117,7 +1805,7 @@ app.get(securedpath + '/editviewJobTitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var JobTitleKey = url.parse(req.url, true).query['JobTitleKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //   var JobTitleKey = req.body.JobTitleKey;
+    
     console.log("FOR VIEW EDIT JOB TITLE KEY IS " + JobTitleKey);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2146,7 +1834,7 @@ app.get(securedpath + '/editviewWorkOrderType', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var WorkorderTypeKey = url.parse(req.url, true).query['WorkorderTypeKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //   var JobTitleKey = req.body.JobTitleKey;
+    
     console.log("FOR VIEW EDIT JOB TITLE KEY IS " + WorkorderTypeKey + "  OrganizationID  =" + OrganizationID);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2174,7 +1862,7 @@ app.get(securedpath + '/editviewWorkOrderType', function (req, res) {
 app.get(securedpath + '/editviewDepartment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var DepartmentKey = url.parse(req.url, true).query['DepartmentKey'];
-    //  var DepartmentKey = req.body.DepartmentKey;
+    
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2201,16 +1889,13 @@ app.get(securedpath + '/editviewDepartment', function (req, res) {
 
 app.post(securedpath + '/updateSelectedJobTitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
-    //    var jobtittlekey = url.parse(req.url, true).query['jobtittlekey'];
+    
     var jobtittlekey = req.body.JobTitleKey;
     var jobtittle = req.body.JobTitle;
     var jobdescription = req.body.JobTitleDescription;
     var empkey = req.body.empkey;
     var OrganizationID = req.body.OrganizationID;
-    //    var jobtittlekey = req.body.JobTitleKey;
-    //    var jobtittle = req.body.JobTitle;
-    //    var jobdescription = req.body.JobTitleDescription;
+    
     console.log(" INSIDE UPDATING JOBTITLE " + jobtittlekey + " " + jobtittle + " " + jobdescription);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2225,7 +1910,7 @@ app.post(securedpath + '/updateSelectedJobTitle', function (req, res) {
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[4]));
+                 
                     res.end(JSON.stringify(rows[5]));
 
 
@@ -2238,8 +1923,7 @@ app.post(securedpath + '/updateSelectedJobTitle', function (req, res) {
 
 app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
-    //    var jobtittlekey = url.parse(req.url, true).query['jobtittlekey'];
+    
     var WorkorderTypeKey = req.body.WorkorderTypeKey;
     var WorkorderTypeName = req.body.WorkorderTypeName;
     var RoomTypeKey = req.body.RoomTypeKey;
@@ -2247,9 +1931,7 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
     var Repeatable = req.body.Repeatable;
     var WorkorderTime = req.body.WorkorderTime;
     var OrganizationID = req.body.OrganizationID;
-    //    var jobtittlekey = req.body.JobTitleKey;
-    //    var jobtittle = req.body.JobTitle;
-    //    var jobdescription = req.body.JobTitleDescription;
+    
     console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2264,7 +1946,7 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[7]));
 
 
@@ -2276,15 +1958,13 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
 });
 app.post(securedpath + '/editSelectedDepartment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
+   
     var empkey = req.body.empkey;
     var DepartmentKey = req.body.DepartmentKey;
     var DepartmentName = req.body.DepartmentName;
     var OrganizationID = req.body.OrganizationID;
 
-    //    var DepartmentKey = req.body.DepartmentKey;
-    //    var departmentName = req.body.DepartmentName;
-    //    var jobdescription = req.body.jobdescription;
+
     console.log(" INSIDE UPDATING Department " + DepartmentKey + " " + DepartmentName);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2299,7 +1979,7 @@ app.post(securedpath + '/editSelectedDepartment', function (req, res) {
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[3]));
+                   
                     res.end(JSON.stringify(rows[3]));
 
 
@@ -2314,7 +1994,7 @@ app.get(securedpath + '/empDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['SearchKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("skey is " + empkey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2327,7 +2007,7 @@ app.get(securedpath + '/empDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log(JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -2352,7 +2032,7 @@ app.get(securedpath + '/getallEquipments', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //              console.log(JSON.stringify(rows[1]));
+              
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -2442,13 +2122,12 @@ app.get(securedpath + '/getEmployeeStatus', function (req, res) {
 
 app.options('/update_employee_info', supportCrossOriginScript);
 app.post(securedpath + '/update_employee_info', supportCrossOriginScript, function (req, response) {
-    // console.log("inside update");
-    //    console.log("empAddition"+empSchedule.FirstName);
+    
 
 
     var employeekey = req.body.EmployeeKey;
     var metaupdatedby = req.body.managerKey;
-    // console.log("metaupdatedby" + metaupdatedby);
+    
     var employeenumber = req.body.EmployeeNumber;
     var firstname = req.body.FirstName;
     var middlename = req.body.MiddleName;
@@ -2494,7 +2173,7 @@ app.post(securedpath + '/update_employee_info', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("update_employee_info"+JSON.stringify(rows[25]));
+                  
                     response.end(JSON.stringify(rows[34]));
                 }
             });
@@ -2512,8 +2191,7 @@ app.post(securedpath + '/defaultEvent_shift', supportCrossOriginScript, function
     var endtime = url.parse(req.url, true).query['etime'];
     var empType = url.parse(req.url, true).query['shiftTypes'];
     var count = url.parse(req.url, true).query['count'];
-    // console.log("actionKey " + actiontypeKey + "eventhost " + eventhost + "venue " + venue + "meetingDate " + meetingDate + "stime..." + starttime + "..etime..." + endtime + "shiftTypes..." + empType);
-    pool.getConnection(function (err, connection) {
+      pool.getConnection(function (err, connection) {
         if (err) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
@@ -2538,7 +2216,7 @@ app.options('/defaultEvent_employee', supportCrossOriginScript);
 app.post(securedpath + '/defaultEvent_employee', supportCrossOriginScript, function (req, res) {
 
     var actiontypeKey = url.parse(req.url, true).query['actiontypeKey'];
-    // console.log("actionType Key obtained " + actiontypeKey);
+  
     var venue = url.parse(req.url, true).query['venue'];
     var meetingDate = url.parse(req.url, true).query['mdate'];
     var eventhost = url.parse(req.url, true).query['eventhost'];
@@ -2546,7 +2224,7 @@ app.post(securedpath + '/defaultEvent_employee', supportCrossOriginScript, funct
     var starttime = url.parse(req.url, true).query['stime'];
     var count = url.parse(req.url, true).query['count'];
     var empType = url.parse(req.url, true).query['selectedEmployee'];
-    // console.log("meetingName.. " + actiontypeKey + "venue.." + venue + "meetingDate.. " + meetingDate + "startTime.. " + starttime + "endTime.." + endtime + "selectedEmployee.. " + empType + "eventhost.." + eventhost + "count.." + count);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2586,7 +2264,7 @@ app.get(securedpath + '/selectFacility_zone', function (req, res) {
                 }
                 else {
 
-                    //            console.log("getEquipment "+JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[2]));
 
 
@@ -2612,7 +2290,7 @@ app.get(securedpath + '/selectFacility_room', function (req, res) {
                 }
                 else {
 
-                    //            console.log("getEquipment "+JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -2625,7 +2303,7 @@ app.get(securedpath + '/selectFacility_room', function (req, res) {
 
 app.options('/newEvent_employee', supportCrossOriginScript);
 app.post(securedpath + '/newEvent_employee', supportCrossOriginScript, function (req, res) {
-    // console.log("inside newEvent_employee");
+    
     var eventType = url.parse(req.url, true).query['eventType'];
     var eventName = url.parse(req.url, true).query['eventName'];
     var eventDescription = url.parse(req.url, true).query['eventDescription'];
@@ -2637,7 +2315,7 @@ app.post(securedpath + '/newEvent_employee', supportCrossOriginScript, function 
     var count = url.parse(req.url, true).query['count'];
     var selectedEmployee = url.parse(req.url, true).query['selectedEmployee'];
     var metaupdatedby = employeekey_return;
-    // console.log("eventType.. " + eventType + "eventName..." + eventName + "eventDescription..." + eventDescription + "venue.." + venue + "meetingDate.. " + meetingDate + "startTime.. " + starttime + "endTime.." + endtime + "selectedEmployee.. " + selectedEmployee + "eventhost.." + eventhost + "count.." + count);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2665,7 +2343,7 @@ app.get(securedpath + '/empKey_byJobtitle', function (req, res) {
     var jobTitle = url.parse(req.url, true).query['jobTitle'];
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("inside ...jobTitle..." + jobTitle);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2678,8 +2356,7 @@ app.get(securedpath + '/empKey_byJobtitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -2727,7 +2404,7 @@ app.post(securedpath + '/addScheduling_Supervisor', supportCrossOriginScript, fu
     var supervisor = req.body.supervisorKey;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("inside addSchedulingBy_shift " + start_date + " " + end_date + " " + shiftTypeKey + " " + supervisor + "  " + zone);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2752,7 +2429,7 @@ app.post(securedpath + '/addScheduling_Supervisor', supportCrossOriginScript, fu
 
 app.get(securedpath + '/editEmp_scheduling', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var employeeCalendar_Id = url.parse(req.url, true).query['employeeCalendar_Id'];
+  
     var shift_Key = url.parse(req.url, true).query['shift_Key'];
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -2767,7 +2444,7 @@ app.get(securedpath + '/editEmp_scheduling', function (req, res) {
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -2794,7 +2471,7 @@ app.get(securedpath + '/editSupervisor_scheduling', function (req, res) {
                 }
                 else {
 
-                    // console.log("editSupervisor_scheduling " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -2805,20 +2482,20 @@ app.get(securedpath + '/editSupervisor_scheduling', function (req, res) {
     });
 });
 //add addTemplatequestion - :Pooja's code starts
-// app.options('/addTemplatequestion', supportCrossOriginScript);
+
 app.post(securedpath + '/addTemplatequestion', supportCrossOriginScript, function (req, res) {
     var newobject = {};
     newobject = req.body;
     var question = newobject.question;
-    // console.log("question" + question);
+ 
     var templatename = newobject.templatename;
-    // console.log("TemplateID" + templatename);
+
     var ScoringTypeKey = newobject.scoringTypeKey;
-    // console.log("scoringkey" + ScoringTypeKey);
-    //    var frequency =newobject.frequency;
+ 
+ 
     var metaupdatedby = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
-    // console.log("frequency" + frequency);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2875,7 +2552,7 @@ app.get(securedpath + '/viewAllInspectionByDates', function (req, res) {
     var search_DT2 = url.parse(req.url, true).query['search_DT2'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var filter = url.parse(req.url, true).query['filter']; 
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2888,7 +2565,7 @@ app.get(securedpath + '/viewAllInspectionByDates', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("gettodaysMeeting "+ JSON.stringify(rows));
+                 
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -2902,7 +2579,7 @@ app.get(securedpath + '/getAllTemplates', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var scoringTypeKey = url.parse(req.url, true).query['scoringTypeKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("getAllTemplates.....scoringTypeKey...." + scoringTypeKey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2917,7 +2594,7 @@ app.get(securedpath + '/getAllTemplates', function (req, res) {
                 else {
 
                     res.end(JSON.stringify(rows[2]));
-                    //            console.log("getAllTemplates obtained " + JSON.stringify(rows[1]));
+                    
                 }
             });
         }
@@ -2929,7 +2606,7 @@ app.get(securedpath + '/floorByFacility', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fkey = url.parse(req.url, true).query['fkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for floo" + fkey);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2942,7 +2619,7 @@ app.get(securedpath + '/floorByFacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -2955,7 +2632,7 @@ app.get(securedpath + '/zoneByFacility', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fkey = url.parse(req.url, true).query['fkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for zone" + fkey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2968,7 +2645,7 @@ app.get(securedpath + '/zoneByFacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -2982,7 +2659,7 @@ app.get(securedpath + '/roomtypeByFacility', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fkey = url.parse(req.url, true).query['fkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("roomtypeByFacility " + fkey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -2995,7 +2672,7 @@ app.get(securedpath + '/roomtypeByFacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -3008,7 +2685,7 @@ app.get(securedpath + '/roomByFacility', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fkey = url.parse(req.url, true).query['fkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for rooom" + fkey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3021,7 +2698,7 @@ app.get(securedpath + '/roomByFacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -3048,7 +2725,7 @@ app.get(securedpath + '/zoneByFacility_Floor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3058,20 +2735,7 @@ app.get(securedpath + '/zoneByFacility_Floor', function (req, res) {
 });
 
 
-//app.get('/roomtypeByFacility_Floor', function (req, res) {
-//    var fkey = url.parse(req.url, true).query['fkey'];
-//    var flkey = url.parse(req.url, true).query['floorkey'];
-//    console.log("Fac key for roomtypene" + fkey);
-//    pool.query("select distinct rt.RoomtypeKey,rt.RoomType from roomtype rt inner join room r on rt.RoomtypeKey= r.RoomtypeKey where r.IsDeleted = 0 and r.FacilityKey=? and r.FloorKey=?", [fkey, flkey], function (err, rows) {
-//        if (err) {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else {
-//              console.log(JSON.stringify(rows));
-//            res.end(JSON.stringify(rows));
-//        }
-//    });
-//});
+
 
 app.get(securedpath + '/roomtypeByFacility_Floor_zone', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -3079,8 +2743,7 @@ app.get(securedpath + '/roomtypeByFacility_Floor_zone', function (req, res) {
     var flkey = url.parse(req.url, true).query['floorkey'];
     var zon = url.parse(req.url, true).query['zonekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for roomtypene" + fkey + " usp_getRoomtypeByFacility_Floor_zone called");
-    //    pool.query("set @fkey=?;set @flkey=?;set @zon=?;call usp_getRoomtypeByFacility_Floor_zone(@fkey,@flkey,@zon)", [fkey, flkey, zon], function (err, rows) {
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3093,7 +2756,7 @@ app.get(securedpath + '/roomtypeByFacility_Floor_zone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -3108,7 +2771,7 @@ app.get(securedpath + '/roomByFacility_Floor_zone', function (req, res) {
     var flkey = url.parse(req.url, true).query['floorkey'];
     var zon = url.parse(req.url, true).query['zonekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for rooom" + fkey);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3121,7 +2784,7 @@ app.get(securedpath + '/roomByFacility_Floor_zone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -3135,7 +2798,7 @@ app.get(securedpath + '/roomByFacility_Zone', function (req, res) {
     var fkey = url.parse(req.url, true).query['fkey'];
     var zone = url.parse(req.url, true).query['zonekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for rooom" + fkey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3148,7 +2811,7 @@ app.get(securedpath + '/roomByFacility_Zone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3164,7 +2827,7 @@ app.get(securedpath + '/roomByFacility_Floor_Zone_RoomType', function (req, res)
     var zone = url.parse(req.url, true).query['zonekey'];
     var roomtype = url.parse(req.url, true).query['roomtype'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("roomtype " + roomtype);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3177,7 +2840,7 @@ app.get(securedpath + '/roomByFacility_Floor_Zone_RoomType', function (req, res)
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -3192,7 +2855,7 @@ app.get(securedpath + '/roomByFacility_Floor_RoomType', function (req, res) {
     var floor = url.parse(req.url, true).query['floorkey'];
     var roomtype = url.parse(req.url, true).query['roomtype'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("roomtype " + roomtype);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3205,7 +2868,7 @@ app.get(securedpath + '/roomByFacility_Floor_RoomType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -3220,7 +2883,7 @@ app.get(securedpath + '/roomByFacility_Zone_RoomType', function (req, res) {
     var zone = url.parse(req.url, true).query['zonekey'];
     var roomtype = url.parse(req.url, true).query['roomtype'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("roomtype " + roomtype);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3234,7 +2897,7 @@ app.get(securedpath + '/roomByFacility_Zone_RoomType', function (req, res) {
                 }
                 else {
 
-                    //console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -3248,7 +2911,7 @@ app.get(securedpath + '/roomByFacility_RoomType', function (req, res) {
     var fkey = url.parse(req.url, true).query['fkey'];
     var roomtype = url.parse(req.url, true).query['roomtype'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("roomtype " + roomtype);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3261,7 +2924,7 @@ app.get(securedpath + '/roomByFacility_RoomType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3274,7 +2937,7 @@ app.get(securedpath + '/getRoomIdsByFac_Rtype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var fac = url.parse(req.url, true).query['facility'];
     var rt = url.parse(req.url, true).query['rtype'];
-    // console.log("for rooms 1values are " + fac + " " + rt);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3287,7 +2950,7 @@ app.get(securedpath + '/getRoomIdsByFac_Rtype', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -3302,7 +2965,7 @@ app.get(securedpath + '/getRoomIdsByFac_Floor_Rtype', function (req, res) {
     var fac = url.parse(req.url, true).query['facility'];
     var floor = url.parse(req.url, true).query['floor'];
     var rt = url.parse(req.url, true).query['rtype'];
-    // console.log("for rooms 1values are " + fac + " " + rt);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3315,7 +2978,7 @@ app.get(securedpath + '/getRoomIdsByFac_Floor_Rtype', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //   console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3329,7 +2992,7 @@ app.get(securedpath + '/getRoomIdsByFac_Zone_Rtype', function (req, res) {
     var fac = url.parse(req.url, true).query['facility'];
     var zone = url.parse(req.url, true).query['zone'];
     var rt = url.parse(req.url, true).query['rtype'];
-    // console.log("for rooms 1values are " + fac + " " + rt);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3342,7 +3005,7 @@ app.get(securedpath + '/getRoomIdsByFac_Zone_Rtype', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3355,7 +3018,7 @@ app.get(securedpath + '/getFloor_zonekeyByFac_Rkey', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var facility = url.parse(req.url, true).query['facility'];
     var roomkey = url.parse(req.url, true).query['roomkey'];
-    // console.log("facility  is " + facility + "rtype is " + roomkey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3368,7 +3031,7 @@ app.get(securedpath + '/getFloor_zonekeyByFac_Rkey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[2]));
 
                 }
@@ -3383,7 +3046,7 @@ app.get(securedpath + '/getZonekeyByFac_floor_Rkey', function (req, res) {
     var facility = url.parse(req.url, true).query['facility'];
     var roomkey = url.parse(req.url, true).query['roomkey'];
     var floorkey = url.parse(req.url, true).query['floorkey'];
-    // console.log("facility  is " + facility + "rtype is " + roomkey);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3396,7 +3059,7 @@ app.get(securedpath + '/getZonekeyByFac_floor_Rkey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
 
                 }
@@ -3411,7 +3074,7 @@ app.get(securedpath + '/getFloorkeyByFac_zone_Rkey', function (req, res) {
     var facility = url.parse(req.url, true).query['facility'];
     var roomkey = url.parse(req.url, true).query['roomkey'];
     var zonekey = url.parse(req.url, true).query['zonekey'];
-    // console.log("facility  is " + facility + "rtype is " + roomkey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3424,7 +3087,7 @@ app.get(securedpath + '/getFloorkeyByFac_zone_Rkey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
 
                 }
@@ -3434,21 +3097,7 @@ app.get(securedpath + '/getFloorkeyByFac_zone_Rkey', function (req, res) {
     });
 });
 
-//app.get('/roomByFacility_Floor', function (req, res) {
-//    var fkey = url.parse(req.url, true).query['fkey'];
-//    var floor = url.parse(req.url, true).query['floorkey'];
-//   
-//   
-//    pool.query("select r.RoomId,r.RoomKey from room r where r.IsDeleted = 0 and r.FacilityKey=? and r.FloorKey=?", [fkey, floor], function (err, rows) {
-//        if (err) {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else {
-//              console.log(JSON.stringify(rows));
-//            res.end(JSON.stringify(rows));
-//        }
-//    });
-//});
+
 
 app.get(securedpath + '/selectMorningShift', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -3466,7 +3115,7 @@ app.get(securedpath + '/selectMorningShift', function (req, res) {
                 }
                 else {
 
-                    //            console.log("selectMorningShift " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3493,7 +3142,7 @@ app.get(securedpath + '/selectEveningShift', function (req, res) {
                 }
                 else {
 
-                    //            console.log("selectEveningShift " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3521,7 +3170,7 @@ app.get(securedpath + '/selectNightShift', function (req, res) {
                 }
                 else {
 
-                    //            console.log("selectNightShift " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3549,7 +3198,7 @@ app.get(securedpath + '/MorningShift_supervisor', function (req, res) {
                 }
                 else {
 
-                    //            console.log("MorningShift_supervisor " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3577,7 +3226,7 @@ app.get(securedpath + '/EveningShift_supervisor', function (req, res) {
                 }
                 else {
 
-                    //            console.log("EveningShift_supervisor " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3604,7 +3253,7 @@ app.get(securedpath + '/NightShift_supervisor', function (req, res) {
                 }
                 else {
 
-                    //            console.log("NightShift_supervisor " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
 
 
@@ -3636,7 +3285,7 @@ app.post(securedpath + '/updateSupervisorSchedule', supportCrossOriginScript, fu
                 }
                 else {
 
-                    //            console.log("updateSupervisorSchedule " + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows));
 
 
@@ -3652,7 +3301,7 @@ app.get(securedpath + '/allFormtype', function (req, res) {
     var domainkey = "formtype";
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //  
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -3666,7 +3315,7 @@ app.get(securedpath + '/allFormtype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("allFormtype " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3675,15 +3324,7 @@ app.get(securedpath + '/allFormtype', function (req, res) {
     });
 });
 
-//photo view starts
-//app.get(securedpath + '/view_uploads', function (req, res, next) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    fs.readdir('./webui/uploads/', function (err, files) {// for cloud server ../webui/uploads/
-//        if (err)
-//            return next(err);
-//   updateFormDetails     res.send(files);
-//    });
-//});
+
 
 //photo view starts
 app.get(securedpath + '/view_uploads', function (req, res, next) {
@@ -3705,7 +3346,7 @@ app.get(securedpath + '/view_uploads', function (req, res, next) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("getfacilityById " + JSON.stringify(rows[3]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -3732,7 +3373,7 @@ app.get(securedpath + '/uploadsByFormType', function (req, res, next) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("getfacilityById " + JSON.stringify(rows[2]));
+              
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3743,7 +3384,7 @@ app.get(securedpath + '/uploadsByFormType', function (req, res, next) {
 
 app.get(securedpath + '/viewimage/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var wdk = url.parse(req.url, true).query['wd'];
+   
     var img = url.parse(req.url, true).query['img'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     fs.readdir('uploads/img', function (err, files) {
@@ -3771,7 +3412,7 @@ app.get(securedpath + '/getfacilityById', function (req, res) {
                 }
                 else {
 
-                    //            console.log("getfacilityById " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
 
 
@@ -3785,7 +3426,7 @@ app.get(securedpath + '/getfacilityById', function (req, res) {
 
 app.get(securedpath + '/getFloorById', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var facility = url.parse(req.url, true).query['facKey'];
+    
     var floor = url.parse(req.url, true).query['floorKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -3801,7 +3442,7 @@ app.get(securedpath + '/getFloorById', function (req, res) {
                 }
                 else {
 
-                    //            console.log("getFloorById " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
 
 
@@ -3815,7 +3456,7 @@ app.get(securedpath + '/getFloorById', function (req, res) {
 
 app.get(securedpath + '/getScheduleById', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var facility = url.parse(req.url, true).query['facKey'];
+  
     var bkey = url.parse(req.url, true).query['bkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -3831,7 +3472,7 @@ app.get(securedpath + '/getScheduleById', function (req, res) {
                 }
                 else {
 
-                    //            console.log("getScheduleById " + JSON.stringify(rows[1]));
+                
                     res.end(JSON.stringify(rows[2]));
 
 
@@ -3849,8 +3490,7 @@ app.post(securedpath + '/deleteFacility', supportCrossOriginScript, function (re
     var newobject = {};
     newobject = req.body;
     var facility_key = newobject.facility_key;
-    // var facility_key = url.parse(req.url, true).query['facility_key'];
-    // console.log("fac_key " + facility_key);
+  
     var metaupdatedby = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
     pool.getConnection(function (err, connection) {
@@ -3880,12 +3520,12 @@ app.post(securedpath + '/addfacility', supportCrossOriginScript, function (req, 
     var newobject = {};
     newobject = req.body;
     var facility = newobject.fac;
-    // console.log("facility" + facility);
+  
     var userId = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
 
 
-    // var facility = req.body.fac;  var userId = req.body.employeekey;  var OrganizationID = req.body.OrganizationID;
+    
 
     var facilityKey = -99;
     pool.getConnection(function (err, connection) {
@@ -3899,7 +3539,7 @@ app.post(securedpath + '/addfacility', supportCrossOriginScript, function (req, 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //            console.log("ROWS" + JSON.stringify(rows[3]));
+             
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -3908,13 +3548,13 @@ app.post(securedpath + '/addfacility', supportCrossOriginScript, function (req, 
     });
 });
 
-// app.options('/updateFacility', supportCrossOriginScript);
+
 app.post(securedpath + '/updateFacility', supportCrossOriginScript, function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var newobject = {};
     newobject = req.body;
     var facility_key = newobject.facility_key;
-    // var facility_key = url.parse(req.url, true).query['facility_key'];
+    
     var facility_name = newobject.facility_name;
     var metaupdatedby = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
@@ -3930,7 +3570,7 @@ app.post(securedpath + '/updateFacility', supportCrossOriginScript, function (re
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[4]));
 
                 }
@@ -3958,7 +3598,7 @@ app.get(securedpath + '/getAllfacility_floor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllfacility_floor" + JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[4]));
 
                 }
@@ -3974,11 +3614,11 @@ app.post(securedpath + '/deleteFloor', supportCrossOriginScript, function (req, 
     var newobject = {};
     newobject = req.body;
     var floor_key = newobject.FloorKey;
-    // var floor_key = url.parse(req.url, true).query['FloorKey'];
+  
     var facility_key = newobject.FacilityKey;
     var metaupdatedby = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
-    // console.log("facility_key,floor_key " + facility_key + " " + floor_key);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4004,9 +3644,7 @@ app.options('/deleteBatchName', supportCrossOriginScript);
 app.post(securedpath + '/deleteBatchName', supportCrossOriginScript, function (req, res) {
     var batchKey = url.parse(req.url, true).query['batchKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var facility_key = url.parse(req.url, true).query['facility_key'];
-    //    var metaupdatedby = url.parse(req.url, true).query['employeekey'];
-    // console.log("facility_key,floor_key " + facility_key + " " + floor_key);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4035,13 +3673,13 @@ app.post(securedpath + '/addnewfloor', supportCrossOriginScript, function (req, 
     var newobject = {};
     newobject = req.body;
     var FacilityKey = newobject.FacilityKey;
-    // var FacilityKey = url.parse(req.url, true).query['FacilityKey'];
+  
     var FloorName = newobject.FloorName;
     var FloorDescription = newobject.FloorDescription;
     var floorKey = newobject.floorKey;
     var userId = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
-    // console.log("facility" + facilityKey, floorKey, floorDescription);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4053,7 +3691,7 @@ app.post(securedpath + '/addnewfloor', supportCrossOriginScript, function (req, 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //               console.log("addnewfloor ROWS" + JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -4070,8 +3708,7 @@ app.post(securedpath + '/addnewbatchName', supportCrossOriginScript, function (r
     var empkey = req.body.EmployeeKey;
     var managerKey = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    //    var namekey = req.body.BatchScheduleNameKey;
-    // console.log("facility" + facilityKey, floorKey, floorDescription);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4083,7 +3720,7 @@ app.post(securedpath + '/addnewbatchName', supportCrossOriginScript, function (r
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //               console.log("addnewfloor ROWS" + JSON.stringify(rows[4]));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -4096,12 +3733,12 @@ app.post(securedpath + '/addnewbatchName', supportCrossOriginScript, function (r
 app.options('/addnewWorkorderStatus', supportCrossOriginScript);
 app.post(securedpath + '/addnewWorkorderStatus', supportCrossOriginScript, function (req, res) {
 
-    //    var facilityKey = req.body.FacilityKey;
+   
     var WorkorderStatus = req.body.WorkorderStatus;
     var WorkorderStatusDescription = req.body.WorkorderStatusDescription;
-    //    var floorKey = -99;
+
     var employeekey = req.body.employeekey;
-    // console.log("facility" + facilityKey, floorKey, floorDescription);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4113,7 +3750,7 @@ app.post(securedpath + '/addnewWorkorderStatus', supportCrossOriginScript, funct
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //               console.log("addnewWorkorderStatus ROWS" + JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -4127,13 +3764,13 @@ app.post(securedpath + '/updateFloor', supportCrossOriginScript, function (req, 
     var newobject = {};
     newobject = req.body;
     var facilityKey = newobject.FacilityKey;
-    // var facilityKey = url.parse(req.url, true).query['FacilityKey'];
+    
     var floorName = newobject.FloorName;
     var floorDescription = newobject.FloorDescription;
     var floorKey = newobject.FloorKey;
     var userId = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
-    // console.log("facility" + facilityKey, floorKey, floorDescription, floorName);
+ 
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -4147,7 +3784,7 @@ app.post(securedpath + '/updateFloor', supportCrossOriginScript, function (req, 
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -4177,7 +3814,7 @@ app.post(securedpath + '/empSelectWithFilterInMeetCreate', function (req, res) {
                 }
                 else {
 
-                    // console.log("editSupervisor_scheduling " + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[5]));
 
 
@@ -4196,7 +3833,7 @@ app.post(securedpath + '/updateScheduleName', supportCrossOriginScript, function
     var bkey = req.body.bskey;
     var managerkey = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("facility" + facilityKey, floorKey, floorDescription, floorName);
+
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -4210,7 +3847,7 @@ app.post(securedpath + '/updateScheduleName', supportCrossOriginScript, function
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -4225,9 +3862,9 @@ app.post(securedpath + '/updateWorkorderStatus', supportCrossOriginScript, funct
     var WorkorderStatus = req.body.WorkorderStatus;
     var WorkorderStatusDescription = req.body.WorkorderStatusDescription;
     var WorkorderStatusKey = req.body.WorkorderStatusKey;
-    //    var floorKey = req.body.FloorKey;
+  
     var userId = req.body.employeekey;
-    // console.log("facility" + facilityKey, floorKey, floorDescription, floorName);
+  
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -4241,7 +3878,7 @@ app.post(securedpath + '/updateWorkorderStatus', supportCrossOriginScript, funct
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -4268,7 +3905,7 @@ app.get(securedpath + '/getAllfacility_floor_zone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("getAllfacility_floor_zone"+JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[4]));
 
                 }
@@ -4281,7 +3918,7 @@ app.get(securedpath + '/getZoneById', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var zone_key = url.parse(req.url, true).query['zoneKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("zone key" + zone_key);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4294,7 +3931,7 @@ app.get(securedpath + '/getZoneById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[1][0]));
+                    
                     res.end(JSON.stringify(rows[2][0]));
 
                 }
@@ -4309,7 +3946,7 @@ app.post(securedpath + '/addInspectionOrder', supportCrossOriginScript, function
     var employeekey = req.body.supervisorKey;
     var inspectiondate = req.body.inspectiondate;
     var timer = req.body.inspectiontime;
-    //    var roomkeylist = req.body.roomKey;
+
     var metaupdatedby = req.body.metaUpdatedBy;
     var workorderKeys = req.body.workorderkeylist;
     console.log("workorderKeys" + workorderKeys + "template..." + templateid + "employee..." + employeekey + "inspectiondate...." + inspectiondate + "metaupdatedby.." + metaupdatedby);
@@ -4349,7 +3986,7 @@ app.get(securedpath + '/getAllFloor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(" " + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -4363,12 +4000,12 @@ app.post(securedpath + '/addnewzone', supportCrossOriginScript, function (req, r
     var newobject = {};
     newobject = req.body;
     var FacilityKey = newobject.facility;
-    // var FacilityKey = url.parse(req.url, true).query['facility'];
+    
     var FloorName = newobject.floor;
     var ZoneName = newobject.zone;
     var employeekey = newobject.employeekey;
     var OrganizationID = newobject.OrganizationID;
-    // console.log(facility, floor, zone);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4380,7 +4017,7 @@ app.post(securedpath + '/addnewzone', supportCrossOriginScript, function (req, r
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //               console.log("ROWS addnewzone" + JSON.stringify(rows));
+         
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4399,7 +4036,7 @@ app.post(securedpath + '/updateZone', supportCrossOriginScript, function (req, r
     var zone_name = req.body.ZoneName;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log(facility_key, floor_key, facility_name, floor_name, zone_key, zone_name);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4412,7 +4049,7 @@ app.post(securedpath + '/updateZone', supportCrossOriginScript, function (req, r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //             console.log(JSON.stringify(rows[4]));
+                   
                     res.end(JSON.stringify(rows[6]));
 
                 }
@@ -4426,7 +4063,7 @@ app.get(securedpath + '/getFacilityFloor', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var facility_key = url.parse(req.url, true).query['key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("facility_key" + facility_key);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4439,7 +4076,7 @@ app.get(securedpath + '/getFacilityFloor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_facilityFloorId "+JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
 
                 }
@@ -4454,7 +4091,7 @@ app.get(securedpath + '/getFloorZone', function (req, res) {
     var floor_key = url.parse(req.url, true).query['fl_key'];
     var facility_key = url.parse(req.url, true).query['f_key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("floor_key" + floor_key);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4467,7 +4104,7 @@ app.get(securedpath + '/getFloorZone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_floorZoneById "+JSON.stringify(rows[2]));
+                   
                     res.end(JSON.stringify(rows[3]));
 
                 }
@@ -4495,7 +4132,7 @@ app.post(securedpath + '/deleteZoneById', supportCrossOriginScript, function (re
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_zoneRemove "+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -4510,7 +4147,7 @@ app.get(securedpath + '/domainValuesGet', function (req, res) {
     var domainkey = url.parse(req.url, true).query['key'];
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //  
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4524,7 +4161,7 @@ app.get(securedpath + '/domainValuesGet', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("domainkey "+JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[3]));
 
                 }
@@ -4550,7 +4187,7 @@ app.post(securedpath + '/deleteFloorTypeById', supportCrossOriginScript, functio
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("floortypekey "+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
 
                 }
@@ -4576,7 +4213,7 @@ app.get(securedpath + '/getFloorTypeById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("floortypekey "+JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
 
                 }
@@ -4603,7 +4240,7 @@ app.post(securedpath + '/updateFloorType', supportCrossOriginScript, function (r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("floortypekey "+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4629,7 +4266,7 @@ app.post(securedpath + '/addnewfloortype', supportCrossOriginScript, function (r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("floortypename "+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4638,29 +4275,7 @@ app.post(securedpath + '/addnewfloortype', supportCrossOriginScript, function (r
     });
 });
 
-//------------- commented by Rajeesh on 7/7/2017 Duplicate url /getShiftInCharge
-//app.get(securedpath + '/getShiftInCharge', function (req, res)
-//{
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var shiftkey = url.parse(req.url, true).query['shiftkey'];
-////    var shift = url.parse(req.url, true).query['shifttype'];
-////    var zone = url.parse(req.url, true).query['zone'];
-////    var startDate = url.parse(req.url, true).query['startDate'];
-//  
-//    // console.log("for shift in charge values are " + shift + " " + zone+ " "+startDate);
-//    pool.query('select s.ShiftInChargeKey as EmployeeKey from shift s where s.ShiftKey=?', [shiftkey], function (err, rows)
-//    {
-//        if (err)
-//        {
-//            console.log(err);
-//        }
-//        else
-//        {
-//            //   console.log(JSON.stringify(rows));
-//            res.end(JSON.stringify(rows));
-//        }
-//    });
-//});
+
 
 app.get(securedpath + '/getShiftkey', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -4668,7 +4283,7 @@ app.get(securedpath + '/getShiftkey', function (req, res) {
     var zone = url.parse(req.url, true).query['zone'];
     var startDate = url.parse(req.url, true).query['startDate'];
     var endDate = url.parse(req.url, true).query['endDate'];
-    // console.log("for shift in charge values are " + shift + " " + zone+ " "+startDate);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4681,8 +4296,7 @@ app.get(securedpath + '/getShiftkey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //   console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+            
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -4701,7 +4315,7 @@ app.post(securedpath + '/checkassignedShiftDetails', supportCrossOriginScript, f
     var supervisor = req.body.supervisorKey;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("inside addSchedulingBy_shift " + start_date + " " + end_date + " " + shiftTypeKey + " " + supervisor + "  " + zone);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4715,7 +4329,7 @@ app.post(securedpath + '/checkassignedShiftDetails', supportCrossOriginScript, f
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[5]));
+                  
                     res.end(JSON.stringify(rows[5]));
 
                 }
@@ -4752,11 +4366,7 @@ app.get(securedpath + '/getAllRooms', function (req, res) {
 });
 app.options('/deleteRoomById', supportCrossOriginScript);
 app.post(securedpath + '/deleteRoomById', supportCrossOriginScript, function (req, res) {
-    //   var facilitykey = url.parse(req.url,true).query['facility'];
-    //   var floorkey = url.parse(req.url,true).query['floorkey'];
-    //   var zonekey = url.parse(req.url,true).query['zoneKey'];
-    //   var floortypekey = url.parse(req.url,true).query['floortype'];
-    //   var roomtypekey = url.parse(req.url,true).query['roomtype'];
+ 
     var room = url.parse(req.url, true).query['roomkey'];
     var metaupdatedby = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
@@ -4772,7 +4382,7 @@ app.post(securedpath + '/deleteRoomById', supportCrossOriginScript, function (re
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("deleteRoomById.." + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4798,7 +4408,7 @@ app.get(securedpath + '/getRoomById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_RoomById.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -4824,7 +4434,7 @@ app.get(securedpath + '/getUserEmail', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_RoomById.." + JSON.stringify(rows[2]));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -4838,7 +4448,7 @@ app.get(securedpath + '/getAllRoomType', function (req, res) {
     var itemsperpage = url.parse(req.url, true).query['itemsperpage'];
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("getAllRoomType "+domainkey);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4851,7 +4461,7 @@ app.get(securedpath + '/getAllRoomType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("domainkey "+JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[4]));
 
                 }
@@ -4874,7 +4484,7 @@ app.post(securedpath + '/updateRoom', supportCrossOriginScript, function (req, r
     var Barcode = req.body.Barcode;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("updateroom");
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4887,7 +4497,7 @@ app.post(securedpath + '/updateRoom', supportCrossOriginScript, function (req, r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4908,7 +4518,7 @@ app.post(securedpath + '/addnewRoom', supportCrossOriginScript, function (req, r
     var metaupdatedby = req.body.employeekey;
     var Barcode = req.body.Barcode;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("addnewRoom");
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -4921,7 +4531,7 @@ app.post(securedpath + '/addnewRoom', supportCrossOriginScript, function (req, r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4946,7 +4556,7 @@ app.get(securedpath + '/getRoomTypeById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -4975,7 +4585,7 @@ app.post(securedpath + '/updateRoomType', supportCrossOriginScript, function (re
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -4991,7 +4601,7 @@ app.post(securedpath + '/addnewRoomtype', supportCrossOriginScript, function (re
     var MetricType = req.body.MetricType;
     var MetricTypeValue = req.body.TypeValue;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("addnewRoomtype"+roomtype+".."+metaupdatedby);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5004,7 +4614,7 @@ app.post(securedpath + '/addnewRoomtype', supportCrossOriginScript, function (re
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(".." + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -5029,7 +4639,7 @@ app.post(securedpath + '/deleteRoomTypeById', supportCrossOriginScript, function
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -5053,7 +4663,7 @@ app.get(securedpath + '/getFacilityZoneById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -5105,7 +4715,7 @@ app.get(securedpath + '/getEquipmentKeyById', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -5131,7 +4741,7 @@ app.post(securedpath + '/deleteEquipmentById', supportCrossOriginScript, functio
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -5152,7 +4762,7 @@ app.post(securedpath + '/updateEquipment', supportCrossOriginScript, function (r
     var FacilityKey = req.body.FacilityKey;
     var FloorKey = req.body.FloorKey;
     var barcodeINT = req.body.BarcodeINT;
-    // console.log("inside updateEquipment " + Equipment_Key + " " + EquipmentType_Key + " " + Equipment_Type + " " + Equipment_Name);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5187,7 +4797,7 @@ app.post(securedpath + '/addnewEquipment', supportCrossOriginScript, function (r
     var FloorKey = req.body.FloorKey;
     var barcodeINT = req.body.BarcodeINT;
     console.log("----------addnewEquipment---------" + eqbarcode);
-    //    ;
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5199,7 +4809,7 @@ app.post(securedpath + '/addnewEquipment', supportCrossOriginScript, function (r
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //  console.log("ROWS" + JSON.stringify(rows[3][0]));
+                   
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -5224,7 +4834,7 @@ app.get(securedpath + '/getEquipmentTypeKeyById', function (req, res) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //              console.log("ROWS" + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -5250,7 +4860,7 @@ app.post(securedpath + '/updateEquipmentType', supportCrossOriginScript, functio
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //              console.log("ROWS" + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -5276,7 +4886,7 @@ app.post(securedpath + '/addnewEquipmentType', supportCrossOriginScript, functio
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //              console.log("ROWS" + JSON.stringify(rows[1]));
+               
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -5300,7 +4910,7 @@ app.post(securedpath + '/deleteEquipmentTypeById', supportCrossOriginScript, fun
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //              console.log("ROWS" + JSON.stringify(rows[1]));
+              
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -5312,7 +4922,7 @@ app.post(securedpath + '/deleteEquipmentTypeById', supportCrossOriginScript, fun
 
 app.options('/addMeetingTraining', supportCrossOriginScript);
 app.post(securedpath + '/addMeetingTraining', supportCrossOriginScript, function (req, res) {
-    // console.log(req.body);
+   
     var actionKey = req.body.actionKey;
     var eventhost = req.body.eventhost;
     var venue = req.body.venue;
@@ -5323,7 +4933,7 @@ app.post(securedpath + '/addMeetingTraining', supportCrossOriginScript, function
     var employeeKeyList = req.body.empKey;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("addMeetingByAction " + actionKey + " ..." + eventhost + "..." + venue + " ..." + meetingDate + " ..." + startTime + " ..." + endTime + " .." + employeeKeyList);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5335,7 +4945,7 @@ app.post(securedpath + '/addMeetingTraining', supportCrossOriginScript, function
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -5345,20 +4955,14 @@ app.post(securedpath + '/addMeetingTraining', supportCrossOriginScript, function
 });
 app.options('/addMeetinTraingByNewEvent', supportCrossOriginScript);
 app.post(securedpath + '/addMeetinTraingByNewEvent', supportCrossOriginScript, function (request, res) {
-    //    var eventhost = request.body.eventhost;
-    //    var venue = request.body.venue;
+  
     var eventType = request.body.eventType;//
-    //    var MeetingNotes = request.body.MeetingNotes;
+
     var eventDescription = request.body.eventDescription;//
     var eventName = request.body.eventName;//
     var EmployeeKey = request.body.EmployeeKey;
     var OrganizationID = request.body.OrganizationID;
-    //    var meetingDate = request.body.meetingDate;
-    //    var startTime = request.body.startTime;
-    //    var endTime = request.body.endTime;
-    //    var employeeKeyList = request.body.empKey;
-    // console.log(eventName + "," + eventDescription + "," + eventType + "," + venue);
-    // console.log("addMeetingByAction_empKey ..." + eventhost + " ..." + meetingDate + " ..." + startTime + " ..." + endTime + " .." + employeeKeyList);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5370,9 +4974,9 @@ app.post(securedpath + '/addMeetinTraingByNewEvent', supportCrossOriginScript, f
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //            console.log("ROWS" + JSON.stringify(rows));
+           
                     console.log("ROWS" + JSON.stringify(rows[4]));
-                    //                console.log("ROWS" + JSON.stringify(rows[3][0]));
+           
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -5386,7 +4990,7 @@ app.get(securedpath + '/getEmployeeKeybyShiftTypeKey', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var shiftTypeKey = url.parse(req.url, true).query['shifttypekey'];
     var date1 = url.parse(req.url, true).query['date'];
-    // console.log("inside ...shiftTypeKey..." + shiftTypeKey + "date1..." + date1);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5399,8 +5003,7 @@ app.get(securedpath + '/getEmployeeKeybyShiftTypeKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //   console.log("Printing rows");
-                    //   console.log("ROWS" + JSON.stringify(rows[2]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -5424,7 +5027,7 @@ app.get(securedpath + '/getTemplateQuestions', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
 
                 }
@@ -5438,7 +5041,7 @@ app.get(securedpath + '/getInspectionorder', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var inspectionorder_Key = url.parse(req.url, true).query['InspectionorderKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("InspectionorderKey  is " + inspectionorder_Key);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5451,7 +5054,7 @@ app.get(securedpath + '/getInspectionorder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[2]));
 
                 }
@@ -5465,7 +5068,7 @@ app.get(securedpath + '/getSupervisorInspectionView', function (req, res) {
     var to_date = url.parse(req.url, true).query['to_date'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("date  is " + to_date+"employeekey.."+employeekey);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5478,7 +5081,7 @@ app.get(securedpath + '/getSupervisorInspectionView', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                
                     res.end(JSON.stringify(rows[3]));
 
                 }
@@ -5517,80 +5120,13 @@ var uploadPhoto = multer({ storage: Photostorage }).single('userPhoto');
 
 
 
-// var multer_middleare = multer({ dest: './pho1',
-//     onFileUploadComplete: function (file) {
-//         // after file is uploaded, upload it to remote server
-//         var filename = file.name;
-
-//         request({
-//             method: 'PUT',
-//             preambleCRLF: true,
-//             postambleCRLF: true,
-//             uri: 'ftp://waws-prod-bay-055.ftp.azurewebsites.windows.net/site/wwwroot',
-//             auth: {
-//                 'user': 'trooworkapi\$trooworkapi',
-//                 'pass': 'Zpe5XXJ8prnaCadHQwXoaRaYSMzcGjnNWlbfCqfTyvbWDtmxZhhGuGn2BETr',
-//                 'sendImmediately': true
-//             },
-//             multipart: [
-//                 { body: fs.createReadStream('./pho1/' + filename) }
-//             ]
-//         },
-//         function (error, response, body) {
-//             if (error) {
-//                 return console.error('upload failed:', error);
-//             }
-//             console.log('Upload successful!  Server responded with:', body);
-//         });
-//     }
-//     }).single('userPhoto');
-
-//     app.post('/uploadfileworkorderphoto', function (req, res){
-//         console.log("inside uploadfileworkorderphoto");
-//            multer_middleare(req, res, function (err) {
-//         if (err) {
-//             return res.end("Error uploading file");
-//         }
-//         res.end();
-//     });
-
-// //    res.end("uploaded");
-// });
-// app.options('/uploadPhoto_Workorder', supportCrossOriginScript);
-// app.post('/uploadPhoto_Workorder',supportCrossOriginScript, function (req, res, file) {
-//     var fname = file;
-//     // console.log("uploadPhoto_Workorder ");
-//     uploadPhoto(req, res, function (err) {
-//         if (err) {
-//             return res.end("Error uploading file");
-//         }
-//         res.end();
-//     });
-
-// });
-// var Photostorage = multer.diskStorage({
-//     destination: function (req, file, callback) {
-//         // var uploadUrl = 'http://troowork2.azurewebsites.net/pho1';
-//         // callback(null, uploadUrl);
-//          callback(null, 'ftp://waws-prod-bay-055.ftp.azurewebsites.windows.net/site/wwwroot/pho1');
-//     },
-//     filename: function (req, file, callback) {
-//         var fname = file.originalname ;
-//         callback(null, fname);
-//         // console.log("success");
-//     }
-// });
-// var uploadPhoto = multer({storage: Photostorage}).single('userPhoto');
-
-
-//Barcode scan to complete workorder starts
 
 app.get(securedpath + '/barcodeRoom_check', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var barcode = url.parse(req.url, true).query['barcode'];
     var WorkorderKey = url.parse(req.url, true).query['wkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Barcode scan check: barcode and WD=" + barcode + " " + WorkorderKey);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5603,7 +5139,7 @@ app.get(securedpath + '/barcodeRoom_check', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2][0].res));
+                
                     res.end(JSON.stringify(rows[3][0].res));
                 }
 
@@ -5616,12 +5152,12 @@ app.get(securedpath + '/barcodeRoom_check', function (req, res) {
 app.get(securedpath + '/barcodeRoom', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var barcode = url.parse(req.url, true).query['barcode'];
-    //    var employeekey = url.parse(req.url, true).query['empkey'];
+   
     var workorderkey = url.parse(req.url, true).query['wkey'];
     var updatetype = url.parse(req.url, true).query['updatetype'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("barcodeRoom scan : WD=" + workorderkey + "..." + barcode + "..." + employeekey + "..." + updatetype);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5634,8 +5170,7 @@ app.get(securedpath + '/barcodeRoom', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //  console.log("Printing rows....  " + JSON.stringify(rows[2][0]));
-                    //              console.log("ROWS " + JSON.stringify(rows[4][0]));
+                  
                     res.end(JSON.stringify(rows[5][0]));
                 }
             });
@@ -5647,13 +5182,13 @@ app.get(securedpath + '/barcodeRoom', function (req, res) {
 app.get(securedpath + '/barcodeRoom_Ang', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var barcode = url.parse(req.url, true).query['barcode'];
-    //    var employeekey = url.parse(req.url, true).query['empkey'];
+   
     var workorderkey = url.parse(req.url, true).query['wkey'];
     var updatetype = url.parse(req.url, true).query['updatetype'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var complete_Time = url.parse(req.url, true).query['complete_Time'];
-    // console.log("barcodeRoom scan : WD=" + workorderkey + "..." + barcode + "..." + employeekey + "..." + updatetype);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5666,8 +5201,7 @@ app.get(securedpath + '/barcodeRoom_Ang', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //  console.log("Printing rows....  " + JSON.stringify(rows[2][0]));
-                    //              console.log("ROWS " + JSON.stringify(rows[4][0]));
+                   
                     res.end(JSON.stringify(rows[5][0]));
                 }
             });
@@ -5680,11 +5214,7 @@ app.get(securedpath + '/getScheduleDescription', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var key = url.parse(req.url, true).query['key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['empkey'];
-    //    var workorderkey = url.parse(req.url, true).query['wkey'];
-    //    var updatetype = url.parse(req.url, true).query['updatetype'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
-    // console.log("barcodeRoom scan : WD=" + workorderkey + "..." + barcode + "..." + employeekey + "..." + updatetype);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5697,8 +5227,7 @@ app.get(securedpath + '/getScheduleDescription', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //  console.log("Printing rows....  " + JSON.stringify(rows[2][0]));
-                    //              console.log("ROWS " + JSON.stringify(rows[4][0]));
+                  
                     res.end(JSON.stringify(rows[1][0]));
                 }
             });
@@ -5710,11 +5239,7 @@ app.get(securedpath + '/getScheduleDescription', function (req, res) {
 //Barcode scan to complete workorder ends
 app.options('/completionTime', supportCrossOriginScript);
 app.post(securedpath + '/completionTime', supportCrossOriginScript, function (req, res) {
-    //    var barcode = url.parse(req.url, true).query['barcode'];
-    //    var workorderKey = req.body.WorkorderKey;
-    //    var timetaken = req.body.Timetaken;
-    //    var metaupdatedby = req.body.EmployeeKey;
-    // console.log("Completed time : WD=" + workorderKey + "time..." + timetaken);
+    
 
     var Workorderkey = req.body.Workorderkey;
     var Timetaken = req.body.Timetaken;
@@ -5732,8 +5257,7 @@ app.post(securedpath + '/completionTime', supportCrossOriginScript, function (re
                     console.log(err);
                 }
                 else {
-                    //  console.log("Printing rows....  " + JSON.stringify(rows[2][0]));
-                    //   console.log("ROWS " + JSON.stringify(rows.res));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -5748,7 +5272,7 @@ app.get(securedpath + '/workCompleted', function (req, res) {
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var work_det_key = url.parse(req.url, true).query['wkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("work completed=" + work_det_key + "..." + employeekey);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5761,7 +5285,7 @@ app.get(securedpath + '/workCompleted', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //            console.log("workCompleted " + JSON.stringify(rows[2][0]));
+                    
                     res.end(JSON.stringify(rows[3][0]));
                 }
             });
@@ -5776,7 +5300,7 @@ app.get(securedpath + '/workCompleted_Ang6', function (req, res) {
     var work_det_key = url.parse(req.url, true).query['wkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var complete_Time = url.parse(req.url, true).query['complete_Time'];
-    // console.log("work completed=" + work_det_key + "..." + employeekey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5789,7 +5313,7 @@ app.get(securedpath + '/workCompleted_Ang6', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    //            console.log("workCompleted " + JSON.stringify(rows[2][0]));
+                   
                     res.end(JSON.stringify(rows[3][0]));
                 }
             });
@@ -5817,9 +5341,7 @@ app.get(securedpath + '/updateWorkorderByPhoto', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var pho = url.parse(req.url, true).query['pho'];
     var wdkey = url.parse(req.url, true).query['wkey'];
-    //    var imagename = url.parse(req.url, true).query['imagename'];
-    //     var imageBuffer = decodeBase64Image(imagename);
-    // console.log("inside server photodate = " + imagename);
+    
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -5834,7 +5356,7 @@ app.get(securedpath + '/updateWorkorderByPhoto', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    // console.log("pho1 " + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[3][0]));
                 }
 
@@ -5848,9 +5370,7 @@ app.get(securedpath + '/updateWorkorderByPhoto_Ang6', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var pho = url.parse(req.url, true).query['pho'];
     var wdkey = url.parse(req.url, true).query['wkey'];
-    //    var imagename = url.parse(req.url, true).query['imagename'];
-    //     var imageBuffer = decodeBase64Image(imagename);
-    // console.log("inside server photodate = " + imagename);
+
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var complete_Time = url.parse(req.url, true).query['complete_Time'];
@@ -5866,7 +5386,7 @@ app.get(securedpath + '/updateWorkorderByPhoto_Ang6', function (req, res) {
                     console.log(err);
                 }
                 else {
-                    // console.log("pho1 " + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[3][0]));
                 }
 
@@ -5910,22 +5430,16 @@ app.post(securedpath + '/saveinspectedQuestions', supportCrossOriginScript, func
 
 app.options('/updateEditedTemplateQuestion', supportCrossOriginScript);
 app.post(securedpath + '/updateEditedTemplateQuestion', supportCrossOriginScript, function (req, res) {
-    //    var inspectionnotes = url.parse(req.url, true).query['inspectionnotes'];
-    //    var templateQstnValues = url.parse(req.url, true).query['templateQstnValues'];
-    //     var templateid = url.parse(req.url, true).query['templateid'];
-    // //    var inspectionkey = url.parse(req.url, true).query['inspectionkey'];
-    //     var questionid = url.parse(req.url, true).query['questionid'];
-    //     var metaupdatedby = url.parse(req.url, true).query['empkey'];
-    //      var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
 
 
     var templateid = req.body.templateid;
-    //    var inspectionkey = url.parse(req.url, true).query['inspectionkey'];
+   
     var questionid = req.body.questionid;
     var metaupdatedby = req.body.empkey;
     var OrganizationID = req.body.OrganizationID;
 
-    //    console.log(".." + inspectionnotes + ".." + templateQstnValues + ".." + templateid + "..." + inspectionkey + ".." + questionid);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -5949,17 +5463,9 @@ app.post(securedpath + '/updateEditedTemplateQuestion', supportCrossOriginScript
 
 app.options('/insertEditedTemplateQuestion', supportCrossOriginScript);
 app.post(securedpath + '/insertEditedTemplateQuestion', supportCrossOriginScript, function (req, res) {
-    //    var inspectionnotes = url.parse(req.url, true).query['inspectionnotes'];
-    //    var templateQstnValues = url.parse(req.url, true).query['templateQstnValues'];
-    //     var templateid = url.parse(req.url, true).query['templateid'];
-    // //    var inspectionkey = url.parse(req.url, true).query['inspectionkey'];
-    //     var questionid = url.parse(req.url, true).query['questionid'];
-    //     var empKey = url.parse(req.url, true).query['empKey'];
-    //     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var metaupdatedby = url.parse(req.url, true).query['employeekey'];
-    //    console.log(".." + inspectionnotes + ".." + templateQstnValues + ".." + templateid + "..." + inspectionkey + ".." + questionid);
+  
     var templateid = req.body.templateid;
-    //    var inspectionkey = url.parse(req.url, true).query['inspectionkey'];
+   
     var questionid = req.body.questionid;
     var empKey = req.body.empKey;
     var OrganizationID = req.body.OrganizationID;
@@ -6029,7 +5535,7 @@ app.get(securedpath + '/getinspectionedDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getinspectionedDetails...from server.." + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -6059,7 +5565,7 @@ app.get(securedpath + '/getAllAvailableShifts', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllAvailableShifts...from server.." + JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -6086,7 +5592,7 @@ app.get(securedpath + '/getWorkorderImageByKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getWorkorderImageByKey...from server.." + JSON.stringify(rows[2][0]));
+                   
                     res.end(JSON.stringify(rows[3][0]));
                 }
             });
@@ -6135,7 +5641,7 @@ app.get(securedpath + '/checkforcheckForWorkOrderType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllAvailableShifts...from server.." + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6160,7 +5666,7 @@ app.get(securedpath + '/checkforEmployeeNumber', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllAvailableShifts...from server.." + JSON.stringify(rows[1]));
+               
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6184,7 +5690,7 @@ app.get(securedpath + '/checkEmpNumberForSuperAdmin', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllAvailableShifts...from server.." + JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -6213,7 +5719,7 @@ app.get(securedpath + '/assignChangesForWork', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("assignChangesForWork...from server.." + JSON.stringify(rows[4]));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -6386,7 +5892,7 @@ app.post(securedpath + '/updateOrganizationDetailsByID', supportCrossOriginScrip
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("updateOrganizationDetailsByID");
+                    
                     console.log("updateOrganizationDetailsByID...from server.." + JSON.stringify(rows[10]));
                     res.end(JSON.stringify(rows[10]));
                 }
@@ -6477,7 +5983,7 @@ app.get(securedpath + '/allWorkordertype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //  
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6490,7 +5996,7 @@ app.get(securedpath + '/allWorkordertype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workordertypelist...from server.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6505,7 +6011,7 @@ app.get(securedpath + '/checkRoomInWorkOrder', function (req, res) {
     var wkey = url.parse(req.url, true).query['wkey'];
     var rkey = url.parse(req.url, true).query['rkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //  
+     
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6518,7 +6024,7 @@ app.get(securedpath + '/checkRoomInWorkOrder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workordertypelist...from server.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -6544,7 +6050,7 @@ app.post(securedpath + '/addRoomInWorkOrder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workordertypelist...from server.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6558,7 +6064,7 @@ app.get(securedpath + '/checkRoomFacilityInWorkOrder', function (req, res) {
     var empkey = url.parse(req.url, true).query['empkey'];
     var wkey = url.parse(req.url, true).query['wkey'];
     var rkey = url.parse(req.url, true).query['rkey'];
-    //  
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6571,7 +6077,7 @@ app.get(securedpath + '/checkRoomFacilityInWorkOrder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workordertypelist...from server.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6596,7 +6102,7 @@ app.get(securedpath + '/allequiptype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllFacilities " + JSON.stringify(rows[1]));
+       
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -6611,7 +6117,7 @@ app.get(securedpath + '/domainvaluesByKey', function (req, res) {
     var key = url.parse(req.url, true).query['key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var filter;
-    // console.log("DOMAIN AND KEY " + domain);
+   
     switch (domain) {
         case 'facilities':
             filter = 'facilities';
@@ -6625,7 +6131,7 @@ app.get(securedpath + '/domainvaluesByKey', function (req, res) {
         default:
             filter = 'roomtypes';
     }
-    // console.log("Fac key for floo and filter " + key + " " + filter);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6633,14 +6139,14 @@ app.get(securedpath + '/domainvaluesByKey', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            //            connection.query('set @key1=?;set @key2=?;set @key3=?;set @key4=?;call usp_domainValuesByKeysGet(@key1,@key2,@key3,@key4)', [domain, '', filter, key], function (err, rows) {
+        
             connection.query('set @key1=?;set @key2=?; set @OrganizationID=?; call usp_domainValuesByKeysAlternative(@key1,@key2,@OrganizationID)', [filter, key, OrganizationID], function (err, rows) {
 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("domainvaluesByKey " + JSON.stringify(rows[4]));
+               
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6666,7 +6172,7 @@ app.get(securedpath + '/allemployees', function (req, res) {//empkey
                     console.log("Problem with MySQL in allemployees" + err);
                 }
                 else {
-                    //            console.log("ALL EMPL FROM EMP KEY  " + employeekey + "  " + JSON.stringify(rows[1]));
+           
                     res.end(JSON.stringify(rows[2]));
                 }
                 res.end();
@@ -6695,7 +6201,7 @@ app.get(securedpath + '/employeeForManager', function (req, res) {//empkey
                     console.log("Problem with MySQL in allemployees" + err);
                 }
                 else {
-                    //            console.log("ALL EMPL FROM EMP KEY  " + employeekey + "  " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
                 res.end();
@@ -6721,7 +6227,7 @@ app.get(securedpath + '/allshifttype', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Allshiftes " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6746,7 +6252,7 @@ app.get(securedpath + '/allpriority', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Allprioo " + JSON.stringify(rows[1]));
+               
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -6764,9 +6270,7 @@ app.get(securedpath + '/viewworkorder_FilterByRoomType', function (req, res) {
     var key = url.parse(req.url, true).query['key'];
     var on_DT = url.parse(req.url, true).query['searchDT'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
-
-    // console.log("filter and key are " + empkey + filter + " " + key + "  " + on_DT);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6779,8 +6283,7 @@ app.get(securedpath + '/viewworkorder_FilterByRoomType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[5]));
+                  
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -6793,7 +6296,7 @@ app.get(securedpath + '/roomByFacility_Floor', function (req, res) {
     var fkey = url.parse(req.url, true).query['fkey'];
     var flkey = url.parse(req.url, true).query['floorkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("keys for zone" + fkey + " " + flkey);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6806,7 +6309,7 @@ app.get(securedpath + '/roomByFacility_Floor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6821,7 +6324,7 @@ app.get(securedpath + '/roomtypeByFacility_Floor', function (req, res) {
     var fkey = url.parse(req.url, true).query['fkey'];
     var flkey = url.parse(req.url, true).query['floorkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("Fac key for roomtypene" + fkey);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -6834,7 +6337,7 @@ app.get(securedpath + '/roomtypeByFacility_Floor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log(JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -6882,7 +6385,7 @@ app.post(securedpath + '/addNewWorkorder', supportCrossOriginScript, function (r
     var isphoto = newWOObj.isphoto;
     var metaupdatedby = newWOObj.metaupdatedby;
     var OrganizationID = newWOObj.OrganizationID;
-    //console.log("****************metaupdatedby************");
+
     console.log("****************metaupdatedby************" + metaupdatedby + "  ZZZZZZ  " + isphoto + "  ZZZZZZ  " + roomkeys + "  ZZZZZZ  " + facilitykeys + "  ZZZZZZ  " + floorkeys + "  ZZZZZZ  " + zonekeys + "  ZZZZZZ  " + roomtypekeys + " occursontime " + occursontime);
     console.log("3 VAlues are tot=16 " + isbar + " " + isphoto);
     pool.getConnection(function (err, connection) {
@@ -6898,9 +6401,9 @@ app.post(securedpath + '/addNewWorkorder', supportCrossOriginScript, function (r
                 } else {
                     res.end(JSON.stringify(rows[22]));
                 }
-                // console.log(JSON.stringify(res));
+              
             });
-            // res.end("success");
+          
         }
         connection.release();
     });
@@ -6950,7 +6453,7 @@ app.post(securedpath + '/addworkorderSchedule', supportCrossOriginScript, functi
     var isphoto = newWOObj.isphoto;
     var metaupdatedby = newWOObj.metaupdatedby;
     var OrganizationID = newWOObj.OrganizationID;
-    //console.log("****************metaupdatedby************");
+   
     console.log("****************metaupdatedby************" + metaupdatedby + "  ZZZZZZ  " + isphoto + "  ZZZZZZ  " + roomkeys + "  ZZZZZZ  " + facilitykeys + "  ZZZZZZ  " + floorkeys + "  ZZZZZZ  " + zonekeys + "  ZZZZZZ  " + roomtypekeys + " occursontime " + occursontime);
     console.log("3 VAlues are tot=16 " + isbar + " " + isphoto);
     pool.getConnection(function (err, connection) {
@@ -6967,9 +6470,9 @@ app.post(securedpath + '/addworkorderSchedule', supportCrossOriginScript, functi
                 else {
                     res.end(JSON.stringify(rows[23]));
                 }
-                // console.log(JSON.stringify(res));
+             
             });
-            // res.end("success");
+            
         }
         connection.release();
     });
@@ -7016,7 +6519,7 @@ app.post(securedpath + '/addworkorderwithEquipment', supportCrossOriginScript, f
     var isphoto = newWOObj.isphoto;
     var metaupdatedby = newWOObj.metaupdatedby;
     var OrganizationID = newWOObj.OrganizationID;
-    //console.log("****************metaupdatedby************");
+   
     console.log("****************metaupdatedby************" + metaupdatedby + "  ZZZZZZ  " + isphoto + "  ZZZZZZ  " + roomkeys + "  ZZZZZZ  " + facilitykeys + "  ZZZZZZ  " + floorkeys + "  ZZZZZZ  " + zonekeys + "  ZZZZZZ  " + roomtypekeys);
     console.log("3 VAlues are tot=16 " + isbar + " " + isphoto);
     pool.getConnection(function (err, connection) {
@@ -7033,9 +6536,9 @@ app.post(securedpath + '/addworkorderwithEquipment', supportCrossOriginScript, f
                 else {
                     res.end(JSON.stringify(rows[22]));
                 }
-                // console.log(JSON.stringify(res));
+               
             });
-            // res.end("success");
+           
         }
         connection.release();
     });
@@ -7085,7 +6588,7 @@ app.post(securedpath + '/addworkorderSchedulewithEquipment', supportCrossOriginS
     var isphoto = newWOObj.isphoto;
     var metaupdatedby = newWOObj.metaupdatedby;
     var OrganizationID = newWOObj.OrganizationID;
-    //console.log("****************metaupdatedby************");
+    
     console.log("****************metaupdatedby************" + metaupdatedby + "  ZZZZZZ  " + isphoto + "  ZZZZZZ  " + roomkeys + "  ZZZZZZ  " + facilitykeys + "  ZZZZZZ  " + floorkeys + "  ZZZZZZ  " + zonekeys + "  ZZZZZZ  " + roomtypekeys);
     console.log("3 VAlues are tot=16 " + isbar + " " + isphoto);
     pool.getConnection(function (err, connection) {
@@ -7102,9 +6605,9 @@ app.post(securedpath + '/addworkorderSchedulewithEquipment', supportCrossOriginS
                 else {
                     res.end(JSON.stringify(rows[23]));
                 }
-                // console.log(JSON.stringify(res));
+                
             });
-            // res.end("success");
+            
         }
         connection.release();
     });
@@ -7112,7 +6615,7 @@ app.post(securedpath + '/addworkorderSchedulewithEquipment', supportCrossOriginS
 });
 
 app.post(securedpath + '/workorderByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -7139,8 +6642,7 @@ app.post(securedpath + '/workorderByallFilters', supportCrossOriginScript, funct
     console.log("inside server workorderTypeKey= " + workorderTypeKey);
     var BatchScheduleNameKey = newWOObj.BatchScheduleNameKey;
     var OrganizationID = newWOObj.OrganizationID;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7153,8 +6655,7 @@ app.post(securedpath + '/workorderByallFilters', supportCrossOriginScript, funct
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                
                     res.end(JSON.stringify(rows[13]));
                 }
             });
@@ -7165,13 +6666,12 @@ app.post(securedpath + '/workorderByallFilters', supportCrossOriginScript, funct
 
 
 app.post(securedpath + '/viewinspectionCountAllFilter', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
     console.log("server new manager " + manager);
-    //    var workorderStatusKey = newWOObj.workorderStatusKey;
-    //    console.log("server new workorderStatusKey " + workorderStatusKey);
+    
     var workorderDate = newWOObj.workorderDate;
     console.log("server new workorderDate " + newWOObj.workorderDate);
     var workorderDate2 = newWOObj.workorderDate2;
@@ -7182,8 +6682,7 @@ app.post(securedpath + '/viewinspectionCountAllFilter', supportCrossOriginScript
     console.log("inside server tempid= " + tempid);
 
 
-    //    console.log("----------viewinspectionCountAllFilter---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7196,8 +6695,7 @@ app.post(securedpath + '/viewinspectionCountAllFilter', supportCrossOriginScript
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7207,7 +6705,7 @@ app.post(securedpath + '/viewinspectionCountAllFilter', supportCrossOriginScript
 });
 
 app.post(securedpath + '/workorderScheduleByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -7235,8 +6733,7 @@ app.post(securedpath + '/workorderScheduleByallFilters', supportCrossOriginScrip
     var batchScheduleNameKey = newWOObj.batchScheduleNameKey;
     console.log("inside server batchScheduleNameKey= " + batchScheduleNameKey);
     var OrganizationID = newWOObj.OrganizationID;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7249,8 +6746,7 @@ app.post(securedpath + '/workorderScheduleByallFilters', supportCrossOriginScrip
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+              
                     res.end(JSON.stringify(rows[13]));
                 }
             });
@@ -7260,7 +6756,7 @@ app.post(securedpath + '/workorderScheduleByallFilters', supportCrossOriginScrip
 });
 
 app.post(securedpath + '/workorderReportByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+  
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -7284,11 +6780,7 @@ app.post(securedpath + '/workorderReportByallFilters', supportCrossOriginScript,
     var employeekey = newWOObj.employeeKey;
     console.log("inside server empkey= " + employeekey);
     var OrganizationID = newWOObj.OrganizationID;
-    //    var workorderTypeKey = newWOObj.workorderTypeKey;
-    //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
-
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7301,8 +6793,7 @@ app.post(securedpath + '/workorderReportByallFilters', supportCrossOriginScript,
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+               
                     res.end(JSON.stringify(rows[11]));
                 }
             });
@@ -7311,7 +6802,7 @@ app.post(securedpath + '/workorderReportByallFilters', supportCrossOriginScript,
     });
 });
 app.post(securedpath + '/barcodeReportByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+ 
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -7325,11 +6816,7 @@ app.post(securedpath + '/barcodeReportByallFilters', supportCrossOriginScript, f
     var zoneKey = newWOObj.zoneKey;
     console.log("inside server zoneKey= " + zoneKey);
     var OrganizationID = newWOObj.OrganizationID;
-    //    var workorderTypeKey = newWOObj.workorderTypeKey;
-    //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
-
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7342,8 +6829,7 @@ app.post(securedpath + '/barcodeReportByallFilters', supportCrossOriginScript, f
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+              
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -7353,7 +6839,7 @@ app.post(securedpath + '/barcodeReportByallFilters', supportCrossOriginScript, f
 });
 
 app.post(securedpath + '/viewRoomsByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+   
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -7413,8 +6899,7 @@ app.post(securedpath + '/workorderEmployeeByallFilters', supportCrossOriginScrip
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+              
                     res.end(JSON.stringify(rows[8]));
                 }
             });
@@ -7462,7 +6947,7 @@ app.post(securedpath + '/addQuickworkorder', supportCrossOriginScript, function 
     var isphoto = newWOObj.isphoto;
     var metaupdatedby = newWOObj.metaupdatedby;
     var OrganizationID = req.body.OrganizationID;
-    //console.log("****************metaupdatedby************");
+  
     console.log("****************metaupdatedby************" + metaupdatedby + "ZZZZZZ " + isphoto);
     console.log("3 VAlues are tot=16 " + isbar + " " + isphoto);
     pool.getConnection(function (err, connection) {
@@ -7478,67 +6963,16 @@ app.post(securedpath + '/addQuickworkorder', supportCrossOriginScript, function 
                 } else {
                     res.end(JSON.stringify(rows[22]));
                 }
-                // console.log(JSON.stringify(res));
+              
             });
-            // res.end("success");
+            
         }
         connection.release();
     });
 
 });
 
-//app.options('/addQuickworkorder', supportCrossOriginScript);
-//app.post(securedpath + '/addQuickworkorder', supportCrossOriginScript, function (req, res) {
-//
-//    var newWOObj = {};
-//    newWOObj = req.body;
-//    var workorderkey = newWOObj.workorderkey;
-//    // console.log("server new WO " + newWOObj.workordertypekey + user_return);
-//    var workordertypekey = newWOObj.workordertypekey;
-//    // console.log("inside server wot= " + workordertypekey);
-////    var equipmentkey = newWOObj.equipmentkey;
-//    // console.log("inside server equipmentkey= " + equipmentkey);
-//    var roomkeys = newWOObj.roomkeys;
-////    var facilitykeys = newWOObj.facilitykeys;
-////    var floorkeys = newWOObj.floorkeys;
-////    var zonekeys = newWOObj.zonekeys;
-////    var roomtypekeys = newWOObj.roomtypekeys;
-//    // console.log("inside server roomkey= " + roomkeys);
-//    var employeekey = newWOObj.employeekey;
-//    // console.log("inside server empkey= " + employeekey);
-//    var priority = newWOObj.priority;
-//    // console.log("inside server priority= " + priority);
-//    var fromdate = newWOObj.fromdate;
-//    // console.log("inside server fromdate= " + fromdate);
-////    var todate = newWOObj.todate;
-////    // console.log("inside server todate= " + todate);
-////    var intervaltype = newWOObj.intervaltype;
-////    // console.log("inside server intervaltype= " + intervaltype);
-////    var repeatinterval = newWOObj.repeatinterval;
-//    // console.log("inside server repeatinterval= " + repeatinterval);
-////    var occursonday = newWOObj.occursonday;
-////    // console.log("inside server occursonday= " + occursonday);
-////    var occursontime = newWOObj.occursontime;
-////    // console.log("inside server occursontime= " + occursontime);
-////    var occurstype = newWOObj.occurstype;
-//    // console.log("inside server occurstype= " + occurstype);
-//    var workordernote = newWOObj.workordernote;
-//    var isbar = newWOObj.isbar;
-//    var isphoto = newWOObj.isphoto;
-//    var metaupdatedby = newWOObj.metaupdatedby;
-//    //console.log("****************metaupdatedby************");
-//    console.log("****************metaupdatedby************" + metaupdatedby);
-////    console.log("3 VAlues are tot=16 " + note + " " + isbar + " " + isphoto);
-//    pool.query('set @workorderkey=?;set @workordertypekey=?;set @roomkeys=?; set @employeekey=?; set @priority=?; set @fromdate=?;  set @workordernotes =?;set @isbar=?;set @isphoto=?;set @metaupdatedby=?;  call usp_QuickworkorderAdd(@workorderkey,@workordertypekey,@roomkeys,@employeekey,@priority,@fromdate,@workordernotes,@isbar,@isphoto,@metaupdatedby) ', [workorderkey, workordertypekey, roomkeys, employeekey, priority, fromdate, workordernote, isbar, isphoto, metaupdatedby], function (err, res)
-//    {
-//        if (err) {
-//            console.log(err);
-//        }
-//        // console.log(JSON.stringify(res));
-//    });
-//    res.end("success");
-//
-//});
+
 
 app.options('/addworkordertype', supportCrossOriginScript);
 app.post(securedpath + '/addworkordertype', supportCrossOriginScript, function (req, res) {
@@ -7559,7 +6993,7 @@ app.post(securedpath + '/addworkordertype', supportCrossOriginScript, function (
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
+                  
                     console.log("RETURNED WOT QQQQQQQQQQQQQQQ " + JSON.stringify(rows[3]));
                     res.end(JSON.stringify(rows[3]));
                 }
@@ -7578,7 +7012,7 @@ app.get(securedpath + '/viewworkorder', function (req, res) {
     var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("----------viewworkorder---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7605,8 +7039,7 @@ app.get(securedpath + '/findingUser', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log("----------viewworkorder---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7619,8 +7052,7 @@ app.get(securedpath + '/findingUser', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -7639,7 +7071,7 @@ app.get(securedpath + '/managerWorkOrder', function (req, res) {
     var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("----------viewworkorder---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7652,8 +7084,7 @@ app.get(securedpath + '/managerWorkOrder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+             
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7671,7 +7102,7 @@ app.get(securedpath + '/viewScheduledWorks', function (req, res) {
     var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("----------viewScheduledWorks---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7684,8 +7115,7 @@ app.get(securedpath + '/viewScheduledWorks', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7698,11 +7128,7 @@ app.get(securedpath + '/getBarcodeForRoom', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var workDT = url.parse(req.url, true).query['viewdate'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
-    //    console.log("----------getBarcodeForRoom---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7715,8 +7141,7 @@ app.get(securedpath + '/getBarcodeForRoom', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -7730,11 +7155,7 @@ app.get(securedpath + '/getBarcodeForEquipment', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var workDT = url.parse(req.url, true).query['viewdate'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
-    //    console.log("----------getBarcodeForRoom---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7747,8 +7168,7 @@ app.get(securedpath + '/getBarcodeForEquipment', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -7766,7 +7186,7 @@ app.get(securedpath + '/searchEmployeeOnTable', function (req, res) {
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("----------searchEmployeeOnTable---------" + empkey + " " + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7779,8 +7199,7 @@ app.get(securedpath + '/searchEmployeeOnTable', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+               
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7793,12 +7212,10 @@ app.get(securedpath + '/searchRoomOnTable', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
 
     var searchRoom = url.parse(req.url, true).query['searchRoom'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+    
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log("----------searchRoomOnTable---------" + empkey + " " + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7811,8 +7228,7 @@ app.get(securedpath + '/searchRoomOnTable', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -7825,8 +7241,7 @@ app.get(securedpath + '/searchRoomOnTable', function (req, res) {
 app.get(securedpath + '/viewworkorderemployee', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var managerkey = url.parse(req.url, true).query['managerkey'];
-    //    var workDT = url.parse(req.url, true).query['viewdate'];
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -7839,8 +7254,7 @@ app.get(securedpath + '/viewworkorderemployee', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows[1]));
+                
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -7854,13 +7268,12 @@ app.get(securedpath + '/viewworkorder_Filter', function (req, res) {
     var empkey = url.parse(req.url, true).query['employeekey'];
     var filter = url.parse(req.url, true).query['filter'];
     var key = url.parse(req.url, true).query['key'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+
     var on_DT = url.parse(req.url, true).query['searchDT'];
     var upto_DT = url.parse(req.url, true).query['searchDT2'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
+  
 
     console.log("ZZZZZZZZZZZZZ filter and key are " + empkey + filter + " " + key + "  " + on_DT + " " + upto_DT);
     pool.getConnection(function (err, connection) {
@@ -7872,11 +7285,10 @@ app.get(securedpath + '/viewworkorder_Filter', function (req, res) {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @empk =?;set @filter =?;set @key =?;set @ondate =?;set @ondate2 =?;set @OrganizationID =?;call usp_workordersViewbyDomain(@empk,@filter,@key,@ondate,@ondate2,@OrganizationID)", [empkey, filter, key, on_DT, upto_DT, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+               
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                  
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7892,12 +7304,11 @@ app.get(securedpath + '/viewworkorderReport_Filter', function (req, res) {
     var empkey = url.parse(req.url, true).query['employeekey'];
     var filter = url.parse(req.url, true).query['filter'];
     var key = url.parse(req.url, true).query['key'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+
     var on_DT = url.parse(req.url, true).query['searchDT'];
     var upto_DT = url.parse(req.url, true).query['searchDT2'];
 
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
+  
 
     console.log("ZZZZZZZZZZZZZ filter and key are " + empkey + filter + " " + key + "  " + on_DT + " " + upto_DT);
     pool.getConnection(function (err, connection) {
@@ -7909,11 +7320,10 @@ app.get(securedpath + '/viewworkorderReport_Filter', function (req, res) {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @empk =?;set @filter =?;set @key =?;set @ondate =?;set @ondate2 =?;call usp_workordersReportViewbyDomain(@empk,@filter,@key,@ondate,@ondate2)", [empkey, filter, key, on_DT, upto_DT], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+            
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                 
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7927,11 +7337,10 @@ app.get(securedpath + '/viewRooms_Filter', function (req, res) {
 
     var filter = url.parse(req.url, true).query['filter'];
     var key = url.parse(req.url, true).query['key'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+   
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
+    
 
     console.log("ZZZZZZZZZZZZZ filter and key are " + empkey + filter + " " + key + "  ");
     pool.getConnection(function (err, connection) {
@@ -7943,11 +7352,10 @@ app.get(securedpath + '/viewRooms_Filter', function (req, res) {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @filter =?;set @key =?;set @empk =?;set @OrganizationID=?;call usp_roomsViewbyDomain(@filter,@key,@empk,@OrganizationID)", [filter, key, empkey, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                 
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -7961,13 +7369,12 @@ app.get(securedpath + '/workorderByWorkorderkeyandInventory', function (req, res
     var empkey = url.parse(req.url, true).query['employeekey'];
     var filter = url.parse(req.url, true).query['filter'];
     var key = url.parse(req.url, true).query['key'];
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+    
     var on_DT = url.parse(req.url, true).query['searchDT'];
     var upto_DT = url.parse(req.url, true).query['searchDT2'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
+   
 
     console.log("-----------workorderByWorkorderkeyandInventory---------- " + empkey + filter + " " + key + "  " + on_DT + " " + upto_DT);
     pool.getConnection(function (err, connection) {
@@ -7979,11 +7386,10 @@ app.get(securedpath + '/workorderByWorkorderkeyandInventory', function (req, res
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @empk =?;set @filter =?;set @key =?;set @ondate =?;set @ondate2 =?;set @OrganizationID =?; call usp_workorderByWorkorderkeyandInventory(@empk,@filter,@key,@ondate,@ondate2,@OrganizationID)", [empkey, filter, key, on_DT, upto_DT, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                    
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -7999,7 +7405,7 @@ app.get(securedpath + '/viewWorkorderFilter_WorkOrderType', function (req, res) 
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var search_DT = url.parse(req.url, true).query['search_DT'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
+    
 
     console.log("ZZZZZZZZZZZZZ filter and key are " + WorkorderTypeKey + employeekey + " " + search_DT);
     pool.getConnection(function (err, connection) {
@@ -8011,11 +7417,10 @@ app.get(securedpath + '/viewWorkorderFilter_WorkOrderType', function (req, res) 
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @WorkorderTypeKey =?;set @employeekey =?;set @search_DT =?;set @OrganizationID =?;call usp_viewWorkorderFilter_WorkOrderType(@WorkorderTypeKey,@employeekey,@search_DT,@OrganizationID)", [WorkorderTypeKey, employeekey, search_DT, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                   
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -8041,11 +7446,10 @@ app.get(securedpath + '/viewinspection_Filter', function (req, res) {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @key =?;set @ondate =?;set @ondate2 =?;set @OrganizationID =?;call usp_viewinspection_Filter(@key,@ondate,@ondate2,@OrganizationID)", [key, on_DT, upto_DT, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                  
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -8055,72 +7459,7 @@ app.get(securedpath + '/viewinspection_Filter', function (req, res) {
 });
 
 
-//app.get(securedpath + '/viewinspectionCountAllFilter', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//
-//    var key = url.parse(req.url, true).query['key'];
-//    var key1 = url.parse(req.url, true).query['key1'];
-//    var on_DT = url.parse(req.url, true).query['searchDT'];
-//    var upto_DT = url.parse(req.url, true).query['searchDT2'];
-//    console.log("ZZZZZZZZZZZZZ filter and key are " + key + "  " + on_DT + " " + upto_DT);
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query("set @key =?; set @key1 =?;set @ondate =?;set @ondate2 =?;call usp_viewinspectionCountAllFilter(@key,@key1,@ondate,@ondate2)", [key,key1,on_DT, upto_DT], function (err, rows) {
-//        if (err)
-//        {
-//            // console.log("Problem with MySQL" + err);
-//        }
-//        else
-//        {
-//            //    console.log("Printing rows");
-//            // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
-//            res.end(JSON.stringify(rows[4]));
-//        }
-//    });
-//    }
-//        connection.release();
-//    });
-//});
 
-
-
-//app.get(securedpath + '/viewinspectionReport_FilterByDates', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//
-//    var employeekey = url.parse(req.url, true).query['employeekey'];
-//    var on_DT = url.parse(req.url, true).query['searchDT'];
-//    var upto_DT = url.parse(req.url, true).query['searchDT2'];
-//    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-////     var Empsearch = url.parse(req.url, true).query['EmployeeKey'];
-//    console.log("ZZZZZZZZZZZZZ filter and key are " + key + "  " + on_DT + " " + upto_DT);
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query("set @employeekey =?;set @ondate =?;set @ondate2 =?;set @OrganizationID =?;call usp_viewinspectionReport_FilterByDates(@employeekey,@ondate,@ondate2,@OrganizationID)", [employeekey, on_DT, upto_DT, OrganizationID], function (err, rows) {
-//                if (err)
-//                {
-//                    // console.log("Problem with MySQL" + err);
-//                }
-//                else
-//                {
-//                    //    console.log("Printing rows");
-//                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
-//                    res.end(JSON.stringify(rows[4]));
-//                }
-//            });
-//        }
-//        connection.release();
-//    });
-//});
 
 app.get(securedpath + '/viewinspectionReport_FilterByDates', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -8129,7 +7468,7 @@ app.get(securedpath + '/viewinspectionReport_FilterByDates', function (req, res)
     var on_DT = url.parse(req.url, true).query['searchDT'];
     var upto_DT = url.parse(req.url, true).query['searchDT2'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //console.log("ZZZZZZZZZZZZZ filter and key are " + key + "  " + on_DT + " " + upto_DT);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8139,11 +7478,10 @@ app.get(securedpath + '/viewinspectionReport_FilterByDates', function (req, res)
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @employeekey =?;set @ondate =?;set @ondate2 =?;set @OrganizationID =?;call usp_viewinspectionReport_FilterByDates(@employeekey,@ondate,@ondate2,@OrganizationID)", [employeekey, on_DT, upto_DT, OrganizationID], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                    
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -8169,11 +7507,10 @@ app.get(securedpath + '/viewinspectionQuestionCountByDates', function (req, res)
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @key =?;set @ondate =?;set @ondate2 =?;call usp_viewinspectionQuestionCountByDates(@key,@ondate,@ondate2)", [key, on_DT, upto_DT], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                   
                 }
                 else {
-                    //    console.log("Printing rows");
-                    // console.log("Workorer filtered output " + JSON.stringify(rows[4]));
+                 
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -8188,12 +7525,10 @@ app.get(securedpath + '/viewworkorderempfilter', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['employeekey'];
     var managerkey = url.parse(req.url, true).query['managerkey'];
-    //    var key = url.parse(req.url, true).query['key'];
+    
     var on_DT = url.parse(req.url, true).query['searchDT'];
 
-    //    var on_DT = if(url.parse(req.url, true).query['searchDT'],null);
-
-    // console.log("filter and key are " + empkey + filter + " " + key + "  " + on_DT);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8203,10 +7538,10 @@ app.get(securedpath + '/viewworkorderempfilter', function (req, res) {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
             connection.query("set @empk =?;set @managerkey =?;set @ondate =?;call usp_viewworkorderempfilter(@empk,@managerkey,@ondate)", [empkey, managerkey, on_DT], function (err, rows) {
                 if (err) {
-                    // console.log("Problem with MySQL" + err);
+                    
                 }
                 else {
-                    //    console.log("Printing rows");
+                
                     console.log("Workorer filtered output " + JSON.stringify(rows[3]));
                     res.end(JSON.stringify(rows[3]));
                 }
@@ -8234,7 +7569,7 @@ app.get(securedpath + '/getAllValueByDomain', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -8242,12 +7577,11 @@ app.get(securedpath + '/getAllValueByDomain', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+    
 });
 app.get(securedpath + '/allRoomList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var domname = url.parse(req.url, true).query['domainName'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
+   
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -8261,7 +7595,7 @@ app.get(securedpath + '/allRoomList', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -8269,13 +7603,13 @@ app.get(securedpath + '/allRoomList', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+  
 });
 
 
 app.get(securedpath + '/getBatchScheduleName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var domname = url.parse(req.url, true).query['domainName'];
+  
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -8290,7 +7624,7 @@ app.get(securedpath + '/getBatchScheduleName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
                 res.end();
@@ -8298,7 +7632,7 @@ app.get(securedpath + '/getBatchScheduleName', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+  
 });
 
 app.get(securedpath + '/ViewWorkorderByDates', function (req, res) {
@@ -8318,7 +7652,7 @@ app.get(securedpath + '/ViewWorkorderByDates', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -8326,7 +7660,7 @@ app.get(securedpath + '/ViewWorkorderByDates', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+    
 });
 
 
@@ -8349,7 +7683,7 @@ app.get(securedpath + '/viewReportingWorkorder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
                 res.end();
@@ -8357,7 +7691,7 @@ app.get(securedpath + '/viewReportingWorkorder', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+   
 });
 app.get(securedpath + '/viewReportingInspection', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -8379,7 +7713,7 @@ app.get(securedpath + '/viewReportingInspection', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by domain " + domname + "  is  " + JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[5]));
                 }
                 res.end();
@@ -8387,13 +7721,13 @@ app.get(securedpath + '/viewReportingInspection', function (req, res) {
         }
         connection.release();
     });
-    //    res.end();
+
 });
 app.get(securedpath + '/workorderDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var workorderKey = url.parse(req.url, true).query['SearchKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("WorkorderDetailKey ....." + workorderKey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8406,8 +7740,7 @@ app.get(securedpath + '/workorderDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -8420,7 +7753,7 @@ app.get(securedpath + '/workorderScheduleDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var workorderKey = url.parse(req.url, true).query['SearchKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("WorkorderDetailKey ....." + workorderKey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8433,8 +7766,7 @@ app.get(securedpath + '/workorderScheduleDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -8448,7 +7780,7 @@ app.get(securedpath + '/getRoomNameByRoomList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var workorderKey = url.parse(req.url, true).query['SearchKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("WorkorderDetailKey ....." + workorderKey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8461,8 +7793,7 @@ app.get(securedpath + '/getRoomNameByRoomList', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -8488,7 +7819,7 @@ app.get(securedpath + '/workorderCycleDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workorderCycleDetails" + wkey + "  is  " + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
                 res.end();
@@ -8499,9 +7830,9 @@ app.get(securedpath + '/workorderCycleDetails', function (req, res) {
 });
 app.get(securedpath + '/viewAllWorkorderByDate', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var empkey = url.parse(req.url, true).query['employeekey'];
+
     var workDT = url.parse(req.url, true).query['viewdate'];
-    // console.log("Employee key for workorder is " + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8514,8 +7845,7 @@ app.get(securedpath + '/viewAllWorkorderByDate', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing rows");
-                    // console.log("ROWS" + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -8538,7 +7868,7 @@ app.get(securedpath + '/getZoneByFacilityKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_zoneByFacilityKeyGet...from server.." + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -8562,7 +7892,7 @@ app.get(securedpath + '/getFloorByZoneFacilityKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_zoneByFacilityKeyGet...from server.." + JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -8590,7 +7920,7 @@ app.get(securedpath + '/viewworkorderFilterByFacility', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_zoneByFacilityKeyGet...from server.." + JSON.stringify(rows[4]));
+                   
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -8616,7 +7946,7 @@ app.get(securedpath + '/workorderFilterByStatusEmpView', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_zoneByFacilityKeyGet...from server.." + JSON.stringify(rows[2]));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -8626,31 +7956,7 @@ app.get(securedpath + '/workorderFilterByStatusEmpView', function (req, res) {
 });
 
 
-//app.options('/deleteByWorkorderKey', supportCrossOriginScript);
-//app.post(securedpath + '/deleteByWorkorderKey', supportCrossOriginScript, function (req, res) {
-//    var workkey = url.parse(req.url, true).query['workorderkey'];
-//    // console.log("inside server wkey is "+workkey);
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query('set @key=?;call usp_workorderdeleteByKey(@key)', [workkey], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
-//        if (err) {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else {
-//            // console.log("AllValues by del "+ JSON.stringify(rows));
-//            res.end(JSON.stringify(rows));
-//        }
-//        res.end();
-//    });
-//    }
-//        connection.release();
-//    });
-//});
+
 app.options('/deletebywschedulekey', supportCrossOriginScript);
 app.post(securedpath + '/deletebywschedulekey', supportCrossOriginScript, function (req, res) {
     var workschedulekey = url.parse(req.url, true).query['workschedulekey'];
@@ -8670,7 +7976,7 @@ app.post(securedpath + '/deletebywschedulekey', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by del "+ JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
                 res.end();
@@ -8699,7 +8005,7 @@ app.post(securedpath + '/DeleteWorkorderSchedulebyKey', supportCrossOriginScript
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by del "+ JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
                 res.end();
@@ -8726,7 +8032,7 @@ app.get(securedpath + '/viewDashboardWorkorder', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_workorderEmpView...from server.." + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -8750,7 +8056,7 @@ app.get(securedpath + '/getAllValuesForRouteMap', function (req, res) {
                     console.log("Problem with MYSQL " + err);
                 }
                 else {
-                    // console.log("AllValues by del "+ JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -8768,7 +8074,7 @@ app.get(securedpath + '/getEmployeeByShift_Jobtitle', function (req, res) {
     var meetingdate = url.parse(req.url, true).query['meetingdate'];
     var jobtitlekey = url.parse(req.url, true).query['jobtitle'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("inside server wkey is"+shiftkey+" "+meetingdate+" "+jobtitlekey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8781,7 +8087,7 @@ app.get(securedpath + '/getEmployeeByShift_Jobtitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("AllValues by del "+ JSON.stringify(rows[5]));
+                   
                     res.end(JSON.stringify(rows[5]));
                 }
                 res.end();
@@ -8809,8 +8115,7 @@ app.get(securedpath + '/allWorkordersByEmployeeKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //  console.log("Printing allWorkordersByEmployeeKey");
-                    // console.log("ROWS" + JSON.stringify(rows[2]));
+                 
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -8836,7 +8141,7 @@ app.get(securedpath + '/getAllEmployees', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("usp_GetAllEmployees...from server.." + JSON.stringify(rows[2]));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -8850,7 +8155,7 @@ app.get(securedpath + '/getShiftDetailsByShiftKey', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var shiftkey = url.parse(req.url, true).query['shiftkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log("inside ...jobTitle..." + jobTitle);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8863,8 +8168,7 @@ app.get(securedpath + '/getShiftDetailsByShiftKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("Printing rows");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -8882,7 +8186,7 @@ app.post(securedpath + '/getShiftDetails', supportCrossOriginScript, function (r
     var supervisor = req.body.supervisorKey;
     var metaupdatedby = req.body.employeekey;
     var OrganizationID = req.body.OrganizationID;
-    // console.log("inside addSchedulingBy_shift " + start_date + " " + end_date + " " + shiftTypeKey + " " + supervisor + "  " + zone);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -8896,7 +8200,7 @@ app.post(securedpath + '/getShiftDetails', supportCrossOriginScript, function (r
                 }
                 else {
 
-                    // console.log("editEmp_scheduling " + JSON.stringify(rows[5]));
+                  
                     res.end(JSON.stringify(rows[6]));
 
                 }
@@ -9006,7 +8310,7 @@ app.get(securedpath + '/getinspectionDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getinspectionedDetails...from server.." + JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9034,7 +8338,7 @@ app.get(securedpath + '/getWorkorderByStatusEmployeeKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_zoneByFacilityKeyGet...from server.." + JSON.stringify(rows[3]));
+                   
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9047,7 +8351,7 @@ app.get(securedpath + '/getWorkorderByStatusEmployeeKey', function (req, res) {
 app.get(securedpath + '/inspectionDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var inspectionorderKey = url.parse(req.url, true).query['inspectionorderKey'];
-    //    console.log("date  is " + to_date);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9060,7 +8364,7 @@ app.get(securedpath + '/inspectionDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[1]));
+                 
                     res.end(JSON.stringify(rows[1]));
 
                 }
@@ -9073,7 +8377,7 @@ app.get(securedpath + '/inspectionDetails', function (req, res) {
 app.get(securedpath + '/viewInspectionTemplate', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9086,7 +8390,7 @@ app.get(securedpath + '/viewInspectionTemplate', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                 
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -9113,7 +8417,7 @@ app.get(securedpath + '/getTemplateDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9126,7 +8430,7 @@ app.get(securedpath + '/getTempDetailsForDropdown', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9139,7 +8443,7 @@ app.get(securedpath + '/getTempDetailsForDropdown', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9151,8 +8455,7 @@ app.get(securedpath + '/getTempDetailsForDropdown', function (req, res) {
 
 app.get(securedpath + '/getTemplateFilterByTemplateID', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var pageno = url.parse(req.url, true).query['pageno'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+   
     var key = url.parse(req.url, true).query['key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -9167,7 +8470,7 @@ app.get(securedpath + '/getTemplateFilterByTemplateID', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9196,7 +8499,7 @@ app.post(securedpath + '/deleteInspectionTemplateQuestions', supportCrossOriginS
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9221,7 +8524,7 @@ app.get(securedpath + '/editTemplateDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log(JSON.stringify(rows[2]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9250,7 +8553,7 @@ app.post(securedpath + '/deleteInspectionTemplate', supportCrossOriginScript, fu
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -9263,11 +8566,10 @@ app.post(securedpath + '/deleteInspectionTemplate', supportCrossOriginScript, fu
 app.options('/deleteSelectedTemplateQuestion', supportCrossOriginScript);
 app.post(securedpath + '/deleteSelectedTemplateQuestion', supportCrossOriginScript, function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    // var templateID = url.parse(req.url, true).query['templateID'];
-    // var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    
     var templateID = req.body.templateID;
     var OrganizationID = req.body.OrganizationID;
-    //    var updatedBy = url.parse(req.url, true).query['updatedBy'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9280,7 +8582,7 @@ app.post(securedpath + '/deleteSelectedTemplateQuestion', supportCrossOriginScri
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                   
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9295,7 +8597,7 @@ app.post(securedpath + '/deleteWorkCycleByKey', supportCrossOriginScript, functi
     res.header("Access-Control-Allow-Origin", "*");
     var workorderkey = url.parse(req.url, true).query['workorderkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var updatedBy = url.parse(req.url, true).query['updatedBy'];
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9308,7 +8610,7 @@ app.post(securedpath + '/deleteWorkCycleByKey', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                  
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -9323,8 +8625,7 @@ app.post(securedpath + '/deleteByWorkorderKey', supportCrossOriginScript, functi
 
     var workkey = req.body.workorderkey;
     var OrganizationID = req.body.OrganizationID;
-    //    var templateID = url.parse(req.url, true).query['templateID'];
-    //    var updatedBy = url.parse(req.url, true).query['updatedBy'];
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9337,7 +8638,7 @@ app.post(securedpath + '/deleteByWorkorderKey', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -9351,8 +8652,7 @@ app.post(securedpath + '/deleteWorkorderFromView', supportCrossOriginScript, fun
     res.header("Access-Control-Allow-Origin", "*");
     var workkey = url.parse(req.url, true).query['workorderkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var templateID = url.parse(req.url, true).query['templateID'];
-    //    var updatedBy = url.parse(req.url, true).query['updatedBy'];
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9365,7 +8665,7 @@ app.post(securedpath + '/deleteWorkorderFromView', supportCrossOriginScript, fun
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(JSON.stringify(rows[2]));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -9393,7 +8693,7 @@ app.get(securedpath + '/getTrainingDetailsByJobtitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getTrainingDetailsByJobtitle "+ JSON.stringify(rows[3]));
+                    
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9406,7 +8706,7 @@ app.get(securedpath + '/viewEmployeesOfEvent', function (req, res) {
     var EventKey = url.parse(req.url, true).query['EventKey'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var filter = url.parse(req.url, true).query['filter']; 
+     
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9419,7 +8719,7 @@ app.get(securedpath + '/viewEmployeesOfEvent', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("gettodaysMeeting "+ JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -9434,7 +8734,7 @@ app.get(securedpath + '/gettodaysMeeting', function (req, res) {
     var pageno = url.parse(req.url, true).query['pageno'];
     var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var filter = url.parse(req.url, true).query['filter']; 
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9447,7 +8747,7 @@ app.get(securedpath + '/gettodaysMeeting', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("gettodaysMeeting "+ JSON.stringify(rows));
+                 
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9458,10 +8758,10 @@ app.get(securedpath + '/gettodaysMeeting', function (req, res) {
 
 app.get(securedpath + '/viewSharedStatusButton', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var ondate = url.parse(req.url, true).query['ondate'];
+ 
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var filter = url.parse(req.url, true).query['filter'];
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9474,7 +8774,7 @@ app.get(securedpath + '/viewSharedStatusButton', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("gettodaysMeeting "+ JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -9489,7 +8789,7 @@ app.get(securedpath + '/viewAllMeetingByDates', function (req, res) {
     var search_DT2 = url.parse(req.url, true).query['search_DT2'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var filter = url.parse(req.url, true).query['filter']; 
+     
     console.log("from date" + search_DT + "todate" + search_DT2);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -9503,7 +8803,7 @@ app.get(securedpath + '/viewAllMeetingByDates', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("gettodaysMeeting "+ JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9530,7 +8830,7 @@ app.get(securedpath + '/getAllDefaultEvents', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_getAllDefaultEvents "+ JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9600,7 +8900,7 @@ app.get(securedpath + '/checkForNewWorkorderStatus', function (req, res) {
     var WorkorderStatus = url.parse(req.url, true).query['WorkorderStatus'];
     var WorkorderStatusDescription = url.parse(req.url, true).query['WorkorderStatusDescription'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9639,7 +8939,7 @@ app.get(securedpath + '/allFloorType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("allFloorType "+ JSON.stringify(rows[3]));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9651,8 +8951,7 @@ app.get(securedpath + '/allFloorTypes', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var pageno = url.parse(req.url, true).query['pagenumber'];
-    //    var itemsperpage = url.parse(req.url, true).query['itemsPerPage'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9665,7 +8964,7 @@ app.get(securedpath + '/allFloorTypes', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("allFloorType "+ JSON.stringify(rows[2]));
+                 
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9677,7 +8976,7 @@ app.get(securedpath + '/floorvaluesByfacKey', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var key = url.parse(req.url, true).query['key'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var itemsperpage = url.parse(req.url, true).query['itemsPerPage'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9690,7 +8989,7 @@ app.get(securedpath + '/floorvaluesByfacKey', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("allFloorType "+ JSON.stringify(rows[2]));
+                  
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -9704,7 +9003,7 @@ app.get(securedpath + '/getAllEquipmentTypes', function (req, res) {
     var itemsperpage = url.parse(req.url, true).query['itemsperpage'];
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("pagenumber "+pageno+".."+itemsperpage);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -9717,7 +9016,7 @@ app.get(securedpath + '/getAllEquipmentTypes', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("allFloorType "+ JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9746,7 +9045,7 @@ app.get(securedpath + '/getShiftsByZone', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getShiftsByZone...from server.." + JSON.stringify(rows[3]));
+                    
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9775,7 +9074,7 @@ app.get(securedpath + '/getAllShiftByShiftType', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllShiftByShiftType...from server.." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9802,7 +9101,7 @@ app.get(securedpath + '/getAllShiftByDate', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllShiftByShiftType...from server.." + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -9882,7 +9181,7 @@ app.get(securedpath + '/getAllEmployeesShiftsByDate', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllShiftByShiftType...from server.." + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9910,7 +9209,7 @@ app.post(securedpath + '/backgroundGeoLocation', supportCrossOriginScript, funct
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllShiftByShiftType...from server.." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[5]));
                 }
             });
@@ -9935,7 +9234,7 @@ app.get(securedpath + '/getFloorName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workorderCycleDetails  is  " + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -9961,7 +9260,7 @@ app.get(securedpath + '/getZoneName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workorderCycleDetails  is  " + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -9987,7 +9286,7 @@ app.get(securedpath + '/getRoomTypeName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workorderCycleDetails  is  " + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -10013,7 +9312,7 @@ app.get(securedpath + '/getRoomName', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workorderCycleDetails  is  " + JSON.stringify(rows));
+                 
                     res.end(JSON.stringify(rows[1]));
                 }
                 res.end();
@@ -10069,7 +9368,7 @@ app.get(securedpath + '/updateEditInspection', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("updateEditInspection  is  " + JSON.stringify(rows));
+                 
                     res.end(JSON.stringify(rows[4]));
                 }
                 res.end();
@@ -10084,7 +9383,7 @@ app.get(securedpath + '/deleteScheduleView', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var ShiftKey = url.parse(req.url, true).query['ShiftKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //     var IsDeleted = url.parse(req.url, true).query['IsDeleted'];
+    
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -10098,7 +9397,7 @@ app.get(securedpath + '/deleteScheduleView', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("deleteScheduleView  is  " + JSON.stringify(rows));
+                  
 
                     res.end(JSON.stringify(rows[2]));
                 }
@@ -10125,7 +9424,7 @@ app.get(securedpath + '/editSupervisorSchedule', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("editSupervisorSchedule  is  " + JSON.stringify(rows));
+                   
 
                     res.end(JSON.stringify(rows[2]));
                 }
@@ -10149,7 +9448,7 @@ app.post(securedpath + '/updateSchedulingSupervisor', supportCrossOriginScript, 
     var SupervisorKey = url.parse(req.url, true).query['supervisorKey'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("updateSchedulingSupervisor....shiftkey "+ShiftKey+"...zonekey.. "+ZoneKey+"....startdate.. "+StartDate+".....enddate.. "+EndDate+"..shifttypekey.."+shiftTypeKey+"..supervisorkey..."+SupervisorKey+"..employeekey..."+employeekey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10162,7 +9461,7 @@ app.post(securedpath + '/updateSchedulingSupervisor', supportCrossOriginScript, 
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("updateSchedulingSupervisor "+ JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
                 res.end();
@@ -10181,7 +9480,7 @@ app.post(securedpath + '/submitDefaultEventDetails', supportCrossOriginScript, f
     var ActionTypeKey = url.parse(req.url, true).query['ActionTypeKey'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("submitDefaultEventDetails  "+ActionType,Action,Description,ActionKey,ActionTypeKey,employeekey);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10194,7 +9493,7 @@ app.post(securedpath + '/submitDefaultEventDetails', supportCrossOriginScript, f
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("submitDefaultEventDetails "+ JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows));
                 }
                 res.end();
@@ -10210,11 +9509,7 @@ app.post(securedpath + '/deleteDefaultEventDetails', supportCrossOriginScript, f
     var ActionKey = url.parse(req.url, true).query['ActionKey'];
     var ActionTypeKey = url.parse(req.url, true).query['ActionTypeKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // var ActionKey = req.body.ActionKey;
-    // var ActionTypeKey = req.body.ActionTypeKey;
-    // var OrganizationID = req.body.OrganizationID;
-
-    // console.log("deleteDefaultEventDetails  "+ActionKey,ActionTypeKey);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10227,7 +9522,7 @@ app.post(securedpath + '/deleteDefaultEventDetails', supportCrossOriginScript, f
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("deleteDefaultEventDetails "+ JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows));
                 }
                 res.end();
@@ -10443,7 +9738,7 @@ app.get(securedpath + '/deleteMeetingViewEmployeeDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("deleteMeetingViewEmployeeDetails  is  " + JSON.stringify(rows));
+                    
 
                     res.end(JSON.stringify(rows[2]));
                 }
@@ -10681,7 +9976,7 @@ app.post(securedpath + '/updateEditMeetingDetails', function (req, res) {
     var MeetingNotes = req.body.MeetingNotes;
     var actionKey = req.body.actionKey;
     var OrganizationID = req.body.OrganizationID;
-    // var actionTypeKey = req.body.actionTypeKey;
+    
     var eventKey = req.body.eventKey;
     var eventhost = req.body.eventhost;
     var venue = req.body.venue;
@@ -10702,7 +9997,7 @@ app.post(securedpath + '/updateEditMeetingDetails', function (req, res) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 } else {
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                 
                     res.end(JSON.stringify(rows));
                 }
             });
@@ -10714,7 +10009,7 @@ app.get(securedpath + '/markAsAttendedTrainingDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var EventKey = url.parse(req.url, true).query['EventKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    // console.log("EventKey "+EventKey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10727,7 +10022,7 @@ app.get(securedpath + '/markAsAttendedTrainingDetails', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("markAsAttendedTrainingDetails  is  " + JSON.stringify(rows));
+                    
 
                     res.end(JSON.stringify(rows[2]));
                 }
@@ -10755,7 +10050,7 @@ app.get(securedpath + '/submitMarkAsAttendedTraining', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("submitMarkAsAttendedTraining...from server.." + JSON.stringify(rows[1]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -10807,7 +10102,7 @@ app.post(securedpath + '/pho1', supportCrossOriginScript, function (req, res) {
                     console.log(err);
                 }
                 else {
-                    // console.log("pho1 " + JSON.stringify(rows[3][0].WorkorderStatus));
+             
                     res.end(JSON.stringify(rows[4][0].WorkorderStatus));
                 }
 
@@ -10825,7 +10120,7 @@ app.post(securedpath + '/pho1_Ang6', supportCrossOriginScript, function (req, re
     var OrganizationID = req.body.OrganizationID;
     var complete_Time = req.body.complete_Time;
     var newPath = pho;
-    // var complete_Time = url.parse(req.url, true).query['complete_Time'];
+    
 
     console.log("pho" + pho + " wdkey " + wdkey + " employeekey " + employeekey);
     pool.getConnection(function (err, connection) {
@@ -10840,7 +10135,7 @@ app.post(securedpath + '/pho1_Ang6', supportCrossOriginScript, function (req, re
                     console.log(err);
                 }
                 else {
-                    // console.log("pho1 " + JSON.stringify(rows[3][0].WorkorderStatus));
+                   
                     res.end(JSON.stringify(rows[5][0].WorkorderStatus));
                 }
 
@@ -10851,15 +10146,13 @@ app.post(securedpath + '/pho1_Ang6', supportCrossOriginScript, function (req, re
 });
 app.options('/uploadImageFromSmallDevices', supportCrossOriginScript);
 app.post(securedpath + '/uploadImageFromSmallDevices', supportCrossOriginScript, function (req, res) {
-    //    console.log('hit post ');
+    
     uploadImageFromSmallDevices(req, res, function (err) {
         if (err) {
-            // console.log(err);
-            // console.log(err.stack);
-            //console.log(req);
+            
             return res.end("Error uploading file.");
         } else {
-            // console.log('done');
+           
             res.end("File is uploaded");
         }
 
@@ -10870,13 +10163,12 @@ var PhotostorageDevice = multer.diskStorage({
     destination: function (req, file, callback) {
 
         callback(null, '../webui/pho1');
-        //        callback(null, 'ftp://waws-prod-bay-055.ftp.azurewebsites.windows.net/site/wwwroot/pho1/');
-        // console.log("destination " +file.originalname);
+       
     },
     filename: function (req, file, callback) {
         var fname = file.originalname;
         callback(null, fname);
-        // console.log("success file name " +fname);
+        
     }
 });
 var uploadImageFromSmallDevices = multer({ storage: PhotostorageDevice }).single('file');
@@ -10910,8 +10202,7 @@ app.get(securedpath + '/checkUsername', function (req, res) {
 app.get(securedpath + '/getManagerForEmployeeForSuperAdmin', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
-    //    console.log(username);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10963,7 +10254,7 @@ app.get(securedpath + '/getOtherManagers', function (req, res) {
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var rolekey = url.parse(req.url, true).query['rolekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log(username);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -10989,8 +10280,7 @@ app.get(securedpath + '/checkForEmployeeInJobtitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var jobtitlekey = url.parse(req.url, true).query['jobtitlekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11045,7 +10335,7 @@ app.get(securedpath + '/getLoginDetailsForAllUsers', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var pageno = url.parse(req.url, true).query['pageno'];
     var itemsperpage = url.parse(req.url, true).query['itemsperpage'];
-    //    var itemsperpage = itemsperpage;
+    
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWW " + pageno + " " + itemsperpage + " " + employeekey);
@@ -11103,7 +10393,7 @@ app.post(securedpath + '/resetPassword', function (req, res) {
     var updatedBy = req.body.updatedBy;
     var userloginid = req.body.userloginid;
     var OrganizationID = req.body.OrganizationID;
-    //     console.log(updatedBy);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11323,8 +10613,7 @@ app.get(securedpath + '/viewEmpByManager', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var managerkey = url.parse(req.url, true).query['managerkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var pagenumber = url.parse(req.url, true).query['pagenumber'];
-    //    var itemsperpage = url.parse(req.url, true).query['itemsperpage'];
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11412,8 +10701,7 @@ app.get(securedpath + '/getEmpByJobTitle', function (req, res) {
 app.get(securedpath + '/searchEmpByJobTitle', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var jobtitleString = url.parse(req.url, true).query['jobtitleString'];
-    //    var currentPage = url.parse(req.url, true).query['currentPage'];
-    //    var itemsPerPage = url.parse(req.url, true).query['itemsPerPage'];
+    
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     console.log("jobtitleString   " + jobtitleString);
@@ -11600,7 +10888,7 @@ app.post(securedpath + '/addNewForms', function (req, res) {
     var serverEmpKey = newobject.serverEmpKey;
     var OrganizationID = newobject.OrganizationID;
 
-    //   console.log("EventKey "+EventKey+" attendedSelectEmp "+attendedSelectEmp);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11641,7 +10929,7 @@ app.get(securedpath + '/checkforForms', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("getAllAvailableShifts...from server.." + JSON.stringify(rows[1]));
+                
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -11649,25 +10937,7 @@ app.get(securedpath + '/checkforForms', function (req, res) {
         connection.release();
     });
 });
-//app.get(securedpath + '/checkforForms', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var newform = url.parse(req.url, true).query['newform'];
-//    var serverEmpKey = url.parse(req.url, true).query['serverEmpKey'];
-//
-////   console.log("EventKey "+EventKey+" attendedSelectEmp "+attendedSelectEmp);
-//
-//    pool.query('set @newform=?; set @serverEmpKey=?; call usp_checkforForms(@newform,@serverEmpKey)', [newform, serverEmpKey], function (err, rows) {
-//        if (err) {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else {
-//            console.log("checkforForms  is  " + JSON.stringify(rows));
-//
-//            res.end(JSON.stringify(rows));
-//        }
-//        res.end();
-//    });
-//});
+
 //add employee
 app.options(securedpath + '/addemp', supportCrossOriginScript);
 app.post(securedpath + '/addemp', supportCrossOriginScript, function (req, res) {
@@ -11716,7 +10986,7 @@ app.post(securedpath + '/addemp', supportCrossOriginScript, function (req, res) 
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("add employee..."+JSON.stringify(rows[26][0]));
+                   
                     res.end(JSON.stringify(rows[31][0]));
                 }
             });
@@ -11789,7 +11059,7 @@ app.get(securedpath + '/getAllTemplatesWithoutScoringType', function (req, res) 
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("getAllTemplatesWithoutScoringType...from server.." + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[0]));
                 }
             });
@@ -11814,7 +11084,7 @@ app.get(securedpath + '/getTemplates', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("getTemplates...from server.." + JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -11829,8 +11099,7 @@ app.get(securedpath + '/statusByWorkorderDate', function (req, res) {
     var date = url.parse(req.url, true).query['date'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //      console.log("employeesGetByEmployeeKey...from server..");
-    //      console.log(employeeKey);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11843,7 +11112,7 @@ app.get(securedpath + '/statusByWorkorderDate', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //             console.log("employeesGetByEmployeeKey...from server.." + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -11876,12 +11145,12 @@ app.get(securedpath + '/getStatusListByEmployeeKey', function (req, res) {
         }
         connection.release();
     });
-});  // /getfacilitykeyByRoomId
+});  
 
 app.get(securedpath + '/getfacilitykeyByRoomId', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var roomkey = url.parse(req.url, true).query['rkey'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -11962,7 +11231,7 @@ app.get(securedpath + '/checkForNewFloor', function (req, res) {
 app.get(securedpath + '/checkForNewScheduleName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var bkey = url.parse(req.url, true).query['bkey'];
-    //    var FloorName = url.parse(req.url, true).query['FloorName'];
+
     var employeekey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -12027,7 +11296,7 @@ app.post(securedpath + '/checkForNewRoom', supportCrossOriginScript, function (r
     var employeekey = newObj.employeekey;
     var OrganizationID = newObj.OrganizationID;
 
-    // console.log(facility_key, floor_key, facility_name, floor_name, zone_key, zone_name);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12040,7 +11309,7 @@ app.post(securedpath + '/checkForNewRoom', supportCrossOriginScript, function (r
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //             console.log(JSON.stringify(rows[4]));
+                    
                     res.end(JSON.stringify(rows[8]));
                     console.log("Facility Key...from server.." + JSON.stringify(rows[8]));
 
@@ -12082,11 +11351,11 @@ app.get(securedpath + '/checkForNewEquipment', function (req, res) {
 
 app.get(securedpath + '/checkForTemplate', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var EquipmentTypeKey = url.parse(req.url, true).query['EquipmentTypeKey'];
+  
     var templateName = url.parse(req.url, true).query['templateName'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12110,11 +11379,11 @@ app.get(securedpath + '/checkForTemplate', function (req, res) {
 
 app.get(securedpath + '/checkforInspectionOnTemplate', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var EquipmentTypeKey = url.parse(req.url, true).query['EquipmentTypeKey'];
+    
     var templateid = url.parse(req.url, true).query['templateid'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12139,10 +11408,10 @@ app.get(securedpath + '/checkforInspectionOnTemplate', function (req, res) {
 
 app.get(securedpath + '/getTemplateEditDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var EquipmentTypeKey = url.parse(req.url, true).query['EquipmentTypeKey'];
+    
     var templateid = url.parse(req.url, true).query['templateid'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12167,11 +11436,11 @@ app.get(securedpath + '/getTemplateEditDetails', function (req, res) {
 
 app.get(securedpath + '/getTemplateQuestionsEditDetails', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    //    var EquipmentTypeKey = url.parse(req.url, true).query['EquipmentTypeKey'];
+  
     var templateid = url.parse(req.url, true).query['templateid'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12198,7 +11467,7 @@ app.get(securedpath + '/checkForBarcodeInventory', function (req, res) {
     var Barcode = url.parse(req.url, true).query['Barcode'];
     var type = url.parse(req.url, true).query['type'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12226,7 +11495,7 @@ app.get(securedpath + '/insertNewShiftType', function (req, res) {
     var ShiftEndTime = url.parse(req.url, true).query['ShiftEndTime'];
     var empKey = url.parse(req.url, true).query['empKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var employeekey = url.parse(req.url, true).query['employeekey'];
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -12918,7 +12187,7 @@ app.get(securedpath + '/metricTypevalues', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[1]));
                 }
             });
@@ -12943,7 +12212,7 @@ app.get(securedpath + '/getTemplatesNameFor_Mob', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -12968,7 +12237,7 @@ app.get(securedpath + '/managerWorkOrder_mob', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -12995,7 +12264,7 @@ app.get(securedpath + '/searchEmployeeList', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -13022,7 +12291,7 @@ app.get(securedpath + '/empGetBySupervisor', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -13048,7 +12317,7 @@ app.get(securedpath + '/empGetBySupervisorjobTitle', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -13074,7 +12343,7 @@ app.get(securedpath + '/roomsForCreateBatchSchedule', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                    
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -13110,8 +12379,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
     var fromdate = newWOObj.fromdate;
     var todate = newWOObj.todate;
     var scheduledTime = newWOObj.scheduleTime;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13124,8 +12392,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[19]));
                 }
             });
@@ -13152,7 +12419,7 @@ app.get(securedpath + '/viewScheduleReport', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+               
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -13162,7 +12429,7 @@ app.get(securedpath + '/viewScheduleReport', function (req, res) {
 });
 
 app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+    
     var newWOObj = {};
     newWOObj = req.body;
     var empKey = newWOObj.empKey;
@@ -13174,11 +12441,7 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
     var DeptKey = newWOObj.DeptKey;
     var Evntype = newWOObj.Evntype;
 
-    //    var workorderTypeKey = newWOObj.workorderTypeKey;
-    //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
-
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13191,8 +12454,7 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[8]));
                 }
             });
@@ -13204,9 +12466,7 @@ app.post(securedpath + '/viewMeettingTrainingByAllFilter', supportCrossOriginScr
 app.get(securedpath + '/JobtitleForSuperAdmin', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+ 
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13234,9 +12494,7 @@ app.get(securedpath + '/getManagerForUpdateEmployeeDetails', function (req, res)
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var employeekey = url.parse(req.url, true).query['employeekey'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13261,9 +12519,7 @@ app.get(securedpath + '/searchBuildingList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchFacility = url.parse(req.url, true).query['searchFacility'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13290,9 +12546,7 @@ app.get(securedpath + '/getSearchFloor', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchFloor = url.parse(req.url, true).query['searchFloor'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13319,9 +12573,7 @@ app.get(securedpath + '/searchZoneList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchZone = url.parse(req.url, true).query['searchZone'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13348,9 +12600,7 @@ app.get(securedpath + '/searchFloorTypeList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchFloorType = url.parse(req.url, true).query['searchFloorType'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13373,7 +12623,7 @@ app.get(securedpath + '/searchFloorTypeList', function (req, res) {
 });
 
 app.post(securedpath + '/searchWorkorderByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+ 
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -13401,8 +12651,7 @@ app.post(securedpath + '/searchWorkorderByallFilters', supportCrossOriginScript,
     var BatchScheduleNameKey = newWOObj.BatchScheduleNameKey;
     var OrganizationID = newWOObj.OrganizationID;
     var searchWO = newWOObj.searchWO;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13415,8 +12664,7 @@ app.post(securedpath + '/searchWorkorderByallFilters', supportCrossOriginScript,
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[14]));
                 }
             });
@@ -13429,7 +12677,7 @@ app.post(securedpath + '/searchWorkorderByallFilters', supportCrossOriginScript,
 
 
 app.post(securedpath + '/searchWorkorderScheduleByallFilters', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+   
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -13458,8 +12706,7 @@ app.post(securedpath + '/searchWorkorderScheduleByallFilters', supportCrossOrigi
     console.log("inside server batchScheduleNameKey= " + batchScheduleNameKey);
     var OrganizationID = newWOObj.OrganizationID;
     var searchWO = newWOObj.searchWO;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13472,8 +12719,7 @@ app.post(securedpath + '/searchWorkorderScheduleByallFilters', supportCrossOrigi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[14]));
                 }
             });
@@ -13483,7 +12729,7 @@ app.post(securedpath + '/searchWorkorderScheduleByallFilters', supportCrossOrigi
 });
 
 app.post(securedpath + '/searchMeetingEventView', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+    
     var newWOObj = {};
     newWOObj = req.body;
     var empKey = newWOObj.empKey;
@@ -13493,11 +12739,7 @@ app.post(securedpath + '/searchMeetingEventView', supportCrossOriginScript, func
     var jobs = newWOObj.jobs;
     var searchMeeting = newWOObj.searchMeeting;
 
-    //    var workorderTypeKey = newWOObj.workorderTypeKey;
-    //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
-
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13510,8 +12752,7 @@ app.post(securedpath + '/searchMeetingEventView', supportCrossOriginScript, func
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+             
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -13524,9 +12765,7 @@ app.get(securedpath + '/searchMytemplate', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchMytemp = url.parse(req.url, true).query['searchMytemp'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13554,8 +12793,7 @@ app.get(securedpath + '/searchtemplateQun', function (req, res) {
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchMytemp = url.parse(req.url, true).query['searchMytemp'];
     var TemplateID = url.parse(req.url, true).query['TemplateID'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13582,8 +12820,7 @@ app.get(securedpath + '/searchFormList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchForm = url.parse(req.url, true).query['searchForm'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
+    
     console.log(OrganizationID + " " + searchForm);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -13609,8 +12846,7 @@ app.get(securedpath + '/searchViewFormList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchForm = url.parse(req.url, true).query['searchForm'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
+ 
     console.log(OrganizationID + " " + searchForm);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -13637,8 +12873,7 @@ app.get(securedpath + '/searchEquipmentTypeList', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var searchEquipmentType = url.parse(req.url, true).query['searchEquipmentType'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
+   
     console.log(OrganizationID + " " + searchEquipmentType);
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -13662,45 +12897,16 @@ app.get(securedpath + '/searchEquipmentTypeList', function (req, res) {
 });
 
 
-//app.get(securedpath + '/myWorkOrderSearchList', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var searchWO = url.parse(req.url, true).query['searchWO'];
-//    var WorkorderDate = url.parse(req.url, true).query['WorkorderDate'];
-//    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-//    var employeekey = url.parse(req.url, true).query['employeekey'];
-////    console.log(OrganizationID+" "+searchEquipmentType);
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query('set @searchWO=?; set @WorkorderDate=?; set @employeekey=?; set @OrganizationID=?; call usp_myWorkOrderSearchList(@searchWO,@WorkorderDate,@employeekey,@OrganizationID)', [searchWO,WorkorderDate,employeekey,OrganizationID], function (err, rows) {
-//        if (err)
-//        {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else
-//        {
-//            console.log("searchEquipmentTypeList...from server.." + JSON.stringify(rows[4]));
-//            res.end(JSON.stringify(rows[4]));
-//        }
-//    });
-//    }
-//        connection.release();
-//    });
-//});
+
 
 
 app.post(securedpath + '/myWorkOrderSearchList', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+   
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
     console.log("server new manager " + manager);
-    //    var workorderStatusKey = newWOObj.workorderStatusKey;
-    //    console.log("server new workorderStatusKey " + workorderStatusKey);
+    
     var workorderDate = newWOObj.workorderDate;
     console.log("server new workorderDate " + newWOObj.workorderDate);
     var workorderDate2 = newWOObj.workorderDate2;
@@ -13711,19 +12917,12 @@ app.post(securedpath + '/myWorkOrderSearchList', supportCrossOriginScript, funct
     console.log("inside server roomTypeKey= " + roomTypeKey);
     var floorKey = newWOObj.floorKey;
     console.log("inside server floorKey= " + floorKey);
-    //    var roomKey = newWOObj.roomKey;
-    //     console.log("inside server roomKey= " + roomKey);
+  
     var zoneKey = newWOObj.zoneKey;
     console.log("inside server zoneKey= " + zoneKey);
     var OrganizationID = newWOObj.OrganizationID;
     var searchWO = newWOObj.searchWO;
-    //    var employeekey = newWOObj.employeeKey;
-    //    console.log("inside server empkey= " + employeekey);
-    //    var workorderTypeKey = newWOObj.workorderTypeKey;
-    //    console.log("inside server workorderTypeKey= " + workorderTypeKey);
-
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13736,8 +12935,7 @@ app.post(securedpath + '/myWorkOrderSearchList', supportCrossOriginScript, funct
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[9]));
                 }
             });
@@ -13752,7 +12950,7 @@ app.get(securedpath + '/allWorkOrderTypeWithOutQuick', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empkey = url.parse(req.url, true).query['empkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //  
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13765,7 +12963,7 @@ app.get(securedpath + '/allWorkOrderTypeWithOutQuick', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("workordertypelist...from server.." + JSON.stringify(rows[1]));
+                    
                     res.end(JSON.stringify(rows[2]));
                 }
             });
@@ -13907,41 +13105,13 @@ app.get(securedpath + '/getEquipmentEquTypeChange', function (req, res) {
     });
 });
 
-//app.get(securedpath + '/workorderReasonStatus', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-//   
-//   
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query('set  set@OrganizationID=?; call usp_getWorkorderReasonStatus(@OrganizationID)', [OrganizationID], function (err, rows) {
-//        if (err)
-//        {
-//            console.log("Problem with MySQL" + err);
-//        }
-//        else
-//        {
-//            console.log("getEquipmentEquTypeChange...from server.." + JSON.stringify(rows[1]));
-//            res.end(JSON.stringify(rows[1]));
-//        }
-//    });
-//    }
-//        connection.release();
-//    });
-//});
+
 // varun code ends
 app.get(securedpath + '/welcomeMessage', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empKey = url.parse(req.url, true).query['empKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13969,7 +13139,7 @@ app.get(securedpath + '/valuesForPie', function (req, res) {
     var empkey = url.parse(req.url, true).query['empkey'];
     var userkey = url.parse(req.url, true).query['userkey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13994,9 +13164,7 @@ app.get(securedpath + '/valuesForPie', function (req, res) {
 app.get(securedpath + '/welcomeMessage', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empKey = url.parse(req.url, true).query['empKey'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14019,7 +13187,7 @@ app.get(securedpath + '/welcomeMessage', function (req, res) {
 });
 
 app.post(securedpath + '/workorderByfilterPie', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+ 
     var newWOObj = {};
     newWOObj = req.body;
     var manager = newWOObj.manager;
@@ -14037,8 +13205,7 @@ app.post(securedpath + '/workorderByfilterPie', supportCrossOriginScript, functi
     console.log("inside server workorderTypeKey= " + workorderTypeKey);
     var OrganizationID = newWOObj.OrganizationID;
 
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+   
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14051,8 +13218,7 @@ app.post(securedpath + '/workorderByfilterPie', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[6]));
                 }
             });
@@ -14073,7 +13239,7 @@ app.post(securedpath + '/getEmployeeForPie', function (req, res) {
     var managerKey = newWOObj.managerKey;
     var WorkorderTypeKey = newWOObj.WorkorderTypeKey;
     var OrganizationID = newWOObj.OrganizationID;
-    //    console.log(username);
+
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14104,7 +13270,7 @@ app.post(securedpath + '/addReview', supportCrossOriginScript, function (request
     var starValue = request.body.starValue;
     var Comments = request.body.Comments;
     var feedback_time = request.body.feedback_time;
-    // var Metacreated_dt = request.body.Metacreated_dt;
+    
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -14130,9 +13296,7 @@ app.get(securedpath + '/welcomeUpdateMessage', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var empKey = url.parse(req.url, true).query['empKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-    //    var empkey = url.parse(req.url, true).query['empkey'];
-    //    var userkey = url.parse(req.url, true).query['userkey'];
-    //    console.log(username);
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14183,7 +13347,7 @@ app.get(securedpath + '/updateTemplateDetails', function (req, res) {
     var tempEditid = url.parse(req.url, true).query['tempEditid'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     var ScoreTypeKey = url.parse(req.url, true).query['ScoreTypeKey'];
-    //    console.log(username);
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14464,33 +13628,6 @@ app.post(securedpath + '/getfloorTypeValue', function (req, res) {
 //Pooja's code ends
 //Roshni's code starts
 
-//app.get(securedpath + 'searchDepartmentType', function (req, res) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-//    var  searchDepartment= url.parse(req.url, true).query['searchDepartment'];
-//    console.log(OrganizationID+" "+searchDepartment);
-//    // console.log("Fac key for roomtypene" + fkey + " usp_getRoomtypeByFacility_Floor_zone called");
-////    pool.query("set @fkey=?;set @flkey=?;set @zon=?;call usp_getRoomtypeByFacility_Floor_zone(@fkey,@flkey,@zon)", [fkey, flkey, zon], function (err, rows) {
-//    pool.getConnection(function (err, connection) {
-//        if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }
-//        else {
-//            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-//            connection.query("set @OrganizationID=?;set @searchDepartment=?; call usp_searchDepartmentType(@OrganizationID,@searchDepartment)", [OrganizationID,searchDepartment], function (err, rows) {
-//                if (err) {
-//                    console.log("Problem with MySQL" + err);
-//                }
-//                else {
-////            console.log(JSON.stringify(rows));
-//            res.end(JSON.stringify(rows[2]));
-//        }
-//    });
-//    }
-//        connection.release();
-//    });
-//});
 
 app.get(securedpath + '/searchDepartmentType', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -14564,7 +13701,7 @@ app.get(securedpath + '/getDefaultEventDetailsForEdit', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log("usp_getAllDefaultEvents "+ JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[4]));
                 }
             });
@@ -14588,12 +13725,11 @@ let storage1 = multer.diskStorage({
             var formDesc = url.parse(req.url, true).query['formDesc'];
             var empkey = url.parse(req.url, true).query['empkey'];
             var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-            //            var datetimestamp = Date.now();
-            //            var filename = datetimestamp + '.' + file.originalname;
+           
             var filename = file.originalname;
-            //            var emp = '100';
+           
             console.log(" SSSSSSSSSSSSSSSSSS fid fdesc fname are  " + formtypeId + " " + formDesc + " " + filename + " " + multerUploadPath);
-            // callback(null, file.originalname);
+            
 
             pool.getConnection(function (err, connection) {
                 if (err) {
@@ -14612,16 +13748,14 @@ let storage1 = multer.diskStorage({
         }
         else if (url.parse(req.url, true).query['Workorderkey']) {
             console.log("VVVVVVVVVVVVVVVV inside storage_WOPhoto XXXXXXXXXXXXXXXXXXXXXXXXX" + multerUploadPath);
-            //            var datetimestamp = Date.now();
-            //            var filename = datetimestamp + '.' + file.originalname;
+            
             var filename = file.originalname;
             var wdkey = url.parse(req.url, true).query['Workorderkey'];
             var employeekey = url.parse(req.url, true).query['EmployeeKey'];
-            //            var newPath = "" + locationinTable;
-            //            newPath = newPath + filename;
+           
             var newPath = filename;
             var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
-            // callback(null, filename);
+            
             console.log("pho " + filename + " wdkey " + wdkey + " employeekey " + employeekey);
             console.log("path " + newPath);
             pool.getConnection(function (err, connection) {
@@ -14796,7 +13930,7 @@ app.get(securedpath + '/roomstempForCreateBatchSchedule', function (req, res) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    //            console.log(".." + JSON.stringify(rows[0]));
+                   
                     res.end(JSON.stringify(rows[3]));
                 }
             });
@@ -14806,7 +13940,7 @@ app.get(securedpath + '/roomstempForCreateBatchSchedule', function (req, res) {
 });
 
 app.post(securedpath + '/viewFilterRoomsforScheduleroom', supportCrossOriginScript, function (req, res) {
-    //    res.header("Access-Control-Allow-Origin", "*");
+    
     var newWOObj = {};
     newWOObj = req.body;
     var batchschedulenamekey = newWOObj.batchschedulenamekey;
@@ -14820,8 +13954,7 @@ app.post(securedpath + '/viewFilterRoomsforScheduleroom', supportCrossOriginScri
     var floortypekey = newWOObj.floortypekey;
     var OrganizationID = newWOObj.OrganizationID;
 
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14834,8 +13967,7 @@ app.post(securedpath + '/viewFilterRoomsforScheduleroom', supportCrossOriginScri
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                   
                     res.end(JSON.stringify(rows[10]));
                 }
             });
@@ -14870,8 +14002,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
     var fromdate = newWOObj.fromdate;
     var todate = newWOObj.todate;
 
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+    
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14884,8 +14015,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                  
                     res.end(JSON.stringify(rows[19]));
                 }
             });
@@ -14920,8 +14050,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
     var fromdate = newWOObj.fromdate;
     var todate = newWOObj.todate;
     var scheduledTime = newWOObj.scheduleTime;
-    //    console.log("----------workorderByallFilters---------" + empkey + " " + workDT + " " + pageno + " " + itemsPerPage + " ");
-    // console.log("Employee key for workorder is " + empkey + workDT);//set @employeekey =?;call tm_workorderdetail(@employeekey)
+  
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -14934,8 +14063,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    // console.log("Printing viewworkorder");
-                    //            console.log("ROWS" + JSON.stringify(rows));
+                    
                     res.end(JSON.stringify(rows[19]));
                 }
             });
@@ -15051,8 +14179,7 @@ app.get(securedpath + '/cronjobunrunbatchdetailsCount', function (req, res) {
 //CronJob Details- Rodney ends here
 
 // Sendmail route
-var nodemailer = require('nodemailer');
-var sgTransport = require('nodemailer-sendgrid-transport');
+
 // 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 is your sendgrid api
 app.post(securedpath + '/sendmail', function (req, res) {
     var options = {
@@ -15068,50 +14195,29 @@ app.post(securedpath + '/sendmail', function (req, res) {
 
                 console.log("Failed! Connection with Database spicnspan via connection pool failed");
             } else {
-                //            console.log("WoooooW!!!!****************************Scheduler Works");
-                //                connection.query('call usp_workOrdersBatchAddByEvent()', [], function (err, rows) {
-                //                                    connection.query('insert into trooworkdb.a_test_table (Roomkey)values(1001); ', [], function (err, rows) {
-
-                //                if (error)
-                //                {
-                //                    console.log("Problem with MySQL" + err);
-                //                }
-                //                else
-                //                {
+               
                 console.log("nodemailer...from server..");
                 res.end("Success");
-                //                }
-                //            });
+               
             }
             connection.release();
         });
-        //        if(error){
-        //            res.status('401').json({err: info});
-        //        }else{
-        //            res.status('200').json({success: true});
-        //        }
+        
     });
 });
 
-var scheduler = require('node-schedule');
 
-//var rule = new schedule.RecurrenceRule();
-//rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-//rule.hour = 10;
-//rule.minute = 50;
-//rule.second = [0, 20, 40];
-// rule.second = 00;
+
+
 
 var rule = new scheduler.RecurrenceRule();
 rule.hour = 11;
 rule.minute = 30;
 rule.second = 00;
 rule.dayOfWeek = new scheduler.Range(0, 6);
-//                        var dailyJob = scheduler.scheduleJob(date, function(){
-//                         console.log('I run on days at 12:01 pm');
-//                        });
+
 scheduler.scheduleJob(rule, function () {
-    //var j = schedule.scheduleJob(rule, function(){
+   
 
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -15120,14 +14226,14 @@ scheduler.scheduleJob(rule, function () {
         } else {
             //            console.log("WoooooW!!!!****************************Scheduler Works");
             connection.query('call usp_workOrdersBatchAddByEvent()', [], function (err, rows) {
-                //                                    connection.query('insert into trooworkdb.a_test_table (Roomkey)values(1001); ', [], function (err, rows) {
+             
 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
                     console.log("Scheduler...from server..");
-                    //                    res.end(JSON.stringify(rows[0]));
+               
                 }
             });
         }
@@ -15140,27 +14246,25 @@ rule1.hour = 10;
 rule1.minute = 00;
 rule1.second = 00;
 rule1.dayOfWeek = new scheduler.Range(0, 6);
-//                        var dailyJob = scheduler.scheduleJob(date, function(){
-//                         console.log('I run on days at 12:01 pm');
-//                        });
+
 scheduler.scheduleJob(rule1, function () {
-    //var j = schedule.scheduleJob(rule, function(){
+
 
     pool.getConnection(function (err, connection) {
         if (err) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-            //            console.log("WoooooW!!!!****************************Scheduler Works");
+           
             connection.query('call usp_workOrdersBatchAddByEvent_CST()', [], function (err, rows) {
-                //                                    connection.query('insert into trooworkdb.a_test_table (Roomkey)values(1001); ', [], function (err, rows) {
+
 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
                     console.log("Scheduler...from server..");
-                    //                    res.end(JSON.stringify(rows[0]));
+                   
                 }
             });
         }
@@ -15169,77 +14273,7 @@ scheduler.scheduleJob(rule1, function () {
 });
 
 
-//                    var rule1 = new scheduler.RecurrenceRule();
-//                        rule1.hour = [02,04,06,08,10,12,14,16,18,20,22,00];
-//                        rule1.minute = 00;
-//                        rule1.second = 00;
-//                        rule1.dayOfWeek = new scheduler.Range(0,6);
-//
-//                        scheduler.scheduleJob(rule1, function(){
-//
-//
-//     pool.getConnection(function (err, connection) {
-//     if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }else{ 
-//                connection.query('call usp_demoTestingScheduler()', [], function (err, rows) {
-//
-//                if (err)
-//                {
-//                    console.log("Problem with MySQL" + err);
-//                }
-//                else
-//                {
-//                    console.log("Scheduler demo testing...from server.." );
-//                }
-//            });
-//        }
-//       connection.release();
-//    });
-//});
 
-
-// var j = schedule.scheduleJob('0 11 * * *', function(){
-////var j = schedule.scheduleJob(rule, function(){
-//
-//  pool.getConnection(function (err, connection) {
-//     if (err) {
-//
-//            console.log("Failed! Connection with Database spicnspan via connection pool failed");
-//        }else{ 
-////            console.log("WoooooW!!!!****************************Scheduler Works");
-//                connection.query('call usp_workOrdersBatchAddByEvent()', [], function (err, rows) {
-//                if (err)
-//                {
-//                    console.log("Problem with MySQL" + err);
-//                }
-//                else
-//                {
-//                    console.log("Scheduler...from server.." );
-////                    res.end(JSON.stringify(rows[0]));
-//                }
-//            });
-//        }
-//       connection.release();
-//    });
-//});
-
-// app.get(securedpath +'/getAllTemplatesWithoutScoringType',function (req,res){
-//     res.header("Access-Control-Allow-Origin", "*");
-
-//     pool.query('call usp_getAllTemplatesWithoutScoringType()', function (err, rows) {
-//         if (err)
-//         {
-//             console.log("Problem with MySQL" + err);
-//         }
-//         else
-//         {
-//              console.log("getAllTemplatesWithoutScoringType...from server.." + JSON.stringify(rows[0]));
-//             res.end(JSON.stringify(rows[0]));
-//         }
-//     });
-// });
 /*************END MIGRATE CODE**********************************************************/
 //handle generic exceptions
 //catch all other resource routes that are not defined above
