@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SuperadminDashboardComponent } from './superadmin-dashboard.component';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import { SuperadminChangePasswordModule } from '../../../dashboard/user-password-changes/supeadmin-change-password/superadmin-change-password.module';
-import { ViewCronJobModule } from '../../../superadmin/organization/view-cron-job/view-cron-job.module'
+import { CronJobBatchDetailsModule } from '../../../superadmin/organization/cron-job-batch-details/cron-job-batch-details.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 const routes: Routes = [
   {
@@ -95,9 +95,15 @@ const routes: Routes = [
         loadChildren: '../../../superadmin/organization/view-cron-job/view-cron-job.module#ViewCronJobModule',
 
       },
+      {
+        path: 'cronJobBatchDetailedView',
+        outlet: 'SuperAdminOut',
+        loadChildren: '../../../superadmin/organization/cron-job-batch-details/cron-job-batch-details.module#CronJobBatchDetailsModule',
+      },
     ]
   }
 ];
+
 @NgModule({
   imports: [
     CommonModule,

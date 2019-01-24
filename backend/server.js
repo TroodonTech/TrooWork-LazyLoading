@@ -15002,6 +15002,7 @@ app.get(securedpath + '/cronjobCST', function (req, res) {
 //CronJob Details- Rodney starts here
 app.get(securedpath + '/cronjobworkorderCount', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
+    var date1 = url.parse(req.url, true).query['date1'];
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -15009,13 +15010,38 @@ app.get(securedpath + '/cronjobworkorderCount', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('call usp_cronjob_workordersTotalcount()', [], function (err, rows) {
+            connection.query('set @date1=?;call usp_cronjob_workordersTotalcount(@date1)', [date1], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    console.log("cronjobworkorderCount " + JSON.stringify(rows[0]));
-                    res.end(JSON.stringify(rows[0]));
+                    console.log("cronjobworkorderCount " + JSON.stringify(rows[1]));
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/cronjobunrunbatchdetailsCount', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var date1 = url.parse(req.url, true).query['date1'];
+    var orgID = url.parse(req.url, true).query['OrgID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @date1=?;set @orgID=?;call usp_cronjob_unrunBatchDetailedTotalcount(@date1,@orgID)', [date1,orgID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("cronjobunrunbatchdetailsCount " + JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[2]));
                 }
             });
         }
