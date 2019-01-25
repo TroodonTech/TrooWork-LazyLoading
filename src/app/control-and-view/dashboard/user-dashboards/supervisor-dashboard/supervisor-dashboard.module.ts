@@ -267,7 +267,31 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../manager/inspection/inspectiontemplatedetail-edit/inspectiontemplatedetail-edit.module#InspectiontemplatedetailEditModule',
 
-      }
+      },
+      {
+        path: 'MeetingTrainingView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/meeting-training-view/meeting-training-view.module#MeetingTrainingViewModule',
+
+      },
+      {
+        path: 'MeetingTrainingView/EventView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/event-view/event-view.module#EventViewModule',
+
+      },
+      {
+        path: 'MeetingTrainingView/viewEventEmployees/:EventKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/view-employeesof-event/view-employeesof-event.module#ViewEmployeesofEventModule',
+
+      },
+      {
+        path: 'MeetingTrainingView/viewEventEmployees/:EventKey/MeetingTrainingEdit/:EventKey/:ActionKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/meeting-training-edit/meeting-training-edit.module#MeetingTrainingEditModule',
+
+      },
     ]
   }
 ];
