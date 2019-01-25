@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../../service/inspection.service';
 import { Inspection } from '../../../../model-class/Inspection';
 import { ActivatedRoute,Router } from '@angular/router';
-
+import { ConectionSettings } from '../../../../service/ConnectionSetting';
+import { HttpClient } from '@angular/common/http';
 import {Location} from '@angular/common';
 @Component({
   selector: 'app-managerinspectiontemplate',
@@ -16,6 +17,9 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  isMailed;
+  emp_EmailId;
+  audit_EmailId;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -50,6 +54,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   TemplateDetails;
   lastIndexValue;
   rating_yn;
+  inspectionAssignEmp;
 
   // starList: boolean[];
   starList=[];
@@ -120,7 +125,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   count = 0;
   saveInspection = {};
 
-  constructor(private inspectionService: InspectionService, private route: ActivatedRoute,private router: Router,private _location: Location) {
+  constructor(private inspectionService: InspectionService, private route: ActivatedRoute,private router: Router,private _location: Location,private http: HttpClient) {
     this.route.params.subscribe(params => this.inspKey$ = params.InspectionOrderKey);
   }
 
@@ -141,6 +146,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
       this.viewEmpInspectionDetails = data;
       this.questionsCount = this.viewEmpInspectionDetails.length;
       this.val = data;
+      this.inspectionAssignEmp=this.viewEmpInspectionDetails[0].employeeID;
       if (this.viewEmpInspectionDetails[0].ScoreName === 'Yes/No') {
         this.names = ['Yes', 'No'];
         this.ScoreName = this.viewEmpInspectionDetails[0].ScoreName;
@@ -278,6 +284,42 @@ export class ManagerinspectiontemplateComponent implements OnInit {
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
           //  this.router.navigate(['/ViewInspectionManager',this.inspKey$]);
+            if(this.isMailed==true){//varun-> sending Email for inspection
+               this.inspectionService.emailForInspectionComp( this.inspectionAssignEmp,this.employeekey,this.OrganizationID).subscribe((data : any[])=>{
+                
+                this.emp_EmailId= data[0].AssignEmpEmailId;
+                this.audit_EmailId=data[0].EmailID;
+                if(!(this.emp_EmailId)){
+                  alert('Employee Has No Email ID');
+                  return;
+                }
+                if(!(this.audit_EmailId)){
+                  alert('Auditor Has No Email ID');
+                  return;
+                }
+                  this.inspectionService.getInspectionDetailsForEmail(this.inspKey$,this.OrganizationID).subscribe((inspectionEmail :any[])=>{
+                   
+                    var emailBody;
+                    emailBody='<b>'+inspectionEmail[0].TemplateName+'</b>'+'('+inspectionEmail[0].ScoreName+')'+'<br>'
+
+                    for(var i=0;i<inspectionEmail.length;i++){
+                     emailBody=emailBody+inspectionEmail[i].Question+' : '+inspectionEmail[i].Value+'<br>';
+
+                    }
+
+                    const obj = {
+                      from:  this.audit_EmailId,
+                      to:  this.emp_EmailId,
+                      subject: 'Inspection By -'+inspectionEmail[0].InspectorName,
+                      html: emailBody
+                    };
+                    const url = ConectionSettings.Url+"/sendmail";
+                    return this.http.post(url, obj)
+                      .subscribe(res => alert('Mail Sent Successfully...'));
+                  
+                  });
+               });
+            }
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
           
       });
@@ -340,6 +382,42 @@ export class ManagerinspectiontemplateComponent implements OnInit {
         };
       this.inspectionService
         .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
+          if(this.isMailed==true){//varun-> sending Email for inspection
+            this.inspectionService.emailForInspectionComp( this.inspectionAssignEmp,this.employeekey,this.OrganizationID).subscribe((data : any[])=>{
+             
+             this.emp_EmailId= data[0].AssignEmpEmailId;
+             this.audit_EmailId=data[0].EmailID;
+             if(!(this.emp_EmailId)){
+               alert('Employee Has No Email ID');
+               return;
+             }
+             if(!(this.audit_EmailId)){
+               alert('Auditor Has No Email ID');
+               return;
+             }
+               this.inspectionService.getInspectionDetailsForEmail(this.inspKey$,this.OrganizationID).subscribe((inspectionEmail :any[])=>{
+                
+                 var emailBody;
+                 emailBody='<b>'+inspectionEmail[0].TemplateName+'</b>'+'('+inspectionEmail[0].ScoreName+')'+'<br>'
+
+                 for(var i=0;i<inspectionEmail.length;i++){
+                  emailBody=emailBody+inspectionEmail[i].Question+' : '+inspectionEmail[i].Value+'<br>';
+
+                 }
+
+                 const obj = {
+                   from:  this.audit_EmailId,
+                   to:  this.emp_EmailId,
+                   subject: 'Inspection By -'+inspectionEmail[0].InspectorName,
+                   html: emailBody
+                 };
+                 const url = ConectionSettings.Url+"/sendmail";
+                 return this.http.post(url, obj)
+                   .subscribe(res => alert('Mail Sent Successfully...'));
+               
+               });
+            });
+         }
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
      });
 

@@ -7,7 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mysql = require("mysql");
 var url = require('url');
-var multer = require('multer');
+var multer = require('multer')
+, upload = multer();
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
@@ -15,6 +16,7 @@ var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 var scheduler = require('node-schedule');
+var sendgrid = require('@sendgrid/mail');
 
 function supportCrossOriginScript(req, res, next) {
     res.status(200);
@@ -13105,7 +13107,32 @@ app.get(securedpath + '/getEquipmentEquTypeChange', function (req, res) {
     });
 });
 
+app.get(securedpath + '/emailForInspectionComp', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var inspectionAssignEmp = url.parse(req.url, true).query['inspectionAssignEmp'];
+    var employeekey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @inspectionAssignEmp=?;set @employeekey=?;  set@OrganizationID=?; call usp_emailForInspectionComp(@inspectionAssignEmp,@employeekey,@OrganizationID)', [inspectionAssignEmp, employeekey,  OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("emailForInspectionComp...from server.." + JSON.stringify(rows[3]));
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 // varun code ends
 app.get(securedpath + '/welcomeMessage', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -14152,7 +14179,7 @@ app.get(securedpath + '/cronjobworkorderCount', function (req, res) {
 });
 //CronJob Details- Rodney ends here
 
-// Sendmail route
+//old Sendmail Service
 
 // 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 is your sendgrid api
 app.post(securedpath + '/sendmail', function (req, res) {
@@ -14179,6 +14206,29 @@ app.post(securedpath + '/sendmail', function (req, res) {
         
     });
 });
+
+//varun-> Azure Email Service...
+// app.post(securedpath + '/sendmail', (req, res) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     sendgrid.setApiKey(config.sendGrid.ApiKey); //varun-> SendGrid Api from config.js
+  
+//   console.log(req.body.to+" "+req.body.from+" "+req.body.subject+" "+req.body.text+' '+config.sendGrid.ApiKey)
+//     var email = 
+//         {
+//             to: req.body.to,
+//             from: req.body.from,
+//             subject: req.body.subject,
+//             // text: req.body.text,
+//              html: req.body.html ,
+//     };
+//     //);    
+  
+//     sendgrid.send(email, function(err, json){
+//         if(err) { return console.error(err); }
+//         res.status(200).json({"msg":"Email sent successfully to " + req.body.to});
+//         console.log('Email sent successfully to ', req.body.to);
+//     });
+//   });
 
 
 

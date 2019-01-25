@@ -315,5 +315,15 @@ export class InspectionService {
     .get(ConectionSettings.Url+'/roomByFacility_Zone?fkey=' + fac_key + "&zonekey=" + zonekey +"&OrganizationID="+Oid);
 
   }
+  emailForInspectionComp(inspectionAssignEmp,employeekey,OrganizationID){//varun-> email id for employee and auditor;
+    return this
+    .http
+    .get(ConectionSettings.Url+'/emailForInspectionComp?inspectionAssignEmp=' + inspectionAssignEmp + "&employeekey=" + employeekey +"&OrganizationID="+OrganizationID);
+  }
+  getInspectionDetailsForEmail(inspKey,OrganizationID){// inspection detail  for Email
+    return this
+    .http
+    .get(ConectionSettings.Url+'/getInspectionDetailsForEmail?inspectionorderKey=' +inspKey+  "&OrganizationID="+OrganizationID);
+  }
 }
 
