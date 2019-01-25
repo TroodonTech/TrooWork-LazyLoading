@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SuperadminDashboardComponent } from './superadmin-dashboard.component';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import { SuperadminChangePasswordModule } from '../../../dashboard/user-password-changes/supeadmin-change-password/superadmin-change-password.module';
-import { CronJobBatchDetailsModule } from '../../../superadmin/organization/cron-job-batch-details/cron-job-batch-details.module';
+import { ManualCronJobModule } from '../../../superadmin/organization/manual-cron-job/manual-cron-job.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 const routes: Routes = [
   {
@@ -87,6 +87,12 @@ const routes: Routes = [
         path: 'changePasswordSuperAdmin/:EmployeeKey/:UserRoleName/:IsSupervisor',
         outlet: 'SuperAdminOut',
         loadChildren: '../../../dashboard/user-password-changes/supeadmin-change-password/superadmin-change-password.module#SuperadminChangePasswordModule',
+
+      },
+      {
+        path: 'cronJob',
+        outlet: 'SuperAdminOut',
+        loadChildren: '../../../superadmin/organization/manual-cron-job/manual-cron-job.module#ManualCronJobModule',
 
       },
       {
