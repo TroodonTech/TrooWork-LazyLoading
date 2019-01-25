@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 var scheduler = require('node-schedule');
-var sendgrid = require('@sendgrid/mail');
+// var sendgrid = require('@sendgrid/mail');
 
 function supportCrossOriginScript(req, res, next) {
     res.status(200);
