@@ -185,7 +185,13 @@ export class CreateEmployeeComponent implements OnInit {
           alert("Employee Created !");
           var empKey = this.temp_res.EmployeeKey;
           // this.router.navigate(['/Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey]);
-          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey] } }]);
+          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey] } }]);
+          if(this.role=='Manager'){
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey] } }]);
+            }
+            else  if(this.role=='Employee' && this.IsSupervisor==1){
+              this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Settingusernameandpswrdaftremplcreatebyman', empKey, str, this.UserRoleTypeKey] } }]);
+            }
         });
       } else {
         alert('Employee number already present!');
@@ -213,6 +219,8 @@ export class CreateEmployeeComponent implements OnInit {
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.role = profile.role;
+    this.IsSupervisor = profile.IsSupervisor;
 
     this.PeopleServiceService
       .getUserRoleType(this.OrganizationID)

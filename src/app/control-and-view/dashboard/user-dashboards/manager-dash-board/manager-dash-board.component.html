@@ -52,6 +52,7 @@
           <li class="nav-item dropdown" style="margin-left: -1rem;">
             <img class="imagesize nav-link" data-toggle="dropdown" src="assets/icons/reports.png">
             <div class="dropdown-content" style="margin-left:1rem;">
+              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DashboardReport']}}]"><b>WorkOrder Dashboard</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['WorkorderReport']}}]"><b>WorkOrder</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['Batch-work-order-Report']}}]"><b>Batch
                   Work-Order Report</b></a>
@@ -60,7 +61,6 @@
               </a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['InspectionReport']}}]"><b>Inspection</b></a>
               <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['BarcodeReport']}}]"><b>Barcode</b></a>
-              <a class="dropdown-item" [routerLink]="[{outlets:{ManagerOut:['DashboardReport']}}]"><b>Dashboard Report</b></a>
             </div>
           </li>
           <li class="nav-item dropdown" style="margin-left: -1rem;">

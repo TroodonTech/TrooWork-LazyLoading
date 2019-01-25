@@ -5,11 +5,12 @@ import { ViewOrganizationComponent } from './view-organization/view-organization
 import { EditOrganizationComponent } from './edit-organization/edit-organization.component';
 import { ManualCronJobComponent } from './manual-cron-job/manual-cron-job.component';
 import { ViewCronJobComponent } from './view-cron-job/view-cron-job.component';
+import { CronJobBatchDetailsComponent } from './cron-job-batch-details/cron-job-batch-details.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [CreateOrganizationComponent, ViewOrganizationComponent, EditOrganizationComponent, ManualCronJobComponent, ViewCronJobComponent]
+  declarations: [CreateOrganizationComponent, ViewOrganizationComponent, EditOrganizationComponent, ManualCronJobComponent, ViewCronJobComponent, CronJobBatchDetailsComponent]
 })
 export class OrganizationModule { }

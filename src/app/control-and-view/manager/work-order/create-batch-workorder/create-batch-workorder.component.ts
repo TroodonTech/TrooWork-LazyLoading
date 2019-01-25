@@ -810,8 +810,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
                     alert("Batch work-order created successfully");
-                    
+                    if(this.role=='Manager'){
                     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                    }
+                    else  if(this.role=='Employee' && this.IsSupervisor==1){
+                      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+                    }
                   });
                 });
               }
@@ -848,7 +852,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
     };
     this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
       alert("Batch work-order created successfully");
-      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+      if(this.role=='Manager'){
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+        }
+        else  if(this.role=='Employee' && this.IsSupervisor==1){
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+        }
     });
     }
   }
@@ -1221,7 +1230,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
                   };
                   this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res =>{
                     alert("Batch work-order created successfully"); 
-                    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                    if(this.role=='Manager'){
+                      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+                      }
+                      else  if(this.role=='Employee' && this.IsSupervisor==1){
+                        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+                      }
                     });
                 });
             }
@@ -1258,7 +1272,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
     };
     this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res =>{
       alert("Batch work-order created successfully"); 
-      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+      if(this.role=='Manager'){
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewBatchWorkorder'] } }]);
+        }
+        else  if(this.role=='Employee' && this.IsSupervisor==1){
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewBatchWorkorder'] } }]);
+        }
       });
     }
 

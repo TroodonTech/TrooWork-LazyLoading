@@ -82,9 +82,15 @@ export class OrganizationService {
       .get(ConectionSettings.Url + '/cronjobCST');
   }
 
-  cronJob_workordersCount() {
+  cronJob_workordersCount(currentDate) {
     return this
       .http
-      .get(ConectionSettings.Url + '/cronjobworkorderCount');
+      .get(ConectionSettings.Url + '/cronjobworkorderCount?date1=' + currentDate);
+  }
+
+  cronJob_unrunBatchCount(currentDate, orgid) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/cronjobunrunbatchdetailsCount?date1=' + currentDate + '&OrgID=' + orgid);
   }
 }

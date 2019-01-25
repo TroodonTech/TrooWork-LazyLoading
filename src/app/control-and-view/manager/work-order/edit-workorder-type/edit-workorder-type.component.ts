@@ -16,7 +16,7 @@ export class EditWorkorderTypeComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-//token decoding
+  //token decoding
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -59,45 +59,54 @@ export class EditWorkorderTypeComponent implements OnInit {
   }
   //function for updating workordertype
   updateWOT(WOTName, WOTKey) {
-    if(!WOTName)
-    {
+    if (!WOTName) {
       alert("Please enter work-order type!");
-    }else if (!WOTName.trim()) {
+    } else if (!WOTName.trim()) {
       alert("Please enter work-order type!");
-    }else
-    {
-    this.update_WO = {
-      WorkorderTypeKey: WOTKey,
-      WorkorderTypeName: WOTName,
-      RoomTypeKey: null,
-      Frequency: null,
-      Repeatable: true,
-      WorkorderTime: null,
-      OrganizationID: this.OrganizationID
-    };
-    this.WorkOrderServiceService//check if wokordertype is already existing
-      .checkforWOT(WOTName, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-       if(data[0].count!=0)
-       {
-        alert("Work-order type already exists!");
-       }
-        else if (data[0].count == 0) {//add new workordertype
-          this.WorkOrderServiceService
-            .UpdateWOT(this.update_WO)
-            .subscribe((data: any[]) => {
-              this.WorkOrderServiceService
-            .view_wotype(WOTKey,this.OrganizationID)
-            .subscribe((data: any[]) => {
-              alert("Work-order type updated successfully");
-              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
-            });
-          });
-        }
-      });
+    } else {
+      this.update_WO = {
+        WorkorderTypeKey: WOTKey,
+        WorkorderTypeName: WOTName,
+        RoomTypeKey: null,
+        Frequency: null,
+        Repeatable: true,
+        WorkorderTime: null,
+        OrganizationID: this.OrganizationID
+      };
+      this.WorkOrderServiceService//check if wokordertype is already existing
+        .checkforWOT(WOTName, this.employeekey, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          if (data[0].count != 0) {
+            alert("Work-order type already exists!");
+          }
+          else if (data[0].count == 0) {//add new workordertype
+            this.WorkOrderServiceService
+              .UpdateWOT(this.update_WO)
+              .subscribe((data: any[]) => {
+                this.WorkOrderServiceService
+                  .view_wotype(WOTKey, this.OrganizationID)
+                  .subscribe((data: any[]) => {
+                    alert("Work-order type updated successfully");
+                    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                    if (this.role == 'Manager') {
+                      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+                    }
+                    else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+                    }
+                  });
+              });
+          }
+        });
     }
   }
-  goBack(){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+  goBack() {
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+    if (this.role == 'Manager') {
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
+    }
+    else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['WorkOrderType'] } }]);
+    }
   }
 }

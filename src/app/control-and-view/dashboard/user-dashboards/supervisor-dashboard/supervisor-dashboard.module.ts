@@ -64,6 +64,210 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../dashboard/user-password-changes/supervisor-change-password/supervisor-change-password.module#SupervisorChangePasswordModule',
       },
+      {
+        path: 'CreateBatchWorkOrder',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/create-batch-workorder/create-batch-workorder.module#CreateBatchWorkorderModule',
+
+      },
+      {
+        path: 'ViewBatchWorkorder',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/view-batch-workorder/view-batch-work-order.module#ViewBatchWorkOrderModule',
+
+      },
+      {
+        path: 'ViewBatchWorkorder/EditBatchWorkorder/:WorkorderScheduleKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/edit-batch-workorder/edit-batch-work-order.module#EditBatchWorkOrderModule',
+
+      },
+      {
+        path: 'WorkOrderType',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/work-order-type/work-order-type.module#WorkOrderTypeModule',
+
+      },
+      {
+        path: 'WorkOrderType/CreateWorkorderType',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/create-workorder-type/create-work-order-type.module#CreateWorkOrderTypeModule',
+
+      },
+      {
+        path: 'WorkOrderType/EditWorkorderType/:WorkorderTypeKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/work-order/edit-workorder-type/edit-work-order-type.module#EditWorkOrderTypeModule',
+
+      },
+      {
+        path: 'CreateEmployee',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/create-employee/create-employee.module#CreateEmployeeModule',
+
+      },
+      {
+        path: 'Settingusernameandpswrdaftremplcreatebyman/:EmployeeKey/:str/:UserRoleTypeKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/settingusernameandpswrdaftremplcreatebyman/settingusernameandpswrdafter.module#SettingusernameandpswrdafterModule',
+
+      },
+      {
+        path: 'ViewEmployee',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/view-employee/view-employee.module#ViewEmployeeModule',
+
+      },
+      {
+        path: 'ViewEmployee/EditEmployeedetails/:EmployeeKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/edit-employeedetails/edit-employeedetails.module#EditEmployeedetailsModule',
+
+      },
+      {
+        path: 'MeetingTrainingCreate',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/meeting-training-create/meeting-training-create.module#MeetingTrainingCreateModule',
+
+      },
+      {
+        path: 'JobTitileView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/job-title-view/job-titile-view.module#JobTitileViewModule',
+
+      },
+      {
+        path: 'JobTitileView/JobTitleAdd',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/job-title-add/job-titile-add.module#JobTitileAddModule',
+
+      },
+      {
+        path: 'JobTitileView/JobTitleEdit/:JobTitle_Key',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/job-title-edit/job-titile-edit.module#JobTitileEditModule',
+
+      },
+      {
+        path: 'manageLoginCredentials',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/manage-login-credentials/manage-login-credentials.module#ManageLoginCredentialsModule',
+
+      },
+      {
+        path: 'manageLoginCredentials/resetPassword/:EmpKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/people/reset-pass-word/reset-pass-word.module#ResetPassWordModule',
+
+      },
+      {
+        path: 'WorkorderReport',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/workorder-report/workorder-report.module#WorkorderReportModule',
+
+      },
+      {
+        path: 'Batch-work-order-Report',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/batch-work-order-report/batch-work-order-report.module#BatchWorkOrderReportModule',
+
+      },
+      {
+        path: 'BatchScheduleAssignment',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/batch-schedule-assignment-report/batch-schedule-assignment-report.module#BatchScheduleAssignmentReportModule',
+
+      },
+      {
+        path: 'InspectionReport',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/inspection-report/inspection-report.module#InspectionReportModule',
+
+      },
+      {
+        path: 'BarcodeReport',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/barcode-report/barcode-report.module#BarcodeReportModule',
+
+      },
+      {
+        path: 'DashboardReport',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/reports/dashboard-report/dashboard-report.module#DashboardReportModule',
+
+      },
+      {
+        path: 'SchedulingView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/scheduling/scheduling-view/scheduling-view.module#SchedulingViewModule',
+
+      },
+      {
+        path: 'SchedulingView/CreateBatchWork',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/scheduling/create-batch-work/create-batch-work.module#CreateBatchWorkModule',
+
+      },
+      {
+        path: 'SchedulingView/EditBatchWork/:scheduleNameKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/scheduling/edit-batch-work/edit-batch-work.module#EditBatchWorkModule',
+
+      },
+      {
+        path: 'DocumentfolderView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/documents/documentfolder-view/documentfolder-view.module#DocumentfolderViewModule',
+
+      },
+      {
+        path: 'DocumentfolderView/NewdocumentfolderCreate',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/documents/newdocumentfolder-create/newdocumentfolder-create.module#NewdocumentfolderCreateModule',
+
+      },
+      {
+        path: 'DocumentfolderView/DocumentfolderEdit/:FormtypeId',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/documents/documentfolder-edit/documentfolder-edit.module#DocumentfolderEditModule',
+
+      },
+      {
+        path: 'DocumentsUpload',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/documents/documents-upload/documents-upload.module#DocumentsUploadModule',
+
+      },
+      {
+        path: 'ViewDocuments',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/documents/view-documents/view-documents.module#ViewDocumentsModule',
+
+      },
+      {
+        path: 'InspectiontemplateCreate',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/inspection/inspectiontemplate-create/inspectiontemplate-create.module#InspectiontemplateCreateModule',
+
+      },
+      {
+        path: 'InspectiontemplateandquestionsView',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/inspection/inspectiontemplateandquestions-view/inspectiontemplateandquestions-view.module#InspectiontemplateandquestionsViewModule',
+
+      },
+      {
+        path: 'InspectiontemplateandquestionsView/InspectiontemplateEdit',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/inspection/inspectiontemplate-edit/inspectiontemplate-edit.module#InspectiontemplateEditModule',
+
+      },
+      {
+        path: 'InspectiontemplatedetailEdit/:TemplateID',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/inspection/inspectiontemplatedetail-edit/inspectiontemplatedetail-edit.module#InspectiontemplatedetailEditModule',
+
+      }
     ]
   }
 ];
