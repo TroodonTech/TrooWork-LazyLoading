@@ -81,7 +81,10 @@ export class EditBatchWorkComponent implements OnInit {
           });
       } else {
         this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
-          .subscribe(res =>  this._location.back());
+          .subscribe(res => {
+            // alert("Updated Successfully");
+            this._location.back();
+          });
       }
     }
   }

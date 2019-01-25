@@ -183,7 +183,13 @@ export class InspectiontemplateEditComponent implements OnInit {
 
       if (data[0].count == 0) {
         // this.router.navigate(['/InspectiontemplatedetailEdit', TemplateID]);
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['InspectiontemplatedetailEdit',TemplateID] } }]);
+        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['InspectiontemplatedetailEdit',TemplateID] } }]);
+        if(this.role=='Manager'){
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['InspectiontemplatedetailEdit',TemplateID] } }]);
+          }
+          else  if(this.role=='Employee' && this.IsSupervisor==1){
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['InspectiontemplatedetailEdit',TemplateID] } }]);
+          }
       } else {
         this.editQuestions = index;
       }

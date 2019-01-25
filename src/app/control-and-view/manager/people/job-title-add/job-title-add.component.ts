@@ -63,8 +63,13 @@ export class JobTitleAddComponent implements OnInit {
           this.peopleServiceService.addJobtitle(JobtitleName, JobTitleDescription, this.employeekey, this.OrganizationID)
             .subscribe((data: any[]) => {
               alert('Job title successfully created !');
-              this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
-
+              // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+              if(this.role=='Manager'){
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+                }
+                else  if(this.role=='Employee' && this.IsSupervisor==1){
+                  this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['JobTitileView'] } }]);
+                }
             });
         }
       });
@@ -82,6 +87,12 @@ export class JobTitleAddComponent implements OnInit {
 
   }
   goBack(){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+    if(this.role=='Manager'){
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+      }
+      else  if(this.role=='Employee' && this.IsSupervisor==1){
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['JobTitileView'] } }]);
+      }
   }
 }

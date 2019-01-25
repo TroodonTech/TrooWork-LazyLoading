@@ -53,7 +53,13 @@ export class ResetPassWordComponent implements OnInit {
     this.peopleService.resetUserPassword(username, password, this.empKey$, userLoginId, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
       this.response = data[0];
       this.build = data;
-      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+      if(this.role=='Manager'){
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+        }
+        else  if(this.role=='Employee' && this.IsSupervisor==1){
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['manageLoginCredentials'] } }]);
+        }
     });
 
     if (this.build.length > 0) { // resetUserPassword returns username. just to make sure that the reset action was done properly, we are returnig the username
@@ -101,6 +107,12 @@ export class ResetPassWordComponent implements OnInit {
 
   }
   goBack(){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+    if(this.role=='Manager'){
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['manageLoginCredentials'] } }]);
+      }
+      else  if(this.role=='Employee' && this.IsSupervisor==1){
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['manageLoginCredentials'] } }]);
+      }
   }
 }

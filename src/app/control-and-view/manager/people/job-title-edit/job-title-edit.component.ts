@@ -58,8 +58,14 @@ export class JobTitleEditComponent implements OnInit {
     this.peopleServiceService.updateEditJobtitle(this.JobTitle_Key$, JobTitle, JobTitleDescription, this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         alert('Job title  successfully updated !');
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
-        });
+        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+        if(this.role=='Manager'){
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+          }
+          else  if(this.role=='Employee' && this.IsSupervisor==1){
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['JobTitileView'] } }]);
+          }  
+      });
       }
     });
     }
@@ -81,6 +87,12 @@ export class JobTitleEditComponent implements OnInit {
     });
   }
   goBack(){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+    if(this.role=='Manager'){
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['JobTitileView'] } }]);
+      }
+      else  if(this.role=='Employee' && this.IsSupervisor==1){
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['JobTitileView'] } }]);
+      }
   }
 }

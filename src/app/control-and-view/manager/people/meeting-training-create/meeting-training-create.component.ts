@@ -255,6 +255,7 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
 
           this.superVsrKey = 0;
           this.jobTleKey = 0;
+          this.DepartmentKey=null;
 
           this.peopleServ
             .getJobTitleList(this.employeekey, this.OrganizationID)

@@ -173,7 +173,13 @@ export class EditEmployeedetailsComponent implements OnInit {
     this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
     .subscribe((data: People[]) => {
     alert("Updated Successfully!");
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+    if(this.role=='Manager'){
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+      }
+      else  if(this.role=='Employee' && this.IsSupervisor==1){
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+      }
   });
    }
    else{
@@ -183,7 +189,13 @@ export class EditEmployeedetailsComponent implements OnInit {
     this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
       .subscribe((data: People[]) => {
       alert("Updated Successfully!");
-      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+      if(this.role=='Manager'){
+        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+        }
+        else  if(this.role=='Employee' && this.IsSupervisor==1){
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+        }
     });
     }
     else
@@ -196,9 +208,15 @@ export class EditEmployeedetailsComponent implements OnInit {
 
   deleteEmployee() {
     this.PeopleServiceService
-      .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => 
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
-        );
+      .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
+        // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
+        if(this.role=='Manager'){
+          this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+          }
+          else  if(this.role=='Employee' && this.IsSupervisor==1){
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+          }
+      });
   }
   deleteEmpPass(empk$) {
     this.delete_EmpKey = empk$;
@@ -254,6 +272,12 @@ export class EditEmployeedetailsComponent implements OnInit {
     }
   }
   GoBack(){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+    if(this.role=='Manager'){
+      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+      }
+      else  if(this.role=='Employee' && this.IsSupervisor==1){
+        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+      }
   }
 }
