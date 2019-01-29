@@ -197,7 +197,8 @@ export class InspectionCreateComponent implements OnInit {
     // });
   }
 
-  //Pooja's code for Creating inspection starts
+  //Pooja's code 
+  //for Creating inspection starts
 
   createInspection() {
 
@@ -233,9 +234,6 @@ export class InspectionCreateComponent implements OnInit {
     }
     else if (!(this.SupervisorKey)) {
       alert("Auditor should be provided");
-    }
-    else if (!(this.fromdate)) {
-      alert("Date should be provided");
     }
     else {
       if (!this.Employee) {
@@ -304,7 +302,7 @@ export class InspectionCreateComponent implements OnInit {
     }
   }
 
-  //Pooja's code for Creating inspection ends
+  //code for Creating inspection ends
 
   ngOnInit() {
 

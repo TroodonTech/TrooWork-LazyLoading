@@ -153,6 +153,10 @@ export class CreateinspectionComponent implements OnInit {
     else if (!this.time1) {
       alert("Time should be provided");
     }
+    else if (!(this.SupervisorKey)) {
+      alert("Auditor should be provided");
+    }
+    else {
     if (!this.Employee) {
       this.Employee = - 1;
     }
@@ -180,7 +184,7 @@ export class CreateinspectionComponent implements OnInit {
       this.TemplateID = "";
       this.fromdate = null;
       this.todate = null;
-      this.SupervisorKey = "";
+      this.SupervisorKey = this.employeekey;
       this.Building = "";
       this.Floor = "";
       this.Zone = "";
@@ -191,7 +195,7 @@ export class CreateinspectionComponent implements OnInit {
       this.Employee = "";
       this.RoomType = "";
     });
-
+  }
   }
 
   ngOnInit() {
