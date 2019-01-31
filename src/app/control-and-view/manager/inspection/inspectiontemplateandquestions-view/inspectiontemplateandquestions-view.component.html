@@ -5,9 +5,9 @@
       <h4 style="color: #174a5e;">INSPECTION TEMPLATES AND QUESTIONS</h4>
     </div>
     <br>
-    <div class="row col-md-12 bg-info" style="padding-bottom: 2rem;padding-top: 2rem">
-      <div class="col-md-6">
-        <select style="background-color: #D4F4FF !important;margin-left: 5rem;" class="form-control " [(ngModel)]="TemplateID"
+    <div class="row col-md-12 bg-info" style="padding-bottom: 2rem;padding-top: 2rem;padding-left: 5rem;margin-left: 2rem;width: 95%">
+      <div class="col-md-6" >
+        <select style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="TemplateID"
           (change)="showInspectionTemplateTable($event.target.value)">
           <option value="">--Choose a Template--</option>
           <option *ngFor="let t of template" [value]="t.TemplateID">
@@ -15,7 +15,7 @@
           </option>
         </select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-6" >
         <a [routerLink]="['InspectiontemplateEdit']" style="margin-top: -0.1rem;margin-left: 7rem;" class="btn btn-primary"><b>Edit
             Inspection
             Template</b></a>

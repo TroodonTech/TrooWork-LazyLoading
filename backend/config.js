@@ -5,6 +5,7 @@ config.redis = {};
 config.web = {};
 config.app = {};
 config.db = {};
+config.sendGrid = {};
 
 config.default_stuff = ['red', 'green', 'blue', 'apple', 'yellow', 'orange', 'politics'];
 config.twitter.user_name = process.env.TWITTER_USER || 'username';
@@ -15,6 +16,7 @@ config.redis.port = 6379;
 config.web.port = process.env.WEB_PORT || 9980;
 config.app.securedpath = '/api';	//this will be the secured api path from root
 config.app.jwtsecret = '936ee7cf-b0f6-4140-909b-926694c2ac80';
+config.sendGrid.ApiKey='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';//Varun->SendGrid ApiKey for sending Mail
 
 
 

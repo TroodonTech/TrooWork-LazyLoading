@@ -39,7 +39,7 @@ export class InspectionReportComponent implements OnInit {
     return window.atob(output);
   }
 
-//convert date to yyyy-mm-dd format
+  //convert date to yyyy-mm-dd format
   public convert_DT(str) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -71,7 +71,7 @@ export class InspectionReportComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -108,13 +108,13 @@ export class InspectionReportComponent implements OnInit {
     }
     var blob = new Blob([document.getElementById('exportable1').innerHTML], {
       type: EXCEL_TYPE
-  });
-  FileSaver.saveAs(blob, "inspection_Report.xls");
+    });
+    FileSaver.saveAs(blob, "inspection_Report.xls");
     // this.excelService.exportAsExcelFile(this.reportarray, 'Inspection_Report');
   }
 
   ngOnInit() {
-    this.SupervisorKey=""
+    this.SupervisorKey = ""
     this.fromdate = new Date();
 
     var token = localStorage.getItem('token');
@@ -133,9 +133,8 @@ export class InspectionReportComponent implements OnInit {
         this.supervisoroptions = data;
       });
   }
-//function for genaerating report
+  //function for genaerating report
   generateInspectionReport(from_date, to_date, SupervisorKey) {
-    this.loading = true;
     if (!from_date) {
       var fromdate = this.convert_DT(new Date());
 
@@ -156,6 +155,7 @@ export class InspectionReportComponent implements OnInit {
       alert("Please check your Start Date!");
       return;
     }
+    this.loading = true;
     if (!SupervisorKey) {//inspection report for supervisorkey=null
       this.ReportServiceService
         .getinspectionreport_bydate(fromdate, todate, this.employeekey, this.OrganizationID)

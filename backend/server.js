@@ -10164,7 +10164,7 @@ app.post(securedpath + '/uploadImageFromSmallDevices', supportCrossOriginScript,
 var PhotostorageDevice = multer.diskStorage({
     destination: function (req, file, callback) {
 
-        callback(null, '../webui/pho1');
+        callback(null, '../dist/mdb-angular-free/pho1');
        
     },
     filename: function (req, file, callback) {
@@ -13740,10 +13740,10 @@ const DIR = './uploads';
 let storage1 = multer.diskStorage({
     destination: (req, file, cb) => {
         if (url.parse(req.url, true).query['formtypeId']) {
-            cb(null, './uploads');
+            cb(null, '../dist/mdb-angular-free/uploads');
         }
         else if (url.parse(req.url, true).query['Workorderkey']) {
-            cb(null, './pho1');
+            cb(null, '../dist/mdb-angular-free/pho1');
         }
     },
     filename: (req, file, cb) => {
@@ -14261,8 +14261,8 @@ app.post(securedpath + '/sendmail', function (req, res) {
 
 
 var rule = new scheduler.RecurrenceRule();
-rule.hour = 11;
-rule.minute = 30;
+rule.hour = 7;
+rule.minute = 00;
 rule.second = 00;
 rule.dayOfWeek = new scheduler.Range(0, 6);
 
@@ -14292,7 +14292,7 @@ scheduler.scheduleJob(rule, function () {
 });
 
 var rule1 = new scheduler.RecurrenceRule();
-rule1.hour = 10;
+rule1.hour = 6;
 rule1.minute = 00;
 rule1.second = 00;
 rule1.dayOfWeek = new scheduler.Range(0, 6);
