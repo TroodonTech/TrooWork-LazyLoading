@@ -281,11 +281,11 @@ export class PeopleServiceService {
       .http
       .get(ConectionSettings.Url+'/department?empkey=' + empKey + '&OrganizationID=' + OrgID);
   }
-  createEmployeebyManager(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, HD, theCheckbox, JobTitleKey, SupervisorKey, DepartmentKey, empKey, OrgID) {
+  createEmployeebyManager(EmployeeNumber, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, HD, theCheckbox, JobTitleKey, SupervisorKey, DepartmentKey, empKey, OrgID,managerkey) {
     const url = ConectionSettings.Url+"/addemp";
     const obj = {
       employeenumber: EmployeeNumber,
-      managerkey: UserRoleTypeKey,
+      managerkey: managerkey,
       firstname: FirstName,
       lastname: LastName,
       middlename: MiddleName,

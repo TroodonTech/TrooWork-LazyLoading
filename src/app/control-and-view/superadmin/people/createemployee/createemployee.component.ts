@@ -127,6 +127,14 @@ export class CreateemployeeComponent implements OnInit {
     else {
       this.ManagerKey = -1;
     }
+    if(this.UserRoleTypeKey==3)
+    {
+      this.ManagerKey = this.employeekey;
+    }
+    else
+    {
+      this.ManagerKey = -1;
+    }
     if (!(this.FirstName)) {
       alert("First Name is not provided !");
       return;
