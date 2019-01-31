@@ -16,7 +16,7 @@
       <div class="col-md-6 ">
         <div class="form-group" style="margin-left: 0.7rem;width: 75%;">
           <label for="people">Job Title</label>
-          <ng-multiselect-dropdown [placeholder]="'Selectjobtitle'" [data]="jobTitle" [(ngModel)]="JobTitleKey"
+          <ng-multiselect-dropdown [placeholder]="'Select Job Title'" [data]="jobTitle" [(ngModel)]="JobTitleKey"
             [settings]="dropdownSettings" (onSelect)="filterMtngTrainingList()"
             (onSelectAll)="filterMtngTrainingList()">
           </ng-multiselect-dropdown>
@@ -25,7 +25,7 @@
       <div class="col-md-6">
         <div class="form-group " style="margin-left: 0.7rem;width: 75%;">
           <label for="people">Employee</label>
-          <ng-multiselect-dropdown [placeholder]="'Selectemployee'" [data]="empList" [(ngModel)]="EmployeeKey"
+          <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="empList" [(ngModel)]="EmployeeKey"
             [settings]="dropdownSettings1" (onSelect)="filterMtngTrainingList()"
             (onSelectAll)="filterMtngTrainingList()">
           </ng-multiselect-dropdown>

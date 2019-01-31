@@ -57,10 +57,11 @@
         </div>
       </tbody>
     </table>
-    <button class="btn btn-success" style="float:left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;
-    <button class="btn btn-success" style="float:right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
   </div>
   <div style="text-align:center">
+    <button class="btn btn-success" style="float:left;" (click)="previousPage()" *ngIf="showHide1">&#60;&#60; Previous</button>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button class="btn btn-success" style="float:right;" (click)="nextPage()" *ngIf="showHide2">Next >></button>
+
     <a (click)='goBack()' class="btn btn-warning" routerLinkActive="active">GO Back
     </a>
 
