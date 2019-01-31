@@ -181,6 +181,7 @@
               routerLinkActive="active"><b>INSTANCE
               </b></a>
           </td>
+          <td *ngIf="x.WorkorderTypeKey==-1"></td>
           <td *ngIf="x.WorkorderStatus !== 'Scheduled'"></td>
           <td *ngIf="x.WorkorderStatus === 'Scheduled'"> <input type="checkbox" [(ngModel)]="x.workorderCheckValue"
               (change)="toggleVisibility($event);checkBoxValueForDelete(i,x.workorderCheckValue, x.WorkorderKey);"></td>
