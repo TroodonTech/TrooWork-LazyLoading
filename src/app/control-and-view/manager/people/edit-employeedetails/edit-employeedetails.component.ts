@@ -72,7 +72,7 @@ export class EditEmployeedetailsComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'75%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '75%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -122,7 +122,7 @@ export class EditEmployeedetailsComponent implements OnInit {
       return;
     }
     if (!(this.editempdtails.Gender)) {
-      Gender=null;
+      Gender = null;
     }
     if (!(this.editempdtails.EmployeeStatusKey)) {
       alert("Employee Status is not provided !");
@@ -167,55 +167,53 @@ export class EditEmployeedetailsComponent implements OnInit {
       return;
     }
     // var empNum ;
-   if(this.empNum==this.editempdtails.EmployeeNumber)
-   {
-    var hiredt = this.convert_DT(this.BirthDate);
-    this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
-    .subscribe((data: People[]) => {
-    alert("Updated Successfully!");
-    // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-    if(this.role=='Manager'){
-      this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-      }
-      else  if(this.role=='Employee' && this.IsSupervisor==1){
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-      }
-  });
-   }
-   else{
-    this.PeopleServiceService.CheckForEmployeenumber(this.editempdtails.EmployeeNumber,this.employeekey,this.OrganizationID).subscribe((data: any[]) =>{
-      if(data[0].count==0){
+    if (this.empNum == this.editempdtails.EmployeeNumber) {
       var hiredt = this.convert_DT(this.BirthDate);
-    this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
-      .subscribe((data: People[]) => {
-      alert("Updated Successfully!");
-      // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-      if(this.role=='Manager'){
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-        }
-        else  if(this.role=='Employee' && this.IsSupervisor==1){
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-        }
-    });
+      this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+        .subscribe((data: People[]) => {
+          alert("Updated Successfully!");
+          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+          }
+          else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+          }
+        });
     }
-    else
-    {
-      alert("Employee Number already exist !");
+    else {
+      this.PeopleServiceService.CheckForEmployeenumber(this.editempdtails.EmployeeNumber, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+        if (data[0].count == 0) {
+          var hiredt = this.convert_DT(this.BirthDate);
+          this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+            .subscribe((data: People[]) => {
+              alert("Updated Successfully!");
+              // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+              if (this.role == 'Manager') {
+                this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
+              }
+              else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+                this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+              }
+            });
+        }
+        else {
+          alert("Employee Number already exist !");
+        }
+      });
     }
-    });
-  }
   }
 
   deleteEmployee() {
     this.PeopleServiceService
       .DeleteEmployeeDetailsbyManager(this.delete_EmpKey, this.OrganizationID, this.employeekey).subscribe(res => {
         // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }])
-        if(this.role=='Manager'){
+        if (this.role == 'Manager') {
           this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-          }
-          else  if(this.role=='Employee' && this.IsSupervisor==1){
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-          }
+        }
+        else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+        }
       });
   }
   deleteEmpPass(empk$) {
@@ -236,7 +234,7 @@ export class EditEmployeedetailsComponent implements OnInit {
       this.editempdtails = data[0];
       this.BirthDate = new Date(this.editempdtails.BirthDate);
       this.HireDate = new Date(this.editempdtails.HireDate);
-    this.empNum = this.editempdtails.EmployeeNumber;
+      this.empNum = this.editempdtails.EmployeeNumber;
 
 
     });
@@ -271,13 +269,13 @@ export class EditEmployeedetailsComponent implements OnInit {
       this.marked = true;
     }
   }
-  GoBack(){
+  GoBack() {
     // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-    if(this.role=='Manager'){
+    if (this.role == 'Manager') {
       this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
-      }
-      else  if(this.role=='Employee' && this.IsSupervisor==1){
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
-      }
+    }
+    else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
+    }
   }
 }

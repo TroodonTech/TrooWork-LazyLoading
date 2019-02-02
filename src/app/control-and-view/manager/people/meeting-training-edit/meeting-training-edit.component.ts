@@ -206,14 +206,14 @@ export class MeetingTrainingEditComponent implements OnInit {
 
       this.peopleServ
         .updateMeetingTraining(ActionKey, Eventhost, Venue, newTime, newTime1, MeetingNotes, EmployeeKeyString, newDate, this.eventKey$, this.employeekey, this.OrganizationID)
-        .subscribe(res =>
-         { 
-         if(this.role=='Manager'){
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-        }
-        else  if(this.role=='Employee' && this.IsSupervisor==1){
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-        }
+        .subscribe(res => {
+          alert("Meeting/Training is successfully updated !")
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+          }
+          else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+          }
         }
         );
     }
@@ -340,11 +340,11 @@ export class MeetingTrainingEditComponent implements OnInit {
     // Pooja's code for Supervisor Multiselect dropdown ends
   }
   goBack() {
-    if(this.role=='Manager'){
+    if (this.role == 'Manager') {
       this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-      }
-      else  if(this.role=='Employee' && this.IsSupervisor==1){
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-      }
+    }
+    else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+    }
   }
 }
