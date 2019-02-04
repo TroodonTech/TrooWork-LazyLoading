@@ -4,6 +4,7 @@ import { People } from '../../../../model-class/People';
 import { PeopleServiceService } from '../../../../service/people-service.service';
 import { Router } from "@angular/router";
 import { DatepickerOptions } from 'ng2-datepicker';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-meeting-training-create',
@@ -32,7 +33,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
   t1 = [];
   superVsrKey: Number = 0;
   jobTleKey: Number = 0;
-  
+
   role: String;
   name: String;
   employeekey: Number;
@@ -46,7 +47,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
   newMeet;
   department;
 
-  
+
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -96,7 +97,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'48.8%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '48.8%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -130,15 +131,12 @@ export class MeetingTrainingCreateComponent implements OnInit {
 
   }
   //Pooja's code for selecting employees with jobtitle,Supervisor and department filter starts
-  selectEmp()
-  {
-    if(!(this.JobTitle))
-    {
+  selectEmp() {
+    if (!(this.JobTitle)) {
       this.JobTitle = null;
     }
-    if(this.Supervisor.length==0)
-    {
-      var sup=null ;
+    if (this.Supervisor.length == 0) {
+      var sup = null;
     }
     else {
       var SupervisorList = [];
@@ -153,20 +151,19 @@ export class MeetingTrainingCreateComponent implements OnInit {
         sup = SupervisorList.join(',');
       }
     }
-    if(!(this.DepartmentKey))
-    {
+    if (!(this.DepartmentKey)) {
       this.DepartmentKey = null;
     }
-    
 
-this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.OrganizationID,this.JobTitle,sup,this.DepartmentKey)
-.subscribe((data:any[])=>{
-  this.empList=data;
-});
+
+    this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey, this.OrganizationID, this.JobTitle, sup, this.DepartmentKey)
+      .subscribe((data: any[]) => {
+        this.empList = data;
+      });
   }
-   //Pooja's code for selecting employees with jobtitle,Supervisor and department filter ends
- 
-   // selectEmpOfJobTitle(jobKey) {
+  //Pooja's code for selecting employees with jobtitle,Supervisor and department filter ends
+
+  // selectEmpOfJobTitle(jobKey) {
   //   this.jobTleKey = jobKey;
   //   this.selectEmpsDropDown();
   // }
@@ -175,18 +172,26 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
   //   this.selectEmpsDropDown();
   // }
   addMeetingTrainingEvent() {
+    debugger;
     if (!this.time1) {
       alert("Start Time is not provided");
     }
     else if (!this.time2) {
       alert("End Time is not provided");
     }
+
     else {
       var time1 = new Date(this.time1);
       var time2 = new Date(this.time2);
+      var curTime = new Date();
       var timediff = +time2 - +time1;
+      var timediff1 = +time1 - +curTime;
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
+        return;
+      }
+      else if (timediff1 < 0) {
+        alert("Start Time can't be before Current Time");
         return;
       }
     }
@@ -205,6 +210,7 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
       alert("Employee is not selected");
     }
     else {
+      var curDate = this.convert_DT(new Date());
 
       if (!this.mtngDate) {
         var newDate = this.convert_DT(new Date());
@@ -212,7 +218,10 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
       else {
         newDate = this.convert_DT(this.mtngDate);
       }
-
+      if (newDate < curDate) {
+        alert("Start Date can't be before current date");
+        return;
+      }
 
       var EmployeeKeyString;
       if (this.Employee.length == 0) {
@@ -255,7 +264,7 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
 
           this.superVsrKey = 0;
           this.jobTleKey = 0;
-          this.DepartmentKey=null;
+          this.DepartmentKey = null;
 
           this.peopleServ
             .getJobTitleList(this.employeekey, this.OrganizationID)
@@ -294,12 +303,12 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-    this.newMeet=true;
-    this.mtngDate= new Date();
-    this.DepartmentKey="";
-    this.EventType="";
-    this.JobTitle="";
-    
+    this.newMeet = true;
+    this.mtngDate = new Date();
+    this.DepartmentKey = "";
+    this.EventType = "";
+    this.JobTitle = "";
+
     this.peopleServ
       .getJobTitleList(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -317,20 +326,20 @@ this.peopleServ.selectEmpWithJobTSprvsrAndDept(this.employeekey,this.Organizatio
       .subscribe((data: People[]) => {
         this.supervisor = data;
       });
-// Pooja's code for Department dropdown starts
-      this.peopleServ
+    // Pooja's code for Department dropdown starts
+    this.peopleServ
       .getDepartment(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.department = data;
       });
-// Pooja's code for Department dropdown ends
+    // Pooja's code for Department dropdown ends
     this.peopleServ
       .getallEventList(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.event = data;
       });
-// Pooja's code for Supervisor Multiselect dropdown starts
-this.dropdownSettings2 = {
+    // Pooja's code for Supervisor Multiselect dropdown starts
+    this.dropdownSettings2 = {
       singleSelection: false,
       idField: 'SupervisorKey',
       textField: 'SupervisorText',
@@ -338,8 +347,8 @@ this.dropdownSettings2 = {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 5,
       allowSearchFilter: true
-};
-// Pooja's code for Supervisor Multiselect dropdown ends
+    };
+    // Pooja's code for Supervisor Multiselect dropdown ends
     this.dropdownSettings1 = {
       singleSelection: false,
       idField: 'EmployeeKey',
@@ -351,59 +360,59 @@ this.dropdownSettings2 = {
     };
 
   }
-  refreshValues(){
+  refreshValues() {
     this.peopleServ
       .getallEventList(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.event = data;
       });
   }
-  addNewMeeting(){
+  addNewMeeting() {
     var eventType;
-    if (this.Event_Type){
-     eventType = this.Event_Type;
-      }
-      else{
+    if (this.Event_Type) {
+      eventType = this.Event_Type;
+    }
+    else {
       eventType = null;
-              alert("Event Type is not provided !");
-              return;
-      }
-      var eventName;
-      if (this.Event_Name){
-        eventName = this.Event_Name;
-        }
-        else{
-          eventName = null;
-                alert("Event Name is not provided !");
-                return;
-        }
-        var eventDescription;
-        if (this.Description){
-          eventDescription = this.Description;
-          }
-          else{
-            eventDescription = null;
-          }
+      alert("Event Type is not provided !");
+      return;
+    }
+    var eventName;
+    if (this.Event_Name) {
+      eventName = this.Event_Name;
+    }
+    else {
+      eventName = null;
+      alert("Event Name is not provided !");
+      return;
+    }
+    var eventDescription;
+    if (this.Description) {
+      eventDescription = this.Description;
+    }
+    else {
+      eventDescription = null;
+    }
 
-this.addnewEvent={
-    ActionKey: null,
-    EmployeeKey: this.employeekey,
-    EventDescription: this.Description,
-    EventName: this.Event_Name,
-    EventType:this.Event_Type,
-    OrganizationID: this.OrganizationID,
-    eventDescription: this.Description,
-    eventName: this.Event_Name,
-    eventType: this.Event_Type
-};
+    this.addnewEvent = {
+      ActionKey: null,
+      EmployeeKey: this.employeekey,
+      EventDescription: this.Description,
+      EventName: this.Event_Name,
+      EventType: this.Event_Type,
+      OrganizationID: this.OrganizationID,
+      eventDescription: this.Description,
+      eventName: this.Event_Name,
+      eventType: this.Event_Type
+    };
     this.peopleServ
       .addMeetinTraingByNewEvent(this.addnewEvent)
       .subscribe((data: People[]) => {
         this.event = data;
         alert("New Event is Successfully created")
-        this.Event_Name=null;
-        this.Event_Type=null;
-        this.Description=null;
+        this.Event_Name = null;
+        this.Event_Type = null;
+        this.Description = null;
       });
   }
 

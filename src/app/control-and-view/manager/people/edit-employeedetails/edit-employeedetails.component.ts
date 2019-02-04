@@ -168,7 +168,6 @@ export class EditEmployeedetailsComponent implements OnInit {
     }
     // var empNum ;
     if (this.empNum == this.editempdtails.EmployeeNumber) {
-
       this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
         .subscribe((data: People[]) => {
           alert("Updated Successfully!");

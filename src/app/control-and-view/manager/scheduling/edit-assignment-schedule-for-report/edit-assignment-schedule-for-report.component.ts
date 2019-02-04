@@ -430,6 +430,12 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     } else {
       this.endDT = this.convert_DT(new Date());
     }
+
+    if (this.endDT < this.startDT) {
+      alert("End Date can't be less than Start Date");
+      return;
+    }
+
     for (var i = 0; i < this.roomList.length; i++) {
       if (!this.roomList[i].WorkorderTypeKey) {
         this.wotypeFlag = this.wotypeFlag + 1;

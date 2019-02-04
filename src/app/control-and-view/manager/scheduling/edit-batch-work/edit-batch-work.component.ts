@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { ActivatedRoute, Router } from "@angular/router";
 
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-edit-batch-work',
   templateUrl: './edit-batch-work.component.html',
@@ -46,7 +46,7 @@ export class EditBatchWorkComponent implements OnInit {
     return [date.getFullYear(), mnth, day].join("-");
 
   }
-  constructor(private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute,private _location: Location) {
+  constructor(private scheduleService: SchedulingService, private router: Router, private route: ActivatedRoute, private _location: Location) {
     this.route.params.subscribe(params => this.scheduleNameKey$ = params.scheduleNameKey);
   }
 
@@ -65,7 +65,7 @@ export class EditBatchWorkComponent implements OnInit {
       if (this.scheduleDetails.checkBoxValue == true) {
         var scheduleDT = this.convert_DT(new Date());
         this.scheduleService
-          .assignChangesForWO(scheduleDT,this.employeekey, this.OrganizationID, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
+          .assignChangesForWO(scheduleDT, this.employeekey, this.OrganizationID, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
           .subscribe();
       }
       if (this.scheduleDetails.BatchSchduleName != this.schName) {
@@ -74,7 +74,10 @@ export class EditBatchWorkComponent implements OnInit {
           .subscribe((data: any[]) => {
             if (data[0].count == 0) {
               this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
-                .subscribe(res =>  this._location.back());
+                .subscribe(res => {
+                  alert("Assignment Name updated Successfully");
+                  this._location.back();
+                });
             } else {
               alert("Schedule Name already present !");
             }
@@ -82,7 +85,7 @@ export class EditBatchWorkComponent implements OnInit {
       } else {
         this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, this.scheduleDetails.BatchSchduleName, this.empKey, this.scheduleNameKey$, this.scheduleDetails.ScheduleDescription)
           .subscribe(res => {
-            // alert("Updated Successfully");
+            alert("Assignment Name updated Successfully");
             this._location.back();
           });
       }
@@ -118,7 +121,7 @@ export class EditBatchWorkComponent implements OnInit {
       });
 
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

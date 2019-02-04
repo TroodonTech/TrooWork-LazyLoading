@@ -260,8 +260,7 @@ export class DashboardReportComponent implements OnInit {
   dashboardreportbyfilter() {
     this.pievalues = [];
     this.reporttable = [];
-    this.loading = true;
-
+    
     if (!this.EmployeeKey) {
       this.em_Key = null;
     }
@@ -280,8 +279,10 @@ export class DashboardReportComponent implements OnInit {
     else {
       date2 = this.convert_DT(this.todate);
     }
+
     if (date2 && date1 > date2) {
       alert("Please check your Start Date!");
+      return;
     }
 
     this.manager = this.employeekey;
@@ -302,6 +303,7 @@ export class DashboardReportComponent implements OnInit {
         workordertypeString = workordertypeList.join(',');
       }
     }
+    this.loading = true;
     this.ReportServiceService//service for fetching values for table
       .getdashboardreport(date1, date2, this.em_Key, workordertypeString, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {

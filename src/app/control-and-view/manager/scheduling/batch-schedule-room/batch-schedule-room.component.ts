@@ -36,7 +36,7 @@ export class BatchScheduleRoomComponent implements OnInit {
   showHide2: boolean;
   pagination: Number;
   loading: boolean;
-    deletekey;
+  deletekey;
   bldgKey = null;
   flrKey = null;
   zoneKey = null;
@@ -118,58 +118,48 @@ export class BatchScheduleRoomComponent implements OnInit {
     var room;
     var roomtype;
     var zone;
-    if(!this.FacilityKey)
-    {
-      building=null;
+    if (!this.FacilityKey) {
+      building = null;
     }
-    else
-    {
-      building=this.FacilityKey;
+    else {
+      building = this.FacilityKey;
     }
-    if(!this.FloorKey)
-    {
-      floor=null;
+    if (!this.FloorKey) {
+      floor = null;
     }
-    else
-    {
-      floor=this.FloorKey;
+    else {
+      floor = this.FloorKey;
     }
-    if(!this.FloorTypeKey)
-    {
-      floortype=null;
+    if (!this.FloorTypeKey) {
+      floortype = null;
     }
-    else
-    {
-      floortype=this.FloorTypeKey;
+    else {
+      floortype = this.FloorTypeKey;
     }
-    if(!this.RoomTypeKey)
-    {
-      roomtype=null;
+    if (!this.RoomTypeKey) {
+      roomtype = null;
     }
-    else
-    {
-      roomtype=this.RoomTypeKey;
+    else {
+      roomtype = this.RoomTypeKey;
     }
-    if(!this.RoomKey)
-    {
-      room=null;
+    if (!this.RoomKey) {
+      room = null;
     }
-    else
-    {
-      room=this.RoomKey;
+    else {
+      room = this.RoomKey;
     }
-    if(!this.zoneKey)
-    {
-      zone=null;
+    if (!this.zoneKey) {
+      zone = null;
     }
-    else
-    {
-      zone=this.zoneKey;
+    else {
+      zone = this.zoneKey;
     }
     this.loading = true;
+    this.showHide2 = false;
+    this.showHide1 = false;
     this.scheduleServ
       .getAllRoomFilterList(this.BatchScheduleNameKey, this.OrganizationID,
-        building, floor, zone, roomtype,room,floortype)
+        building, floor, zone, roomtype, room, floortype)
       .subscribe((data: any[]) => {
         this.allroomList = data;
         this.loading = false;
@@ -241,7 +231,7 @@ export class BatchScheduleRoomComponent implements OnInit {
           .addRoomToSchedule(this.BatchScheduleNameKey, addRoomString, this.employeekey, this.OrganizationID)
           .subscribe(res => {
             alert("Rooms successfully added to assignment");
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport',this.BatchScheduleNameKey] } }]);
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['editScheduleForReport', this.BatchScheduleNameKey] } }]);
             // this.router.navigate(['/editScheduleForReport', this.BatchScheduleNameKey]);
           });
       }
@@ -262,7 +252,7 @@ export class BatchScheduleRoomComponent implements OnInit {
       .getallFloor(facilityName, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.FloorList = data;
-        this.FloorKey="";
+        this.FloorKey = "";
       });
   }
   getZoneRoomTypeRoom(floor, facility) {
@@ -272,25 +262,25 @@ export class BatchScheduleRoomComponent implements OnInit {
       .getzone_facilityfloor(floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.zonelist = data;
-        this.zoneKey="";
+        this.zoneKey = "";
       });
     this.scheduleServ
       .getfloorType_facilityfloor(floor, facility, null, null, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.floorTypeList = data;
-        this.FloorTypeKey="";
+        this.FloorTypeKey = "";
       });
     this.WorkOrderServiceService
       .getroomType_facilityfloor(floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomTypeList = data;
-        this.RoomTypeKey="";
+        this.RoomTypeKey = "";
       });
     this.WorkOrderServiceService
       .getRoom_facilityfloor(floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomList = data;
-        this.RoomKey="";
+        this.RoomKey = "";
       });
   }
   getRoomTypeRoom(zone, facility, floor) {
@@ -301,19 +291,19 @@ export class BatchScheduleRoomComponent implements OnInit {
       .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomTypeList = data;
-        this.RoomTypeKey="";
+        this.RoomTypeKey = "";
       });
     this.WorkOrderServiceService
       .getRoom_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomList = data;
-        this.RoomKey="";
+        this.RoomKey = "";
       });
     this.scheduleServ
       .getfloorType_facilityfloor(floor, facility, zone, null, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.floorTypeList = data;
-        this.FloorTypeKey="";
+        this.FloorTypeKey = "";
       });
   }
   getRoom(roomtype, zone, facility, floor) {
@@ -325,7 +315,7 @@ export class BatchScheduleRoomComponent implements OnInit {
       .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.RoomList = data;
-        this.RoomKey="";
+        this.RoomKey = "";
       });
     // this.scheduleServ
     //   .getfloorType_facilityfloor(floor, facility, zone, roomtype, this.OrganizationID)
@@ -333,31 +323,29 @@ export class BatchScheduleRoomComponent implements OnInit {
     //     this.floorTypeList = data;
     //   });
   }
-  deletekeypass(key)
-  {
-    this.deletekey=key;
+  deletekeypass(key) {
+    this.deletekey = key;
   }
-  delete_room()
-  {
-    this.delete_scheduledroom={
-      workorderscheduleroomid:this.deletekey,
-      OrganizationID:this.OrganizationID,
-      employeekey:this.employeekey
+  delete_room() {
+    this.delete_scheduledroom = {
+      workorderscheduleroomid: this.deletekey,
+      OrganizationID: this.OrganizationID,
+      employeekey: this.employeekey
     };
     this.scheduleServ
-    .deleteScheduledRoomslist( this.delete_scheduledroom)
-    .subscribe((data: Scheduling[]) => {
-      this.scheduleServ
-      .getSchedulingRoomList(this.BatchScheduleNameKey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.scheduledroomList = data;
+      .deleteScheduledRoomslist(this.delete_scheduledroom)
+      .subscribe((data: Scheduling[]) => {
+        this.scheduleServ
+          .getSchedulingRoomList(this.BatchScheduleNameKey, this.OrganizationID)
+          .subscribe((data: any[]) => {
+            this.scheduledroomList = data;
+          });
+        this.scheduleServ
+          .getAllOtherRoomList(this.BatchScheduleNameKey, this.OrganizationID, this.pageno, this.itemsPerPage)
+          .subscribe((data: any[]) => {
+            this.allroomList = data;
+          });
       });
-      this.scheduleServ
-      .getAllOtherRoomList(this.BatchScheduleNameKey, this.OrganizationID, this.pageno, this.itemsPerPage)
-      .subscribe((data: any[]) => {
-        this.allroomList = data;
-      });
-    });
   }
   ngOnInit() {
     //token starts....
@@ -377,7 +365,7 @@ export class BatchScheduleRoomComponent implements OnInit {
     this.RoomTypeKey = "";
     this.FloorTypeKey = "";
     this.RoomKey = "";
-    this.BatchScheduleNameKey="";
+    this.BatchScheduleNameKey = "";
     this.scheduleServ
       .getAllSchedulingNames(this.employeekey, this.OrganizationID)
       .subscribe((data: Scheduling[]) => {
