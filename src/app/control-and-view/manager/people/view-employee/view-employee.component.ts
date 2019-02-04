@@ -112,6 +112,7 @@ export class ViewEmployeeComponent implements OnInit {
             this.showHide2 = false;
             this.showHide1 = false;
           }
+          this.JobTitleKey=null;
         });
       }
   }
