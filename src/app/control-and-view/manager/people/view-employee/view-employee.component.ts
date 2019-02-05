@@ -102,18 +102,28 @@ export class ViewEmployeeComponent implements OnInit {
       if ((value.length == 0) && (SearchValue.length == 0)) {
         this.loading = true;
       }
-      this.PeopleServiceService.getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
-        this.employeedetailstable = data;
-        this.loading = false;
-        if (this.employeedetailstable[0].totalItems > this.itemsPerPage) {
-          this.showHide2 = true;
-          this.showHide1 = false;
-        }
-        else if (this.employeedetailstable[0].totalItems <= this.itemsPerPage) {
-          this.showHide2 = false;
-          this.showHide1 = false;
-        }
-      });
+      if (this.JobTitleKey) {
+        this.PeopleServiceService
+          .getAllEmployeeDetailswithjobtitledropdown(this.JobTitleKey, this.employeekey, this.OrganizationID)
+          .subscribe((data: People[]) => {
+            this.employeedetailstable = data;
+            this.loading = false;
+          });
+      } else {
+        this.PeopleServiceService.getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID).subscribe((data: People[]) => {
+          this.employeedetailstable = data;
+          this.loading = false;
+          if (this.employeedetailstable[0].totalItems > this.itemsPerPage) {
+            this.showHide2 = true;
+            this.showHide1 = false;
+          }
+          else if (this.employeedetailstable[0].totalItems <= this.itemsPerPage) {
+            this.showHide2 = false;
+            this.showHide1 = false;
+          }
+        });
+      }
+
     }
   }
   ngOnInit() {

@@ -136,20 +136,76 @@ export class RoomViewComponent implements OnInit {
       if ((value.length == 0) && (SearchValue.length == 0)) {
         this.loading = true;
       }
-      this.inventoryService
-        .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-        .subscribe((data: Inventory[]) => {
-          this.rooms = data;
-          this.loading = false;
-          if (this.rooms[0].totalItems > this.itemsPerPage) {
-            this.showHide2 = true;
-            this.showHide1 = false;
-          }
-          else if (this.rooms[0].totalItems <= this.itemsPerPage) {
+      var building;
+      var floor;
+      var floortype;
+      var zone;
+      var room;
+      var roomtype;
+
+      if (!(this.FacilityKey)) {
+        building = null;
+      }
+      else {
+        building = this.FacilityKey;
+      }
+      if (!(this.FloorKey)) {
+        floor = null;
+      }
+      else {
+        floor = this.FloorKey
+      }
+      if (!(this.ZoneKey)) {
+        zone = null;
+      }
+      else {
+        zone = this.ZoneKey;
+      }
+      if (!(this.RoomTypeKey)) {
+        roomtype = null;
+      }
+      else {
+        roomtype = this.RoomTypeKey;
+      }
+      if (!(this.RoomKey)) {
+        room = null;
+      }
+      else {
+        room = this.RoomKey;
+      }
+      if (!(this.FloorTypeKey)) {
+        floortype = null;
+      }
+      else {
+        floortype = this.FloorTypeKey
+      }
+
+      if (building & floor) {
+        this.loading = true;
+        this.inventoryService
+          .getAllRoomFilterList(this.OrganizationID, building, floor, zone, roomtype, room, floortype, this.employeekey)
+          .subscribe((data: any[]) => {
+            this.rooms = data;
+            this.loading = false;
             this.showHide2 = false;
             this.showHide1 = false;
-          }
-        });
+          });
+      } else {
+        this.inventoryService
+          .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+          .subscribe((data: Inventory[]) => {
+            this.rooms = data;
+            this.loading = false;
+            if (this.rooms[0].totalItems > this.itemsPerPage) {
+              this.showHide2 = true;
+              this.showHide1 = false;
+            }
+            else if (this.rooms[0].totalItems <= this.itemsPerPage) {
+              this.showHide2 = false;
+              this.showHide1 = false;
+            }
+          });
+      }
     }
   }
 
@@ -186,7 +242,7 @@ export class RoomViewComponent implements OnInit {
     var zone;
     var room;
     var roomtype;
-    
+
     if (!(this.FacilityKey)) {
       building = null;
     }
@@ -223,9 +279,9 @@ export class RoomViewComponent implements OnInit {
     else {
       floortype = this.FloorTypeKey
     }
-   
+
     // console.log("rooms filter... org" + this.OrganizationID + " ..... bldg" + this.bldgKey + " ..... flr" + this.flrKey + " ..... zone" + this.zoneKey + " ..... rtype" + this.rTypeKey + " ..... room" + this.rKey + " ..... flrtype" + this.flrTypeKey + " ..... emp" + this.employeekey);
-debugger;
+    ;
     if (building & floor) {
       this.loading = true;
       this.inventoryService
@@ -236,7 +292,7 @@ debugger;
           this.showHide2 = false;
           this.showHide1 = false;
         });
-    } else if((!(building) && !(floor)) || !(building) ) {
+    } else if ((!(building) && !(floor)) || !(building)) {
       this.loading = true;
       this.inventoryService
         .getRoomList(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -304,43 +360,43 @@ debugger;
           this.RoomKey = ""
         });
     }
-    if(!(this.FloorKey)){
-      this.ZoneKey='';
-      this.RoomTypeKey='';
-      this.FloorTypeKey='';
-      this.RoomKey='';
+    if (!(this.FloorKey)) {
+      this.ZoneKey = '';
+      this.RoomTypeKey = '';
+      this.FloorTypeKey = '';
+      this.RoomKey = '';
     }
   }
- 
+
   getRoomTypeRoom(zone, facility, floor) {
     this.bldgKey = facility;
     this.flrKey = floor;
     this.zoneKey = zone;
     console.log("zone..." + zone + "flr ..... " + floor + " bldg..... " + facility + "org ..... " + this.OrganizationID);
-    if(facility && floor && zone){
-    this.WorkOrderServiceService
-      .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.RoomTypeList = data;
-        this.RoomTypeKey = "";
-      });
-    this.WorkOrderServiceService
-      .getRoom_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.RoomList = data;
-        this.RoomKey = "";
-      });
-    this.scheduleServ
-      .getfloorType_facilityfloor(floor, facility, zone, null, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.floorTypeList = data;
-        this.FloorTypeKey = "";
-      });
+    if (facility && floor && zone) {
+      this.WorkOrderServiceService
+        .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.RoomTypeList = data;
+          this.RoomTypeKey = "";
+        });
+      this.WorkOrderServiceService
+        .getRoom_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.RoomList = data;
+          this.RoomKey = "";
+        });
+      this.scheduleServ
+        .getfloorType_facilityfloor(floor, facility, zone, null, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.floorTypeList = data;
+          this.FloorTypeKey = "";
+        });
     }
-    if(!(this.ZoneKey)){
-      this.RoomTypeKey='';
-      this.FloorTypeKey='';
-      this.RoomKey='';
+    if (!(this.ZoneKey)) {
+      this.RoomTypeKey = '';
+      this.FloorTypeKey = '';
+      this.RoomKey = '';
     }
   }
   getRoom(roomtype, zone, facility, floor) {
@@ -349,25 +405,25 @@ debugger;
     this.zoneKey = zone;
     this.rTypeKey = roomtype;
     console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
-   if(facility && floor && zone && roomtype){
-    this.WorkOrderServiceService
-      .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.RoomList = data;
-        this.RoomKey = "";
-      });
+    if (facility && floor && zone && roomtype) {
+      this.WorkOrderServiceService
+        .getRoom_Roomtype_zone_facilityfloor(roomtype, zone, floor, facility, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.RoomList = data;
+          this.RoomKey = "";
+        });
     }
-    if(!(facility)){
-      facility=null;
+    if (!(facility)) {
+      facility = null;
     }
-    if(!(floor)){
-      floor=null;
+    if (!(floor)) {
+      floor = null;
     }
-    if(!(zone)){
-      zone=null;
+    if (!(zone)) {
+      zone = null;
     }
-    if(!(roomtype)){
-      roomtype=null;
+    if (!(roomtype)) {
+      roomtype = null;
     }
     this.scheduleServ
       .getfloorType_facilityfloor(floor, facility, zone, roomtype, this.OrganizationID)

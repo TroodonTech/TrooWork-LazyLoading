@@ -46,29 +46,25 @@ export class FloorCreateComponent implements OnInit {
   }
 
   addFloor(FacilityKey, FloorName, FloorDescription) {
-    FloorName = FloorName.trim();
-    FloorDescription = FloorDescription.trim();
-
     if (!FacilityKey) {
       alert("Please Choose Building!");
       return;
     }
-    if (!FloorName) {
+    if (!FloorName || !FloorName.trim()) {
       alert("Please Enter Floor Name!");
       return;
     }
-    if (!FloorDescription) {
+    if (!FloorDescription || !FloorDescription.trim()) {
       alert("Please Enter Floor Description!");
       return;
     }
-    // if (!FacilityKey) {
-    //   alert("Please select a building name!");
-    // } else if (!FloorName) {
-    //   alert("Enter floor name!");
-    // }
-    // else if (!FloorDescription) {
-    //   alert("Enter floor description!");
-    // }
+
+    FloorName = FloorName.trim();
+    FloorDescription = FloorDescription.trim();
+
+    console.log("*"+FloorName+"*");
+    console.log("*"+FloorDescription+"*");
+
     this.inventoryService.CheckNewFloor(FacilityKey, FloorName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
       if (data[0].count > 0) {
         alert("Floor already present !");

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { Router, ActivatedRoute } from "@angular/router";
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-room-edit',
@@ -50,7 +50,7 @@ export class RoomEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router,private _location: Location) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location) {
     this.route.params.subscribe(params => this.roomKey$ = params.RoomKey);
   }
 
@@ -111,11 +111,11 @@ export class RoomEditComponent implements OnInit {
       alert("Zone name is not provided !");
     } else if (!RoomTypeKey) {
       alert("RoomType is not provided !");
-    } else if (!RoomName) {
+    } else if (!RoomName || !RoomName.trim()) {
       alert("Room name is not provided !");
-    } else if (!SquareFoot) {
+    } else if (!SquareFoot || !String(SquareFoot).trim()) {
       alert("Square foot is not provided !");
-    } else if (!Barcode) {
+    } else if (!Barcode || !Barcode.trim()) {
       alert("Barcode is not provided !");
     }
     else {
@@ -126,25 +126,23 @@ export class RoomEditComponent implements OnInit {
           if (this.unqBar.Barcode != 0) {
             alert("Barcode already exists !");
           }
-          else if(this.temp_room!=RoomName)
-          {
+          else if (this.temp_room != RoomName) {
             this.inventoryService
-            .checkRoomName(RoomName, this.OrganizationID)
-            .subscribe((data: Inventory[]) => {
-              if (data[0].count > 0) {
-                alert("Room Name already exists !");
-              }
-              else
-              {
-                this.inventoryService.updateRoom(this.update_Room)
-              .subscribe(res => {
-                alert("Room updated successfully");
-                this._location.back();
+              .checkRoomName(RoomName, this.OrganizationID)
+              .subscribe((data: Inventory[]) => {
+                if (data[0].count > 0) {
+                  alert("Room Name already exists !");
+                }
+                else {
+                  this.inventoryService.updateRoom(this.update_Room)
+                    .subscribe(res => {
+                      alert("Room updated successfully");
+                      this._location.back();
+                    });
+                }
               });
-              }
-            });
           }
-          else  {
+          else {
             this.inventoryService.updateRoom(this.update_Room)
               .subscribe(res => {
                 alert("Room updated successfully");
@@ -171,7 +169,7 @@ export class RoomEditComponent implements OnInit {
       .getRoomDetailsList(this.roomKey$, this.OrganizationID)
       .subscribe((data: Array<any>) => {
         this.room = data[0];
-        this.temp_room=this.room.RoomName;
+        this.temp_room = this.room.RoomName;
         this.inventoryService
           .getallFloorList(this.room.FacilityKey, this.OrganizationID)
           .subscribe((data: Inventory[]) => {
@@ -203,7 +201,7 @@ export class RoomEditComponent implements OnInit {
       });
 
   }
-  goback(){
+  goback() {
     this._location.back();
   }
 }

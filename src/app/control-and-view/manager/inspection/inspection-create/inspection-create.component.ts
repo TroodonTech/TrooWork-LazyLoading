@@ -223,13 +223,23 @@ export class InspectionCreateComponent implements OnInit {
       var dateFrom = this.convert_DT(new Date());
     }
     else {
-      dateFrom = this.convert_DT(this.fromdate);
+      if (this.convert_DT(this.fromdate) < this.convert_DT(new Date())){
+        alert("Date can't be less than current date");
+        return;
+      } else {
+        dateFrom = this.convert_DT(this.fromdate);
+      }
     }
     if (!this.todate) {
       var date2 = dateFrom;
     }
     else {
-      date2 = this.convert_DT(this.todate);
+      if (this.convert_DT(this.todate) < dateFrom) {
+        alert("To date can't be less than start date");
+        return;
+      } else {
+        date2 = this.convert_DT(this.todate);
+      }
     }
     if (!this.TemplateID) {
       alert("Template Name is not provided");

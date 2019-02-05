@@ -415,7 +415,7 @@ export class CreateWorkorderComponent implements OnInit {
     }
   }
   createWorkorder1() {
-    debugger;
+    ;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
     } else if (this.newType == true && !(this.newworkordertypetext)) {
@@ -860,7 +860,7 @@ export class CreateWorkorderComponent implements OnInit {
   }
   //workorder with equipment
   createWorkorder2() {
-    debugger;
+    ;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
     } else if (this.newType == true && !(this.newworkordertypetext)) {
@@ -1304,7 +1304,7 @@ export class CreateWorkorderComponent implements OnInit {
   }
   //function to create wo with equipment
   withequip_wo() {
-    debugger;
+    ;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];
@@ -1685,7 +1685,7 @@ export class CreateWorkorderComponent implements OnInit {
     this.newworkordertypetext = null;
   }
   withoutequip_wo() {
-    debugger;
+    ;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];

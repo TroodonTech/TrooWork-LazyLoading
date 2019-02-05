@@ -24,7 +24,7 @@
           <label for="mtngTrainingEvent">Meeting/Training/Event*</label>
           <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.ActionKey"
             (change)="setActionKey($event.target.value)">
-            <option>--Select--</option>
+            <option value="">--Select--</option>
             <option *ngFor="let b of event" [value]="b.ActionKey">
               {{b.ActionType}} - {{b.Action}}
             </option>
@@ -32,13 +32,15 @@
         </div>
         <div class="form-group">
           <label>Event Host* </label>
-          <input type="text" style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="mtngDetails.Eventhost">
+          <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control"
+            [(ngModel)]="mtngDetails.Eventhost">
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group " style="margin-left: 1rem;margin-top: 5.4rem">
           <label>Venue*</label>
-          <input type="text" style="background-color: #D4F4FF !important;width: 102%" class="form-control" [(ngModel)]="mtngDetails.Venue">
+          <input type="text" style="background-color: #D4F4FF !important;width: 102%" maxlength="40" class="form-control"
+            [(ngModel)]="mtngDetails.Venue">
         </div>
       </div>
     </div>

@@ -172,7 +172,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
   //   this.selectEmpsDropDown();
   // }
   addMeetingTrainingEvent() {
-    debugger;
+    ;
     if (!this.time1) {
       alert("Start Time is not provided");
     }

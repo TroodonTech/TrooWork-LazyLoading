@@ -63,7 +63,15 @@ export class EquipmentEditComponent implements OnInit {
   floorValueSet(floorKey) {
     this.FloorKey = floorKey;
   }
-  updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode, ) {
+  updateEquipment(EquipmentName, EquipmentDescription, EquipmentBarcode) {
+    if (!EquipmentName || !EquipmentName.trim()) {
+      alert("Please Enter Equipment Name!");
+      return;
+    }
+    if (!EquipmentBarcode ) {
+      alert("Please Enter Equipment Barcode!");
+      return;
+    }
     if (!this.equipTypeKey) {
       alert("Equipment Type is not provided");
     } else if (!EquipmentName) {

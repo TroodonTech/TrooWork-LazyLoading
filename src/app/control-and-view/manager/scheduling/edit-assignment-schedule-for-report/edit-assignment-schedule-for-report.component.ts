@@ -420,7 +420,13 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     this.CreateDis = true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
-      this.startDT = this.convert_DT(this.workScheduleStartDate);
+      if (this.convert_DT(this.workScheduleStartDate) < this.convert_DT(new Date())) {
+        alert("Start date can't be less than current date");
+        this.CreateDis = false;
+        return;
+      } else {
+        this.startDT = this.convert_DT(this.workScheduleStartDate);
+      }
     } else {
       this.startDT = this.convert_DT(new Date());
     }
@@ -433,6 +439,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
 
     if (this.endDT < this.startDT) {
       alert("End Date can't be less than Start Date");
+      this.CreateDis = false;
       return;
     }
 

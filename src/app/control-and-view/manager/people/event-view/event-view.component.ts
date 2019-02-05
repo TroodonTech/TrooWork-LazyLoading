@@ -106,25 +106,33 @@ export class EventViewComponent implements OnInit {
       });
 
   }
-  cancelTemplateDetails(){
+  cancelTemplateDetails() {
     this.editQuestions = -1;
     this.peopleServ
-    .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
-    .subscribe((data: People[]) => {
-      this.eventType = data;
-    });
-  }
-  UpdateEventDetais(ActionType,Action,Description,ActionKey,ActionTypeKey){
-    this.peopleServ.UpdateEventType(ActionType, Action, Description, ActionKey, ActionTypeKey, this.employeekey, this.OrganizationID).
-    subscribe(() => {
-      alert('Successfully Updated !');
-      this.peopleServ
       .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
-          .subscribe((data: People[]) => {
-            this.eventType = data;
-            this.editQuestions = -1;
-          });
-    });
+      .subscribe((data: People[]) => {
+        this.eventType = data;
+      });
+  }
+  UpdateEventDetais(ActionType, Action, Description, ActionKey, ActionTypeKey) {
+    if (!ActionType || !ActionType.trim()) {
+      alert("Please enter an event type");
+    }
+    else if (!Action || !Action.trim()) {
+      alert("Please enter an event name");
+    }
+    else {
+      this.peopleServ.UpdateEventType(ActionType, Action, Description, ActionKey, ActionTypeKey, this.employeekey, this.OrganizationID).
+        subscribe(() => {
+          alert('Successfully Updated !');
+          this.peopleServ
+            .getEventTypeList(this.page, this.count, this.employeekey, this.OrganizationID)
+            .subscribe((data: People[]) => {
+              this.eventType = data;
+              this.editQuestions = -1;
+            });
+        });
+    }
   }
 
 }
