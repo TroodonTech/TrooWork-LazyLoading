@@ -54,6 +54,15 @@ export class RoomEditComponent implements OnInit {
     this.route.params.subscribe(params => this.roomKey$ = params.RoomKey);
   }
 
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
   selectFloorfromBuildings(facKey) {
     this.facKey = facKey;
     this.inventoryService

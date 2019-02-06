@@ -90,7 +90,7 @@ export class InspectionViewComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'97%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '97%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -147,6 +147,8 @@ export class InspectionViewComponent implements OnInit {
   //functions for pagination 
 
   filteringInspectionManagerByDate() {
+    this.showHide2 = false;
+    this.showHide1 = false;
     if (this.todate && this.convert_DT(this.fromdate) > this.convert_DT(this.todate)) {
       this.todate = null;
       alert("Please check your Start Date!");
@@ -182,7 +184,7 @@ export class InspectionViewComponent implements OnInit {
 
   }
   searchTL(SearchValue) {
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
     if (!this.fromdate) {
       var date1 = this.convert_DT(new Date());
     }
@@ -203,9 +205,8 @@ export class InspectionViewComponent implements OnInit {
         });
     }
     else if (value.length == 0) {
-      if((value.length == 0) &&(SearchValue.length == 0) )
-      {
-     this.loading = true;
+      if ((value.length == 0) && (SearchValue.length == 0)) {
+        this.loading = true;
       }
       var curr_date = this.convert_DT(new Date());
       this.inspectionService
@@ -254,7 +255,7 @@ export class InspectionViewComponent implements OnInit {
     });
   }
 
-  GoView(para){
-    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',para] } }]);
+  GoView(para) {
+    this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager', para] } }]);
   }
 }

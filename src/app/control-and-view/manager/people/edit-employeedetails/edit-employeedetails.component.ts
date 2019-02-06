@@ -104,7 +104,8 @@ export class EditEmployeedetailsComponent implements OnInit {
   }
 
   editEmployee(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey) {
-    if (!(this.editempdtails.EmployeeNumber)) {
+  
+    if (!EmployeeNumber || !EmployeeNumber.trim()) {
       alert("Employee Number is not provided !");
       return;
     }
@@ -113,11 +114,11 @@ export class EditEmployeedetailsComponent implements OnInit {
       return;
     }
 
-    if (!(this.editempdtails.FirstName)) {
+    if (!(FirstName) || !(FirstName.trim())) {
       alert("First Name is not provided !");
       return;
     }
-    if (!(this.editempdtails.LastName)) {
+    if (!(LastName) || !(LastName.trim())) {
       alert("Last Name is not provided !");
       return;
     }
@@ -128,7 +129,7 @@ export class EditEmployeedetailsComponent implements OnInit {
       alert("Employee Status is not provided !");
       return;
     }
-    if (!(this.editempdtails.PrimaryPhone)) {
+    if (!(PrimaryPhone) || !(PrimaryPhone.trim())) {
       alert("Primary Phone is not provided !");
       return;
     }

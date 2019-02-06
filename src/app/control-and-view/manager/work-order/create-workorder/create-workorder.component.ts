@@ -431,7 +431,7 @@ export class CreateWorkorderComponent implements OnInit {
     }
     else if ((!(this.timeValue)) && (this.isRecurring == false)) {
       alert("Please provide time!");
-    } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) >this.convert_DT(this.WorkorderEndDate))) {
+    } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
       alert("Please check your end date!");
 
     }
@@ -441,7 +441,7 @@ export class CreateWorkorderComponent implements OnInit {
       }
       if (this.dailyrecurring == true) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -467,7 +467,7 @@ export class CreateWorkorderComponent implements OnInit {
           alert("Please provide time!");
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -499,7 +499,7 @@ export class CreateWorkorderComponent implements OnInit {
           alert("Please provide time!");
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -666,7 +666,7 @@ export class CreateWorkorderComponent implements OnInit {
       if (this.isRecurring == false) {
         if (this.dateValue) {
           if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-            alert("Start date is less than current date");
+            alert("Start date is less than current date"); return;
           } else {
             this.startDT = this.convert_DT(this.dateValue);
           }
@@ -891,7 +891,7 @@ export class CreateWorkorderComponent implements OnInit {
       }
       if (this.dailyrecurring == true) {
         if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -915,7 +915,7 @@ export class CreateWorkorderComponent implements OnInit {
           alert("Please provide time!");
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -947,7 +947,7 @@ export class CreateWorkorderComponent implements OnInit {
           alert("Please provide time!");
         }
         else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -1123,7 +1123,7 @@ export class CreateWorkorderComponent implements OnInit {
       if (this.isRecurring == false) {
         if (this.dateValue) {
           if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-            alert("Start date is less than current date");
+            alert("Start date is less than current date"); return;
           } else {
             this.startDT = this.convert_DT(this.dateValue);
           }
@@ -1467,7 +1467,7 @@ export class CreateWorkorderComponent implements OnInit {
     if (this.isRecurring == false) {
       if (this.dateValue) {
         if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         } else {
           this.startDT = this.convert_DT(this.dateValue);
         }
@@ -1841,7 +1841,7 @@ export class CreateWorkorderComponent implements OnInit {
     if (this.isRecurring == false) {
       if (this.dateValue) {
         if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
-          alert("Start date is less than current date");
+          alert("Start date is less than current date"); return;
         } else {
           this.startDT = this.convert_DT(this.dateValue);
         }

@@ -51,6 +51,15 @@ export class RoomCreateComponent implements OnInit {
 
   constructor(private inventoryService: InventoryService, private router: Router, private _location: Location) { }
 
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
   selectFloorfromBuildings(facKey) {
     this.FaciKey = facKey;
     this.inventoryService
