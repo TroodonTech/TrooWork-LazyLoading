@@ -63,7 +63,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   intervaltype;
   repeatinterval;
   occursonday;
-
+  keepActive;
+  keep_active;
   workorderCreation;
   timetable = { times: [] };
   monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];//for selecting day of a month in recurring option(on gap of dropdown)
@@ -972,6 +973,12 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+     }
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -994,7 +1001,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
-      occurstype: this.occurs_type
+      occurstype: this.occurs_type,
+      keepActive:this.keep_active
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {
@@ -1345,6 +1353,12 @@ export class UpdateRecurWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+     }
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -1367,7 +1381,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
-      occurstype: this.occurs_type
+      occurstype: this.occurs_type,
+      keepActive:this.keep_active
     };
     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {
