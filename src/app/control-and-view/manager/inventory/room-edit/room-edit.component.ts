@@ -18,11 +18,11 @@ export class RoomEditComponent implements OnInit {
   floor: Inventory[];
   zone: Inventory[];
   room;
-  facKey: Number;
-  floorKey: Number;
-  zoneKey: Number;
-  roomTypeKey: Number;
-  floorTypeKey: Number;
+  facKey;
+  floorKey;
+  zoneKey;
+  roomTypeKey;
+  floorTypeKey;
   ZoneName: String;
   roomkey;
   role: String;
@@ -65,6 +65,10 @@ export class RoomEditComponent implements OnInit {
 
   selectFloorfromBuildings(facKey) {
     this.facKey = facKey;
+    this.floorTypeKey = "";
+    this.floorKey = "";
+    this.zoneKey = "";
+    this.roomTypeKey = "";
     this.inventoryService
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
@@ -74,6 +78,9 @@ export class RoomEditComponent implements OnInit {
 
   selectZonefromFloor(flrKey) {
     this.floorKey = flrKey;
+    this.floorTypeKey = "";
+    this.zoneKey = "";
+    this.roomTypeKey = "";
     this.inventoryService
       .getallZoneList(this.facKey, flrKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
@@ -94,13 +101,13 @@ export class RoomEditComponent implements OnInit {
     this.ZoneName = zoneName;
   }
 
-  updateRoom(FacilityKey, FloorKey, FloorTypeKey, ZoneKey, RoomTypeKey, RoomName, SquareFoot, Barcode) {
+  updateRoom(RoomName, SquareFoot, Barcode) {
     this.update_Room = {
-      FacilityKey: FacilityKey,
-      FloorKey: FloorKey,
-      FloorTypeKey: FloorTypeKey,
-      ZoneKey: ZoneKey,
-      RoomTypeKey: RoomTypeKey,
+      FacilityKey: this.facKey,
+      FloorKey: this.floorKey,
+      FloorTypeKey: this.floorTypeKey,
+      ZoneKey: this.zoneKey,
+      RoomTypeKey: this.roomTypeKey,
       RoomKey: this.roomKey$,
       area: SquareFoot,
       RoomName: RoomName,
@@ -110,15 +117,15 @@ export class RoomEditComponent implements OnInit {
 
     };
 
-    if (!FacilityKey) {
+    if (!this.facKey) {
       alert("Building name is not provided !");
-    } else if (!FloorKey) {
+    } else if (!this.floorKey) {
       alert("Floor name is not provided!");
-    } else if (!FloorTypeKey) {
+    } else if (!this.floorTypeKey) {
       alert("FloorType is not provided !");
-    } else if (!ZoneKey) {
+    } else if (!this.zoneKey) {
       alert("Zone name is not provided !");
-    } else if (!RoomTypeKey) {
+    } else if (!this.roomTypeKey) {
       alert("RoomType is not provided !");
     } else if (!RoomName || !RoomName.trim()) {
       alert("Room name is not provided !");
@@ -178,6 +185,13 @@ export class RoomEditComponent implements OnInit {
       .getRoomDetailsList(this.roomKey$, this.OrganizationID)
       .subscribe((data: Array<any>) => {
         this.room = data[0];
+
+        this.facKey = this.room.FacilityKey;
+        this.floorTypeKey = this.room.FloorTypeKey;
+        this.floorKey = this.room.FloorKey;
+        this.zoneKey = this.room.ZoneKey;
+        this.roomTypeKey = this.room.RoomTypeKey;
+
         this.temp_room = this.room.RoomName;
         this.inventoryService
           .getallFloorList(this.room.FacilityKey, this.OrganizationID)

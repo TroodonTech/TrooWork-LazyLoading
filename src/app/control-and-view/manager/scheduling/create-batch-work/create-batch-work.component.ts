@@ -46,17 +46,17 @@ export class CreateBatchWorkComponent implements OnInit {
 
   createScheduleName() {
     if (this.scheduleName && !this.scheduleName.trim()) {
-      alert("Please provide a Batch Schedule Name");
+      alert("Please provide a Assignment Name");
       return;
     }
     else if (this.scheduleDescription && !this.scheduleDescription.trim()) {
-      alert("Schedule Description is not provided!");
+      alert("Assignment Description is not provided!");
       return;
     }
     else if (!this.scheduleName) {
-      alert("Batch Schedule Name is not provided !");
+      alert("Assignment Name is not provided !");
     } else if (!this.scheduleDescription) {
-      alert("Schedule Description is not provided!");
+      alert("Assignment Description is not provided!");
     }
     else if (!this.empKey) {
       alert("Employee Name is not provided !");
@@ -66,7 +66,7 @@ export class CreateBatchWorkComponent implements OnInit {
         .checkScheduleName(this.scheduleName, this.employeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].count > 0) {
-            alert("Schedule Name already present");
+            alert("Assignment Name already present");
           }
           else if (data[0].count == 0) {
             this.scheduleService.addScheduleName(this.scheduleName, this.empKey, this.scheduleDescription, this.employeekey, this.OrganizationID)

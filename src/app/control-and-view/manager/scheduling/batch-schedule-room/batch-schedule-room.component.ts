@@ -207,7 +207,7 @@ export class BatchScheduleRoomComponent implements OnInit {
 
     var i = this.index;
     if (this.BatchScheduleNameKey == 0) {
-      alert("Select a Batch Schedule Name");
+      alert("Select an Assignment Name");
     } else {
       this.checkValue[i] = checkValue;
       this.roomsKey[i] = roomKey;

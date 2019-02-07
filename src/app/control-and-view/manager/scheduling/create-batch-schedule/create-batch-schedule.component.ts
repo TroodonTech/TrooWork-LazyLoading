@@ -793,7 +793,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Batch Schedule Created Successfully");
+      alert("Assignment Created Successfully");
       this.CreateDis = false;
     }
   }

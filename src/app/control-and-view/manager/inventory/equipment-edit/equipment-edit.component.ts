@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 export class EquipmentEditComponent implements OnInit {
   equipKey$: Object;
   equipEditList: Inventory[];
-  FloorKey: Number;
+  FloorKey;
   FacKey: Number;
   equipmentType: Inventory[];
   buildings: Inventory[];
@@ -51,6 +51,7 @@ export class EquipmentEditComponent implements OnInit {
 
   selectFloorfromBuildings(facKey) {
     this.FacKey = facKey;
+    this.FloorKey="";
     this.inventoryService
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {

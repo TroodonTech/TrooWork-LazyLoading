@@ -56,9 +56,9 @@ export class EditBatchWorkComponent implements OnInit {
 
   updateScheduleName() {
     if (!this.scheduleDetails.BatchSchduleName) {
-      alert("Batch Schedule Name is not provided !");
+      alert("Assignment Name is not provided !");
     } else if (!this.scheduleDetails.ScheduleDescription) {
-      alert("Schedule Description is not provided !");
+      alert("Assignment Description is not provided !");
     } else if (!this.empKey) {
       alert("Employee Name is not provided !");
     } else {
@@ -79,7 +79,7 @@ export class EditBatchWorkComponent implements OnInit {
                   this._location.back();
                 });
             } else {
-              alert("Schedule Name already present !");
+              alert("Assignment Name already present !");
             }
           });
       } else {
