@@ -73,6 +73,7 @@ export class RoomEditComponent implements OnInit {
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.floor = data;
+        this.room.FloorKey='';
       });
   }
 
@@ -85,6 +86,7 @@ export class RoomEditComponent implements OnInit {
       .getallZoneList(this.facKey, flrKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.zone = data;
+        this.room.ZoneKey='';
       });
   }
 

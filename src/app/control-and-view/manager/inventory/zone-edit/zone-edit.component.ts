@@ -18,7 +18,7 @@ export class ZoneEditComponent implements OnInit {
 
   floorList: Inventory[] = [];
   buildingList: Inventory[] = [];
-  zoneEditValues: Inventory[];
+  zoneEditValues;
   zone: Inventory[];
 
   role: String;
@@ -56,28 +56,25 @@ export class ZoneEditComponent implements OnInit {
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.floorList = data;
+        this.zoneEditValues.FloorKey="";
       });
   }
 
   updateZone(FacilityKey, FacilityName, FloorName, FloorKey, ZoneKey, ZoneName) {
-   
-   if(ZoneName && !ZoneName.trim()){
-      alert("Please Enter Zone Name!");
-      return;
-    }
-    if (!FacilityKey) {
-      FacilityKey = null;
-      alert("Building name is not provided !");
-    }
-    else if (!FloorKey) {
-      FloorKey = null;
-      alert("Floor is not provided !");
-    }
-    else if (!ZoneName) {
-      ZoneName = null;
-      alert("Zone Name is not provided !");
-    }
-    else {
+   debugger;
+   if(!(this.zoneEditValues.FacilityKey)  ){
+    alert("Please Choose Building!");
+    return;
+  }
+  if(!(this.zoneEditValues.FloorKey) ){
+    alert("Please Choose Floor!");
+    return;
+  } 
+  if(!(this.zoneEditValues.ZoneName) || !(this.zoneEditValues.ZoneName.trim())){
+    alert("Please Enter Zone Name!");
+    return;
+  }
+    
 
       this.inventoryService.checkForZone(FacilityKey, FloorKey, ZoneName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         this.zone = data;
@@ -96,7 +93,7 @@ export class ZoneEditComponent implements OnInit {
       });
 
 
-    }
+    
   }
   ngOnInit() {
     var token = localStorage.getItem('token');
