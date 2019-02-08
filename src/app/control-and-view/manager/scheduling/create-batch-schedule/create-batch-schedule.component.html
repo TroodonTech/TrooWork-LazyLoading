@@ -19,8 +19,8 @@
       </div>
       <span style="margin-top: 2rem;" class="col-md-2"><label for="scheduling">Employee: </label></span>
       <div class="col-md-3">
-        <input type="text" readonly [(ngModel)]="empName" style="background-color: #D4F4FF !important;margin-top: 1.5rem;width: 137%"
-          class="form-control">
+        <input type="text" readonly [(ngModel)]="empName"
+          style="background-color: #D4F4FF !important;margin-top: 1.5rem;width: 137%" class="form-control">
       </div>
     </div>
 
@@ -30,9 +30,11 @@
         <span style="margin-top: 2rem;" class="col-md-2"><label for="scheduling" style=" margin-left: -1rem;">WorkOrder
             Notes: </label></span>
         <div class=" col-md-3 ">
-          <textarea cols="40" rows="4" [(ngModel)]="WorkorderNotes" class="form-control" maxlength="200" style=" margin-left: -0.6rem;width: 141% !important;"></textarea>
+          <textarea cols="40" rows="4" [(ngModel)]="WorkorderNotes" class="form-control" maxlength="200"
+            style=" margin-left: -0.6rem;width: 141% !important;"></textarea>
         </div>
-        <span style="margin-top: 2rem;margin-left: 6.35rem" class="col-md-2"><label for="scheduling">Time: </label></span>
+        <span style="margin-top: 2rem;margin-left: 6.35rem" class="col-md-2"><label for="scheduling">Time:
+          </label></span>
         <div class=" col-md-4 ">
           <p-calendar [inputStyle]="{'width':'222%','margin-top':'2rem','margin-left':'0.2rem'}" [(ngModel)]="time1"
             [timeOnly]="true" hourFormat="12"></p-calendar>
@@ -61,7 +63,8 @@
 
   <!-- Table for generating barcode for BatchSchedule -->
   <div *ngIf="roomList?.length > 0||roomTempList?.length > 0" style="padding-right: 0.5rem">
-    <table class="table table-hover table-responsive table-bordered table" style="margin-top: 2rem;display: inline-table;">
+    <table class="table table-hover table-responsive table-bordered table"
+      style="margin-top: 2rem;display: inline-table;">
       <thead class="tableHead">
         <th> Building </th>
         <th>Room</th>
@@ -76,6 +79,7 @@
         <td (click)="selectAllSun()">Sun</td>
         <td (click)="selectAllPhoto()">Photo Required</td>
         <td (click)="selectAllBarcode()">Barcode Required</td>
+        <td (click)="selectAllKeepActive()">Keep Active</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>
       </thead>
@@ -126,6 +130,9 @@
         </td>
         <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.barcodeReq">
+        </td>
+        <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.KeepActive">
         </td>
         <td>
           {{x.RoomType}}
@@ -192,6 +199,9 @@
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.barcodeReq">
         </td>
         <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.KeepActive">
+        </td>
+        <td>
           {{z.RoomType}}
         </td>
         <td>
@@ -215,10 +225,12 @@
         <td colspan="4"></td>
       </tr>
     </table>
-    <button (click)="createBatchReport()" [disabled]='CreateDis' class="btn btn-success" style="margin-left: 45%;">Save</button>
+    <button (click)="createBatchReport()" [disabled]='CreateDis' class="btn btn-success"
+      style="margin-left: 45%;">Save</button>
   </div>
   <div *ngIf="roomList?.length == 0 && roomTempList?.length == 0" style="padding-right: 0.5rem">
-    <table class="table table-hover table-responsive table-bordered table" style="margin-top: 2rem;display: inline-table;">
+    <table class="table table-hover table-responsive table-bordered table"
+      style="margin-top: 2rem;display: inline-table;">
       <thead class="tableHead">
         <th> Building </th>
         <th>Room</th>
@@ -233,11 +245,12 @@
         <td (click)="selectAllSun()">Sun</td>
         <td (click)="selectAllPhoto()">Photo Required</td>
         <td (click)="selectAllBarcode()">Barcode Required</td>
+        <td (click)="selectAllKeepActive()">Keep Active</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>
       </thead>
       <tr>
-        <td colspan="15">No Records Found</td>
+        <td colspan="16">No Records Found</td>
       </tr>
       <tr>
         <td colspan="4">Total Assigned daily minutes</td>
@@ -248,7 +261,7 @@
         <td>{{totalFriTime| number:'1.2-2'}}</td>
         <td>{{totalSatTime| number:'1.2-2'}}</td>
         <td>{{totalSunTime| number:'1.2-2'}}</td>
-        <td colspan="4"></td>
+        <td colspan="5"></td>
       </tr>
     </table>
   </div>

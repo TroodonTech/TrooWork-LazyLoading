@@ -320,6 +320,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         this.roomTempList = data;
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
+          this.roomTempList[j].KeepActive = 0;
         }
         this.metricCal();
       });
@@ -412,19 +413,27 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     this.metricCal();
   }
+  selectAllKeepActive() {
+    for (var j = 0; j < this.roomList.length; j++) {
+      this.roomList[j].KeepActive = 1;
+    }
+    for (var j = 0; j < this.roomTempList.length; j++) {
+      this.roomTempList[j].KeepActive = 1;
+    }
+  }
 
   createBatchReport() {
 
     this.CreateDis = true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
-      if (this.convert_DT(this.workScheduleStartDate) < this.convert_DT(new Date())) {
-        alert("Start date can't be less than current date");
-        this.CreateDis = false;
-        return;
-      } else {
-        this.startDT = this.convert_DT(this.workScheduleStartDate);
-      }
+      // if (this.convert_DT(this.workScheduleStartDate) < this.convert_DT(new Date())) {
+      //   alert("Start date can't be less than current date");
+      //   this.CreateDis = false;
+      //   return;
+      // } else {
+      this.startDT = this.convert_DT(this.workScheduleStartDate);
+      // }
     } else {
       this.startDT = this.convert_DT(new Date());
     }
@@ -471,6 +480,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var sunObj1 = [];
         var barObj1 = [];
         var photoObj1 = [];
+        var keepObj1 = [];
         var roomsString1;
         var roomList1 = [];
         var Frequency1;
@@ -483,6 +493,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var SunCheck1;
         var BarCheck1;
         var PhotCheck1;
+        var KeepActive1;
         var workordertkey1;
         var workorderroomstring1;
         var q = this.time1.getHours();
@@ -576,6 +587,15 @@ export class CreateBatchScheduleComponent implements OnInit {
             photoObj1.push(this.roomList[j].photoReq);
           }
 
+          if (this.roomList[j].KeepActive === true || this.roomList[j].KeepActive == 1) {
+            this.roomList[j].KeepActive = true;
+            keepObj1.push(this.roomList[j].KeepActive);
+          }
+          else {
+            this.roomList[j].KeepActive = false;
+            keepObj1.push(this.roomList[j].KeepActive);
+          }
+
         }
         roomsString1 = roomList1.join(',');
         Frequency1 = FrequencyObj1.join(',');
@@ -588,6 +608,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         SunCheck1 = sunObj1.join(',');
         BarCheck1 = barObj1.join(',');
         PhotCheck1 = photoObj1.join(',');
+        KeepActive1 = keepObj1.join(',');
         workordertkey1 = workorderkeyobj1.join(',');
         workorderroomstring1 = workorderroomobj1.join(',');
         this.scheduleUpdate = {
@@ -603,6 +624,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           sunCheck: SunCheck1,
           barCheck: BarCheck1,
           photCheck: PhotCheck1,
+          keepActiveCheck: KeepActive1,
           workordertype: workordertkey1,
           empKey: this.employeekey,
           batchScheduleNameKey: this.BatchScheduleNameKey,
@@ -634,6 +656,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var sunObj2 = [];
         var barObj2 = [];
         var photoObj2 = [];
+        var keepObj2 = [];
         var roomsString2;
         var roomList2 = [];
         var FRequency2;
@@ -646,6 +669,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var SUnCheck2;
         var BArCheck2;
         var PHotCheck2;
+        var KeepActive2;
         var WOrkordertkey2;
         var TEmproomidobj2;
         var q = this.time1.getHours();
@@ -729,6 +753,15 @@ export class CreateBatchScheduleComponent implements OnInit {
             this.roomTempList[j].photoReq = false;
             photoObj2.push(this.roomTempList[j].photoReq);
           }
+
+          if (this.roomTempList[j].KeepActive === true || this.roomTempList[j].KeepActive == 1) {
+            this.roomTempList[j].KeepActive = true;
+            keepObj2.push(this.roomTempList[j].KeepActive);
+          }
+          else {
+            this.roomTempList[j].KeepActive = false;
+            keepObj2.push(this.roomTempList[j].KeepActive);
+          }
         }
         roomsString2 = roomList2.join(',');
         FRequency2 = FrequencyObj2.join(',');
@@ -741,6 +774,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         SUnCheck2 = sunObj2.join(',');
         BArCheck2 = barObj2.join(',');
         PHotCheck2 = photoObj2.join(',');
+        KeepActive2 = keepObj2.join(',');
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
         this.scheduleInsert = {
@@ -756,6 +790,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           sunCheck: SUnCheck2,
           barCheck: BArCheck2,
           photCheck: PHotCheck2,
+          keepActiveCheck: KeepActive2,
           workordertype: WOrkordertkey2,
           empKey: this.employeekey,
           batchScheduleNameKey: this.BatchScheduleNameKey,

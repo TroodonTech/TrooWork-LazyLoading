@@ -12374,6 +12374,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
     var sunCheck = newWOObj.sunCheck;
     var barCheck = newWOObj.barCheck;
     var photCheck = newWOObj.photCheck;
+    var keepActivCheck = newWOObj.keepActiveCheck;
     var workordertype = newWOObj.workordertype;
 
     var empKey = newWOObj.empKey;
@@ -12391,7 +12392,7 @@ app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @temproomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?; call usp_saveScheduleReport(@temproomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime)", [temproomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime], function (err, rows) {
+            connection.query("set @temproomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?; set @keepActivCheck=?; call usp_saveScheduleReport(@temproomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime,@keepActivCheck)", [temproomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime,keepActivCheck], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -14070,6 +14071,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
     var sunCheck = newWOObj.sunCheck;
     var barCheck = newWOObj.barCheck;
     var photCheck = newWOObj.photCheck;
+    var keepActivCheck = newWOObj.keepActiveCheck;
     var workordertype = newWOObj.workordertype;
 
     var empKey = newWOObj.empKey;
@@ -14087,7 +14089,7 @@ app.post(securedpath + '/updateScheduleReport', supportCrossOriginScript, functi
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @workorderroomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?; call usp_updateScheduleReport(@workorderroomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime)", [workorderroomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime], function (err, rows) {
+            connection.query("set @workorderroomid =?; set @roomList =?; set @frequency =?; set @monCheck =?; set @tueCheck=?; set @wedCheck=?; set @thuCheck=?; set @friCheck=?; set @satCheck=?; set @sunCheck=?; set @barCheck=?; set @photCheck=?; set @workordertype=?; set @empKey=?; set @batchScheduleNameKey=?; set @workorderNotes=?;set @OrganizationID =?; set @fromdate =?; set @todate =?;set @scheduledTime =?;set @keepActivCheck=?; call usp_updateScheduleReport(@workorderroomid,@roomList,@frequency,@monCheck,@tueCheck,@wedCheck,@thuCheck,@friCheck,@satCheck,@sunCheck,@barCheck,@photCheck,@workordertype,@empKey,@batchScheduleNameKey,@workorderNotes,@OrganizationID,@fromdate,@todate,@scheduledTime,@keepActivCheck)", [workorderroomid, roomList, frequency, monCheck, tueCheck, wedCheck, thuCheck, friCheck, satCheck, sunCheck, barCheck, photCheck, workordertype, empKey, batchScheduleNameKey, workorderNotes, OrganizationID, fromdate, todate, scheduledTime,keepActivCheck], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
