@@ -39,7 +39,8 @@ export class CreateWorkOrderComponent implements OnInit {
   WorkorderTypeKey;
   workorderNotes;
   showEqTypes = false;
-
+  keepActive;
+  keep_active;
   // temp-variables
   wot;
   notes;
@@ -736,6 +737,12 @@ export class CreateWorkOrderComponent implements OnInit {
           }
         }
       }
+      if( this.keepActive ==true){
+        this.keep_active=1;
+      }
+      else{
+          this.keep_active=0;
+       }
       if (this.newType == true) {
         if (this.newworkordertypetext) {
           this.WorkOrderServiceService
@@ -773,7 +780,8 @@ export class CreateWorkOrderComponent implements OnInit {
                       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                       repeatinterval: this.rep_interval,
                       occursonday: this.occurs_on,
-                      occurstype: this.occurs_type
+                      occurstype: this.occurs_type,
+                      keepActive:this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -809,7 +817,8 @@ export class CreateWorkOrderComponent implements OnInit {
           intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
           repeatinterval: this.rep_interval,
           occursonday: this.occurs_on,
-          occurstype: this.occurs_type
+          occurstype: this.occurs_type,
+          keepActive:this.keep_active
         };
         this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -1143,6 +1152,12 @@ export class CreateWorkOrderComponent implements OnInit {
           }
         }
       }
+      if( this.keepActive ==true){
+        this.keep_active=1;
+      }
+       else{
+        this.keep_active=0;
+      }
       if (this.newType == true) {
         if (this.newworkordertypetext) {
           this.WorkOrderServiceService
@@ -1180,7 +1195,8 @@ export class CreateWorkOrderComponent implements OnInit {
                       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                       repeatinterval: this.rep_interval,
                       occursonday: this.occurs_on,
-                      occurstype: this.occurs_type
+                      occurstype: this.occurs_type,
+                      keepActive: this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -1215,7 +1231,8 @@ export class CreateWorkOrderComponent implements OnInit {
           intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
           repeatinterval: this.rep_interval,
           occursonday: this.occurs_on,
-          occurstype: this.occurs_type
+          occurstype: this.occurs_type,
+          keepActive: this.keep_active
         };
         this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -1459,6 +1476,12 @@ export class CreateWorkOrderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+    }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1496,7 +1519,8 @@ export class CreateWorkOrderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    keepActive: this.keep_active
                   };
                   this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
@@ -1533,7 +1557,8 @@ export class CreateWorkOrderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        keepActive: this.keep_active
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
@@ -1820,6 +1845,12 @@ export class CreateWorkOrderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+    }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1857,7 +1888,8 @@ export class CreateWorkOrderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    keepActive: this.keep_active
                   };
                   this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
@@ -1892,7 +1924,8 @@ export class CreateWorkOrderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        keepActive: this.keep_active
       };
       this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");

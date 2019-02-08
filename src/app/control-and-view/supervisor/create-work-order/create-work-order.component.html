@@ -156,6 +156,10 @@
         <input type="checkbox" [(ngModel)]="isRecurring" data-md-icheck (change)="toggleVisibility_Recur($event)" />&nbsp;
         <label>Recurring Yes</label>&nbsp;
       </div>
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="keepActive" data-md-icheck  />&nbsp;
+        <label>Keep Active</label>&nbsp;
+      </div>
       <!-- <div class="form-group" *ngIf="isRecurring==false">
           <label>Time*</label>
           <p-calendar [inputStyle]="{'width':'205%','margin-top':'1rem'}" [(ngModel)]="timeValue" [timeOnly]="true"
