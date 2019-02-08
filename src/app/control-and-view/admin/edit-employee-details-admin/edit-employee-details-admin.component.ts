@@ -167,6 +167,14 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       alert("Hire Date must be greater than birth date !");
       return;
     }
+    if(this.editempdtails.UserRoleTypeKey==3)
+{
+  this.managerKey = this.employeekey;
+}
+else
+{
+  this.managerKey = -1;
+}
 
     this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.managerKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
       .subscribe((data: Array<any>) => {

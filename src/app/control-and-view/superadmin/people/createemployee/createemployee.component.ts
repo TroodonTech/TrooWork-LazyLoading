@@ -108,6 +108,8 @@ export class CreateemployeeComponent implements OnInit {
   }
   createEmployee() {
 
+    var manKey;
+
     if (!(this.OrganizationID)) {
       alert("Organization is not provided !");
       return;
@@ -125,15 +127,15 @@ export class CreateemployeeComponent implements OnInit {
       return;
     }
     else {
-      this.ManagerKey = -1;
+      manKey = -1;
     }
-    if(this.UserRoleTypeKey==3)
+    if(this.UserRoleTypeKey==3 && this.ManagerKey)
     {
-      this.ManagerKey = this.employeekey;
+      manKey = this.ManagerKey;
     }
     else
     {
-      this.ManagerKey = -1;
+      manKey = -1;
     }
     if (!(this.FirstName)) {
       alert("First Name is not provided !");
@@ -192,7 +194,7 @@ export class CreateemployeeComponent implements OnInit {
           alert("Employee Number already exists");
         }
         else {
-          this.PeopleServiceService.createEmployeebySuperAdmin(this.OrganizationID, this.ManagerKey, this.EmployeeNumber, this.UserRoleTypeKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender, this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox, this.JobTitleKey, this.DepartmentKey, this.employeekey)
+          this.PeopleServiceService.createEmployeebySuperAdmin(this.OrganizationID, manKey, this.EmployeeNumber, this.UserRoleTypeKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender, this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox, this.JobTitleKey, this.DepartmentKey, this.employeekey)
             .subscribe((data: any[]) => {
               this.temp_res = data;
               alert("Employee Created !");

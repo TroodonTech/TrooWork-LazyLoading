@@ -118,6 +118,8 @@ export class AddEmployeeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private PeopleServiceService: PeopleServiceService, private router: Router) { }
 
   createEmployee() {
+
+    var manKey;
     
     if (!(this.EmployeeNumber) ) {
       alert("Employee Number is not provided !");
@@ -132,15 +134,15 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
     else {
-      this.ManagerKey = -1;
+      manKey = -1;
     }
-    if(this.UserRoleTypeKey==3)
+    if(this.UserRoleTypeKey==3 && this.ManagerKey)
 {
-  this.ManagerKey = this.employeekey;
+  manKey = this.ManagerKey;
 }
 else
 {
-  this.ManagerKey = -1;
+  manKey = -1;
 }
     if (!(this.FirstName )) {
       alert("First Name is not provided !");
@@ -202,7 +204,7 @@ else
            
             var str = "";
             str = this.FirstName + '' + this.LastName;
-            this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, this.ManagerKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
+            this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, manKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
               this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox,
               this.JobTitleKey, this.DepartmentKey, this.employeekey, this.OrganizationID)
               .subscribe((data22: any[]) => {
