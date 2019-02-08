@@ -69,7 +69,7 @@ export class MeetingTrainingViewComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'77%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '77%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -145,18 +145,20 @@ export class MeetingTrainingViewComponent implements OnInit {
     }
     else {
       date2 = this.convert_DT(this.todate);
+      if (date2 < dateFrom) {
+        alert("To date can't be less than Start date");
+        return;
+      }
     }
-    if(!(this.DepartmentKey))
-    {
+    if (!(this.DepartmentKey)) {
       this.DepartmentKey = null;
     }
-    if(!(this.EventType))
-    {
+    if (!(this.EventType)) {
       this.EventType = null;
     }
 
     this.peopleServ
-      .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID,this.DepartmentKey,this.EventType)
+      .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID, this.DepartmentKey, this.EventType)
       .subscribe((data: People[]) => {
         this.meetingTraining = data;
       });
@@ -222,10 +224,10 @@ export class MeetingTrainingViewComponent implements OnInit {
         this.loading = true;
       }
       this.peopleServ
-        .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID,this.DepartmentKey,this.EventType)
+        .viewMtngTrainingbyFilter(dateFrom, date2, JobTitleString, EmployeeKeyString, this.employeekey, this.OrganizationID, this.DepartmentKey, this.EventType)
         .subscribe((data: People[]) => {
           this.meetingTraining = data;
-          this.loading=false;
+          this.loading = false;
         });
     }
   }
@@ -241,8 +243,8 @@ export class MeetingTrainingViewComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
-    this.DepartmentKey="";
-    this.EventType="";
+    this.DepartmentKey = "";
+    this.EventType = "";
 
     this.searchform = this.formBuilder.group({
       SearchMeetingTraining: ['', Validators.required]
@@ -260,13 +262,13 @@ export class MeetingTrainingViewComponent implements OnInit {
       .subscribe((data: People[]) => {
         this.empList = data;
       });
-    this.loading=true;
+    this.loading = true;
     this.todayDt = this.convert_DT(this.date1);
     this.peopleServ
       .gettodaysMeeting(this.page, this.count, this.todayDt, this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
         this.meetingTraining = data;
-        this.loading=false;
+        this.loading = false;
       });
     // multi select starts....
     this.dropdownSettings = {
@@ -298,12 +300,12 @@ export class MeetingTrainingViewComponent implements OnInit {
     // Pooja's code for Department dropdown starts
 
     this.peopleServ
-    .getDepartment(this.employeekey, this.OrganizationID)
-    .subscribe((data: People[]) => {
-      this.department = data;
-    });
+      .getDepartment(this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.department = data;
+      });
 
-// Pooja's code for Department dropdown ends
+    // Pooja's code for Department dropdown ends
   }
 
 }

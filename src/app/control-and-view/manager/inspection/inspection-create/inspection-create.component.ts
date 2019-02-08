@@ -216,6 +216,31 @@ export class InspectionCreateComponent implements OnInit {
     var p = "";
     p = today_DT + " " + h + ":" + mi + ":" + s;
 
+    if (!this.Employee) {
+      this.Employee = - 1;
+    }
+    if (!this.fromdate) {
+      var dateFrom = this.convert_DT(new Date());
+    }
+    else {
+      if (this.convert_DT(this.fromdate) < this.convert_DT(new Date())){
+        alert("Date can't be less than current date");
+        return;
+      } else {
+        dateFrom = this.convert_DT(this.fromdate);
+      }
+    }
+    if (!this.todate) {
+      var date2 = dateFrom;
+    }
+    else {
+      if (this.convert_DT(this.todate) < dateFrom) {
+        alert("To date can't be less than start date");
+        return;
+      } else {
+        date2 = this.convert_DT(this.todate);
+      }
+    }
     if (!this.TemplateID) {
       alert("Template Name is not provided");
     }
@@ -235,22 +260,11 @@ export class InspectionCreateComponent implements OnInit {
     else if (!(this.SupervisorKey)) {
       alert("Auditor should be provided");
     }
+    else if (this.convert_DT(date2) < this.convert_DT(dateFrom)) {
+      alert("Please check your start date!");
+    }
     else {
-      if (!this.Employee) {
-        this.Employee = - 1;
-      }
-      if (!this.fromdate) {
-        var dateFrom = this.convert_DT(new Date());
-      }
-      else {
-        dateFrom = this.convert_DT(this.fromdate);
-      }
-      if (!this.todate) {
-        var date2 = dateFrom;
-      }
-      else {
-        date2 = this.convert_DT(this.todate);
-      }
+
 
       var q = this.time1.getHours();
       var q1 = this.time1.getMinutes();

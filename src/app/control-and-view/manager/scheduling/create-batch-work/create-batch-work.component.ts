@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SchedulingService } from '../../../../service/scheduling.service';
 import { Router } from "@angular/router";
 
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-create-batch-work',
   templateUrl: './create-batch-work.component.html',
@@ -38,27 +38,25 @@ export class CreateBatchWorkComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private scheduleService: SchedulingService, private router: Router,private _location: Location) { }
+  constructor(private scheduleService: SchedulingService, private router: Router, private _location: Location) { }
 
   setEmployeeForbatchSchedule(key) {
     this.empKey = key;
   }
 
   createScheduleName() {
-    if(this.scheduleName && !this.scheduleName.trim())
-    {
-      alert("Please provide a Batch Schedule Name");
+    if (this.scheduleName && !this.scheduleName.trim()) {
+      alert("Please provide a Assignment Name");
       return;
     }
-    else  if(this.scheduleDescription && !this.scheduleDescription.trim())
-    {
-      alert("Schedule Description is not provided!");
+    else if (this.scheduleDescription && !this.scheduleDescription.trim()) {
+      alert("Assignment Description is not provided!");
       return;
     }
     else if (!this.scheduleName) {
-      alert("Batch Schedule Name is not provided !");
+      alert("Assignment Name is not provided !");
     } else if (!this.scheduleDescription) {
-      alert("Schedule Description is not provided!");
+      alert("Assignment Description is not provided!");
     }
     else if (!this.empKey) {
       alert("Employee Name is not provided !");
@@ -68,11 +66,14 @@ export class CreateBatchWorkComponent implements OnInit {
         .checkScheduleName(this.scheduleName, this.employeekey, this.OrganizationID)
         .subscribe((data: any[]) => {
           if (data[0].count > 0) {
-            alert("Schedule Name already present");
+            alert("Assignment Name already present");
           }
           else if (data[0].count == 0) {
             this.scheduleService.addScheduleName(this.scheduleName, this.empKey, this.scheduleDescription, this.employeekey, this.OrganizationID)
-              .subscribe(res => this._location.back());
+              .subscribe(res => {
+                alert("Assignment Name created successfully.");
+                this._location.back()
+              });
           }
         });
     }
@@ -90,14 +91,14 @@ export class CreateBatchWorkComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     //token ends
-    this.employee_Key="";
+    this.employee_Key = "";
     this.scheduleService
       .getAllEmpList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.empList = data;
       });
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

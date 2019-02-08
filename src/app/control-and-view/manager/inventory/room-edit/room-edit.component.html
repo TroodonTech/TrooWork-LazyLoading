@@ -10,7 +10,7 @@
       <div class="form-group">
         <label>Building*</label>
         <select style="background-color: #d4f4ff;" (change)="selectFloorfromBuildings($event.target.value)" class="form-control col-sm-9 col-md-9 col-lg-9"
-          [(ngModel)]="room.FacilityKey">
+          [(ngModel)]="facKey">
           <option value="">--Select--</option>
           <option *ngFor="let f of building" [value]="f.FacilityKey">
             {{f.FacilityText}}
@@ -19,7 +19,7 @@
       </div>
       <div class="form-group">
         <label>Floor Type Name*</label>
-        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.FloorTypeKey"
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="floorTypeKey"
           (change)="setFloorType($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let f of floorType" [value]="f.FloorTypeKey">
@@ -32,7 +32,7 @@
       <div class="form-group">
         <label>Floor Name* </label>
         <select style="background-color: #d4f4ff;" (change)="selectZonefromFloor($event.target.value)" class="form-control col-sm-9 col-md-9 col-lg-9"
-          [(ngModel)]="room.FloorKey">
+          [(ngModel)]="floorKey">
           <option value="">--Select--</option>
           <option *ngFor="let f of floor" [value]="f.FloorKey">
             {{f.FloorName}}
@@ -41,7 +41,7 @@
       </div>
       <div class="form-group">
         <label>Zone Name*</label>
-        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.ZoneKey"
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="zoneKey"
           (change)="setZoneName($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let f of zone" [value]="f.ZoneKey">
@@ -55,7 +55,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Room Type Name* </label>
-        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.RoomTypeKey"
+        <select style="background-color: #d4f4ff;" class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="roomTypeKey"
           (change)="setRoomType($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let f of roomType" [value]="f.RoomTypeKey">
@@ -72,12 +72,12 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Square Foot* </label>
-        <input type="text" maxlength="19" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
-          [(ngModel)]="room.Area">
+        <input type="text" maxlength="19" style="background-color: #D4F4FF !important;" (keypress)="numberValid($event)"
+          class="form-control col-sm-9 col-md-9 col-lg-9" [(ngModel)]="room.Area">
       </div>
       <div class="form-group">
         <label>Barcode* </label>
-        <input type="text" style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
+        <input type="text" readonly style="background-color: #D4F4FF !important;" class="form-control col-sm-9 col-md-9 col-lg-9"
           [(ngModel)]="room.Barcode">
       </div>
 
@@ -86,7 +86,7 @@
   <br>
   <div class="row col-md-12" style="margin-left: 35%">
     <div>
-      <a style="color:white !important" class="btn btn-success" (click)="updateRoom(room.FacilityKey,room.FloorKey,room.FloorTypeKey,room.ZoneKey,room.RoomTypeKey,room.RoomName,room.Area,room.Barcode)"><b>Save
+      <a style="color:white !important" class="btn btn-success" (click)="updateRoom(room.RoomName,room.Area,room.Barcode)"><b>Save
           Room
         </b>
       </a>

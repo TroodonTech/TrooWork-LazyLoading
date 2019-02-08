@@ -46,7 +46,7 @@ export class AddEmployeeComponent implements OnInit {
   employeekey;
   IsSupervisor;
   OrganizationID;
-  
+
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -87,7 +87,7 @@ export class AddEmployeeComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'76%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '76%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -104,7 +104,7 @@ export class AddEmployeeComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'76%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '76%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
@@ -121,15 +121,15 @@ export class AddEmployeeComponent implements OnInit {
 
     var manKey;
     
-    if (!(this.EmployeeNumber) ) {
+    if (!(this.EmployeeNumber) || !this.EmployeeNumber.trim()) {
       alert("Employee Number is not provided !");
       return;
     }
-    if (!(this.UserRoleTypeKey) ) {
+    if (!(this.UserRoleTypeKey)) {
       alert("User Role Type is not provided !");
       return;
     }
-    if (this.showManager === true && !(this.ManagerKey) ) {
+    if (this.showManager === true && !(this.ManagerKey)) {
       alert("Manager is not provided !");
       return;
     }
@@ -144,79 +144,79 @@ else
 {
   manKey = -1;
 }
-    if (!(this.FirstName )) {
+    if (!(this.FirstName )|| !this.FirstName.trim()) {
       alert("First Name is not provided !");
       return;
     }
-    if (!(this.LastName) ) {
+    if (!(this.LastName) || !this.LastName.trim()) {
       alert("Last Name is not provided !");
       return;
     }
-    if (!(this.Gender) ) {
-      this.Gender=null;
+    if (!(this.Gender)) {
+      this.Gender = null;
     }
-    if (!(this.PrimaryPhone) ) {
+    if (!(this.PrimaryPhone) || !this.PrimaryPhone.trim()) {
       alert("Primary Phone is not provided !");
       return;
     }
-    if (!(this.HireDate) ) {
+    if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
       return;
     }
-    if (!(this.JobTitleKey) ) {
+    if (!(this.JobTitleKey)) {
       alert("Job Title is not provided !");
       return;
     }
-    if (!(this.DepartmentKey) ) {
+    if (!(this.DepartmentKey)) {
       alert("Department is not provided !");
       return;
     }
     var BD;
-    var currentDate=this.convert_DT(new Date());
-   
-    if (!(this.BirthDate) ) {
+    var currentDate = this.convert_DT(new Date());
+
+    if (!(this.BirthDate)) {
       // BD = this.convert_DT(new Date());
-      BD='1990-01-1';
+      BD = '1990-01-01';
     }
     else {
       BD = this.convert_DT(this.BirthDate);
     }
     var HD = this.convert_DT(this.HireDate);
-    if(BD > currentDate){
+    if (BD > currentDate) {
       alert("Wrong BirthDate !");
       return;
     }
-    if(HD >currentDate){
+    if (HD > currentDate) {
       alert("Wrong Hire Date !");
       return;
     }
-    if( HD <BD){
+    if (HD < BD) {
       alert("Hire Date must be greater than birth date !");
       return;
     }
 
-      this.PeopleServiceService.checkEmpNumber(this.EmployeeNumber, this.employeekey, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          if (data[0].count > 0) {
-            alert("Employee Number already exists");
-          }
-          else {
-           
-            var str = "";
-            str = this.FirstName + '' + this.LastName;
-            this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, manKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
-              this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox,
-              this.JobTitleKey, this.DepartmentKey, this.employeekey, this.OrganizationID)
-              .subscribe((data22: any[]) => {
-                this.temp_res = data22;
-                alert("Employee Created !");
-                var empKey = this.temp_res.EmployeeKey;
-                
-                this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
-              });
-          }
-        });
-    
+    this.PeopleServiceService.checkEmpNumber(this.EmployeeNumber, this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        if (data[0].count > 0) {
+          alert("Employee Number already exists");
+        }
+        else {
+
+          var str = "";
+          str = this.FirstName + '' + this.LastName;
+          this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, manKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
+            this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox,
+            this.JobTitleKey, this.DepartmentKey, this.employeekey, this.OrganizationID)
+            .subscribe((data22: any[]) => {
+              this.temp_res = data22;
+              alert("Employee Created !");
+              var empKey = this.temp_res.EmployeeKey;
+
+              this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['setUserLoginAdmin', empKey, str, this.UserRoleTypeKey] } }]);
+            });
+        }
+      });
+
   }
   ngOnInit() {
 
@@ -226,7 +226,7 @@ else
     this.JobTitleKey = '';
     this.DepartmentKey = '';
     this.UserRoleTypeKey = '';
-    this.ManagerKey='';
+    this.ManagerKey = '';
 
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
@@ -273,7 +273,7 @@ else
       event.preventDefault();
     }
   }
-  charValidation(event: any){
+  charValidation(event: any) {
     const patternChar = /[a-zA-Z ]/;
     let inputChar = String.fromCharCode(event.charCode);
     if (event.keyCode != 8 && !patternChar.test(inputChar)) {

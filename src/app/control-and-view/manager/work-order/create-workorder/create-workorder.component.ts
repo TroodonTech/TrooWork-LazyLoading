@@ -39,7 +39,8 @@ export class CreateWorkorderComponent implements OnInit {
   WorkorderTypeKey;
   workorderNotes;
   showEqTypes = false;
-
+  keepActive;
+  keep_active;
   // temp-variables
   wot;
   notes;
@@ -118,7 +119,7 @@ export class CreateWorkorderComponent implements OnInit {
   //   return `You selected ${this.dayFormatter.format(_)}, ${_.getDate()} ${this.monthFormatter.format(_)}, ${_.getFullYear()}`;
 
   // }
-    //adding datepicker option
+  //adding datepicker option
   options: DatepickerOptions = {
     minYear: 1970,
     maxYear: 2030,
@@ -132,13 +133,13 @@ export class CreateWorkorderComponent implements OnInit {
     barTitleIfEmpty: 'Click to select a date',
     placeholder: 'Click to select a date', // HTML input placeholder attribute (default: '')
     addClass: '', // Optional, value to pass on to [ngClass] on the input field
-    addStyle: {'font-size':'18px','width':'100%', 'border': '1px solid #ced4da','border-radius': '0.25rem'}, // Optional, value to pass to [ngStyle] on the input field
+    addStyle: { 'font-size': '18px', 'width': '100%', 'border': '1px solid #ced4da', 'border-radius': '0.25rem' }, // Optional, value to pass to [ngStyle] on the input field
     fieldId: 'my-date-picker', // ID to assign to the input field. Defaults to datepicker-<counter>
     useEmptyBarTitle: false, // Defaults to true. If set to false then barTitleIfEmpty will be disregarded and a date will always be shown 
   };
 
   constructor(private router: Router, private WorkOrderServiceService: WorkOrderServiceService) { }
-//token decoding function
+  //token decoding function
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -214,7 +215,7 @@ export class CreateWorkorderComponent implements OnInit {
       });
 
   }
-    //function called on checkbox value change
+  //function called on checkbox value change
   toggleVisibility_Equipment(e) {
     if (e.target.checked) {
       this.marked = true;
@@ -250,8 +251,8 @@ export class CreateWorkorderComponent implements OnInit {
       this.marked = false;
     }
   }
-//
-//function called on radiobutton change
+  //
+  //function called on radiobutton change
   dailyrecurringChange() {
     this.weeklyrecurring = false;
     this.monthlyrecurring = false;
@@ -270,15 +271,15 @@ export class CreateWorkorderComponent implements OnInit {
   monthlyreccradio1_change() {
     this.monthlyreccradio1 = true;
     this.monthlyreccradio2 = false;
-    this.pos2="";
-    this.day2="";
-    this.month2="";
+    this.pos2 = "";
+    this.day2 = "";
+    this.month2 = "";
   }
   monthlyreccradio2_change() {
     this.monthlyreccradio1 = false;
     this.monthlyreccradio2 = true;
-    this.day1="";
-    this.month1="";
+    this.day1 = "";
+    this.month1 = "";
   }
   //
   getEquiment(floor_key, facility_key) {//getting equipment based on facility key,floor key
@@ -415,7 +416,7 @@ export class CreateWorkorderComponent implements OnInit {
     }
   }
   createWorkorder1() {
-
+    ;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
     } else if (this.newType == true && !(this.newworkordertypetext)) {
@@ -431,8 +432,8 @@ export class CreateWorkorderComponent implements OnInit {
     }
     else if ((!(this.timeValue)) && (this.isRecurring == false)) {
       alert("Please provide time!");
-    } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) >this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your start date!");
+    } else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
+      alert("Please check your end date!");
 
     }
     else if (this.isRecurring == true) {
@@ -440,7 +441,10 @@ export class CreateWorkorderComponent implements OnInit {
         alert("Recurring Period is not provided !");
       }
       if (this.dailyrecurring == true) {
-        if (!this.WorkorderEndDate) {
+        if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
+        }
+        else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
         }
         else if (!(this.dailyFrequency)) {
@@ -462,6 +466,9 @@ export class CreateWorkorderComponent implements OnInit {
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+        }
+        else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -491,6 +498,9 @@ export class CreateWorkorderComponent implements OnInit {
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+        }
+        else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -656,7 +666,11 @@ export class CreateWorkorderComponent implements OnInit {
       }
       if (this.isRecurring == false) {
         if (this.dateValue) {
-          this.startDT = this.convert_DT(this.dateValue);
+          if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
+            alert("Start date is less than current date"); return;
+          } else {
+            this.startDT = this.convert_DT(this.dateValue);
+          }
         } else {
           this.startDT = this.convert_DT(new Date());
         }
@@ -664,7 +678,13 @@ export class CreateWorkorderComponent implements OnInit {
       }
       else {
         if (this.WorkorderStartDate) {
-          this.startDT = this.convert_DT(this.WorkorderStartDate);
+          if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+            alert("Start date is less than current date");
+            return;
+          }
+          else {
+            this.startDT = this.convert_DT(this.WorkorderStartDate);
+          }
         } else {
           this.startDT = this.convert_DT(new Date());
         }
@@ -674,18 +694,18 @@ export class CreateWorkorderComponent implements OnInit {
           this.endDT = this.convert_DT(new Date());
         }
         var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-      
-        if( this.intervaltype == 'w' && diffDays <7){
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if (this.intervaltype == 'w' && diffDays < 7) {
           alert("Please Select One week Date Range!");
           return;
         }
-        if( this.intervaltype == 'm' && diffDays <31){
+        if (this.intervaltype == 'm' && diffDays < 31) {
           alert("Please Select One month Date Range!");
           return;
         }
       }
-      
+
       if (this.isRecurring == false) {
         console.log(this.timeValue);
         if (this.timeValue) {
@@ -725,12 +745,12 @@ export class CreateWorkorderComponent implements OnInit {
         }
         if (this.monthlyreccradio1 == true) {
           this.occurs_on = this.day1;
-          this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+          this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
         }
         else if (this.monthlyreccradio2 == true) {
 
           this.occurs_on = this.day2;
-          this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+          this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
           this.occurs_type = this.pos2;
           switch (this.occurs_on) {
             case '0':
@@ -756,6 +776,12 @@ export class CreateWorkorderComponent implements OnInit {
               break;
           }
         }
+      }
+      if( this.keepActive ==true){
+            this.keep_active=1;
+      }
+      else{
+        this.keep_active=0;
       }
       if (this.newType == true) {//checking for new workorder type
         if (this.newworkordertypetext) {
@@ -794,7 +820,8 @@ export class CreateWorkorderComponent implements OnInit {
                       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                       repeatinterval: this.rep_interval,
                       occursonday: this.occurs_on,
-                      occurstype: this.occurs_type
+                      occurstype: this.occurs_type,
+                      keepActive:this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -830,7 +857,8 @@ export class CreateWorkorderComponent implements OnInit {
           intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
           repeatinterval: this.rep_interval,
           occursonday: this.occurs_on,
-          occurstype: this.occurs_type
+          occurstype: this.occurs_type,
+          keepActive: this.keep_active
         };
         this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -841,6 +869,7 @@ export class CreateWorkorderComponent implements OnInit {
   }
   //workorder with equipment
   createWorkorder2() {
+    ;
     if (!this.WorkorderTypeKey) {
       alert("Please select work-order type!");
     } else if (this.newType == true && !(this.newworkordertypetext)) {
@@ -854,9 +883,11 @@ export class CreateWorkorderComponent implements OnInit {
     else if (!this.FloorKey) {
       alert("Please select floor!");
     }
+    // else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+    //   alert("Start date is less than current date");
+    // }
     else if ((this.WorkorderEndDate) && (this.convert_DT(this.WorkorderStartDate) > this.convert_DT(this.WorkorderEndDate))) {
-      alert("Please check your start date!");
-
+      alert("Please check your end date!");
     }
     else if ((!(this.timeValue)) && (this.isRecurring == false)) {
       alert("Please provide time!");
@@ -868,7 +899,10 @@ export class CreateWorkorderComponent implements OnInit {
         alert("Recurring Period is not provided !");
       }
       if (this.dailyrecurring == true) {
-        if (!this.WorkorderEndDate) {
+        if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
+        }
+        else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
         }
         else if (!(this.dailyFrequency)) {
@@ -881,8 +915,6 @@ export class CreateWorkorderComponent implements OnInit {
           }
           this.withequip_wo();
         }
-
-
       }
       else if (this.weeklyrecurring == true) {
         if (!(this.weektable_one) && !(this.weektable_two) && !(this.weektable_three) && !(this.weektable_four) && !(this.weektable_five) && !(this.weektable_six) && !(this.weektable_seven)) {
@@ -890,6 +922,9 @@ export class CreateWorkorderComponent implements OnInit {
         }
         else if (!this.Time_weekly) {
           alert("Please provide time!");
+        }
+        else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -919,6 +954,9 @@ export class CreateWorkorderComponent implements OnInit {
         }
         if (!this.Time_monthly) {
           alert("Please provide time!");
+        }
+        else if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
         }
         else if (!this.WorkorderEndDate) {
           alert("Please provide end date!");
@@ -1093,7 +1131,11 @@ export class CreateWorkorderComponent implements OnInit {
       }
       if (this.isRecurring == false) {
         if (this.dateValue) {
-          this.startDT = this.convert_DT(this.dateValue);
+          if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
+            alert("Start date is less than current date"); return;
+          } else {
+            this.startDT = this.convert_DT(this.dateValue);
+          }
         } else {
           this.startDT = this.convert_DT(new Date());
         }
@@ -1101,7 +1143,14 @@ export class CreateWorkorderComponent implements OnInit {
       }
       else {
         if (this.WorkorderStartDate) {
-          this.startDT = this.convert_DT(this.WorkorderStartDate);
+          if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+            alert("Start date is less than current date");
+            return;
+          }
+          else {
+            this.startDT = this.convert_DT(this.WorkorderStartDate);
+
+          }
         } else {
           this.startDT = this.convert_DT(new Date());
         }
@@ -1111,18 +1160,18 @@ export class CreateWorkorderComponent implements OnInit {
           this.endDT = this.convert_DT(new Date());
         }
         var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    
-      if( this.intervaltype == 'w' && diffDays <7){
-        alert("Please Select One week Date Range!");
-        return;
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if (this.intervaltype == 'w' && diffDays < 7) {
+          alert("Please Select One week Date Range!");
+          return;
+        }
+        if (this.intervaltype == 'm' && diffDays < 31) {
+          alert("Please Select One month Date Range!");
+          return;
+        }
       }
-      if( this.intervaltype == 'm' && diffDays <31){
-        alert("Please Select One month Date Range!");
-        return;
-      }
-      }
-      
+
       if (this.isRecurring == false) {
         if (this.timeValue) {
           this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
@@ -1150,11 +1199,11 @@ export class CreateWorkorderComponent implements OnInit {
         this.workTime = this.Time_monthly.getHours() + ':' + this.Time_monthly.getMinutes();
         if (this.monthlyreccradio1 == true) {
           this.occurs_on = this.day1;
-          this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+          this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
         }
         else if (this.monthlyreccradio2 == true) {
           this.occurs_on = this.day2;
-          this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+          this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
           this.occurs_type = this.pos2;
           switch (this.occurs_on) {
             case '0':
@@ -1180,6 +1229,12 @@ export class CreateWorkorderComponent implements OnInit {
               break;
           }
         }
+      }
+      if( this.keepActive ==true){
+        this.keep_active=1;
+       }
+      else{
+         this.keep_active=0;
       }
       if (this.newType == true) {
         if (this.newworkordertypetext) {
@@ -1218,7 +1273,8 @@ export class CreateWorkorderComponent implements OnInit {
                       intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                       repeatinterval: this.rep_interval,
                       occursonday: this.occurs_on,
-                      occurstype: this.occurs_type
+                      occurstype: this.occurs_type,
+                      keepActive: this.keep_active
                     };
                     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -1253,7 +1309,8 @@ export class CreateWorkorderComponent implements OnInit {
           intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
           repeatinterval: this.rep_interval,
           occursonday: this.occurs_on,
-          occurstype: this.occurs_type
+          occurstype: this.occurs_type,
+          keepActive:this.keep_active
         };
         this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -1264,7 +1321,7 @@ export class CreateWorkorderComponent implements OnInit {
   }
   //function to create wo with equipment
   withequip_wo() {
-
+    ;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];
@@ -1426,7 +1483,11 @@ export class CreateWorkorderComponent implements OnInit {
     }
     if (this.isRecurring == false) {
       if (this.dateValue) {
-        this.startDT = this.convert_DT(this.dateValue);
+        if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
+        } else {
+          this.startDT = this.convert_DT(this.dateValue);
+        }
       } else {
         this.startDT = this.convert_DT(new Date());
       }
@@ -1434,7 +1495,13 @@ export class CreateWorkorderComponent implements OnInit {
     }
     else {
       if (this.WorkorderStartDate) {
-        this.startDT = this.convert_DT(this.WorkorderStartDate);
+        if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date");
+          return;
+        }
+        else {
+          this.startDT = this.convert_DT(this.WorkorderStartDate);
+        }
       } else {
         this.startDT = this.convert_DT(new Date());
       }
@@ -1444,18 +1511,18 @@ export class CreateWorkorderComponent implements OnInit {
         this.endDT = this.convert_DT(new Date());
       }
       var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    
-      if( this.intervaltype == 'w' && diffDays <7){
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+      if (this.intervaltype == 'w' && diffDays < 7) {
         alert("Please Select One week Date Range!");
         return;
       }
-      if( this.intervaltype == 'm' && diffDays <31){
+      if (this.intervaltype == 'm' && diffDays < 31) {
         alert("Please Select One month Date Range!");
         return;
       }
     }
-    
+
     if (this.isRecurring == false) {
       if (this.timeValue) {
         this.workTime = this.timeValue.getHours() + ':' + this.timeValue.getMinutes();
@@ -1483,11 +1550,11 @@ export class CreateWorkorderComponent implements OnInit {
       this.workTime = this.Time_monthly.getHours() + ':' + this.Time_monthly.getMinutes();
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
-        this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+        this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
       }
       else if (this.monthlyreccradio2 == true) {
         this.occurs_on = this.day2;
-        this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+        this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
         this.occurs_type = this.pos2;
         switch (this.occurs_on) {
           case '0':
@@ -1514,6 +1581,12 @@ export class CreateWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+     }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1551,12 +1624,13 @@ export class CreateWorkorderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    keepActive:this.keep_active
                   };
                   this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
                     this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewWorkOrder'] } }]);
-                    
+
                   });
 
                 });
@@ -1588,7 +1662,8 @@ export class CreateWorkorderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        keepActive:this.keep_active
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
@@ -1605,7 +1680,7 @@ export class CreateWorkorderComponent implements OnInit {
       this.timetable.times.push('');
     }
   }
-  
+
   change_values() {
     if ((this.FloorKey) && (this.showEqTypes == true)) {
       this.ZoneKey = -1;
@@ -1635,6 +1710,7 @@ export class CreateWorkorderComponent implements OnInit {
     this.newworkordertypetext = null;
   }
   withoutequip_wo() {
+    ;
     var roomlistObj = [];
     var roomtypelistObj = [];
     var zonelistObj = [];
@@ -1789,7 +1865,11 @@ export class CreateWorkorderComponent implements OnInit {
     }
     if (this.isRecurring == false) {
       if (this.dateValue) {
-        this.startDT = this.convert_DT(this.dateValue);
+        if (this.convert_DT(this.dateValue) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
+        } else {
+          this.startDT = this.convert_DT(this.dateValue);
+        }
       } else {
         this.startDT = this.convert_DT(new Date());
       }
@@ -1797,7 +1877,12 @@ export class CreateWorkorderComponent implements OnInit {
     }
     else {
       if (this.WorkorderStartDate) {
-        this.startDT = this.convert_DT(this.WorkorderStartDate);
+        if (this.convert_DT(this.WorkorderStartDate) < this.convert_DT(new Date())) {
+          alert("Start date is less than current date"); return;
+        }
+        else {
+          this.startDT = this.convert_DT(this.WorkorderStartDate);
+        }
       } else {
         this.startDT = this.convert_DT(new Date());
       }
@@ -1807,18 +1892,18 @@ export class CreateWorkorderComponent implements OnInit {
         this.endDT = this.convert_DT(new Date());
       }
       var timeDiff = Math.abs(this.WorkorderEndDate.getTime() - this.WorkorderStartDate.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-    
-      if( this.intervaltype == 'w' && diffDays <7){
+      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+      if (this.intervaltype == 'w' && diffDays < 7) {
         alert("Please Select One week Date Range!");
         return;
       }
-      if( this.intervaltype == 'm' && diffDays <31){
+      if (this.intervaltype == 'm' && diffDays < 31) {
         alert("Please Select One month Date Range!");
         return;
       }
     }
-    
+
     if (this.isRecurring == false) {
       console.log(this.timeValue);
       if (this.timeValue) {
@@ -1858,12 +1943,12 @@ export class CreateWorkorderComponent implements OnInit {
       }
       if (this.monthlyreccradio1 == true) {
         this.occurs_on = this.day1;
-        this.rep_interval = (this.month1) ? parseInt(this.month1)+1 : 1;
+        this.rep_interval = (this.month1) ? parseInt(this.month1) + 1 : 1;
       }
       else if (this.monthlyreccradio2 == true) {
 
         this.occurs_on = this.day2;
-        this.rep_interval = (this.month2) ? parseInt(this.month2)+1 : 1;
+        this.rep_interval = (this.month2) ? parseInt(this.month2) + 1 : 1;
         this.occurs_type = this.pos2;
         switch (this.occurs_on) {
           case '0':
@@ -1890,6 +1975,12 @@ export class CreateWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+     }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1927,7 +2018,8 @@ export class CreateWorkorderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    keepActive:this.keep_active
                   };
                   this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
@@ -1962,7 +2054,8 @@ export class CreateWorkorderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        keepActive:this.keep_active
       };
       this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");

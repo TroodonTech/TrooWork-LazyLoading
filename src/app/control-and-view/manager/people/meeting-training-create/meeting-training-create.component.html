@@ -30,13 +30,13 @@
             <div class="col-md-6 ">
                 <div class="form-group">
                     <label>Event Host* </label>
-                    <input type="text" style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="eventHost">
+                    <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control " [(ngModel)]="eventHost">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group " style="margin-left: 1rem;">
                     <label>Venue*</label>
-                    <input type="text" style="background-color: #D4F4FF !important;" class="form-control " [(ngModel)]="Venue">
+                    <input type="text" style="background-color: #D4F4FF !important;" maxlength="40" class="form-control " [(ngModel)]="Venue">
                 </div>
             </div>
         </div>
@@ -140,7 +140,7 @@
         <div class="row col-md-12">
             <h5 style="text-align:right;margin-top: 2rem;" class="col-md-4"><label for="Venue">Description </label></h5>
             <div class="col-md-8" style="text-align:left">
-                <textarea class="form-control rounded-0" [(ngModel)]="Description" rows="5" style="resize: none;width: 100% !important;"></textarea>
+                <textarea class="form-control rounded-0" [(ngModel)]="Description" rows="5" maxlength="240" style="resize: none;width: 100% !important;"></textarea>
             </div>
         </div>
         <div class="row col-md-12" style="margin-left: 45%;margin-top: 1.5rem">

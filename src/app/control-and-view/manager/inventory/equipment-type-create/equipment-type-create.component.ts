@@ -3,7 +3,7 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { InventoryService } from '../../../../service/inventory.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-equipment-type-create',
   templateUrl: './equipment-type-create.component.html',
@@ -37,12 +37,12 @@ export class EquipmentTypeCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router,private _location: Location) { }
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location) { }
 
   addEquipmentType() {
-    if (!this.EquipmentTypeName) {
+    if (!this.EquipmentTypeName || !this.EquipmentTypeName.trim()) {
       alert("Please provide a Equipment Type");
-    } else if (!this.EquipmentTypeDescription) {
+    } else if (!this.EquipmentTypeDescription || !this.EquipmentTypeDescription.trim()) {
       alert("Please provide a Equipment Type Description");
     } else {
       this.inventoryServ.checkForNewEquipmentType(this.EquipmentTypeName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
@@ -71,7 +71,7 @@ export class EquipmentTypeCreateComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

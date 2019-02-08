@@ -3,7 +3,7 @@ import { Inventory } from '../../../../model-class/Inventory';
 import { InventoryService } from '../../../../service/inventory.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from "@angular/router";
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-department-create',
   templateUrl: './department-create.component.html',
@@ -36,27 +36,24 @@ export class DepartmentCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router,private _location: Location) { }
+  constructor(private fb: FormBuilder, private inventoryServ: InventoryService, private router: Router, private _location: Location) { }
 
   addDepartment(DepartmentName) {
-    if(DepartmentName && !DepartmentName.trim())
-    {
+    if (!DepartmentName || !DepartmentName.trim()) {
       alert("Please provide a Department Name");
       return;
     }
-    if (!DepartmentName) {
-      alert("Please provide a Department Name");
-    } else {
+    else {
       this.inventoryServ.checkForNewDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe((data: Inventory[]) => {
         this.dept = data;
         if (data.length > 0) {
           alert("Department already present");
         }
         else if (data.length == 0) {
-          this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res =>{ 
+          this.inventoryServ.addDepartment(DepartmentName, this.employeekey, this.OrganizationID).subscribe(res => {
             alert("Department created successfully");
             this._location.back();
-        });
+          });
         }
       });
     }
@@ -73,7 +70,7 @@ export class DepartmentCreateComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

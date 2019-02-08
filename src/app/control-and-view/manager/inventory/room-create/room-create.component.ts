@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { Router } from "@angular/router";
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-room-create',
@@ -49,7 +49,16 @@ export class RoomCreateComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private inventoryService: InventoryService, private router: Router,private _location: Location) { }
+  constructor(private inventoryService: InventoryService, private router: Router, private _location: Location) { }
+
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
 
   selectFloorfromBuildings(facKey) {
     this.FaciKey = facKey;
@@ -85,13 +94,13 @@ export class RoomCreateComponent implements OnInit {
     } else if (!RoomTypeKey) {
       RoomTypeKey = null;
       alert("RoomType is not provided !");
-    } else if (!RoomName) {
+    } else if (!RoomName || !RoomName.trim()) {
       RoomName = null;
       alert("Room name is not provided !");
-    } else if (!SquareFoot) {
+    } else if (!SquareFoot || !SquareFoot.trim()) {
       SquareFoot = null;
       alert("SquareFoot is not provided !");
-    } else if (!Barcode) {
+    } else if (!Barcode || !Barcode.trim()) {
       Barcode = null;
       alert("Barcode is not provided !");
     } else {
@@ -105,7 +114,7 @@ export class RoomCreateComponent implements OnInit {
               .checkRoomBarcode(Barcode, this.employeekey, this.OrganizationID)
               .subscribe((data: Inventory[]) => {
                 this.unqBar = data;
-                if (this.unqBar.Barcode!=0) {
+                if (this.unqBar.Barcode != 0) {
                   alert("Barcode already exists! Please enter a unique barcode.");
                 } else {
                   this.inventoryService
@@ -118,14 +127,14 @@ export class RoomCreateComponent implements OnInit {
                           .subscribe(res => {
                             alert("Room created successfully");
                             this.inventoryService
-                            .getBarcodeForRoom(this.employeekey, this.OrganizationID)
-                            .subscribe((data: Array<any>) => {
-                              this.Barcode = data[0];
-                              this.temp_barcode = data[0];
-                              this.RoomName=null;
-                            });
-                         
-                         
+                              .getBarcodeForRoom(this.employeekey, this.OrganizationID)
+                              .subscribe((data: Array<any>) => {
+                                this.Barcode = data[0];
+                                this.temp_barcode = data[0];
+                                this.RoomName = null;
+                              });
+
+
                           });
                       }
                     });
@@ -138,11 +147,11 @@ export class RoomCreateComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.FacilityKey="";
-    this.FloorTypeKey="";
-    this.FloorKey="";
-    this.RoomTypeKey="";
-    this.ZoneKey="";
+    this.FacilityKey = "";
+    this.FloorTypeKey = "";
+    this.FloorKey = "";
+    this.RoomTypeKey = "";
+    this.ZoneKey = "";
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
     var profile = JSON.parse(this.url_base64_decode(encodedProfile));
@@ -185,7 +194,7 @@ export class RoomCreateComponent implements OnInit {
     this.Barcode = this.temp_barcode;
 
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

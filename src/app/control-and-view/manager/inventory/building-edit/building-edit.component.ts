@@ -5,7 +5,7 @@ import { InventoryService } from '../../../../service/inventory.service';
 import { Inventory } from '../../../../model-class/Inventory';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-building-edit',
@@ -23,7 +23,7 @@ export class BuildingEditComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
- 
+
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -42,38 +42,34 @@ export class BuildingEditComponent implements OnInit {
     return window.atob(output);
   }
 
-  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router,private _location: Location) {
+  constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location) {
     this.route.params.subscribe(params => this.facKey$ = params.Facility_Key);
   }
 
   updateBuilding(FacilityName, FacilityKey) {
 
-    var type= 'facility';
- 
-    if(!FacilityName){
+    var type = 'facility';
+
+    if (!FacilityName || !FacilityName.trim()) {
       alert("Please Enter Building Name!");
-        return;
+      return;
     }
-      if(FacilityName && !FacilityName.trim()){
-        alert("Please Enter Building Name!");
-        return;
-      }
-      else {
-        this.inventoryService.CheckNewBuilding(FacilityName,type,this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
-          if (data.length > 0) {
-            alert("Building already present !");
-            return;
-          }
-          else{
-    this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
-      .subscribe((data: Inventory[]) => {
-        alert("Building updated successfully");
-        this._location.back();
+    else {
+      this.inventoryService.CheckNewBuilding(FacilityName, type, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
+        if (data.length > 0) {
+          alert("Building already present !");
+          return;
+        }
+        else {
+          this.inventoryService.UpdateBuilding(FacilityName, FacilityKey, this.employeekey, this.OrganizationID)
+            .subscribe((data: Inventory[]) => {
+              alert("Building updated successfully");
+              this._location.back();
+            });
+        }
       });
     }
-    });
   }
-}
 
   ngOnInit() {
 
@@ -90,7 +86,7 @@ export class BuildingEditComponent implements OnInit {
       this.build = data;
     });
   }
-  goBack(){
+  goBack() {
     this._location.back();
   }
 }

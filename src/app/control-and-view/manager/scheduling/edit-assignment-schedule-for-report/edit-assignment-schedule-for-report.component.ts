@@ -420,7 +420,13 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     this.CreateDis = true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
-      this.startDT = this.convert_DT(this.workScheduleStartDate);
+      if (this.convert_DT(this.workScheduleStartDate) < this.convert_DT(new Date())) {
+        alert("Start date can't be less than current date");
+        this.CreateDis = false;
+        return;
+      } else {
+        this.startDT = this.convert_DT(this.workScheduleStartDate);
+      }
     } else {
       this.startDT = this.convert_DT(new Date());
     }
@@ -430,6 +436,13 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     } else {
       this.endDT = this.convert_DT(new Date());
     }
+
+    if (this.endDT < this.startDT) {
+      alert("End Date can't be less than Start Date");
+      this.CreateDis = false;
+      return;
+    }
+
     for (var i = 0; i < this.roomList.length; i++) {
       if (!this.roomList[i].WorkorderTypeKey) {
         this.wotypeFlag = this.wotypeFlag + 1;
@@ -791,7 +804,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Batch Schedule Created Sucessfully");
+      alert("Assignment Created Sucessfully");
       this.CreateDis = false;
     }
   }
@@ -815,7 +828,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.scheduleNameList = data;
       });
 
-    //loading the schedule where rooms were added/deleted in the earlier page
+    //loading the Assignment where rooms were added/deleted in the earlier page
 
     this.BatchScheduleNameKey = this.scheduleNameKey$;
     this.empName = null;

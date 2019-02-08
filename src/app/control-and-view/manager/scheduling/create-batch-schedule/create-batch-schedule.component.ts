@@ -418,7 +418,13 @@ export class CreateBatchScheduleComponent implements OnInit {
     this.CreateDis = true;
     this.wotypeFlag = 0;
     if (this.workScheduleStartDate) {
-      this.startDT = this.convert_DT(this.workScheduleStartDate);
+      if (this.convert_DT(this.workScheduleStartDate) < this.convert_DT(new Date())) {
+        alert("Start date can't be less than current date");
+        this.CreateDis = false;
+        return;
+      } else {
+        this.startDT = this.convert_DT(this.workScheduleStartDate);
+      }
     } else {
       this.startDT = this.convert_DT(new Date());
     }
@@ -427,6 +433,12 @@ export class CreateBatchScheduleComponent implements OnInit {
       this.endDT = this.convert_DT(this.workScheduleEndDate);
     } else {
       this.endDT = this.convert_DT(new Date());
+    }
+
+    if (this.endDT < this.startDT) {
+      alert("End Date can't be less than Start Date");
+      this.CreateDis = false;
+      return;
     }
     for (var i = 0; i < this.roomList.length; i++) {
       if (!this.roomList[i].WorkorderTypeKey) {
@@ -781,7 +793,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Batch Schedule Created Successfully");
+      alert("Assignment Created Successfully");
       this.CreateDis = false;
     }
   }

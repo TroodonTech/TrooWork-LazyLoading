@@ -151,19 +151,26 @@ export class MeetingTrainingEditComponent implements OnInit {
     else {
       var time1 = new Date(this.timeValue1);
       var time2 = new Date(this.timeValue2);
+      var curTime = new Date();
       var timediff = +time2 - +time1;
+      var timediff1 = +time1 - +curTime;
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
+        return;
+      }
+      else if (timediff1 < 0) {
+        alert("Start Time can't be before Current Time");
+        return;
       }
     }
 
     if (!ActionKey) {
       alert("Select  meeting/training/event to continue");
     }
-    else if (!Eventhost) {
+    else if (!Eventhost || !Eventhost.trim()) {
       alert("Event host is not provided");
     }
-    else if (!Venue) {
+    else if (!Venue || !Venue.trim()) {
       alert("Venue is not provided");
     }
 
@@ -176,7 +183,12 @@ export class MeetingTrainingEditComponent implements OnInit {
         var newDate = this.convert_DT(new Date());
       }
       else {
-        newDate = this.convert_DT(this.mtngDate);
+        if (this.convert_DT(this.mtngDate) < this.convert_DT(new Date())) {
+          alert("Start date can't be less than current date");
+          return;
+        } else {
+          newDate = this.convert_DT(this.mtngDate);
+        }
       }
 
 
@@ -206,14 +218,14 @@ export class MeetingTrainingEditComponent implements OnInit {
 
       this.peopleServ
         .updateMeetingTraining(ActionKey, Eventhost, Venue, newTime, newTime1, MeetingNotes, EmployeeKeyString, newDate, this.eventKey$, this.employeekey, this.OrganizationID)
-        .subscribe(res =>
-         { 
-         if(this.role=='Manager'){
-        this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-        }
-        else  if(this.role=='Employee' && this.IsSupervisor==1){
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-        }
+        .subscribe(res => {
+          alert("Meeting/Training is successfully updated !")
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
+          }
+          else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+          }
         }
         );
     }
@@ -340,11 +352,11 @@ export class MeetingTrainingEditComponent implements OnInit {
     // Pooja's code for Supervisor Multiselect dropdown ends
   }
   goBack() {
-    if(this.role=='Manager'){
+    if (this.role == 'Manager') {
       this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['MeetingTrainingView'] } }]);
-      }
-      else  if(this.role=='Employee' && this.IsSupervisor==1){
-        this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
-      }
+    }
+    else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+      this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['MeetingTrainingView'] } }]);
+    }
   }
 }

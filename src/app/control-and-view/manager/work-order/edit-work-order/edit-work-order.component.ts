@@ -81,6 +81,8 @@ export class EditWorkOrderComponent implements OnInit {
   is_PhotoRequired;
   is_BarcodeRequired;
   occurenceinstance;
+  keepActive;
+  keep_active;
 
   intervaltype;
   repeatinterval;
@@ -588,7 +590,12 @@ export class EditWorkOrderComponent implements OnInit {
     } else {
       this.workTime = new Date().getHours() + ':' + new Date().getMinutes();
     }
-
+    if( this.keepActive ==true){
+      this.keep_active=1;
+    }
+    else{
+       this.keep_active=0;
+     }
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -610,7 +617,8 @@ export class EditWorkOrderComponent implements OnInit {
       OrganizationID: this.OrganizationID,
       intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
       repeatinterval: 1,
-      occursonday: null
+      occursonday: null,
+      keepActive:this.keep_active
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
       this.deleteWO = {
@@ -824,7 +832,12 @@ export class EditWorkOrderComponent implements OnInit {
       } else {
         this.workTime = new Date().getHours() + ':' + new Date().getMinutes();
       }
-
+      if( this.keepActive ==true){
+        this.keep_active=1;
+      }
+      else{
+         this.keep_active=0;
+       }
       this.workorderCreation = {
         occursontime: this.workTime,
         workorderkey: - 99,
@@ -846,7 +859,8 @@ export class EditWorkOrderComponent implements OnInit {
         OrganizationID: this.OrganizationID,
         intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
         repeatinterval: 1,
-        occursonday: null
+        occursonday: null,
+        keepActive:this.keep_active
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
         this.deleteWO = {

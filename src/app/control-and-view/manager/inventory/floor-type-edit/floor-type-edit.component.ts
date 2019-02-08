@@ -39,7 +39,7 @@ export class FloorTypeEDitComponent implements OnInit {
   }
 
   updateFloorType(FloorTypeName) {
-    if (!FloorTypeName) {
+    if (!FloorTypeName || !FloorTypeName.trim()) {
       alert("Please provide a FloorType Name");
     } else {
       this.inventoryService.checkForNewFloorType(FloorTypeName, this.employeekey, this.OrganizationID).subscribe((data: Array<any>) => {

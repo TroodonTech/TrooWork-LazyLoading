@@ -4,7 +4,11 @@ export const ConectionSettings = {
     AbsUrl: 'http://localhost:3000',
     Url: 'http://localhost:3000/api'
 
-// demo angular6
+// trooworkweb angular6
+// AbsUrl: 'http://trooworkweb.azurewebsites.net',
+// Url: 'http://trooworkweb.azurewebsites.net/api'
+
+// demotroowork angular6
 // AbsUrl: 'http://trooworkweb.azurewebsites.net',
 // Url: 'http://trooworkweb.azurewebsites.net/api'
 

@@ -3,7 +3,7 @@ import { DocumentserviceService } from '../../../../service/documentservice.serv
 import { Documents } from '../../../../model-class/Documents';
 import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
-const url = ConectionSettings.Url+'/upload_test';
+const url = ConectionSettings.Url + '/upload_test';
 
 @Component({
   selector: 'app-documents-upload',
@@ -57,7 +57,7 @@ export class DocumentsUploadComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
-    this.FormtypeId="";
+    this.FormtypeId = "";
 
     this.documentService
       .getDocumentFolderNamesfordropdown(this.employeekey, this.OrganizationID)
@@ -68,20 +68,14 @@ export class DocumentsUploadComponent implements OnInit {
     this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       console.log('ImageUpload:uploaded:', item, status, response);
-      // if(!(this.FormtypeId) )
-      // {
-      //   return;
-      // }
       alert('File uploaded successfully');
     };
   }
   FileSelected() {
-    if(!(this.FormtypeId) )
-    {
+    if (!(this.FormtypeId)) {
       alert("Please choose Document Folder");
       return;
-  }   
-
+    }
     this.addUrl = '?formtypeId=' + this.FormtypeId + '&formDesc=' + this.DescName + '&empkey=' + this.employeekey + '&OrganizationID=' + this.OrganizationID;
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;

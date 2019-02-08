@@ -70,7 +70,7 @@ export class ViewDocumentsComponent implements OnInit {
       });
   }
   searchFNDN(SearchValue) {
-    var value=SearchValue.trim();
+    var value = SearchValue.trim();
     if (value.length >= 3) {
       this.documentService
         .SearchFileNameandDescName(this.OrganizationID, value).subscribe((data: Documents[]) => {
@@ -79,23 +79,29 @@ export class ViewDocumentsComponent implements OnInit {
         });
     }
     else if (value.length == 0) {
-      var formtype;
+      if (!(this.FormtypeId)) {
+        this.documentService
+          .getRecentUploads(this.page, this.count, this.employeekey, this.OrganizationID)
+          .subscribe((data: Documents[]) => {
+            this.searchFlag = true;
+            this.viewFolderDescriptionTable = data;
+          });
+      }
       this.documentService
-        .getFileDetailsTablewithDropdown(formtype, this.employeekey, this.OrganizationID).subscribe((data: Documents[]) => {
+        .getFileDetailsTablewithDropdown(this.FormtypeId, this.employeekey, this.OrganizationID).subscribe((data: Documents[]) => {
           this.searchFlag = true;
           this.viewFolderDescriptionTable = data;
         });
     }
   }
   showFileDetailsTablebydropdown(formtype) {
-    if(!(this.FormtypeId))
-    {
+    if (!(this.FormtypeId)) {
       this.documentService
-      .getRecentUploads(this.page, this.count, this.employeekey, this.OrganizationID)
-      .subscribe((data: Documents[]) => {
-        this.searchFlag = true;
-        this.viewFolderDescriptionTable = data;
-      });
+        .getRecentUploads(this.page, this.count, this.employeekey, this.OrganizationID)
+        .subscribe((data: Documents[]) => {
+          this.searchFlag = true;
+          this.viewFolderDescriptionTable = data;
+        });
     }
     this.documentService
       .getFileDetailsTablewithDropdown(formtype, this.employeekey, this.OrganizationID).subscribe((data: Documents[]) => {
