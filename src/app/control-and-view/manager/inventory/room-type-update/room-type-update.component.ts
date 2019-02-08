@@ -44,6 +44,15 @@ export class RoomTypeUpdateComponent implements OnInit {
   }
 
 
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
   constructor(private route: ActivatedRoute, private inventoryService: InventoryService, private router: Router, private _location: Location) {
     this.route.params.subscribe(params => this.rTypeKey$ = params.RoomTypeKey);
   }

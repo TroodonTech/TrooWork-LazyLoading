@@ -31,8 +31,9 @@
       <h5 style="text-align:right" class="col-md-4"><label for="Department">MetricType Value*:
         </label></h5>
       <div class="col-md-8" style="text-align:left">
-        <input type="text" style="background-color: #D4F4FF !important;" class="form-control" maxlength="40" [(ngModel)]="MetricTypeValue"
-          [disabled]="MetricKey=='Default'" maxlength="40" placeholder="Metric Value">
+        <input type="text" style="background-color: #D4F4FF !important;" class="form-control" maxlength="40"
+          [(ngModel)]="MetricTypeValue" (keypress)="numberValid($event)" [disabled]="MetricKey=='Default'" maxlength="40"
+          placeholder="Metric Value">
       </div>
     </div>
     <br>

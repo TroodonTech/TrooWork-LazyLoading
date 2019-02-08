@@ -804,7 +804,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
     if (this.executeFlag == 1) {
       this.getScheduleDetails(this.BatchScheduleNameKey);
-      alert("Batch Schedule Created Sucessfully");
+      alert("Assignment Created Sucessfully");
       this.CreateDis = false;
     }
   }
@@ -828,7 +828,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.scheduleNameList = data;
       });
 
-    //loading the schedule where rooms were added/deleted in the earlier page
+    //loading the Assignment where rooms were added/deleted in the earlier page
 
     this.BatchScheduleNameKey = this.scheduleNameKey$;
     this.empName = null;

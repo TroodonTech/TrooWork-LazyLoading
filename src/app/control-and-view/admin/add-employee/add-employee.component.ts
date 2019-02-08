@@ -119,6 +119,8 @@ export class AddEmployeeComponent implements OnInit {
 
   createEmployee() {
 
+    var manKey;
+    
     if (!(this.EmployeeNumber) || !this.EmployeeNumber.trim()) {
       alert("Employee Number is not provided !");
       return;
@@ -132,15 +134,17 @@ export class AddEmployeeComponent implements OnInit {
       return;
     }
     else {
-      this.ManagerKey = -1;
+      manKey = -1;
     }
-    if (this.UserRoleTypeKey == 3) {
-      this.ManagerKey = this.employeekey;
-    }
-    else {
-      this.ManagerKey = -1;
-    }
-    if (!(this.FirstName) || !this.FirstName.trim()) {
+    if(this.UserRoleTypeKey==3 && this.ManagerKey)
+{
+  manKey = this.ManagerKey;
+}
+else
+{
+  manKey = -1;
+}
+    if (!(this.FirstName )|| !this.FirstName.trim()) {
       alert("First Name is not provided !");
       return;
     }
@@ -200,7 +204,7 @@ export class AddEmployeeComponent implements OnInit {
 
           var str = "";
           str = this.FirstName + '' + this.LastName;
-          this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, this.ManagerKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
+          this.PeopleServiceService.createEmployeebyAdmin(this.EmployeeNumber, manKey, this.FirstName, this.LastName, this.MiddleName, BD, this.Gender,
             this.AddressLine1, this.City, this.AddressLine2, this.State, this.Country, this.PrimaryPhone, this.ZipCode, this.AlternatePhone, this.EmailID, HD, this.theCheckbox,
             this.JobTitleKey, this.DepartmentKey, this.employeekey, this.OrganizationID)
             .subscribe((data22: any[]) => {

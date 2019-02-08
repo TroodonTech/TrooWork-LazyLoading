@@ -7,20 +7,20 @@
   <br>
   <div class="col-md-12 bg-info" style="padding-top:2rem">
     <div class="row col-md-12">
-      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Name: </label></h5>
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Name*: </label></h5>
       <input type="text" maxlength="30" style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8"
         [(ngModel)]="scheduleDetails.BatchSchduleName">
     </div>
     <br>
     <div class="row col-md-12">
-      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Description:
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Assignment Description*:
         </label></h5>
       <input type="text" maxlength="45" style="background-color: #D4F4FF !important;" class="form-control col-md-8 col-lg-8 col-sm-8"
         [(ngModel)]="scheduleDetails.ScheduleDescription">
     </div>
     <br>
     <div class="row col-md-12">
-      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Employee: </label></h5>
+      <h5 style="text-align:right" class="col-md-4"><label for="scheduling">Employee*: </label></h5>
       <select style="background-color: #D4F4FF !important;" (change)="setEmployeeForbatchSchedule($event.target.value)"
         class="form-control col-md-8 col-lg-8 col-sm-8" [(ngModel)]="scheduleDetails.EmployeeKey">
         <option>--Select--</option>

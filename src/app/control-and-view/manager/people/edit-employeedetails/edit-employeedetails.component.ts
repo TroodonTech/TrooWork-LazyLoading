@@ -104,8 +104,8 @@ export class EditEmployeedetailsComponent implements OnInit {
   }
 
   editEmployee(EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, BD, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HD, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey) {
-  
-    if (!EmployeeNumber || !EmployeeNumber.trim()) {
+    var mankey;
+    if (!(this.editempdtails.EmployeeNumber)|| !EmployeeNumber.trim()) {
       alert("Employee Number is not provided !");
       return;
     }
@@ -167,6 +167,13 @@ export class EditEmployeedetailsComponent implements OnInit {
       alert("Hire Date must be greater than birth date !");
       return;
     }
+    if(this.editempdtails.UserRoleTypeKey==3 && !(this.editempdtails.ManagerKey) )
+    {
+      mankey = this.employeekey;
+    }
+    else{
+      mankey = this.editempdtails.ManagerKey;
+    }
     // var empNum ;
     if (this.empNum == this.editempdtails.EmployeeNumber) {
       this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
@@ -185,7 +192,7 @@ export class EditEmployeedetailsComponent implements OnInit {
       this.PeopleServiceService.CheckForEmployeenumber(this.editempdtails.EmployeeNumber, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data[0].count == 0) {
           var hiredt = this.convert_DT(this.BirthDate);
-          this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+          this.PeopleServiceService.UpdateEmployeeDetailsbyManager(mankey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
             .subscribe((data: People[]) => {
               alert("Updated Successfully!");
               // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
@@ -230,7 +237,7 @@ export class EditEmployeedetailsComponent implements OnInit {
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
 
-    this.PeopleServiceService.EditEmployeeDetailsbyManager(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
+      this.PeopleServiceService.EditEmployeeDetailsbyManager(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
       this.editempdtails = data[0];
       this.BirthDate = new Date(this.editempdtails.BirthDate);
       this.HireDate = new Date(this.editempdtails.HireDate);
