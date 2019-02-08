@@ -201,6 +201,12 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       .getWO_edit(this.WO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.WOEditList = data[0];
+        if(this.WOEditList.KeepActive==1){
+          this.keepActive=true;
+        }
+        else{
+          this.keepActive=false;
+        }
         this.Times = this.tConvert(this.WOEditList.WorkorderTimes);
         this.WorkOrderServiceService//for getting all building names
           .getallFloor(this.WOEditList.FacilityKey, this.OrganizationID)

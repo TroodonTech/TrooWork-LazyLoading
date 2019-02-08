@@ -153,6 +153,12 @@ export class EditWorkOrderComponent implements OnInit {
       .getWO_edit(this.WO_Key, this.OrganizationID)
       .subscribe((data: any[]) => {//service for getting edited work order details
         this.WOEditList = data[0];
+        if(this.WOEditList.KeepActive==1){
+          this.keepActive=true;
+        }
+        else{
+          this.keepActive=false;
+        }
         this.WorkOrderServiceService
           .getallFloor(this.WOEditList.FacilityKey, this.OrganizationID)
           .subscribe((data: any[]) => {//for getting all floor names
