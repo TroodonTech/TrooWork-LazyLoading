@@ -100,7 +100,7 @@ export class RoomCreateComponent implements OnInit {
     } else if (!SquareFoot || !SquareFoot.trim()) {
       SquareFoot = null;
       alert("SquareFoot is not provided !");
-    } else if (!Barcode || !Barcode.trim()) {
+    } else if (!Barcode ) {
       Barcode = null;
       alert("Barcode is not provided !");
     } else {
