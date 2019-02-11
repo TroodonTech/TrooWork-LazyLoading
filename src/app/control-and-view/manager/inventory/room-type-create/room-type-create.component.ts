@@ -84,7 +84,7 @@ export class RoomTypeCreateComponent implements OnInit {
             alert("Enter RoomType Name!");
           } else if (!MetricType) {
             alert("Enter MetricType!");
-          } else if (!MetricTypeValue || !MetricTypeValue.trim()) {
+          } else if (!MetricTypeValue ) {
             alert("Enter MetricTypeValue!");
           } else {
             this.inventoryService.addRoomType(RoomTypeName, MetricTypeValue, MetricType, this.employeekey, this.OrganizationID).subscribe(res => {
