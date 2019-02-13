@@ -20,11 +20,15 @@ export class ManualCronJobComponent implements OnInit {
     //     console.log("Success.. MST");
     //   });
 
-    this.organizationService.cronJob_MST().subscribe((data: any[]) => { });
+    this.organizationService.cronJob_MST().subscribe((data: any[]) => {
+      alert("CronJob-MST executed successfully");
+     });
   }
 
   cronJobCST() {
-    this.organizationService.cronJob_CST().subscribe((data: any[]) => { });
+    this.organizationService.cronJob_CST().subscribe((data: any[]) => { 
+      alert("CronJob-CST executed successfully");
+    });
   }
 
   ngOnInit() {
