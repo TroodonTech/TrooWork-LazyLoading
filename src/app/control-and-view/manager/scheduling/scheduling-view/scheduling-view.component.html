@@ -33,7 +33,6 @@
             <!-- {{z.EmployeeText}} -->
             <select (change)="setEmployeeForbatchSchedule($event.target.value)" class="form-control"
               [disabled]='!(k===editEmp)' [(ngModel)]="z.EmployeeKey">
-              <option>--Select--</option>
               <option *ngFor="let f of empList" [value]="f.EmployeeKey">
                 {{f.EmployeeText}}
               </option>

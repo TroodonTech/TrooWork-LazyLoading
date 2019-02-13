@@ -24,6 +24,7 @@ export class SchedulingViewComponent implements OnInit {
   empList;
   editEmp;
   empKey;
+  SearchSchedule;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -70,9 +71,9 @@ export class SchedulingViewComponent implements OnInit {
     }, 100)
   }
 
-  changeDisable(index,empkey) {
-    this.editEmp = index; 
-    this.empKey=empkey; 
+  changeDisable(index, empkey) {
+    this.editEmp = index;
+    this.empKey = empkey;
   }
 
   setEmployeeForbatchSchedule(key) {
@@ -81,19 +82,30 @@ export class SchedulingViewComponent implements OnInit {
 
   cancelEmpChange() {
     this.editEmp = -1;
-    this.scheduleService
-      .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.scheduleList = data;
-        if (this.scheduleList[0].totalItems > this.itemsPerPage) {
-          this.showHide2 = true;
-          this.showHide1 = false;
-        }
-        else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+    if (this.SearchSchedule.trim().length >= 3) {
+      this.scheduleService
+        .searchBatchScheduleName(this.SearchSchedule.trim(), this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.scheduleList = data;
           this.showHide2 = false;
           this.showHide1 = false;
-        }
-      });
+        });
+    } else {
+      this.scheduleService
+        .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.scheduleList = data;
+          if (this.scheduleList[0].totalItems > this.itemsPerPage) {
+            this.showHide2 = true;
+            this.showHide1 = false;
+          }
+          else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+            this.showHide2 = false;
+            this.showHide1 = false;
+          }
+        });
+    }
+
   }
 
   saveEmpChange(batchName, batchDesc, batchKey) {
@@ -103,19 +115,29 @@ export class SchedulingViewComponent implements OnInit {
       // this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc)
       .subscribe(res => {
         alert("Assignment Name updated Successfully");
-        this.scheduleService
-          .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
-          .subscribe((data: any[]) => {
-            this.scheduleList = data;
-            if (this.scheduleList[0].totalItems > this.itemsPerPage) {
-              this.showHide2 = true;
-              this.showHide1 = false;
-            }
-            else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+        if (this.SearchSchedule.trim().length >= 3) {
+          this.scheduleService
+            .searchBatchScheduleName(this.SearchSchedule.trim(), this.OrganizationID)
+            .subscribe((data: any[]) => {
+              this.scheduleList = data;
               this.showHide2 = false;
               this.showHide1 = false;
-            }
-          });
+            });
+        } else {
+          this.scheduleService
+            .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
+            .subscribe((data: any[]) => {
+              this.scheduleList = data;
+              if (this.scheduleList[0].totalItems > this.itemsPerPage) {
+                this.showHide2 = true;
+                this.showHide1 = false;
+              }
+              else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+                this.showHide2 = false;
+                this.showHide1 = false;
+              }
+            });
+        }
       });
   }
 
@@ -152,6 +174,7 @@ export class SchedulingViewComponent implements OnInit {
   };
 
   previousPage() {
+    this.editEmp = -1;
     this.page = +this.page - 1;
     this.scheduleService
       .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
@@ -168,6 +191,7 @@ export class SchedulingViewComponent implements OnInit {
   }
 
   nextPage() {
+    this.editEmp = -1;
     this.page = +this.page + 1;
     this.scheduleService
       .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
