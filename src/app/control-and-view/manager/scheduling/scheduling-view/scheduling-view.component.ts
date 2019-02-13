@@ -42,6 +42,13 @@ export class SchedulingViewComponent implements OnInit {
     return window.atob(output);
   }
 
+  public convert_DT(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+
+  }
 
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
@@ -63,8 +70,9 @@ export class SchedulingViewComponent implements OnInit {
     }, 100)
   }
 
-  changeDisable(index) {
-    this.editEmp = index;
+  changeDisable(index,empkey) {
+    this.editEmp = index; 
+    this.empKey=empkey; 
   }
 
   setEmployeeForbatchSchedule(key) {
@@ -90,7 +98,9 @@ export class SchedulingViewComponent implements OnInit {
 
   saveEmpChange(batchName, batchDesc, batchKey) {
     this.editEmp = -1;
-    this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc)
+    var scheduleDT = this.convert_DT(new Date());
+    this.scheduleService.saveEmployeeChange(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc, scheduleDT)
+      // this.scheduleService.updateScheduleNameDetails(this.employeekey, this.OrganizationID, batchName, this.empKey, batchKey, batchDesc)
       .subscribe(res => {
         alert("Assignment Name updated Successfully");
         this.scheduleService

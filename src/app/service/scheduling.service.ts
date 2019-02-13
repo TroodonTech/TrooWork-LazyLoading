@@ -12,11 +12,10 @@ export class SchedulingService {
   getAllSchedulingNames(empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getBatchScheduleName?empkey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getBatchScheduleName?empkey=' + empkey + '&OrganizationID=' + orgID);
   }
-  deleteScheduledRoomslist( delete_scheduledroom)
-  {
-    const url = ConectionSettings.Url+'/deleteScheduledRoomslistbyscheduleroomid';
+  deleteScheduledRoomslist(delete_scheduledroom) {
+    const url = ConectionSettings.Url + '/deleteScheduledRoomslistbyscheduleroomid';
     return this
       .http
       .post(url, delete_scheduledroom);
@@ -24,66 +23,66 @@ export class SchedulingService {
   getSchedulingDetails(scheduleKey, empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getBatchScheduleMasterDetailService?batchschedulenamekey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getBatchScheduleMasterDetailService?batchschedulenamekey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   getRoomDetailsForSchedule(scheduleKey, empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/roomsForCreateBatchSchedule?BatchScheduleNameKey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/roomsForCreateBatchSchedule?BatchScheduleNameKey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   getRoomofTempTableDetailsForSchedule(scheduleKey, empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/roomstempForCreateBatchSchedule?BatchScheduleNameKey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/roomstempForCreateBatchSchedule?BatchScheduleNameKey=' + scheduleKey + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   getAllWorkOrders(empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/allWorkordertype?empkey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/allWorkordertype?empkey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   setUpdateScheduleReport(scheduleUpdate) {
 
-    const url = ConectionSettings.Url+"/updateScheduleReport";
+    const url = ConectionSettings.Url + "/updateScheduleReport";
     return this.http.post(url, scheduleUpdate);
   }
 
   setInsertScheduleReport(scheduleInsert) {
 
-    const url = ConectionSettings.Url+"/saveScheduleReport";
+    const url = ConectionSettings.Url + "/saveScheduleReport";
     return this.http.post(url, scheduleInsert);
   }
 
   getAllBatchScheduleNames(page, itemsPerPage, empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/viewScheduleNameList?pageno=' + page + '&itemsPerPage=' + itemsPerPage + '&managerkey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/viewScheduleNameList?pageno=' + page + '&itemsPerPage=' + itemsPerPage + '&managerkey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   searchBatchScheduleName(SearchValue, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/searchScheduleName?searchSchedule=' + SearchValue + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/searchScheduleName?searchSchedule=' + SearchValue + '&OrganizationID=' + orgID);
   }
 
   getAllEmpList(empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/employeeForManager?empkey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/employeeForManager?empkey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   checkScheduleName(scheduleName, empkey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/checkForNewScheduleName?bkey=' + scheduleName + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/checkForNewScheduleName?bkey=' + scheduleName + '&employeekey=' + empkey + '&OrganizationID=' + orgID);
   }
 
   addScheduleName(scheduleName, empKey, scheduleDescription, EMPloyeeKey, OrgID) {
 
-    const url = ConectionSettings.Url+"/addnewbatchName";
+    const url = ConectionSettings.Url + "/addnewbatchName";
     const obj = {
       BatchSchduleName: scheduleName,
       ScheduleDescription: scheduleDescription,
@@ -97,19 +96,19 @@ export class SchedulingService {
   getSchedulingRoomList(scheduleKey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getscheduledroomsbybatchschedulename?batchschedulenamekey=' + scheduleKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getscheduledroomsbybatchschedulename?batchschedulenamekey=' + scheduleKey + '&OrganizationID=' + orgID);
   }
 
   getAllOtherRoomList(scheduleKey, orgID, pageno, itemsPerPage) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getScheduleRoomslistByBatchScheduleNamekey?batchschedulenamekey=' + scheduleKey + '&OrganizationID=' + orgID + '&pageno=' + pageno + '&itemsperpage=' + itemsPerPage);
+      .get(ConectionSettings.Url + '/getScheduleRoomslistByBatchScheduleNamekey?batchschedulenamekey=' + scheduleKey + '&OrganizationID=' + orgID + '&pageno=' + pageno + '&itemsperpage=' + itemsPerPage);
   }
 
 
   addRoomToSchedule(BatchScheduleNameKey, addRoomString, employeekey, OrgID) {
 
-    const url = ConectionSettings.Url+"/addRoomInWorkOrder";
+    const url = ConectionSettings.Url + "/addRoomInWorkOrder";
     const obj = {
       empkey: employeekey,
       wkey: BatchScheduleNameKey,
@@ -122,24 +121,24 @@ export class SchedulingService {
   getScheduleDetailsbyID(scheduleKey, orgID) {
     return this
       .http
-      .get(ConectionSettings.Url+'/getScheduleById?bkey=' + scheduleKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/getScheduleById?bkey=' + scheduleKey + '&OrganizationID=' + orgID);
   }
 
   assignChangesForWO(scheduleDT, employeekey, orgID, EmpKey, scheduleNameKey, ScheduleDescription) {
     return this
       .http
-      .get(ConectionSettings.Url+'/assignChangesForWork?managerkey=' + employeekey + '&empkey=' + EmpKey + '&batchkey=' + scheduleNameKey + '&batchdesp=' + ScheduleDescription + '&OrganizationID=' + orgID + '&date1=' + scheduleDT);
+      .get(ConectionSettings.Url + '/assignChangesForWork?managerkey=' + employeekey + '&empkey=' + EmpKey + '&batchkey=' + scheduleNameKey + '&batchdesp=' + ScheduleDescription + '&OrganizationID=' + orgID + '&date1=' + scheduleDT);
   }
 
   checkForNewScheduleName(EmpKey, orgID, BatchSchduleName) {
     return this
       .http
-      .get(ConectionSettings.Url+'/checkForNewScheduleName?bkey=' + BatchSchduleName + '&employeekey=' + EmpKey + '&OrganizationID=' + orgID);
+      .get(ConectionSettings.Url + '/checkForNewScheduleName?bkey=' + BatchSchduleName + '&employeekey=' + EmpKey + '&OrganizationID=' + orgID);
   }
 
   updateScheduleNameDetails(employeeKey, OrgID, BatchscheduleName, empKey, scheduleNameKey, ScheduleDescription) {
 
-    const url = ConectionSettings.Url+"/updateScheduleName";
+    const url = ConectionSettings.Url + "/updateScheduleName";
     const obj = {
       BatchSchduleName: BatchscheduleName,
       ScheduleDescription: ScheduleDescription,
@@ -153,7 +152,7 @@ export class SchedulingService {
 
   getfloorType_facilityfloor(floor, building, zone, roomtype, OrgID) {
 
-    const url = ConectionSettings.Url+"/getfloorTypeValue";
+    const url = ConectionSettings.Url + "/getfloorTypeValue";
     const obj = {
       FacilityKey: building,
       FloorKey: floor,
@@ -167,7 +166,7 @@ export class SchedulingService {
   getAllRoomFilterList(BatchScheduleNameKey, OrgID,
     bldgKey, flrKey, zKey, rTypeKey, rKey, flrTypeKey) {
 
-    const url = ConectionSettings.Url+"/viewFilterRoomsforScheduleroom";
+    const url = ConectionSettings.Url + "/viewFilterRoomsforScheduleroom";
     const obj = {
       batchschedulenamekey: BatchScheduleNameKey,
       searchtype: 'filter',
@@ -179,6 +178,21 @@ export class SchedulingService {
       roomTypeKey: rTypeKey,
       floortypekey: flrTypeKey,
       OrganizationID: OrgID
+    }
+    return this.http.post(url, obj);
+  }
+
+  //for edit from assignment schedule view
+  saveEmployeeChange(employeeKey, OrgID, BatchscheduleName, empKey, scheduleNameKey, ScheduleDescription, scheduleDT) {
+    const url = ConectionSettings.Url + "/saveEmployeechange";
+    const obj = {
+      BatchSchduleName: BatchscheduleName,
+      ScheduleDescription: ScheduleDescription,
+      EmployeeKey: empKey,
+      bskey: scheduleNameKey,
+      employeekey: employeeKey,
+      OrganizationID: OrgID,
+      ScheduleDT: scheduleDT
     }
     return this.http.post(url, obj);
   }

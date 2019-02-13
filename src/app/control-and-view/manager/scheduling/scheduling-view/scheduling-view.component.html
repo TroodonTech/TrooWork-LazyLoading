@@ -38,7 +38,7 @@
                 {{f.EmployeeText}}
               </option>
             </select>
-            <a style="color: red" *ngIf='!(k===editEmp)' (click)="changeDisable(k);" ><b>Click here to change employee</b></a>
+            <a style="color: red" *ngIf='!(k===editEmp)' (click)="changeDisable(k,z.EmployeeKey);" ><b>Click here to change employee</b></a>
           </td>
           <td>
             <div style="text-align:center">
