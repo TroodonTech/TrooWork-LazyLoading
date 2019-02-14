@@ -189,6 +189,9 @@ export class InspectionCreateComponent implements OnInit {
       }
 
     }
+    else{
+      this.selectZoneRoomRoomtypefromFloor(this.Floor);
+    }
     // this.inspectionServiceService
     // .getallRoomTypes(this.FacilityKey,flrkey,zoneKey)
     // .subscribe((data:any []) => {

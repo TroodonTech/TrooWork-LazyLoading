@@ -310,6 +310,7 @@ export class ViewWorkOrdersComponent implements OnInit {
     else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
+      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
     }
   }
   getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype

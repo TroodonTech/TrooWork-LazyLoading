@@ -287,6 +287,7 @@ export class BatchScheduleRoomComponent implements OnInit {
     this.bldgKey = facility;
     this.flrKey = floor;
     this.zoneKey = zone;
+    if(zone){
     this.WorkOrderServiceService
       .getRoomtype_zone_facilityfloor(zone, floor, facility, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -305,6 +306,13 @@ export class BatchScheduleRoomComponent implements OnInit {
         this.floorTypeList = data;
         this.FloorTypeKey = "";
       });
+    }
+    else{
+      this.RoomTypeKey='';
+      this.RoomKey='';
+      this.FloorTypeKey='';
+      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
+    }
   }
   getRoom(roomtype, zone, facility, floor) {
     this.bldgKey = facility;

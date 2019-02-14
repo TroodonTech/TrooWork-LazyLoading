@@ -394,6 +394,7 @@ export class RoomViewComponent implements OnInit {
         });
     }
     if (!(this.ZoneKey)) {
+      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
       this.RoomTypeKey = '';
       this.FloorTypeKey = '';
       this.RoomKey = '';

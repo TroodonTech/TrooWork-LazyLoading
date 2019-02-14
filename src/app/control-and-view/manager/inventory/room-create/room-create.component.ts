@@ -184,13 +184,13 @@ export class RoomCreateComponent implements OnInit {
       });
   }
   clearall() {
-    this.FacilityKey = null;
-    this.FloorKey = null;
-    this.FloorTypeKey = null;
-    this.RoomTypeKey = null;
-    this.ZoneKey = null;
-    this.RoomName = null;
-    this.SquareFoot = null;
+    this.FacilityKey = '';
+    this.FloorKey = '';
+    this.FloorTypeKey = '';
+    this.RoomTypeKey = '';
+    this.ZoneKey = '';
+    this.RoomName = '';
+    this.SquareFoot = '';
     this.Barcode = this.temp_barcode;
 
   }

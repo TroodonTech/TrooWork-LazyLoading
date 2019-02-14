@@ -223,7 +223,12 @@ export class EditBatchWorkorderComponent implements OnInit {
         this.WorkOrderServiceService
           .getEquipmentNameList(this.WOEditList.WorkorderScheduleKey, this.OrganizationID)
           .subscribe((data: any[]) => {
-            this.EquipmentNameList = data[0].EquipmentName;
+            var equList=[];
+            for (var j = 0; j < data.length; j++) {
+              equList.push(data[j].EquipmentName);
+            }
+          
+            this.EquipmentNameList =   equList.join(',');
           });
         this.Times = this.tConvert(this.WOEditList.WorkorderTime);
         this.WorkOrderServiceService
@@ -568,6 +573,7 @@ export class EditBatchWorkorderComponent implements OnInit {
     else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
+      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
     }
   }
   getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
