@@ -185,15 +185,12 @@ export class MeetingTrainingCreateComponent implements OnInit {
       var time2 = new Date(this.time2);
       var curTime = new Date();
       var timediff = +time2 - +time1;
-      var timediff1 = +time1 - +curTime;
+      
       if (timediff < 0) {
         alert("Start Time can't be after End Time");
         return;
       }
-      else if (timediff1 < 0) {
-        alert("Start Time can't be before Current Time");
-        return;
-      }
+      
     }
 
     if (!this.EventType) {
@@ -218,10 +215,7 @@ export class MeetingTrainingCreateComponent implements OnInit {
       else {
         newDate = this.convert_DT(this.mtngDate);
       }
-      if (newDate < curDate) {
-        alert("Start Date can't be before current date");
-        return;
-      }
+      
 
       var EmployeeKeyString;
       if (this.Employee.length == 0) {
