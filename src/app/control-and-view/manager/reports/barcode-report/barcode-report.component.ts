@@ -204,7 +204,10 @@ export class BarcodeReportComponent implements OnInit {
 
 
   }
-
+  zoneChange(){
+    this.RoomTypeKey='';
+    
+  }
 
 
   //export to excel 

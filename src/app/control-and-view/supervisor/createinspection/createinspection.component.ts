@@ -146,6 +146,11 @@ export class CreateinspectionComponent implements OnInit {
       }
 
     }
+    else{
+      this.selectZoneRoomRoomtypefromFloor(this.Floor);
+      this.RoomType='';
+      this.RoomKey='';
+    }
   }
 
   // To get Rooms by applying different combination of filters. 

@@ -229,4 +229,7 @@ export class RoomEditComponent implements OnInit {
   goback() {
     this._location.back();
   }
+  zoneChange(){
+    this.roomTypeKey='';
+  }
 }

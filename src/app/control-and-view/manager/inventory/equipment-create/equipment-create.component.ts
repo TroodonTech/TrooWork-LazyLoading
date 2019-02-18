@@ -50,11 +50,16 @@ export class EquipmentCreateComponent implements OnInit {
 
   selectFloorfromBuildings(facKey) {
     this.FacKey = facKey;
+    if(facKey){
     this.inventoryService
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.floors = data;
       });
+    }
+    else{
+      this.FloorKey='';
+    }
   }
   floorValueSet(floorKey) {
     this.FloorKey = floorKey;

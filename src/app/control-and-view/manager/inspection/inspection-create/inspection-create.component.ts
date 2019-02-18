@@ -191,6 +191,8 @@ export class InspectionCreateComponent implements OnInit {
     }
     else{
       this.selectZoneRoomRoomtypefromFloor(this.Floor);
+      this.RoomType='';
+      this.RoomKey='';
     }
     // this.inspectionServiceService
     // .getallRoomTypes(this.FacilityKey,flrkey,zoneKey)

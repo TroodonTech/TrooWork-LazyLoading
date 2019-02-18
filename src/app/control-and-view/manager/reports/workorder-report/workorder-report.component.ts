@@ -159,12 +159,17 @@ export class WorkorderReportComponent implements OnInit {
   }
 
   getRoomsName(zonekey, fkey, floorkey) {
+    if(!zonekey && !fkey && !floorkey){
     this.ReportServiceService
       .getRooms(fkey, floorkey, zonekey, this.employeekey, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.rooms = data;
       });
-
+    }
+    else{
+      this.RoomTypeKey = "";
+      this.RoomKey = "";
+    }
   }
 
   generateWorkOrderReport(from_date, to_date, FacilityKey, FloorKey, RoomTypeKey, ZoneKey, RoomKey, EmployeeKey, WorkorderStatusKey) {

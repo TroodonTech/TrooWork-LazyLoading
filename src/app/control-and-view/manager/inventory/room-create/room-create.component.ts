@@ -197,4 +197,7 @@ export class RoomCreateComponent implements OnInit {
   goBack() {
     this._location.back();
   }
+  zoneChange(){
+    this.RoomTypeKey='';
+  }
 }
