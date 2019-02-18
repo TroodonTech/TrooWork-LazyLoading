@@ -118,12 +118,16 @@ export class BarcodeReportComponent implements OnInit {
   }
 
   getFloorDisp(key) {
-
+    if(key){
     this.ReportServiceService.getFloor(key, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.floor = data;
         this.FloorKey = "";
       });
+    }
+    else{
+      this.FloorKey='';
+    }
   }
   getequipments(eqtypekey) {
     this.ReportServiceService.geteq_values('equipments', eqtypekey, this.OrganizationID)

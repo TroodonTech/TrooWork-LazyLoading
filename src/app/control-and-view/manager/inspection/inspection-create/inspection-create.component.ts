@@ -97,11 +97,16 @@ export class InspectionCreateComponent implements OnInit {
   // for getting the floor when building is selected.
   selectFloorfromBuildings(facKey) {
     this.facikey = facKey;
+    if(facKey){
     this.inspectionService
       .getallFloorNames(facKey, this.OrganizationID)
       .subscribe((data: Inspection[]) => {
         this.floors = data;
       });
+    }
+    else{
+      this.Floor='';
+    }
   }
   // for getting the zone,room and roomtype after building and floor are selected.
   selectZoneRoomRoomtypefromFloor(flkey) {

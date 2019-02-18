@@ -93,12 +93,17 @@ export class CreateinspectionComponent implements OnInit {
 
   selectFloorfromBuildings(facKey) {
     this.facikey = facKey;
+    if(facKey){
     this.inspectionService
       .getallFloorNames(facKey, this.OrganizationID)
       .subscribe((data: Inspection[]) => {
 
         this.floors = data;
       });
+    }
+    else{
+      this.Floor='';
+    }
   }
   selectZoneRoomRoomtypefromFloor(flkey) {
     this.inspectionService

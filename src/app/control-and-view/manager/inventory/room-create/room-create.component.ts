@@ -62,11 +62,16 @@ export class RoomCreateComponent implements OnInit {
 
   selectFloorfromBuildings(facKey) {
     this.FaciKey = facKey;
+    if(facKey){
     this.inventoryService
       .getallFloorList(facKey, this.OrganizationID)
       .subscribe((data: Inventory[]) => {
         this.floor = data;
       });
+    }
+    else{
+      this.FloorKey='';
+    }
   }
 
   selectZonefromFloor(flrKey) {

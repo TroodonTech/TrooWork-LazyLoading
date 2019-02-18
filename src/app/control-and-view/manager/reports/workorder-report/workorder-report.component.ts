@@ -131,11 +131,15 @@ export class WorkorderReportComponent implements OnInit {
   }
 
   getFloorDisp(key) {
-
+    if(key){
     this.ReportServiceService.getFloor(key, this.OrganizationID)
       .subscribe((data: Reports[]) => {
         this.floor = data;
       });
+    }
+    else{
+      this.FloorKey='';
+    }
   }
 
   getZoneRoom(floorkey, fkey) {
