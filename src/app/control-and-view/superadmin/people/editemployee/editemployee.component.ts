@@ -33,6 +33,8 @@ export class EditemployeeComponent implements OnInit {
   roleTypeKey;
   managerList;
   showManager;
+  statusFlag;
+  remark;
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -152,6 +154,12 @@ export class EditemployeeComponent implements OnInit {
       alert("Primary Phone is not provided !");
       return;
     }
+  
+    if((EmployeeStatusKey!=1) && !(this.remark))
+    {
+      alert("Remarks are not provided !");
+      return;
+    }
     if (!(HD) ) {
       alert("Hire Date is not provided !");
       return;
@@ -188,7 +196,7 @@ export class EditemployeeComponent implements OnInit {
     }
    
 
-    this.PeopleServiceService.UpdateEmployeeDetailsbySa(this.managerKey, this.empk$, this.OrganizationID, UserRoleTypeKey, EmployeeNumber, FirstName, LastName, MiddleName, birthdt, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, JobTitleKey, DepartmentKey, Gender)
+    this.PeopleServiceService.UpdateEmployeeDetailsbySa(this.managerKey, this.empk$, this.OrganizationID, UserRoleTypeKey, EmployeeNumber, FirstName, LastName, MiddleName, birthdt, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, JobTitleKey, DepartmentKey, Gender,this.remark)
     .subscribe((data: any[]) => {
       alert("Successfully Updated !");
       this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
@@ -243,6 +251,11 @@ export class EditemployeeComponent implements OnInit {
       if (this.useroletype == "Employee") {
         this.showManager = true;
       }
+      if(this.editempdtailsbysa.EmployeeStatusKey!=1 && this.editempdtailsbysa.EmployeeStatusKey!="")
+      {
+        this.statusFlag=true;
+        this.remark=this.editempdtailsbysa.Remark;
+      }
     });
 
     this.PeopleServiceService
@@ -288,5 +301,17 @@ export class EditemployeeComponent implements OnInit {
   }
   goBack(){
     this.router.navigate(['/SuperadminDashboard',{ outlets: { SuperAdminOut: ['Viewemployee'] } }]);
+  }
+  statusChanged(statusKey)
+  {
+    if(statusKey!=1 && statusKey!="")
+    {
+      this.statusFlag=true;
+    }
+    else
+    {
+      this.statusFlag=false;
+    }
+
   }
 }

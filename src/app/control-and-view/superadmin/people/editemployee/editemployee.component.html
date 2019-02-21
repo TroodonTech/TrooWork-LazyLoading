@@ -93,12 +93,21 @@
         <div class="form-group" style="margin-left: -1rem">
           <label style="margin-left: 1rem;">Employee Status*</label><br>
           <select name="jobtitle" style="margin-left:0.9rem;background-color: #d4f4ff;width: 73%;max-width: 100%;"
-            [(ngModel)]="editempdtailsbysa.EmployeeStatusKey" class="form-control col-sm-9 col-md-9 col-lg-9">
+            [(ngModel)]="editempdtailsbysa.EmployeeStatusKey" class="form-control col-sm-9 col-md-9 col-lg-9" (change)="statusChanged(editempdtailsbysa.EmployeeStatusKey)">
             <option value="" placeholder>--Select--</option>
             <option *ngFor="let s of employeestatus" [value]="s.EmployeeStatusKey">
               {{s.EmployeeStatus}}
             </option>
           </select>
+
+          <div class="form-group" *ngIf="statusFlag">
+            <label>Remarks*</label>
+            <!-- <textarea class="form-control rounded-0" maxlength="200" [(ngModel)]="remark" rows="8"
+            style="resize: none;width: 100% !important;max-width: 100% !important;"></textarea> -->
+
+            <textarea class="form-control rounded-0  col-sm-9 col-md-9 col-lg-9" maxlength="85" [(ngModel)]="remark"
+            placeholder="Remarks" id="exampleFormControlTextarea1" rows="5"></textarea>
+          </div>
         </div>
       </div>
     </div>

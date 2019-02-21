@@ -31,6 +31,8 @@ export class EditEmployeedetailsComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   empNum;
+  statusFlag;
+  remark;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -133,6 +135,12 @@ export class EditEmployeedetailsComponent implements OnInit {
       alert("Primary Phone is not provided !");
       return;
     }
+
+    if((EmployeeStatusKey!=1) && !(this.remark))
+    {
+      alert("Remarks are not provided !");
+      return;
+    }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
       return;
@@ -176,7 +184,7 @@ export class EditEmployeedetailsComponent implements OnInit {
     }
     // var empNum ;
     if (this.empNum == this.editempdtails.EmployeeNumber) {
-      this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+      this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.employeekey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey,this.remark)
         .subscribe((data: People[]) => {
           alert("Updated Successfully!");
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
@@ -192,7 +200,7 @@ export class EditEmployeedetailsComponent implements OnInit {
       this.PeopleServiceService.CheckForEmployeenumber(this.editempdtails.EmployeeNumber, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
         if (data[0].count == 0) {
           var hiredt = this.convert_DT(this.BirthDate);
-          this.PeopleServiceService.UpdateEmployeeDetailsbyManager(mankey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+          this.PeopleServiceService.UpdateEmployeeDetailsbyManager(mankey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey,this.remark)
             .subscribe((data: People[]) => {
               alert("Updated Successfully!");
               // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewEmployee'] } }]);
@@ -242,7 +250,11 @@ export class EditEmployeedetailsComponent implements OnInit {
       this.BirthDate = new Date(this.editempdtails.BirthDate);
       this.HireDate = new Date(this.editempdtails.HireDate);
       this.empNum = this.editempdtails.EmployeeNumber;
-
+      if(this.editempdtails.EmployeeStatusKey!=1 && this.editempdtails.EmployeeStatusKey!="")
+      {
+        this.statusFlag=true;
+        this.remark=this.editempdtails.Remark;
+      }
 
     });
 
@@ -284,5 +296,18 @@ export class EditEmployeedetailsComponent implements OnInit {
     else if (this.role == 'Employee' && this.IsSupervisor == 1) {
       this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewEmployee'] } }]);
     }
+  }
+
+  statusChanged(statusKey)
+  {
+    if(statusKey!=1 && statusKey!="")
+    {
+      this.statusFlag=true;
+    }
+    else
+    {
+      this.statusFlag=false;
+    }
+
   }
 }
