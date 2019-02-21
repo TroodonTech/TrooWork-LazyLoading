@@ -325,7 +325,9 @@ export class PeopleServiceService {
       .http
       .get(ConectionSettings.Url+'/searchEmployeeOnTable?searchEmployee=' + SearchValue + '&pageno=' + pageno + '&itemsPerPage=' + itemsPerPage + '&employeekey=' + employeekey + '&OrganizationID=' + OrganizationID);
   }
-  UpdateEmployeeDetailsbyManager(mankey, empk, orgid, EmployeeNumber, userRoleTypeKey, FirstName, LastName, MiddleName, BirthDate, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HireDate, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey) {
+
+
+  UpdateEmployeeDetailsbyManager(mankey, empk, orgid, EmployeeNumber, userRoleTypeKey, FirstName, LastName, MiddleName, BirthDate, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, HireDate, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey,remark) {
     const url = ConectionSettings.Url+"/update_employee_info";
     const obj = {
       EmployeeKey: empk,
@@ -352,7 +354,8 @@ export class PeopleServiceService {
       OrganizationID: orgid,
       Gender: Gender,
       UserRoleTypeKey: userRoleTypeKey,
-      EmployeeStatusKey1: EmployeeStatusKey
+      EmployeeStatusKey1: EmployeeStatusKey,
+      Remark:remark
     };
     return this.http.post(url, obj);
 
@@ -524,7 +527,7 @@ export class PeopleServiceService {
       .http
       .get(ConectionSettings.Url+'/JobtitleForSuperAdmin?OrganizationID=' + orgID);
   }
-  UpdateEmployeeDetailsbySa(managerKey, empk, orgID, UserRoleTypeKey, EmployeeNumber, FirstName, LastName, MiddleName, birthdt, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, JobTitleKey, DepartmentKey, Gender) {
+  UpdateEmployeeDetailsbySa(managerKey, empk, orgID, UserRoleTypeKey, EmployeeNumber, FirstName, LastName, MiddleName, birthdt, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, JobTitleKey, DepartmentKey, Gender,remark) {
     const url = ConectionSettings.Url+"/update_employee_info";
     const obj = {
       EmployeeKey: empk,
@@ -550,7 +553,8 @@ export class PeopleServiceService {
       OrganizationID: orgID,
       UserRoleTypeKey: UserRoleTypeKey,
       EmployeeStatusKey1: EmployeeStatusKey,
-      Gender: Gender
+      Gender: Gender,
+      Remark:remark
     };
     return this.http.post(url, obj);
   }

@@ -32,6 +32,8 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  statusFlag;
+  remark;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -133,6 +135,11 @@ export class EditEmployeeDetailsAdminComponent implements OnInit {
       alert("Primary Phone is not provided !");
       return;
     }
+    if((EmployeeStatusKey!=1) && !(this.remark))
+    {
+      alert("Remarks are not provided !");
+      return;
+    }
     if (!(this.HireDate)) {
       alert("Hire Date is not provided !");
       return;
@@ -176,7 +183,7 @@ else
   this.managerKey = -1;
 }
 
-    this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.managerKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey)
+    this.PeopleServiceService.UpdateEmployeeDetailsbyManager(this.managerKey, this.empk$, this.OrganizationID, EmployeeNumber, UserRoleTypeKey, FirstName, LastName, MiddleName, birthdt, Gender, AddressLine1, City, AddressLine2, State, Country, PrimaryPhone, ZipCode, AlternatePhone, EmailID, EmployeeStatusKey, hiredt, IsSupervisor, SupervisorKey, JobTitleKey, DepartmentKey,this.remark)
       .subscribe((data: Array<any>) => {
         alert("Employee Updated !");
         this.router.navigate(['AdminDashboard', { outlets: { AdminOut: ['viewEmployeeAdmin'] } }]);
@@ -224,6 +231,12 @@ else
       this.BirthDate = new Date(this.editempdtails.BirthDate);
       this.HireDate = new Date(this.editempdtails.HireDate);
       this.managerKey = this.editempdtails.ManagerKey;
+
+      if(this.editempdtails.EmployeeStatusKey!=1 && this.editempdtails.EmployeeStatusKey!="")
+      {
+        this.statusFlag=true;
+        this.remark=this.editempdtails.Remark;
+      }
     });
 
     this.PeopleServiceService
@@ -265,5 +278,18 @@ else
     } else {
       this.marked = true;
     }
+  }
+
+  statusChanged(statusKey)
+  {
+    if(statusKey!=1 && statusKey!="")
+    {
+      this.statusFlag=true;
+    }
+    else
+    {
+      this.statusFlag=false;
+    }
+
   }
 }
