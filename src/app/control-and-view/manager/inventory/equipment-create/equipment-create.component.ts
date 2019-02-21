@@ -65,6 +65,7 @@ export class EquipmentCreateComponent implements OnInit {
     this.FloorKey = floorKey;
   }
   addEquipment(EquipmentName, EquipmentDescription, Barcode, EquipmentTypeKey) {
+    debugger;
     if (!EquipmentName || !EquipmentName.trim()) {
       alert("Please Enter Equipment Name!");
       return;
@@ -79,8 +80,7 @@ export class EquipmentCreateComponent implements OnInit {
       alert("Equipment Name is not provided");
     } else if (!Barcode) {
       alert("Equipment Barcode is not provided");
-    } else if (Barcode ) {
-      alert("Equipment Barcode is not provided");
+    
     } else if (!this.FacKey) {
       alert("Building is not provided");
     } else if (!this.FloorKey) {

@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var sgTransport = require('nodemailer-sendgrid-transport');
 var scheduler = require('node-schedule');
-// var sendgrid = require('@sendgrid/mail');
+var sendgrid = require('@sendgrid/mail');
 
 function supportCrossOriginScript(req, res, next) {
     res.status(200);
@@ -14245,53 +14245,53 @@ app.get(securedpath + '/cronjobunrunbatchdetailsCount', function (req, res) {
 //old Sendmail Service
 
 // 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 is your sendgrid api
-app.post(securedpath + '/sendmail', function (req, res) {
-    var options = {
-        service: 'Gmail',
-        auth: {
-            api_key: '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'
-        }
-    };
-    var mailer = nodemailer.createTransport(sgTransport(options));
-    mailer.sendMail(req.body, function (error, info) {
-        pool.getConnection(function (err, connection) {
-            if (err) {
+// app.post(securedpath + '/sendmail', function (req, res) {
+//     var options = {
+//         service: 'Gmail',
+//         auth: {
+//             api_key: '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'
+//         }
+//     };
+//     var mailer = nodemailer.createTransport(sgTransport(options));
+//     mailer.sendMail(req.body, function (error, info) {
+//         pool.getConnection(function (err, connection) {
+//             if (err) {
 
-                console.log("Failed! Connection with Database spicnspan via connection pool failed");
-            } else {
+//                 console.log("Failed! Connection with Database spicnspan via connection pool failed");
+//             } else {
 
-                console.log("nodemailer...from server..");
-                res.end("Success");
+//                 console.log("nodemailer...from server..");
+//                 res.end("Success");
 
-            }
-            connection.release();
-        });
+//             }
+//             connection.release();
+//         });
 
-    });
-});
+//     });
+// });
 
 //varun-> Azure Email Service...
-// app.post(securedpath + '/sendmail', (req, res) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     sendgrid.setApiKey(config.sendGrid.ApiKey); //varun-> SendGrid Api from config.js
+app.post(securedpath + '/sendmail', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    sendgrid.setApiKey(config.sendGrid.ApiKey); //varun-> SendGrid Api from config.js
 
-//   console.log(req.body.to+" "+req.body.from+" "+req.body.subject+" "+req.body.text+' '+config.sendGrid.ApiKey)
-//     var email = 
-//         {
-//             to: req.body.to,
-//             from: req.body.from,
-//             subject: req.body.subject,
-//             // text: req.body.text,
-//              html: req.body.html ,
-//     };
-//     //);    
+  console.log(req.body.to+" "+req.body.from+" "+req.body.subject+" "+req.body.text+' '+config.sendGrid.ApiKey)
+    var email = 
+        {
+            to: req.body.to,
+            from: req.body.from,
+            subject: req.body.subject,
+            // text: req.body.text,
+             html: req.body.html ,
+    };
+    //);    
 
-//     sendgrid.send(email, function(err, json){
-//         if(err) { return console.error(err); }
-//         res.status(200).json({"msg":"Email sent successfully to " + req.body.to});
-//         console.log('Email sent successfully to ', req.body.to);
-//     });
-//   });
+    sendgrid.send(email, function(err, json){
+        if(err) { return console.error(err); }
+        res.status(200).json({"msg":"Email sent successfully to " + req.body.to});
+        console.log('Email sent successfully to ', req.body.to);
+    });
+  });
 
 
 
