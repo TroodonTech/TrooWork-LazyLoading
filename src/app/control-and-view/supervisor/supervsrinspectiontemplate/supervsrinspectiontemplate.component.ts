@@ -4,6 +4,7 @@ import { Inspection } from '../../../model-class/Inspection';
 import { ActivatedRoute ,Router} from '@angular/router';
 import { ConectionSettings } from '../../../service/ConnectionSetting';
 import { HttpClient } from '@angular/common/http';
+// import { ViewinspectionmanagerComponent } from "../../manager/inspection/viewinspectionmanager/viewinspectionmanager.component";
 @Component({
   selector: 'app-supervsrinspectiontemplate',
   templateUrl: './supervsrinspectiontemplate.component.html',
@@ -189,6 +190,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
   console.log(this.Scoringtype);
   }
   inspectionCompleted() {
+    
     var temp = [];
     var choices1 = [];
     choices1[0] = this.Scoringtype;
@@ -312,8 +314,16 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
                });
             });
          }
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
+          // this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
+
+          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
          
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+          }
+          else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewInspectionManager',this.inspKey$] } }]);
+          }
      });
 
     }
@@ -410,7 +420,14 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
                });
             });
          }
-          this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
+          // this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
+          // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+          if (this.role == 'Manager') {
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+          }
+          else if (this.role == 'Employee' && this.IsSupervisor == 1) {
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout:['ViewInspectionManager',this.inspKey$] } }]);
+          }
      });
 
     }

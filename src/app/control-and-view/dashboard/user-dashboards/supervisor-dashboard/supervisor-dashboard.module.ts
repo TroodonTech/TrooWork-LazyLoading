@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SupervisorDashboardComponent } from './supervisor-dashboard.component';
 import { SupervsrinspectiontemplateModule } from '../../../supervisor/supervsrinspectiontemplate/supervsrinspectiontemplate.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+// import { ViewinspectiomanagerModule } from "../../../manager/inspection/viewinspectionmanager/viewinspectiomanager.module";
 const routes: Routes = [
   {
     path: 'SupervisorDashboard',
@@ -44,6 +45,16 @@ const routes: Routes = [
         outlet: 'Superout',
         loadChildren: '../../../supervisor/supervsrinspectiontemplate/supervsrinspectiontemplate.module#SupervsrinspectiontemplateModule',
       },
+
+      {
+        path: 'ViewInspectionManager/:InspectionOrderKey',
+        outlet: 'Superout',
+        loadChildren: '../../../manager/inspection/viewinspectionmanager/viewinspectiomanager.module#ViewinspectiomanagerModule',
+      },
+
+
+
+
       {
         path: 'Training',
         outlet: 'Superout',

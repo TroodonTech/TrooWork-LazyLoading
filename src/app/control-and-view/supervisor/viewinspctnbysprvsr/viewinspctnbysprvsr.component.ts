@@ -171,4 +171,9 @@ pagination: Number;
     });
   }
 
+  inspectionDetail(InspectionOrderKey)
+  {
+    this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewInspectionManager',InspectionOrderKey] } }]);
+  }
+
 }
