@@ -11748,6 +11748,8 @@ app.get('/getSuperAdminIdForAddUser', function (req, res) {
 app.get(securedpath + '/checkNewRoomName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var RoomName = url.parse(req.url, true).query['RoomName'];
+    var FacilityKey= url.parse(req.url, true).query['FacilityKey'];
+    var FloorKey= url.parse(req.url, true).query['FloorKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
 
@@ -11756,13 +11758,13 @@ app.get(securedpath + '/checkNewRoomName', function (req, res) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-            connection.query('set @RoomName=?; set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@OrganizationID)', [RoomName, OrganizationID], function (err, rows) {
+            connection.query('set @RoomName=?; set @FacilityKey=?; set @FloorKey=?;set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@FacilityKey,@FloorKey,@OrganizationID)', [RoomName,FacilityKey,FloorKey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
                     console.log("checkNewRoomName...from server.." + JSON.stringify(rows[2]));
-                    res.end(JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[4]));
                 }
             });
         }

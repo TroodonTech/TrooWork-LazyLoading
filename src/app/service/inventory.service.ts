@@ -537,11 +537,12 @@ export class InventoryService {
       .http
       .get(ConectionSettings.Url+'/checkUniqueBarcode_Updation?roomkey=' + -1 + '&barcode=' + Barcode + '&employeekey=' + empKey + '&OrganizationID=' + OrgID);
   }
-  checkRoomName(RoomName, OrgID) {
+  //Add check according to building and Floor name
+  checkRoomName(facilityKey,floorKey,RoomName, OrgID) {
 
     return this
       .http
-      .get(ConectionSettings.Url+'/checkNewRoomName?RoomName=' + RoomName + '&OrganizationID=' + OrgID);
+      .get(ConectionSettings.Url+'/checkNewRoomName?RoomName=' + RoomName +'&FacilityKey='+ facilityKey+'&FloorKey='+floorKey+'&OrganizationID=' + OrgID);
 
   }
 
