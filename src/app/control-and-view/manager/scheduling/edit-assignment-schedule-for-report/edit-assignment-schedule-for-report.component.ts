@@ -328,7 +328,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.metricCal();
       });
     this.scheduleService
-      .getAllWorkOrders(this.employeekey, this.OrganizationID)
+      .getallworkorderType(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.woList = data;
       });
@@ -955,7 +955,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.metricCal();
       });
     this.scheduleService
-      .getAllWorkOrders(this.employeekey, this.OrganizationID)
+      .getallworkorderType(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.woList = data;
       });

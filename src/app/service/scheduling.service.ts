@@ -43,7 +43,11 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/allWorkordertype?empkey=' + empkey + '&OrganizationID=' + orgID);
   }
-
+  getallworkorderType(emp_key, org_id) {
+    return this
+      .http
+      .get(ConectionSettings.Url+'/allWorkOrderTypeWithOutQuick?empkey=' + emp_key + '&OrganizationID=' + org_id);
+  }
   setUpdateScheduleReport(scheduleUpdate) {
 
     const url = ConectionSettings.Url + "/updateScheduleReport";

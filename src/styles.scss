@@ -9067,7 +9067,9 @@
   .dropdown-content a:hover {background-color: #ddd;}
   
   .dropdown:hover .dropdown-content {display: block;}
-
+  .day-unit {
+    width: calc(99.9% / 7) ! important;
+    }
 
 //   input[type="radio"] {
 //     -webkit-appearance: checkbox;
