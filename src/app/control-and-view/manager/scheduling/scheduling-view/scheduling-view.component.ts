@@ -25,6 +25,7 @@ export class SchedulingViewComponent implements OnInit {
   editEmp;
   empKey;
   SearchSchedule;
+  BatchScheduleNameKey;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -208,6 +209,37 @@ export class SchedulingViewComponent implements OnInit {
         }
       });
   }
+
+  deleteAssignName(BatchScheduleNameKey)
+    {
+      this.BatchScheduleNameKey=BatchScheduleNameKey;
+
+    }
+
+    deleteAssignmentName()
+    {
+      this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey,this.employeekey,this.OrganizationID)
+      .subscribe((data: any[])=>
+      {
+        alert("Assignment Name deleted successfully");
+        this.loading=true;
+        this.scheduleService
+        .getAllBatchScheduleNames(this.page, this.itemsPerPage, this.employeekey, this.OrganizationID)
+        .subscribe((data: any[]) => {
+          this.scheduleList = data;
+          this.loading=false;
+          if (this.scheduleList[0].totalItems > this.itemsPerPage) {
+            this.showHide2 = true;
+            this.showHide1 = false;
+          }
+          else if (this.scheduleList[0].totalItems <= this.itemsPerPage) {
+            this.showHide2 = false;
+            this.showHide1 = false;
+          }
+        });
+      })
+    }
+  
   ngOnInit() {
 
     this.searchform = this.formBuilder.group({

@@ -123,7 +123,7 @@ export class RoomCreateComponent implements OnInit {
                   alert("Barcode already exists! Please enter a unique barcode.");
                 } else {
                   this.inventoryService
-                    .checkRoomName(RoomName, this.OrganizationID)
+                    .checkRoomName(FacilityKey,FloorKey,RoomName, this.OrganizationID)
                     .subscribe((data: Inventory[]) => {
                       if (data[0].count > 0) {
                         alert("Room Name already exists !");
