@@ -1406,6 +1406,34 @@ app.get(securedpath + '/viewScheduleNameList', function (req, res) {
     //    res.end();
 });
 
+//For delete assignment name
+app.get(securedpath + '/deleteScheduleName', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var batchschedulenamekey=url.parse(req.url,true).query['batchschedulenamekey']
+    var empkey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @batchschedulenamekey=?; set @empkey=?;set @OrganizationID=?; call usp_deleteAssignmentName(@batchschedulenamekey,@empkey,@OrganizationID)", [batchschedulenamekey,empkey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    res.end(JSON.stringify(rows[3]));
+
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
 
 app.get(securedpath + '/scoringtype', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -11776,6 +11804,8 @@ app.get('/getSuperAdminIdForAddUser', function (req, res) {
 app.get(securedpath + '/checkNewRoomName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var RoomName = url.parse(req.url, true).query['RoomName'];
+    var FacilityKey= url.parse(req.url, true).query['FacilityKey'];
+    var FloorKey= url.parse(req.url, true).query['FloorKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
 
@@ -11784,13 +11814,13 @@ app.get(securedpath + '/checkNewRoomName', function (req, res) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-            connection.query('set @RoomName=?; set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@OrganizationID)', [RoomName, OrganizationID], function (err, rows) {
+            connection.query('set @RoomName=?; set @FacilityKey=?; set @FloorKey=?;set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@FacilityKey,@FloorKey,@OrganizationID)', [RoomName,FacilityKey,FloorKey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
                     console.log("checkNewRoomName...from server.." + JSON.stringify(rows[2]));
-                    res.end(JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[4]));
                 }
             });
         }

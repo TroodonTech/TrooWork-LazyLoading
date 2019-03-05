@@ -200,4 +200,13 @@ export class SchedulingService {
     }
     return this.http.post(url, obj);
   }
+
+  //for delete assignment schedulename
+
+  deleteAssignmentName(BatchScheduleNameKey,EmpKey,orgID)
+  {
+    return this
+    .http
+    .get(ConectionSettings.Url+'/deleteScheduleName?employeekey='+ EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID );
+  }
 }

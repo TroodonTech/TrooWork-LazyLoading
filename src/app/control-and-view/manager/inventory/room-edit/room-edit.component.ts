@@ -146,7 +146,7 @@ export class RoomEditComponent implements OnInit {
           }
           else if (this.temp_room != RoomName) {
             this.inventoryService
-              .checkRoomName(RoomName, this.OrganizationID)
+              .checkRoomName(this.facKey,this.floorKey,RoomName, this.OrganizationID)
               .subscribe((data: Inventory[]) => {
                 if (data[0].count > 0) {
                   alert("Room Name already exists !");
