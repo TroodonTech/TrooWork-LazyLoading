@@ -5430,6 +5430,34 @@ app.get(securedpath + '/updateWorkorderByPhoto_Ang6', function (req, res) {
         connection.release();
     });
 });
+
+app.get(securedpath + '/MaintnancUpdateMsg', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var empKey = url.parse(req.url, true).query['empKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query(" set @empKey=?;set @OrganizationID=?; call usp_MaintnancUpdateMsg(@empKey,@OrganizationID)", [empKey,OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[2]));
+                }
+
+            });
+        }
+        connection.release();
+    });
+});
+
 //Photo upload ends
 app.options('/saveinspectedQuestions', supportCrossOriginScript);
 app.post(securedpath + '/saveinspectedQuestions', supportCrossOriginScript, function (req, res) {

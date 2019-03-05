@@ -66,4 +66,9 @@ export class LoginService {
       .http
       .get(ConectionSettings.Url+'/welcomeMessage?empKey=' + empkey + '&OrganizationID=' + orgID);
   }
+  getMaintenanceUpdateMsg(empkey, orgID){
+    return this
+      .http
+      .get(ConectionSettings.Url+'/MaintnancUpdateMsg?empKey=' + empkey + '&OrganizationID=' + orgID);
+  }
 }

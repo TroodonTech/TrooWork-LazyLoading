@@ -8,7 +8,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AppRoutingModule } from './/app-routing.module';
-
+import { NgMarqueeModule } from 'ng-marquee';
 
 import { CalendarModule } from 'primeng/calendar';
 import { Time } from '@angular/common';
@@ -33,6 +33,7 @@ import { NgDatepickerModule} from 'ng2-datepicker';
     // ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgMarqueeModule,
     // CalendarModule,
     // IgxDatePickerModule,NgDatepickerModule,
     // NgMultiSelectDropDownModule.forRoot()
