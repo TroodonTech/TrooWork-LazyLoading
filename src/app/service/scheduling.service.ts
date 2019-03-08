@@ -97,10 +97,19 @@ export class SchedulingService {
     return this.http.post(url, obj);
   }
 
-  getSchedulingRoomList(scheduleKey, orgID) {
-    return this
-      .http
-      .get(ConectionSettings.Url + '/getscheduledroomsbybatchschedulename?batchschedulenamekey=' + scheduleKey + '&OrganizationID=' + orgID);
+  getSchedulingRoomList(scheduleKey, orgID,building, floor, zone, roomtype, room, floortype) {
+    const url = ConectionSettings.Url + "/getscheduledroomsbybatchschedulename";
+      const obj = {
+      batchschedulenamekey: scheduleKey ,
+      OrganizationID: orgID,
+      build: building,
+      flr: floor,
+      zone: zone,
+      rmtype: roomtype,
+      room: room,
+      flrtyp: floortype
+    } 
+    return this.http.post(url, obj);
   }
 
   getAllOtherRoomList(scheduleKey, orgID, pageno, itemsPerPage) {
@@ -208,12 +217,5 @@ export class SchedulingService {
     return this
     .http
     .get(ConectionSettings.Url+'/deleteScheduleName?employeekey='+ EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID );
-  }
-
-  
-  getallworkorderTypeNew(emp_key, org_id) {
-    return this
-      .http
-      .get(ConectionSettings.Url+'/allWorkOrderTypeWithOutQuickNew?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
 }
