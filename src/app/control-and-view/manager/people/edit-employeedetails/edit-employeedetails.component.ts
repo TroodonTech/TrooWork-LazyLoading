@@ -247,8 +247,8 @@ export class EditEmployeedetailsComponent implements OnInit {
 
       this.PeopleServiceService.EditEmployeeDetailsbyManager(this.empk$, this.OrganizationID).subscribe((data: Array<any>) => {
       this.editempdtails = data[0];
-      this.BirthDate = new Date(this.editempdtails.BirthDate);
-      this.HireDate = new Date(this.editempdtails.HireDate);
+      this.BirthDate = this.editempdtails.BirthDate;
+      this.HireDate = this.editempdtails.HireDate;
       this.empNum = this.editempdtails.EmployeeNumber;
       if(this.editempdtails.EmployeeStatusKey!=1 && this.editempdtails.EmployeeStatusKey!="")
       {
