@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../../../service/login.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-welcomepage',
   templateUrl: './welcomepage.component.html',
@@ -14,6 +15,7 @@ export class WelcomepageComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
+  Message;
 
   
   url_base64_decode(str) {
@@ -60,7 +62,11 @@ export class WelcomepageComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.updateList = data;
       });
+    this.loginService.getMaintenanceUpdateMsg(this.employeekey, this.OrganizationID).subscribe((data: any[])=> {
+      // debugger;
+        this.Message = data[0].Message;
+    });
 
-  }
 
+ }
 }

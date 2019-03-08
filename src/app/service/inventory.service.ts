@@ -382,8 +382,8 @@ export class InventoryService {
     const obj = {
       RoomTypeName: roomTypeName,
       metric: 1,
-      MetricType: metricType,
-      TypeValue: MetricTypeValue,
+      MetricType: 'default',
+      TypeValue: 1,
       EquipmentTypeKey: -99,
       employeekey: empKey,
       OrganizationID: OrgID

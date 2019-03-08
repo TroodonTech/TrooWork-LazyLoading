@@ -165,6 +165,7 @@ export class WorkOrderServiceService {
   }
   view_wotype(WOTKey,OrganizationID)
   {
+    // debugger;
     return this
     .http
     .get(ConectionSettings.Url+'/editviewWorkOrderType?WorkorderTypeKey='+WOTKey+'&OrganizationID='+OrganizationID);
@@ -366,4 +367,13 @@ export class WorkOrderServiceService {
       .post(url, obj);
   }
   // ****Pooja's code ends here****
+
+  getMetricValues(OrgID) {
+    return this
+      .http
+      .get(ConectionSettings.Url+'/metricTypevalues?OrganizationID=' + OrgID);
+  }
+
+  
+
 }

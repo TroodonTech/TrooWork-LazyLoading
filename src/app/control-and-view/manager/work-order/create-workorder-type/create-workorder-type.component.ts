@@ -13,6 +13,10 @@ export class CreateWorkorderTypeComponent implements OnInit {
   add_WOT;
   role: String;
   name: String;
+  metricValues;
+  showField1: boolean = false;
+  showField2: boolean = false;
+  MetricTypeValue;
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
@@ -37,6 +41,34 @@ export class CreateWorkorderTypeComponent implements OnInit {
 
   constructor(private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
 
+  numberValid(event: any) {
+    const pattern = /[0-9\+\-\ ]/;
+
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  showFields(metricType) {
+    {
+      if (!metricType) {
+        this.showField1 = false;
+        this.showField2 = false;
+      } else if (metricType === 'Default') {
+        this.MetricTypeValue = 1;
+        this.showField1 = false;
+        this.showField2 = true;
+      } else if (metricType === 'Custom') {
+        this.MetricTypeValue = null;
+        this.showField1 = false;
+        this.showField2 = true;
+      } else if (metricType === 'Minutes Per') {
+        this.MetricTypeValue = null;
+        this.showField1 = false;
+        this.showField2 = true;
+      }
+    }
+  }
   ngOnInit() {
     var token = localStorage.getItem('token');
     var encodedProfile = token.split('.')[1];
@@ -46,14 +78,27 @@ export class CreateWorkorderTypeComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
+    this.WorkOrderServiceService
+    .getMetricValues(this.OrganizationID)
+    .subscribe((data: any[]) => {
+      this.metricValues = data;
+    });
   }
   //function for creating new workordertype
-  addWOT(WorkOrderTypeName) {
+  addWOT(MetricType,WorkOrderTypeName,MetricTypeValue)
+   {
+    //  debugger;
     if (!WorkOrderTypeName) {
       alert("Please enter work-order type!");
     } else if (!WorkOrderTypeName.trim()) {
       alert("Please enter work-order type!");
-    } else {
+    } 
+   else if (!MetricType) {
+    alert("Enter MetricType!");
+  } else if (!MetricTypeValue ) {
+    alert("Enter MetricTypeValue!");
+  }
+  else {
       this.add_WOT = {
         WorkorderTypeName: WorkOrderTypeName,
         RoomTypeKey: null,
@@ -61,7 +106,12 @@ export class CreateWorkorderTypeComponent implements OnInit {
         Repeatable: true,
         WorkorderTime: null,
         OrganizationID: this.OrganizationID,
-        empkey: this.employeekey
+        empkey: this.employeekey,
+        // MetricTypeValue, MetricType,
+        metric:MetricType,
+        MetricType:MetricTypeValue
+
+
       };
       this.WorkOrderServiceService//check if wot is already existing
         .checkforWOT(WorkOrderTypeName, this.employeekey, this.OrganizationID)
@@ -72,6 +122,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
           else if (data[0].count == 0) {//if not add new wot
             this.WorkOrderServiceService.createWOT(this.add_WOT)
               .subscribe((data: any[]) => {
+                debugger;
                 alert("Work-order type created successfully");
                 // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['WorkOrderType'] } }]);
                 if (this.role == 'Manager') {
