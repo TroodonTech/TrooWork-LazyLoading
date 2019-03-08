@@ -46,7 +46,7 @@ export class SchedulingService {
   getallworkorderType(emp_key, org_id) {
     return this
       .http
-      .get(ConectionSettings.Url+'/allWorkOrderTypeWithOutQuick?empkey=' + emp_key + '&OrganizationID=' + org_id);
+      .get(ConectionSettings.Url + '/allWorkOrderTypeWithOutQuick?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
   setUpdateScheduleReport(scheduleUpdate) {
 
@@ -97,10 +97,10 @@ export class SchedulingService {
     return this.http.post(url, obj);
   }
 
-  getSchedulingRoomList(scheduleKey, orgID,building, floor, zone, roomtype, room, floortype) {
+  getSchedulingRoomList(scheduleKey, orgID, building, floor, zone, roomtype, room, floortype) {
     const url = ConectionSettings.Url + "/getscheduledroomsbybatchschedulename";
-      const obj = {
-      batchschedulenamekey: scheduleKey ,
+    const obj = {
+      batchschedulenamekey: scheduleKey,
       OrganizationID: orgID,
       build: building,
       flr: floor,
@@ -108,7 +108,7 @@ export class SchedulingService {
       rmtype: roomtype,
       room: room,
       flrtyp: floortype
-    } 
+    }
     return this.http.post(url, obj);
   }
 
@@ -212,10 +212,15 @@ export class SchedulingService {
 
   //for delete assignment schedulename
 
-  deleteAssignmentName(BatchScheduleNameKey,EmpKey,orgID)
-  {
+  deleteAssignmentName(BatchScheduleNameKey, EmpKey, orgID) {
     return this
-    .http
-    .get(ConectionSettings.Url+'/deleteScheduleName?employeekey='+ EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID );
+      .http
+      .get(ConectionSettings.Url + '/deleteScheduleName?employeekey=' + EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID);
+  }
+
+  getallworkorderTypeNew(emp_key, org_id) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/allWorkOrderTypeWithOutQuickNew?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
 }
