@@ -13931,10 +13931,16 @@ app.post('/api/upload_test', upload1.single('photo'), function (req, res) {
 
 //Scheduled Rooms by Prakash Starts here
 
-app.get(securedpath + '/getscheduledroomsbybatchschedulename', function (req, res) {
+app.post(securedpath + '/getscheduledroomsbybatchschedulename', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    var batchschedulenamekey = url.parse(req.url, true).query['batchschedulenamekey'];
-    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    var batchschedulenamekey = req.body.batchschedulenamekey;
+    var OrganizationID = req.body.OrganizationID;
+    var build = req.body.build;
+    var flr = req.body.flr;
+    var zone = req.body.zone;
+    var rmtype = req.body.rmtype;
+    var room = req.body.room;
+    var flrtyp = req.body.flrtyp;
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -13942,13 +13948,13 @@ app.get(securedpath + '/getscheduledroomsbybatchschedulename', function (req, re
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @batchschedulenamekey=?; set @OrganizationID=?; call usp_getscheduledroomsbybatchschedulenamekey(@batchschedulenamekey,@OrganizationID)', [batchschedulenamekey, OrganizationID], function (err, rows) {
+            connection.query('set @batchschedulenamekey=?; set @OrganizationID=?; set @build=?; set @flr=?; set @zone=?; set @rmtype=?; set @room=?; set @flrtyp=?; call usp_getscheduledroomsbybatchschedulenamekey(@batchschedulenamekey,@OrganizationID,@build,@flr,@zone,@rmtype,@room,@flrtyp)', [batchschedulenamekey, OrganizationID,build,flr,zone,rmtype,room,flrtyp], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    console.log("getscheduledroomsbybatchschedulename " + JSON.stringify(rows[2]));
-                    res.end(JSON.stringify(rows[2]));
+                    console.log("getscheduledroomsbybatchschedulename " + JSON.stringify(rows[8]));
+                    res.end(JSON.stringify(rows[8]));
                 }
             });
         }
