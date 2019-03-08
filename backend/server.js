@@ -1775,12 +1775,14 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
     var RoomTypeKey = req.body.RoomTypeKey;
     var empkey = req.body.empkey;
     var OrganizationID = req.body.OrganizationID;
+    var metric = req.body.metric;
+    var MetricType = req.body.MetricType;
     if (Repeatable == true) {
         Repeatable = 'Y';
     } else {
         Repeatable = 'N';
     }
-    console.log("addnewworkordertype--------------------" + WorkorderTypeName + "" + Repeatable + "" + Frequency + "" + WorkorderTime + "" + RoomTypeKey);
+    console.log("addnewworkordertype--------------------" + WorkorderTypeName + "" + Repeatable + "" + Frequency + "" + WorkorderTime + "" + RoomTypeKey+""+metric+""+MetricType);
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1788,14 +1790,14 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @WorkorderTypeName=?;set @Repeatable=?; set @Frequency=?; set @WorkorderTime=?; set @RoomTypeKey=?; set @empkey=?;set @OrganizationID=?; call usp_addNewWorkordertype(@WorkorderTypeName,@Repeatable,@Frequency,@WorkorderTime,@RoomTypeKey,@empkey,@OrganizationID)", [WorkorderTypeName, Repeatable, Frequency, WorkorderTime, RoomTypeKey, empkey, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+            connection.query("set @WorkorderTypeName=?;set @Repeatable=?; set @Frequency=?; set @WorkorderTime=?; set @RoomTypeKey=?; set @empkey=?;set @OrganizationID=?;set @metric=?;set @MetricType=?; call usp_addNewWorkordertype(@WorkorderTypeName,@Repeatable,@Frequency,@WorkorderTime,@RoomTypeKey,@empkey,@OrganizationID,@metric,@MetricType)", [WorkorderTypeName, Repeatable, Frequency, WorkorderTime, RoomTypeKey, empkey, OrganizationID,metric,MetricType], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
 
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
 
-                    res.end(JSON.stringify(rows[7]));
+                    res.end(JSON.stringify(rows[9]));
                 }
             });
         }
@@ -1961,8 +1963,15 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
     var Repeatable = req.body.Repeatable;
     var WorkorderTime = req.body.WorkorderTime;
     var OrganizationID = req.body.OrganizationID;
+    var metric = req.body.metric;
+    var MetricType = req.body.MetricType;
+    if (Repeatable == true) {
+        Repeatable = 'Y';
+    } else {
+        Repeatable = 'N';
+    }
 
-    console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime);
+    console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime+" "+metric+" "+MetricType);
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1970,14 +1979,14 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @WorkorderTypeKey=?;set @WorkorderTypeName=?;set @RoomTypeKey=?;set @Frequency=?;set @Repeatable=?;set @WorkorderTime=?; set @OrganizationID=?;call usp_editSelectedWorkordertype(@WorkorderTypeKey,@WorkorderTypeName,@RoomTypeKey,@Frequency,@Repeatable,@WorkorderTime,@OrganizationID)', [WorkorderTypeKey, WorkorderTypeName, RoomTypeKey, Frequency, Repeatable, WorkorderTime, OrganizationID], function (err, rows) {
+            connection.query('set @WorkorderTypeKey=?;set @WorkorderTypeName=?;set @RoomTypeKey=?;set @Frequency=?;set @Repeatable=?;set @WorkorderTime=?; set @OrganizationID=?;set @metric=?;set @MetricType=?;call usp_editSelectedWorkordertype(@WorkorderTypeKey,@WorkorderTypeName,@RoomTypeKey,@Frequency,@Repeatable,@WorkorderTime,@OrganizationID,@metric,@MetricType)', [WorkorderTypeKey, WorkorderTypeName, RoomTypeKey, Frequency, Repeatable, WorkorderTime, OrganizationID,metric,MetricType], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
                 else {
 
 
-                    res.end(JSON.stringify(rows[7]));
+                    res.end(JSON.stringify(rows[9]));
 
 
                 }
@@ -14382,6 +14391,33 @@ scheduler.scheduleJob(rule1, function () {
                 else {
                     console.log("Scheduler...from server..");
 
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/allWorkOrderTypeWithOutQuickNew', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var empkey = url.parse(req.url, true).query['empkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @empkey=?;set @OrganizationID=?;call usp_allWorkOrderTypeWithOutQuickNew(@empkey,@OrganizationID)", [empkey, OrganizationID], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[2]));
                 }
             });
         }

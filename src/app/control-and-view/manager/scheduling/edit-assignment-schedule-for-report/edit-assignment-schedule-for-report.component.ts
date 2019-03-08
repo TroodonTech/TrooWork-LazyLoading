@@ -108,58 +108,58 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       }
       if (this.roomList[i].check_mon == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes)* this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_tue == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_wed == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_thu == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_fri == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_sat == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes)  * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_sun == '1') {
         if (this.roomList[i].MetricType === 'Minutes Per') {
-          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].dailyFrequency);
+          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].MetricValue) * this.roomList[i].Area) * this.roomList[i].dailyFrequency;
+          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
 
@@ -173,58 +173,58 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
 
       if (this.roomTempList[i].check_mon == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_tue == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalTuesTime = this.totalTuesTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_wed == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_thu == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalThuTime = this.totalThuTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_fri == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalFriTime = this.totalFriTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_sat == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_sun == '1') {
         if (this.roomTempList[i].MetricType === 'Minutes Per') {
-          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].dailyFrequency);
+          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomTempList[i].MetricValue) * this.roomTempList[i].Area) * this.roomTempList[i].dailyFrequency;
+          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
 
@@ -270,6 +270,24 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
+
+          for(var i=0;i<this.woList.length;i++){
+            if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
+              // debugger;
+             if(this.woList[i].MetricType== 'Minutes Per')
+             {
+             this.roomList[j].Minutes=this.woList[i].MetricValue;
+             console.log("Metric value::::"+this.woList[i].MetricValue);
+           }
+           else{
+             this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
+             console.log("Metric value::::"+this.woList[i].MetricValue);
+             console.log("Area::::"+this.roomList[j].Area);
+           }
+            }
+           }
+
+
           if (this.roomList[j].check_mon == 'true') {
             this.roomList[j].check_mon = 1;
           } else if (this.roomList[j].check_mon == 'false') {
@@ -327,11 +345,17 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         }
         this.metricCal();
       });
+    // this.scheduleService
+    //   .getallworkorderType(this.employeekey, this.OrganizationID)
+    //   .subscribe((data: any[]) => {
+    //     this.woList = data;
+    //   });
+
     this.scheduleService
-      .getallworkorderType(this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.woList = data;
-      });
+    .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
+    .subscribe((data: any[]) => {
+      this.woList = data;
+    });
 
   }
 
@@ -863,6 +887,12 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         this.scheduleNameList = data;
       });
 
+      this.scheduleService
+      .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        this.woList = data;
+      });
+
     //loading the Assignment where rooms were added/deleted in the earlier page
 
     this.BatchScheduleNameKey = this.scheduleNameKey$;
@@ -898,6 +928,20 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
+
+          for(var i=0;i<this.woList.length;i++){
+            if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
+              // debugger;
+             if(this.woList[i].MetricType== 'Minutes Per')
+             {
+             this.roomList[j].Minutes=this.woList[i].MetricValue;
+           }
+           else{
+             this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
+           }
+            }
+           }
+
           if (this.roomList[j].check_mon == 'true') {
             this.roomList[j].check_mon = 1;
           } else if (this.roomList[j].check_mon == 'false') {
@@ -954,12 +998,56 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         }
         this.metricCal();
       });
-    this.scheduleService
-      .getallworkorderType(this.employeekey, this.OrganizationID)
-      .subscribe((data: any[]) => {
-        this.woList = data;
-      });
+    // this.scheduleService
+    //   .getallworkorderType(this.employeekey, this.OrganizationID)
+    //   .subscribe((data: any[]) => {
+    //     this.woList = data;
+    //   });
 
+     
 
+  }
+  CalMetric(index,list){
+    // debugger;
+   
+      if(list=='roomTempList')
+      {
+        for(var i=0;i<this.woList.length;i++){
+     if (this.roomTempList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
+      //  debugger;
+      //  this.roomTempList[index].Minutes=0;
+      if(this.woList[i].MetricType== 'Minutes Per')
+      {
+      this.roomTempList[index].Minutes=this.woList[i].MetricValue;
+      console.log("Metric value::::"+this.woList[i].MetricValue);
+    }
+    else{
+      this.roomTempList[index].Minutes=(this.woList[i].MetricValue*this.roomTempList[index].Area);
+      console.log("Metric value::::"+this.woList[i].MetricValue);
+             console.log("Area::::"+this.roomTempList[index].Area);
+    }
+     }
+    }
+  }
+ 
+
+   if(list=='roomList')
+    {
+      for(var i=0;i<this.woList.length;i++){
+      if (this.roomList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
+        // debugger;
+       if(this.woList[i].MetricType== 'Minutes Per')
+       {
+       this.roomList[index].Minutes=this.woList[i].MetricValue;
+       console.log("Metric value::::"+this.woList[i].MetricValue);
+     }
+     else{
+       this.roomList[index].Minutes=(this.woList[i].MetricValue*this.roomList[index].Area);
+       console.log("Metric value::::"+this.woList[i].MetricValue);
+              console.log("Area::::"+this.roomList[index].Area);
+     }
+      }
+    }
+    }
   }
 }

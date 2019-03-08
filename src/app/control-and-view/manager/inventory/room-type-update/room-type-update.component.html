@@ -5,6 +5,7 @@
   </div>
   <br>
   <div class="col-md-12 bg-info" style="padding-top: 2rem">
+
     <div class="row col-md-12">
       <h5 style="text-align:right" class="col-md-4"><label for="RoomTypeName">RoomType name*</label></h5>
       <div class="col-md-8" style="text-align:left">
@@ -12,30 +13,36 @@
           class="form-control" [(ngModel)]="roomTypeList.RoomTypeName">
       </div>
     </div>
+
     <br>
-    <div class="row col-md-12">
+
+    <!-- <div class="row col-md-12">
       <h5 style="text-align:right;" class="col-md-4"><label for="MetricType">MetricType Name*</label></h5>
       <div class="col-md-8" style="text-align:left">
         <select *ngIf="roomTypeList" style="background-color: #D4F4FF !important; " class="form-control" [(ngModel)]="metricType"
-          (change)=showFields($event.target.value)>
+          (change)=showFields($event.target.value)> -->
           <!-- <option>--Select--</option> -->
-          <option *ngFor="let f of metricTypeList" [value]="f.MetricType">
+          <!-- <option *ngFor="let f of metricTypeList" [value]="f.MetricType">
             {{f.MetricType}}
           </option>
         </select>
       </div>
-    </div>
+    </div> 
+
     <br>
+
     <div class="row col-md-12">
-      <h5 style="text-align:right;" class="col-md-4"><label for="floorname">MetricType Value*</label></h5>
+      <!-- <h5 style="text-align:right;" class="col-md-4"><label for="floorname">MetricType Value*</label></h5> -->
 
-      <div class="col-md-8" style="text-align:left">
+      <!-- <div class="col-md-8" style="text-align:left">
 
-        <input type="text" *ngIf="roomTypeList" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control"
+        <input type="hidden" *ngIf="roomTypeList" maxlength="40" style="background-color: #D4F4FF !important;" class="form-control"
           [disabled]="metricType=='Default'" placeholder="Metric Value" (keypress)="numberValid($event)" [(ngModel)]="MetricTypeValue">
       </div>
-    </div>
+    </div> -->
+
     <br>
+    
     <div class="row col-md-12" style="margin-left: 35%">
       <a style="color:white !important" class="btn btn-success" (click)="updateRoomType(roomTypeList.RoomTypeName,MetricTypeValue)">
         <b>UPDATE</b>

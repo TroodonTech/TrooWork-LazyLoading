@@ -209,4 +209,11 @@ export class SchedulingService {
     .http
     .get(ConectionSettings.Url+'/deleteScheduleName?employeekey='+ EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID );
   }
+
+  
+  getallworkorderTypeNew(emp_key, org_id) {
+    return this
+      .http
+      .get(ConectionSettings.Url+'/allWorkOrderTypeWithOutQuickNew?empkey=' + emp_key + '&OrganizationID=' + org_id);
+  }
 }
