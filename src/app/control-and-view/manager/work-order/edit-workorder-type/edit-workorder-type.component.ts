@@ -48,7 +48,7 @@ export class EditWorkorderTypeComponent implements OnInit {
   workorderTypeList: workorder[];
   update_WO;
   numberValid(event: any) {
-    const pattern = /[0-9\+\-\ ]/;
+    const pattern = /[0-9\.\ ]/;
 
     let inputChar = String.fromCharCode(event.charCode);
     if (event.keyCode != 8 && !pattern.test(inputChar)) {
@@ -177,11 +177,11 @@ export class EditWorkorderTypeComponent implements OnInit {
         });
       }
       else {
-        if (this.MetricTypeValue == MetricTypeValue1 && this.metricType == this.metricType1) {
-          alert("No changes are made");
-        }
-        else
-        {
+        // if (this.MetricTypeValue == MetricTypeValue1 && this.metricType == this.metricType1) {
+        //   alert("No changes are made");
+        // }
+        // else
+        // {
           
       this.update_WO = {
         WorkorderTypeKey: WOTKey,
@@ -211,7 +211,7 @@ export class EditWorkorderTypeComponent implements OnInit {
           });
       });
         }
-      }
+      
     }
   }
   goBack() {

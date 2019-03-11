@@ -42,7 +42,7 @@ export class CreateWorkorderTypeComponent implements OnInit {
   constructor(private router: Router, private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
 
   numberValid(event: any) {
-    const pattern = /[0-9\+\-\ ]/;
+    const pattern = /[0-9\ .]/;
 
     let inputChar = String.fromCharCode(event.charCode);
     if (event.keyCode != 8 && !pattern.test(inputChar)) {
