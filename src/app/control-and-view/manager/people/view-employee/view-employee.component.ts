@@ -24,6 +24,9 @@ export class ViewEmployeeComponent implements OnInit {
   IsSupervisor: Number;
   OrganizationID: Number;
   loading: boolean;// loading
+  statusFlag;
+  employeestatus;
+  EmployeeStatusKey;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -62,32 +65,32 @@ export class ViewEmployeeComponent implements OnInit {
 
     }, 100)
   }
-  getempdettablewithselectedJobtitle(seljobtitlevalue) {
-    this.showHide2 = false;
-    this.showHide1 = false;
-    if (!(this.JobTitleKey)) {
-      this.PeopleServiceService
-        .getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
-        .subscribe((data: People[]) => {
-          this.employeedetailstable = data;
-          if (this.employeedetailstable[0].totalItems > this.itemsPerPage) {
-            this.showHide2 = true;
-            this.showHide1 = false;
-          }
-          else if (this.employeedetailstable[0].totalItems <= this.itemsPerPage) {
-            this.showHide2 = false;
-            this.showHide1 = false;
-          }
-        });
-    }
-    else {
-      this.PeopleServiceService
-        .getAllEmployeeDetailswithjobtitledropdown(seljobtitlevalue, this.employeekey, this.OrganizationID)
-        .subscribe((data: People[]) => {
-          this.employeedetailstable = data;
-        });
-    }
-  }
+  // getempdettablewithselectedJobtitle(seljobtitlevalue) {
+  //   this.showHide2 = false;
+  //   this.showHide1 = false;
+  //   if (!(this.JobTitleKey)) {
+  //     this.PeopleServiceService
+  //       .getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+  //       .subscribe((data: People[]) => {
+  //         this.employeedetailstable = data;
+  //         if (this.employeedetailstable[0].totalItems > this.itemsPerPage) {
+  //           this.showHide2 = true;
+  //           this.showHide1 = false;
+  //         }
+  //         else if (this.employeedetailstable[0].totalItems <= this.itemsPerPage) {
+  //           this.showHide2 = false;
+  //           this.showHide1 = false;
+  //         }
+  //       });
+  //   }
+  //   else {
+  //     this.PeopleServiceService
+  //       .getAllEmployeeDetailswithjobtitledropdown(seljobtitlevalue, this.employeekey, this.OrganizationID)
+  //       .subscribe((data: People[]) => {
+  //         this.employeedetailstable = data;
+  //       });
+  //   }
+  // }
   searchEmployeeDetails(SearchValue) {
     var value = SearchValue.trim();
     if (value.length >= 3) {
@@ -138,6 +141,8 @@ export class ViewEmployeeComponent implements OnInit {
     this.OrganizationID = profile.OrganizationID;
 
     this.JobTitleKey = "";
+    this.EmployeeStatusKey="";
+
     this.PeopleServiceService
       .getJobTitleforadmindd(this.employeekey, this.OrganizationID)
       .subscribe((data: People[]) => {
@@ -155,6 +160,11 @@ export class ViewEmployeeComponent implements OnInit {
           this.showHide2 = false;
           this.showHide1 = false;
         }
+      });
+      this.PeopleServiceService
+      .getEmployeeStatusListforDropdown(this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.employeestatus = data;
       });
     this.searchform = this.formBuilder.group({
       SearchEmpDetails: ['', Validators.required]
@@ -189,5 +199,46 @@ export class ViewEmployeeComponent implements OnInit {
       }
     });
   }
+
+  getempdettblwithslctdJbtitleNempStatus(){
+    this.showHide2 = false;
+    var jkey;
+    var eskey;
+    if(!(this.JobTitleKey))
+    {
+      jkey = null;
+    }
+    else {
+      jkey = this.JobTitleKey;
+    }
+    if(!(this.EmployeeStatusKey))
+    {
+      eskey = null;
+    }
+    else {
+      eskey = this.EmployeeStatusKey;
+    }
+    this.PeopleServiceService
+    .getempdettblwithslctdJbtitleNempStatus(jkey,eskey,this.employeekey,this.OrganizationID)
+    .subscribe((data: People[]) => {
+      this.employeedetailstable = data;
+    });
+    if((!(this.JobTitleKey))&&(!(this.EmployeeStatusKey))){
+      this.PeopleServiceService
+      .getAllEmployeeDetails(this.pageNo, this.itemsPerPage, this.employeekey, this.OrganizationID)
+      .subscribe((data: People[]) => {
+        this.employeedetailstable = data;
+        if (this.employeedetailstable[0].totalItems > this.itemsPerPage) {
+          this.showHide2 = true;
+          this.showHide1 = false;
+        }
+        else if (this.employeedetailstable[0].totalItems <= this.itemsPerPage) {
+          this.showHide2 = false;
+          this.showHide1 = false;
+        }
+      });
+    }
+  }
+
 
 }

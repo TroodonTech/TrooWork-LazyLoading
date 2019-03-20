@@ -8,10 +8,18 @@
     <div class="form-group row" style="margin-left: -0.4rem;">
       <h5 class="col-sm-3 col-md-3 col-lg-3 col" style="padding-top: 0.3rem"><label for="people">Job Title</label></h5>
       <select [(ngModel)]="JobTitleKey" style="background-color: #d4f4ff;" class="col form-control col-sm-9 col-md-9 col-lg-9"
-        (change)="getempdettablewithselectedJobtitle($event.target.value)">
+        (change)="getempdettblwithslctdJbtitleNempStatus()">
         <option value="" selected>--Select--</option>
         <option *ngFor="let j of jobtitle" [value]="j.JobTitleKey">
           {{j.JobTitleText}}
+        </option>
+      </select>
+      <h5 class="col-sm-3 col-md-3 col-lg-3 col" style="padding-top: 0.3rem"><label for="people">Employee Status</label></h5>
+      <select [(ngModel)]="EmployeeStatusKey" style="background-color: #d4f4ff;" class="col form-control col-sm-9 col-md-9 col-lg-9"
+        (change)="getempdettblwithslctdJbtitleNempStatus()">
+        <option value="" selected>--Select--</option>
+        <option *ngFor="let s of employeestatus" [value]="s.EmployeeStatusKey">
+          {{s.EmployeeStatus}}
         </option>
       </select>
     </div>
