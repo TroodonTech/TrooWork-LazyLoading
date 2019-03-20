@@ -46,7 +46,7 @@ export class SchedulingService {
   getallworkorderType(emp_key, org_id) {
     return this
       .http
-      .get(ConectionSettings.Url+'/allWorkOrderTypeWithOutQuick?empkey=' + emp_key + '&OrganizationID=' + org_id);
+      .get(ConectionSettings.Url + '/allWorkOrderTypeWithOutQuick?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
   setUpdateScheduleReport(scheduleUpdate) {
 
@@ -212,10 +212,15 @@ export class SchedulingService {
 
   //for delete assignment schedulename
 
-  deleteAssignmentName(BatchScheduleNameKey,EmpKey,orgID)
-  {
+  deleteAssignmentName(BatchScheduleNameKey, EmpKey, orgID) {
     return this
-    .http
-    .get(ConectionSettings.Url+'/deleteScheduleName?employeekey='+ EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID );
+      .http
+      .get(ConectionSettings.Url + '/deleteScheduleName?employeekey=' + EmpKey + '&batchschedulenamekey=' + BatchScheduleNameKey + '&OrganizationID=' + orgID);
+  }
+
+  getallworkorderTypeNew(emp_key, org_id) {
+    return this
+      .http
+      .get(ConectionSettings.Url + '/allWorkOrderTypeWithOutQuickNew?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
 }
