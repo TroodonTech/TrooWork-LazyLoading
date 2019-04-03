@@ -1409,7 +1409,7 @@ app.get(securedpath + '/viewScheduleNameList', function (req, res) {
 //For delete assignment name
 app.get(securedpath + '/deleteScheduleName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
-    var batchschedulenamekey=url.parse(req.url,true).query['batchschedulenamekey']
+    var batchschedulenamekey = url.parse(req.url, true).query['batchschedulenamekey']
     var empkey = url.parse(req.url, true).query['employeekey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
     pool.getConnection(function (err, connection) {
@@ -1419,7 +1419,7 @@ app.get(securedpath + '/deleteScheduleName', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @batchschedulenamekey=?; set @empkey=?;set @OrganizationID=?; call usp_deleteAssignmentName(@batchschedulenamekey,@empkey,@OrganizationID)", [batchschedulenamekey,empkey, OrganizationID], function (err, rows) {
+            connection.query("set @batchschedulenamekey=?; set @empkey=?;set @OrganizationID=?; call usp_deleteAssignmentName(@batchschedulenamekey,@empkey,@OrganizationID)", [batchschedulenamekey, empkey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -1782,7 +1782,7 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
     } else {
         Repeatable = 'N';
     }
-    console.log("addnewworkordertype--------------------" + WorkorderTypeName + "" + Repeatable + "" + Frequency + "" + WorkorderTime + "" + RoomTypeKey+""+metric+""+MetricType);
+    console.log("addnewworkordertype--------------------" + WorkorderTypeName + "" + Repeatable + "" + Frequency + "" + WorkorderTime + "" + RoomTypeKey + "" + metric + "" + MetricType);
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1790,7 +1790,7 @@ app.post(securedpath + '/addNewWorkordertype', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query("set @WorkorderTypeName=?;set @Repeatable=?; set @Frequency=?; set @WorkorderTime=?; set @RoomTypeKey=?; set @empkey=?;set @OrganizationID=?;set @metric=?;set @MetricType=?; call usp_addNewWorkordertype(@WorkorderTypeName,@Repeatable,@Frequency,@WorkorderTime,@RoomTypeKey,@empkey,@OrganizationID,@metric,@MetricType)", [WorkorderTypeName, Repeatable, Frequency, WorkorderTime, RoomTypeKey, empkey, OrganizationID,metric,MetricType], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
+            connection.query("set @WorkorderTypeName=?;set @Repeatable=?; set @Frequency=?; set @WorkorderTime=?; set @RoomTypeKey=?; set @empkey=?;set @OrganizationID=?;set @metric=?;set @MetricType=?; call usp_addNewWorkordertype(@WorkorderTypeName,@Repeatable,@Frequency,@WorkorderTime,@RoomTypeKey,@empkey,@OrganizationID,@metric,@MetricType)", [WorkorderTypeName, Repeatable, Frequency, WorkorderTime, RoomTypeKey, empkey, OrganizationID, metric, MetricType], function (err, rows) {//IMPORTANT : (err,rows) this order matters.
 
                 if (err) {
                     console.log("Problem with MySQL" + err);
@@ -1971,7 +1971,7 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
         Repeatable = 'N';
     }
 
-    console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime+" "+metric+" "+MetricType);
+    console.log(" INSIDE UPDATING JOBTITLE " + WorkorderTypeKey + " " + WorkorderTypeName + " " + RoomTypeKey + " " + Frequency + " " + Repeatable + " " + WorkorderTime + " " + metric + " " + MetricType);
     pool.getConnection(function (err, connection) {
         if (err) {
 
@@ -1979,7 +1979,7 @@ app.post(securedpath + '/editSelectedWorkordertype', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @WorkorderTypeKey=?;set @WorkorderTypeName=?;set @RoomTypeKey=?;set @Frequency=?;set @Repeatable=?;set @WorkorderTime=?; set @OrganizationID=?;set @metric=?;set @MetricType=?;call usp_editSelectedWorkordertype(@WorkorderTypeKey,@WorkorderTypeName,@RoomTypeKey,@Frequency,@Repeatable,@WorkorderTime,@OrganizationID,@metric,@MetricType)', [WorkorderTypeKey, WorkorderTypeName, RoomTypeKey, Frequency, Repeatable, WorkorderTime, OrganizationID,metric,MetricType], function (err, rows) {
+            connection.query('set @WorkorderTypeKey=?;set @WorkorderTypeName=?;set @RoomTypeKey=?;set @Frequency=?;set @Repeatable=?;set @WorkorderTime=?; set @OrganizationID=?;set @metric=?;set @MetricType=?;call usp_editSelectedWorkordertype(@WorkorderTypeKey,@WorkorderTypeName,@RoomTypeKey,@Frequency,@Repeatable,@WorkorderTime,@OrganizationID,@metric,@MetricType)', [WorkorderTypeKey, WorkorderTypeName, RoomTypeKey, Frequency, Repeatable, WorkorderTime, OrganizationID, metric, MetricType], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -5480,7 +5480,7 @@ app.get(securedpath + '/MaintnancUpdateMsg', function (req, res) {
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query(" set @empKey=?;set @OrganizationID=?; call usp_MaintnancUpdateMsg(@empKey,@OrganizationID)", [empKey,OrganizationID], function (err, rows) {
+            connection.query(" set @empKey=?;set @OrganizationID=?; call usp_MaintnancUpdateMsg(@empKey,@OrganizationID)", [empKey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log(err);
                 }
@@ -11813,8 +11813,8 @@ app.get('/getSuperAdminIdForAddUser', function (req, res) {
 app.get(securedpath + '/checkNewRoomName', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var RoomName = url.parse(req.url, true).query['RoomName'];
-    var FacilityKey= url.parse(req.url, true).query['FacilityKey'];
-    var FloorKey= url.parse(req.url, true).query['FloorKey'];
+    var FacilityKey = url.parse(req.url, true).query['FacilityKey'];
+    var FloorKey = url.parse(req.url, true).query['FloorKey'];
     var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
 
 
@@ -11823,7 +11823,7 @@ app.get(securedpath + '/checkNewRoomName', function (req, res) {
 
             console.log("Failed! Connection with Database spicnspan via connection pool failed");
         } else {
-            connection.query('set @RoomName=?; set @FacilityKey=?; set @FloorKey=?;set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@FacilityKey,@FloorKey,@OrganizationID)', [RoomName,FacilityKey,FloorKey, OrganizationID], function (err, rows) {
+            connection.query('set @RoomName=?; set @FacilityKey=?; set @FloorKey=?;set @OrganizationID=?; call usp_checkNewRoomName(@RoomName,@FacilityKey,@FloorKey,@OrganizationID)', [RoomName, FacilityKey, FloorKey, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -13357,7 +13357,201 @@ app.post(securedpath + '/workorderByfilterPie', supportCrossOriginScript, functi
     });
 });
 
+app.post(securedpath + '/generatedowntimeWeeklyReport', supportCrossOriginScript, function (req, res) {
 
+    var fromdate = req.body.fromdate;
+    var todate = req.body.todate;
+    var employeekey = req.body.employeekeyList;
+    var organizationid = req.body.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @fromdate=?;set @todate=?; set @employeekey=?; set @organizationid=?; call usp_reportdowntime_dateconstrained(@fromdate,@todate,@employeekey,@organizationid)", [fromdate, todate, employeekey, organizationid], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[4]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getAllFloorsForbuildings', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var facilityKey = url.parse(req.url, true).query['facilityKey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @facilityKey=?;set @OrganizationID =?; call usp_getFloorsForBuildings(@facilityKey,@OrganizationID )', [facilityKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/getAllZonebuildings', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var facilityKey = req.body.facilityKey;
+    var floorKey = req.body.FloorKey;
+    var OrganizationID = req.body.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @facilityKey=?;set @floorKey=?;set @OrganizationID =?; call usp_getZonesForBuildings(@facilityKey,@floorKey,@OrganizationID )', [facilityKey, floorKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[3]));
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/getAllRoomTypebuildings', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var facilityKey = req.body.facilityKey;
+    var floorKey = req.body.FloorKey;
+    var zoneKey = req.body.ZoneKey;
+    var OrganizationID = req.body.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @facilityKey=?;set @floorKey=?;set @zoneKey=?; set @OrganizationID =?; call usp_getRoomtypesForBuildings(@facilityKey,@floorKey,@zoneKey,@OrganizationID )', [facilityKey, floorKey, zoneKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[4]));
+                    res.end(JSON.stringify(rows[4]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/getAllFloorTypebuildings', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var facilityKey = req.body.facilityKey;
+    var floorKey = req.body.FloorKey;
+    var zoneKey = req.body.ZoneKey;
+    var roomTypeKey = req.body.RoomTypeKey;
+    var OrganizationID = req.body.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @facilityKey=?;set @floorKey=?;set @zoneKey=?;set @roomTypeKey=?;set @OrganizationID =?; call usp_getFloortypesForBuildings(@facilityKey,@floorKey,@zoneKey,@roomTypeKey,@OrganizationID )', [facilityKey, floorKey, zoneKey, roomTypeKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[5]));
+                    res.end(JSON.stringify(rows[5]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/getAllRoombuildings', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var facilityKey = req.body.facilityKey;
+    var floorKey = req.body.FloorKey;
+    var zoneKey = req.body.ZoneKey;
+    var roomTypeKey = req.body.RoomTypeKey;
+    var floorTypeKey = req.body.FloorTypeKey;
+    var OrganizationID = req.body.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @facilityKey=?;set @floorKey=?;set @zoneKey=?;set @roomTypeKey=?;set @floorTypeKey=?;set @OrganizationID =?; call usp_getRoomsForBuildings(@facilityKey,@floorKey,@zoneKey,@roomTypeKey,@floorTypeKey,@OrganizationID )', [facilityKey, floorKey, zoneKey, roomTypeKey, floorTypeKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("checkUsername...from server.." + JSON.stringify(rows[6]));
+                    res.end(JSON.stringify(rows[6]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+app.post(securedpath + '/inventoryReportByallFilters', supportCrossOriginScript, function (req, res) {
+
+    var newWOObj = {};
+    newWOObj = req.body;
+    var facilitykey = newWOObj.facilitykey;
+    var floorKey = newWOObj.floorKey;
+    var zoneKey = newWOObj.zoneKey;
+    var roomTypeKey = newWOObj.roomTypeKey;
+    var floorTypeKey = newWOObj.floorTypeKey;
+    var roomKey = newWOObj.roomKey;
+    var OrganizationID = newWOObj.OrganizationID;
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @facilitykey=?; set @floorKey=?;set @zoneKey=?;set @roomTypeKey=?;set @floorTypeKey=?;set @roomKey=?;set @OrganizationID=?;call usp_getinventoryReportByallFilters(@facilitykey,@floorKey,@zoneKey,@roomTypeKey,@floorTypeKey,@roomKey,@OrganizationID)", [facilitykey, floorKey, zoneKey, roomTypeKey, floorTypeKey, roomKey, OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[7]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 app.post(securedpath + '/getEmployeeForPie', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     var newWOObj = {};
@@ -13948,7 +14142,7 @@ app.post(securedpath + '/getscheduledroomsbybatchschedulename', function (req, r
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @batchschedulenamekey=?; set @OrganizationID=?; set @build=?; set @flr=?; set @zone=?; set @rmtype=?; set @room=?; set @flrtyp=?; call usp_getscheduledroomsbybatchschedulenamekey(@batchschedulenamekey,@OrganizationID,@build,@flr,@zone,@rmtype,@room,@flrtyp)', [batchschedulenamekey, OrganizationID,build,flr,zone,rmtype,room,flrtyp], function (err, rows) {
+            connection.query('set @batchschedulenamekey=?; set @OrganizationID=?; set @build=?; set @flr=?; set @zone=?; set @rmtype=?; set @room=?; set @flrtyp=?; call usp_getscheduledroomsbybatchschedulenamekey(@batchschedulenamekey,@OrganizationID,@build,@flr,@zone,@rmtype,@room,@flrtyp)', [batchschedulenamekey, OrganizationID, build, flr, zone, rmtype, room, flrtyp], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }

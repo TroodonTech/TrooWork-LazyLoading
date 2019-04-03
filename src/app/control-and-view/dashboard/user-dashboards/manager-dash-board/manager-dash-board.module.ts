@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { ManagerDashBoardComponent } from './manager-dash-board.component';
 // import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-// import { UpdateListModule } from '../../user-welcome-pages/update-list/update-list.module'
+import { InventoryReportModule } from '../../../manager/reports/inventory-report/inventory-report.module';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 const routes: Routes = [
@@ -497,11 +497,18 @@ const routes: Routes = [
         loadChildren: '../../user-password-changes/manager-change-pass-word/manager-change-password.module#ManagerChangePasswordModule',
 
       },
-      // {
-      //   path: 'second',
-      //   outlet: 'menucontent',
-      //   component: SecondPage
-      // }
+      {
+        path: 'employeeDowntimeReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/employees-downtime-report/employees-downtime-report.module#EmployeesDowntimeReportModule',
+
+      },
+      {
+        path: 'inventoryReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/inventory-report/inventory-report.module#InventoryReportModule',
+
+      }
     ]
   }
 ];
