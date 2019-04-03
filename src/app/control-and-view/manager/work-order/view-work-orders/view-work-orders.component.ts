@@ -90,6 +90,12 @@ export class ViewWorkOrdersComponent implements OnInit {
   //code for special character restriction
   regexStr = '^[a-zA-Z0-9_ ]*$';
   @Input() isAlphaNumeric: boolean;
+
+  latitude ;
+  longitude ;
+  basicModal1;
+  
+
   constructor(private formBuilder: FormBuilder, private WorkOrderServiceService: WorkOrderServiceService, private el: ElementRef) { }
 //function for token decoding
   url_base64_decode(str) {
@@ -640,6 +646,13 @@ export class ViewWorkOrdersComponent implements OnInit {
         this.viewWO_Filter();
 
       });
+  }
+
+  passGpsValue(Latitude,Longitude){
+   
+    this.latitude = parseFloat(Latitude);
+    this.longitude = parseFloat(Longitude);
+  
   }
 
 }
