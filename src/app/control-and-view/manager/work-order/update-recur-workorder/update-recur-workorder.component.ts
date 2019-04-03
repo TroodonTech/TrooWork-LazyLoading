@@ -65,6 +65,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
   occursonday;
   keepActive;
   keep_active;
+  GpsSnapShot;
+  Gps_SnapShot;
   workorderCreation;
   timetable = { times: [] };
   monthlyDays = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];//for selecting day of a month in recurring option(on gap of dropdown)
@@ -986,6 +988,13 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     else{
        this.keep_active=0;
      }
+
+     if( this.GpsSnapShot ==true){
+      this.Gps_SnapShot=1;
+     }
+      else{
+       this.Gps_SnapShot=0;
+     }
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -1009,7 +1018,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
       occurstype: this.occurs_type,
-      keepActive:this.keep_active
+      keepActive:this.keep_active,
+      IsSnapshot:this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {
@@ -1366,6 +1376,14 @@ export class UpdateRecurWorkorderComponent implements OnInit {
     else{
        this.keep_active=0;
      }
+
+     if( this.GpsSnapShot ==true){
+      this.Gps_SnapShot=1;
+     }
+      else{
+       this.Gps_SnapShot=0;
+     }
+
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -1389,7 +1407,8 @@ export class UpdateRecurWorkorderComponent implements OnInit {
       repeatinterval: this.rep_interval,
       occursonday: this.occurs_on,
       occurstype: this.occurs_type,
-      keepActive:this.keep_active
+      keepActive:this.keep_active,
+      IsSnapshot:this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating current workorder
       this.deleteWO = {

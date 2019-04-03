@@ -110,7 +110,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes)  * this.roomList[i].dailyFrequency);
+          this.totalMonTime = this.totalMonTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_tue == '1') {
@@ -150,7 +150,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes)* this.roomList[i].dailyFrequency);
+          this.totalSatTime = this.totalSatTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
       if (this.roomList[i].check_sun == '1') {
@@ -158,7 +158,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
         else {
-          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].Minutes)  * this.roomList[i].dailyFrequency);
+          this.totalSunTime = this.totalSunTime + (parseFloat(this.roomList[i].Minutes) * this.roomList[i].dailyFrequency);
         }
       }
 
@@ -191,7 +191,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
         else {
-          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].Minutes)* this.roomTempList[i].dailyFrequency);
+          this.totalWedTime = this.totalWedTime + (parseFloat(this.roomTempList[i].Minutes) * this.roomTempList[i].dailyFrequency);
         }
       }
       if (this.roomTempList[i].check_thu == '1') {
@@ -269,21 +269,20 @@ export class CreateBatchScheduleComponent implements OnInit {
         this.roomList = data;
         for (var j = 0; j < this.roomList.length; j++) {
           // debugger;
-          for(var i=0;i<this.woList.length;i++){
-            if (this.roomList[j].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
+          for (var i = 0; i < this.woList.length; i++) {
+            if (this.roomList[j].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
               // debugger;
-             if(this.woList[i].MetricType== 'Minutes Per')
-             {
-             this.roomList[j].Minutes=this.woList[i].MetricValue;
-             console.log("Metric value::::"+this.woList[i].MetricValue);
-           }
-           else{
-             this.roomList[j].Minutes=(this.woList[i].MetricValue*this.roomList[j].Area);
-             console.log("Metric value::::"+this.woList[i].MetricValue);
-             console.log("Area::::"+this.roomList[j].Area);
-           }
+              if (this.woList[i].MetricType == 'Minutes Per') {
+                this.roomList[j].Minutes = this.woList[i].MetricValue;
+                // console.log("Metric value::::" + this.woList[i].MetricValue);
+              }
+              else {
+                this.roomList[j].Minutes = (this.woList[i].MetricValue * this.roomList[j].Area);
+                // console.log("Metric value::::" + this.woList[i].MetricValue);
+                // console.log("Area::::" + this.roomList[j].Area);
+              }
             }
-           }
+          }
 
           if (this.roomList[j].check_mon == 'true') {
             this.roomList[j].check_mon = 1;
@@ -339,6 +338,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         for (var j = 0; j < this.roomTempList.length; j++) {
           this.roomTempList[j].dailyFrequency = 1;
           this.roomTempList[j].KeepActive = 0;
+          // this.roomTempList[j].snapshot = 0;
         }
         this.metricCal();
       });
@@ -347,7 +347,7 @@ export class CreateBatchScheduleComponent implements OnInit {
     //   .subscribe((data: any[]) => {
     //     this.woList = data;
     //   });
-      
+
 
   }
 
@@ -440,6 +440,15 @@ export class CreateBatchScheduleComponent implements OnInit {
       this.roomTempList[j].KeepActive = 1;
     }
   }
+  selectAllSnapshot() {
+    for (var j = 0; j < this.roomList.length; j++) {
+      this.roomList[j].snapshot = 1;
+    }
+    for (var j = 0; j < this.roomTempList.length; j++) {
+      this.roomTempList[j].snapshot = 1;
+    }
+  }
+
 
   createBatchReport() {
 
@@ -500,6 +509,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var barObj1 = [];
         var photoObj1 = [];
         var keepObj1 = [];
+        var snapObj1 = [];
         var roomsString1;
         var roomList1 = [];
         var Frequency1;
@@ -513,6 +523,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var BarCheck1;
         var PhotCheck1;
         var KeepActive1;
+        var Snapshot1;
         var workordertkey1;
         var workorderroomstring1;
         var q = this.time1.getHours();
@@ -614,6 +625,14 @@ export class CreateBatchScheduleComponent implements OnInit {
             this.roomList[j].KeepActive = false;
             keepObj1.push(this.roomList[j].KeepActive);
           }
+          if (this.roomList[j].snapshot === true || this.roomList[j].snapshot == 1) {
+            this.roomList[j].snapshot = true;
+            snapObj1.push(this.roomList[j].snapshot);
+          }
+          else {
+            this.roomList[j].snapshot = false;
+            snapObj1.push(this.roomList[j].snapshot);
+          }
 
         }
         roomsString1 = roomList1.join(',');
@@ -628,6 +647,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         BarCheck1 = barObj1.join(',');
         PhotCheck1 = photoObj1.join(',');
         KeepActive1 = keepObj1.join(',');
+        Snapshot1 = snapObj1.join(',');
         workordertkey1 = workorderkeyobj1.join(',');
         workorderroomstring1 = workorderroomobj1.join(',');
         this.scheduleUpdate = {
@@ -643,6 +663,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           sunCheck: SunCheck1,
           barCheck: BarCheck1,
           photCheck: PhotCheck1,
+          snapshot: Snapshot1,
           keepActiveCheck: KeepActive1,
           workordertype: workordertkey1,
           empKey: this.employeekey,
@@ -676,6 +697,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var barObj2 = [];
         var photoObj2 = [];
         var keepObj2 = [];
+        var snapObj2 = [];
         var roomsString2;
         var roomList2 = [];
         var FRequency2;
@@ -689,6 +711,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         var BArCheck2;
         var PHotCheck2;
         var KeepActive2;
+        var Snapshot2;
         var WOrkordertkey2;
         var TEmproomidobj2;
         var q = this.time1.getHours();
@@ -795,6 +818,14 @@ export class CreateBatchScheduleComponent implements OnInit {
             this.roomTempList[j].KeepActive = false;
             keepObj2.push(this.roomTempList[j].KeepActive);
           }
+          if (this.roomTempList[j].snapshot === true || this.roomTempList[j].snapshot == 1) {
+            this.roomTempList[j].snapshot = true;
+            snapObj2.push(this.roomTempList[j].snapshot);
+          }
+          else {
+            this.roomTempList[j].snapshot = false;
+            snapObj2.push(this.roomTempList[j].snapshot);
+          }
         }
         roomsString2 = roomList2.join(',');
         FRequency2 = FrequencyObj2.join(',');
@@ -808,6 +839,7 @@ export class CreateBatchScheduleComponent implements OnInit {
         BArCheck2 = barObj2.join(',');
         PHotCheck2 = photoObj2.join(',');
         KeepActive2 = keepObj2.join(',');
+        Snapshot2 = snapObj2.join(',');
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
         this.scheduleInsert = {
@@ -823,6 +855,7 @@ export class CreateBatchScheduleComponent implements OnInit {
           sunCheck: SUnCheck2,
           barCheck: BArCheck2,
           photCheck: PHotCheck2,
+          snapshot: Snapshot2,
           keepActiveCheck: KeepActive2,
           workordertype: WOrkordertkey2,
           empKey: this.employeekey,
@@ -884,7 +917,7 @@ export class CreateBatchScheduleComponent implements OnInit {
       .subscribe((data: Scheduling[]) => {
         this.scheduleNameList = data;
       });
-      this.scheduleService
+    this.scheduleService
       .getallworkorderTypeNew(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
         this.woList = data;
@@ -892,49 +925,45 @@ export class CreateBatchScheduleComponent implements OnInit {
 
   }
 
-  CalMetric(index,list){
+  CalMetric(index, list) {
     // debugger;
-    
-    
-    if(list=='roomTempList')
-    {
-        for(var i=0;i<this.woList.length;i++){
-     if (this.roomTempList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-      //  debugger;
-      if(this.woList[i].MetricType== 'Minutes Per')
-      {
-      this.roomTempList[index].Minutes=this.woList[i].MetricValue;
-      console.log("Metric value::::"+this.woList[i].MetricValue);
-    }
-    else{
-      this.roomTempList[index].Minutes=(this.woList[i].MetricValue*this.roomTempList[index].Area);
-      console.log("Metric value::::"+this.woList[i].MetricValue);
-             console.log("Area::::"+this.woList[i].Area);
-    }
-     }
-    }
-  }
 
-  
-  if(list=='roomList')
-    {
-      for(var i=0;i<this.woList.length;i++){
-      if (this.roomList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-        // debugger;
-       if(this.woList[i].MetricType== 'Minutes Per')
-       {
-       this.roomList[index].Minutes=this.woList[i].MetricValue;
-       console.log("Metric value::::"+this.woList[i].MetricValue);
-     }
-     else{
-       this.roomList[index].Minutes=(this.woList[i].MetricValue*this.roomList[index].Area);
-       console.log("Metric value::::"+this.woList[i].MetricValue);
-              console.log("Area::::"+this.roomList[index].Area);
-     }
+
+    if (list == 'roomTempList') {
+      for (var i = 0; i < this.woList.length; i++) {
+        if (this.roomTempList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+          //  debugger;
+          if (this.woList[i].MetricType == 'Minutes Per') {
+            this.roomTempList[index].Minutes = this.woList[i].MetricValue;
+            // console.log("Metric value::::" + this.woList[i].MetricValue);
+          }
+          else {
+            this.roomTempList[index].Minutes = (this.woList[i].MetricValue * this.roomTempList[index].Area);
+            // console.log("Metric value::::" + this.woList[i].MetricValue);
+            // console.log("Area::::" + this.woList[i].Area);
+          }
+        }
       }
     }
 
+
+    if (list == 'roomList') {
+      for (var i = 0; i < this.woList.length; i++) {
+        if (this.roomList[index].WorkorderTypeKey == this.woList[i].WorkorderTypeKey) {
+          // debugger;
+          if (this.woList[i].MetricType == 'Minutes Per') {
+            this.roomList[index].Minutes = this.woList[i].MetricValue;
+            // console.log("Metric value::::" + this.woList[i].MetricValue);
+          }
+          else {
+            this.roomList[index].Minutes = (this.woList[i].MetricValue * this.roomList[index].Area);
+            // console.log("Metric value::::" + this.woList[i].MetricValue);
+            // console.log("Area::::" + this.roomList[index].Area);
+          }
+        }
+      }
+
     }
- 
+
   }
 }

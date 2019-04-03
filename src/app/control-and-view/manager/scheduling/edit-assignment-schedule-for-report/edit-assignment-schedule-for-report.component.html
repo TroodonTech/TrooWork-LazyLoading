@@ -76,6 +76,7 @@
         <td (click)="selectAllSun()">Sun</td>
         <td (click)="selectAllPhoto()">Photo Required</td>
         <td (click)="selectAllBarcode()">Barcode Required</td>
+        <td (click)="selectAllSnapshot()">Snapshot Required</td>
         <td (click)="selectAllKeepActive()">Keep Active</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>
@@ -126,6 +127,9 @@
         </td>
         <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.barcodeReq">
+        </td>
+        <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.snapshot">
         </td>
         <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.KeepActive">
@@ -192,6 +196,9 @@
         </td>
         <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.barcodeReq">
+        </td>
+        <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.snapshot">
         </td>
         <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.KeepActive">

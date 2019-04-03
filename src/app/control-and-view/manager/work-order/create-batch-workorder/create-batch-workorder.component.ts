@@ -41,6 +41,9 @@ export class CreateBatchWorkorderComponent implements OnInit {
   WorkorderTypeKey;
   workorderNotes;
   showEqTypes = false;
+  GpsSnapShot;
+  Gps_SnapShot;
+
 
   // temp-variables
   wot;
@@ -756,6 +759,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.GpsSnapShot ==true){
+      this.Gps_SnapShot=1;
+     }
+      else{
+       this.Gps_SnapShot=0;
+     }
     if (this.newType == true) {//checking for new workorder type
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -794,7 +803,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    IsSnapshot:this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
                     alert("Batch work-order created successfully");
@@ -835,7 +845,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        IsSnapshot:this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addworkorderSchedule(this.workorderCreation).subscribe(res => {
         alert("Batch work-order created successfully");
@@ -1178,6 +1189,12 @@ export class CreateBatchWorkorderComponent implements OnInit {
         }
       }
     }
+    if( this.GpsSnapShot ==true){
+      this.Gps_SnapShot=1;
+     }
+      else{
+       this.Gps_SnapShot=0;
+     }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1216,7 +1233,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
                     intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
-                    occurstype: this.occurs_type
+                    occurstype: this.occurs_type,
+                    IsSnapshot:this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res => {
                     alert("Batch work-order created successfully");
@@ -1257,7 +1275,8 @@ export class CreateBatchWorkorderComponent implements OnInit {
         intervaltype: this.intervaltype, // char(1),/*d for day, w for week, m for month*/
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
-        occurstype: this.occurs_type
+        occurstype: this.occurs_type,
+        IsSnapshot:this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addworkorderSchedulewithEquipment(this.workorderCreation).subscribe(res => {
         alert("Batch work-order created successfully");

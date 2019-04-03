@@ -83,6 +83,8 @@ export class EditWorkOrderComponent implements OnInit {
   occurenceinstance;
   keepActive;
   keep_active;
+  GpsSnapShot;
+  Gps_SnapShot;
 
   intervaltype;
   repeatinterval;
@@ -603,6 +605,14 @@ export class EditWorkOrderComponent implements OnInit {
     else{
        this.keep_active=0;
      }
+     if( this.GpsSnapShot ==true){
+      this.Gps_SnapShot=1;
+     }
+      else{
+       this.Gps_SnapShot=0;
+     }
+
+
     this.workorderCreation = {
       occursontime: this.workTime,
       workorderkey: - 99,
@@ -625,7 +635,8 @@ export class EditWorkOrderComponent implements OnInit {
       intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
       repeatinterval: 1,
       occursonday: null,
-      keepActive:this.keep_active
+      keepActive:this.keep_active,
+      IsSnapshot:this.Gps_SnapShot
     };
     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
       this.deleteWO = {
@@ -845,6 +856,13 @@ export class EditWorkOrderComponent implements OnInit {
       else{
          this.keep_active=0;
        }
+
+       if( this.GpsSnapShot ==true){
+        this.Gps_SnapShot=1;
+       }
+        else{
+         this.Gps_SnapShot=0;
+       }
       this.workorderCreation = {
         occursontime: this.workTime,
         workorderkey: - 99,
@@ -867,7 +885,8 @@ export class EditWorkOrderComponent implements OnInit {
         intervaltype: '0', // char(1),/*d for day, w for week, m for month*/
         repeatinterval: 1,
         occursonday: null,
-        keepActive:this.keep_active
+        keepActive:this.keep_active,
+        IsSnapshot:this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe((data: any[]) => {//service for updating workorder
         this.deleteWO = {

@@ -79,6 +79,7 @@
         <td (click)="selectAllSun()">Sun</td>
         <td (click)="selectAllPhoto()">Photo Required</td>
         <td (click)="selectAllBarcode()">Barcode Required</td>
+        <td (click)="selectAllSnapshot()">Snapshot Required</td>
         <td (click)="selectAllKeepActive()">Keep Active</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>
@@ -132,6 +133,9 @@
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.barcodeReq">
         </td>
         <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.snapshot">
+        </td>
+        <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.KeepActive">
         </td>
         <td>
@@ -139,7 +143,7 @@
         </td>
         <td>
           <select style="background-color: #D4F4FF !important;" class="form-control" (change)='CalMetric(i,"roomList");metricCal();' [(ngModel)]="x.WorkorderTypeKey">
-            <option value="select">--Select--</option>
+            <option value="">--Select--</option>
             <option *ngFor="let b of woList" [value]="b.WorkorderTypeKey">
               {{b.WorkorderTypeText}}
             </option>
@@ -199,6 +203,9 @@
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.barcodeReq">
         </td>
         <td>
+          <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.snapshot">
+        </td>
+        <td>
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.KeepActive">
         </td>
         <td>
@@ -206,7 +213,7 @@
         </td>
         <td>
           <select style="background-color: #D4F4FF !important;" class="form-control" (change)='CalMetric(i,"roomTempList");metricCal();' [(ngModel)]="z.WorkorderTypeKey">
-            <option value="select">--Select--</option>
+            <option value="">--Select--</option>
             <option *ngFor="let w of woList" [value]="w.WorkorderTypeKey">
               {{w.WorkorderTypeText}}
             </option>
@@ -245,6 +252,7 @@
         <td (click)="selectAllSun()">Sun</td>
         <td (click)="selectAllPhoto()">Photo Required</td>
         <td (click)="selectAllBarcode()">Barcode Required</td>
+        <td (click)="selectAllSnapshot()">Snapshot Required</td>
         <td (click)="selectAllKeepActive()">Keep Active</td>
         <td>Room Type</td>
         <td>Work Order Type *</td>

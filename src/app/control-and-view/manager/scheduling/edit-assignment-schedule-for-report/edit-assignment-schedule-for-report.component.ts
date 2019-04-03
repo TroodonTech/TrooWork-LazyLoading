@@ -450,6 +450,16 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     }
   }
 
+  selectAllSnapshot()
+  {
+    for (var j = 0; j < this.roomList.length; j++) {
+      this.roomList[j].snapshot = 1;
+    }
+    for (var j = 0; j < this.roomTempList.length; j++) {
+      this.roomTempList[j].snapshot = 1;
+    }
+  }
+
   createBatchReport() {
     this.CreateDis = true;
     this.wotypeFlag = 0;
@@ -509,6 +519,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var barObj1 = [];
         var photoObj1 = [];
         var keepObj1 = [];
+        var snapObj1=[];
         var roomsString1;
         var roomList1 = [];
         var Frequency1;
@@ -522,6 +533,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var BarCheck1;
         var PhotCheck1;
         var KeepActive1;
+        var Snapshot1;
         var workordertkey1;
         var workorderroomstring1;
         var q = this.time1.getHours();
@@ -613,7 +625,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomList[j].photoReq = false;
             photoObj1.push(this.roomList[j].photoReq);
           }
-
+          // debugger;
+// console.log(this.roomList[j].KeepActive+" ... "+j);
           if (this.roomList[j].KeepActive === true || this.roomList[j].KeepActive == 1) {
             this.roomList[j].KeepActive = true;
             keepObj1.push(this.roomList[j].KeepActive);
@@ -622,7 +635,16 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomList[j].KeepActive = false;
             keepObj1.push(this.roomList[j].KeepActive);
           }
+          if (this.roomList[j].snapshot === true || this.roomList[j].snapshot == 1) {
+            this.roomList[j].snapshot = true;
+            snapObj1.push(this.roomList[j].snapshot);
+          }
+          else {
+            this.roomList[j].snapshot = false;
+            snapObj1.push(this.roomList[j].snapshot);
+          }
         }
+        // console.log(keepObj1);
         roomsString1 = roomList1.join(',');
         Frequency1 = FrequencyObj1.join(',');
         MonCheck1 = monObj1.join(',');
@@ -634,7 +656,8 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         SunCheck1 = sunObj1.join(',');
         BarCheck1 = barObj1.join(',');
         PhotCheck1 = photoObj1.join(',');
-        KeepActive1 = keepObj1.join(',');
+        KeepActive1 = keepObj1.join(','); 
+        Snapshot1 = snapObj1.join(',');
         workordertkey1 = workorderkeyobj1.join(',');
         workorderroomstring1 = workorderroomobj1.join(',');
         this.scheduleUpdate = {
@@ -650,6 +673,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           sunCheck: SunCheck1,
           barCheck: BarCheck1,
           photCheck: PhotCheck1,
+          snapshot:Snapshot1,
           keepActiveCheck: KeepActive1,
           workordertype: workordertkey1,
           empKey: this.employeekey,
@@ -683,6 +707,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var barObj2 = [];
         var photoObj2 = [];
         var keepObj2 = [];
+        var snapObj2=[];
         var roomsString2;
         var roomList2 = [];
         var FRequency2;
@@ -696,6 +721,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         var BArCheck2;
         var PHotCheck2;
         var KeepActive2;
+        var Snapshot2;
         var WOrkordertkey2;
         var TEmproomidobj2;
         var q = this.time1.getHours();
@@ -797,6 +823,14 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
             this.roomTempList[j].KeepActive = false;
             keepObj2.push(this.roomTempList[j].KeepActive);
           }
+          if (this.roomTempList[j].snapshot === true || this.roomTempList[j].snapshot == 1) {
+            this.roomTempList[j].snapshot = true;
+            snapObj2.push(this.roomTempList[j].snapshot);
+          }
+          else {
+            this.roomTempList[j].snapshot = false;
+            snapObj2.push(this.roomTempList[j].snapshot);
+          }
         }
         roomsString2 = roomList2.join(',');
         FRequency2 = FrequencyObj2.join(',');
@@ -809,6 +843,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
         SUnCheck2 = sunObj2.join(',');
         BArCheck2 = barObj2.join(',');
         PHotCheck2 = photoObj2.join(',');
+        Snapshot2 = snapObj2.join(',');
         KeepActive2 = keepObj2.join(',');
         WOrkordertkey2 = workorderkeyobj2.join(',');
         TEmproomidobj2 = temproomobj2.join(',');
@@ -825,6 +860,7 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
           sunCheck: SUnCheck2,
           barCheck: BArCheck2,
           photCheck: PHotCheck2,
+          snapshot:Snapshot2,
           keepActiveCheck: KeepActive2,
           workordertype: WOrkordertkey2,
           empKey: this.employeekey,
@@ -1014,17 +1050,17 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
       {
         for(var i=0;i<this.woList.length;i++){
      if (this.roomTempList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-      //  debugger;
+       debugger;
       //  this.roomTempList[index].Minutes=0;
       if(this.woList[i].MetricType== 'Minutes Per')
       {
       this.roomTempList[index].Minutes=this.woList[i].MetricValue;
-      console.log("Metric value::::"+this.woList[i].MetricValue);
+      // console.log("Metric value::::"+this.woList[i].MetricValue);
     }
     else{
       this.roomTempList[index].Minutes=(this.woList[i].MetricValue*this.roomTempList[index].Area);
-      console.log("Metric value::::"+this.woList[i].MetricValue);
-             console.log("Area::::"+this.roomTempList[index].Area);
+      // console.log("Metric value::::"+this.woList[i].MetricValue);
+            //  console.log("Area::::"+this.roomTempList[index].Area);
     }
      }
     }
@@ -1035,16 +1071,16 @@ export class EditAssignmentScheduleForReportComponent implements OnInit {
     {
       for(var i=0;i<this.woList.length;i++){
       if (this.roomList[index].WorkorderTypeKey==this.woList[i].WorkorderTypeKey){
-        // debugger;
+        debugger;
        if(this.woList[i].MetricType== 'Minutes Per')
        {
        this.roomList[index].Minutes=this.woList[i].MetricValue;
-       console.log("Metric value::::"+this.woList[i].MetricValue);
+      //  console.log("Metric value::::"+this.woList[i].MetricValue);
      }
      else{
        this.roomList[index].Minutes=(this.woList[i].MetricValue*this.roomList[index].Area);
-       console.log("Metric value::::"+this.woList[i].MetricValue);
-              console.log("Area::::"+this.roomList[index].Area);
+      //  console.log("Metric value::::"+this.woList[i].MetricValue);
+              // console.log("Area::::"+this.roomList[index].Area);
      }
       }
     }
