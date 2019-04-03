@@ -8385,8 +8385,8 @@ app.post(securedpath + '/addInspectionOrderwithRecurring', supportCrossOriginScr
                     console.log("Problem with MySQL" + err);
                 }
                 else {
-                    console.log(" QQQQQQQQQQQQQQQ res got is " + JSON.stringify(rows[9]));
-                    res.end(JSON.stringify(rows[10]));
+                    console.log(" QQQQQQQQQQQQQQQ res got is " + JSON.stringify(rows[11]));
+                    res.end(JSON.stringify(rows[11]));
 
                 }
             });
@@ -13921,6 +13921,7 @@ app.get(securedpath + '/searchEmpMeetingORTraining', function (req, res) {
 
 app.post(securedpath + '/getfloorTypeValue', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
+
     var newWOObj = {};
     newWOObj = req.body;
     var FacilityKey = newWOObj.FacilityKey;
@@ -14121,7 +14122,67 @@ app.post('/api/upload_test', upload1.single('photo'), function (req, res) {
         })
     }
 });
+//file upload in view inspection starts : @Pooja
 
+let inspstorage1 = multer.diskStorage({
+    destination: (req, file, cb) => {
+        
+            cb(null, '../dist/mdb-angular-free/Inspection-Upload');
+        
+        
+    },
+    filename: (req, file, cb) => {
+        
+            var InspectionOrderKey = url.parse(req.url, true).query['IoKey'];
+            var empkey = url.parse(req.url, true).query['empkey'];
+            var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+            var filename = file.originalname;
+
+            // console.log(" SSSSSSSSSSSSSSSSSS fid fdesc fname are  " + formtypeId + " " + formDesc + " " + filename + " " + multerUploadPath);
+
+
+            pool.getConnection(function (err, connection) {
+                if (err) {
+
+                    console.log("Failed! Connection with Database spicnspan via connection pool failed");
+                }
+                else {
+                    console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+                    connection.query('set @InspectionOrderKey=?;set @empkey=?;set @OrganizationID=?;set @fileName=?; call usp_uploadInspectionFile(@InspectionOrderKey,@empkey,@OrganizationID,@fileName)', [InspectionOrderKey,empkey,OrganizationID,filename], function (err) {
+                        if (err)
+                            console.log("my error" + err);
+                    });
+                }
+                connection.release();
+            });
+        
+       
+        console.log(file.name);
+
+        cb(null, file.originalname);
+    }
+});
+
+let inspupload1 = multer({ storage: inspstorage1 });
+
+
+app.post('/api/inspection_Upload', inspupload1.single('photo'), function (req, res) {
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+            success: false
+        });
+
+    } else {
+        console.log('file received');
+        return res.send({
+            success: true
+        })
+    }
+});
+
+
+//file upload in view inspection ends : @Pooja
 
 //Scheduled Rooms by Prakash Starts here
 
@@ -14305,7 +14366,37 @@ app.post(securedpath + '/viewFilterRoomsforScheduleroom', supportCrossOriginScri
         connection.release();
     });
 });
+// api for deleting inspection order starts:@Pooja
 
+app.post(securedpath + '/deleteInspectionOrders', supportCrossOriginScript, function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+      
+    var deleteInspectionOrderList = req.body.deleteInspectionOrderList;
+    var employeekey = req.body.employeekey;
+    var OrganizationID = req.body.OrganizationID;
+    
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @deleteInspectionOrderList =?; set @employeekey =?; set @OrganizationID =?; call usp_deleteInspectionOrder(@deleteInspectionOrderList,@employeekey,@OrganizationID)", [deleteInspectionOrderList,employeekey,OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+// api for deleting inspection order ends:@Pooja
 
 app.post(securedpath + '/saveScheduleReport', supportCrossOriginScript, function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -14508,6 +14599,35 @@ app.get(securedpath + '/cronjobunrunbatchdetailsCount', function (req, res) {
     });
 });
 //CronJob Details- Rodney ends here
+
+app.options('/employeeByJbtitleNempStatusFilter', supportCrossOriginScript);
+app.post(securedpath + '/employeeByJbtitleNempStatusFilter', supportCrossOriginScript, function (req, res) {
+
+
+    var jbtitlekey = req.body.JbTitlKy;
+    var empstatskey = req.body.empstskey;
+    var empkey = req.body.empkey;
+    var orgid = req.body.orgid;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @jbtitlekey=?; set  @empstatskey=?;set  @empkey=?;set  @orgid=?; call usp_employeeFilterbyJbtitleEmpStatus(@jbtitlekey,@empstatskey,@empkey,@orgid)", [jbtitlekey,empstatskey,empkey,orgid], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[4]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 
 //old Sendmail Service
 

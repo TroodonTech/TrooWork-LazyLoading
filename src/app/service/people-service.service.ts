@@ -708,4 +708,14 @@ export class PeopleServiceService {
     const url = ConectionSettings.Url+"/addMeetinTraingByNewEvent";
     return this.http.post(url, obj);
   }
+  getempdettblwithslctdJbtitleNempStatus(JobTitleKey,EmployeeStatusKey,employeekey,OrganizationID){
+    const url = ConectionSettings.Url+"/employeeByJbtitleNempStatusFilter";
+    const obj = {
+      JbTitlKy: JobTitleKey,
+      empstskey: EmployeeStatusKey,
+      empkey: employeekey,
+      orgid: OrganizationID
+    };
+    return this.http.post(url, obj);
+  }
 }

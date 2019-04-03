@@ -5,6 +5,8 @@ import { ActivatedRoute,Router } from '@angular/router';
 import { ConectionSettings } from '../../../../service/ConnectionSetting';
 import { HttpClient } from '@angular/common/http';
 import {Location} from '@angular/common';
+import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+const url = ConectionSettings.Url + '/inspection_Upload';
 @Component({
   selector: 'app-managerinspectiontemplate',
   templateUrl: './managerinspectiontemplate.component.html',
@@ -20,6 +22,8 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   isMailed;
   emp_EmailId;
   audit_EmailId;
+
+  public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -55,6 +59,7 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   lastIndexValue;
   rating_yn;
   inspectionAssignEmp;
+  addUrl;
 
   // starList: boolean[];
   starList=[];
@@ -175,6 +180,12 @@ export class ManagerinspectiontemplateComponent implements OnInit {
           }
         });
     });
+
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('ImageUpload:uploaded:', item, status, response);
+      alert('File uploaded successfully');
+    };
   }
   saveRatings(TemplateQuestionID, ScoreName) {
 
@@ -426,5 +437,13 @@ export class ManagerinspectiontemplateComponent implements OnInit {
   }
   goBack(){
     this._location.back();
+  }
+  FileSelected(){
+    this.addUrl = '?IoKey=' + this.inspKey$ + '&empkey=' + this.employeekey + '&OrganizationID=' + this.OrganizationID;
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+      item.url = url + this.addUrl;
+    }
+    this.uploader.uploadAll();
   }
 }
