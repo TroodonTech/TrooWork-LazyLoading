@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FileSelectDirective } from 'ng2-file-upload';
-import { CalendarModule } from 'primeng/calendar';
-
-import { ManagerinspectiontemplateComponent } from './managerinspectiontemplate.component';
+import { IgxDatePickerModule } from 'igniteui-angular';
+import { NgDatepickerModule } from 'ng2-datepicker';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { InventoryReportComponent } from './inventory-report.component';
 import { ManagerDashBoardModule } from '../../../dashboard/user-dashboards/manager-dash-board/manager-dash-board.module';
-
+import { ChartsModule } from 'ng2-charts';
 const routes: Routes = [
   {
     path: '',
-    component: ManagerinspectiontemplateComponent
+    component: InventoryReportComponent
   }
-  
+
 ];
 
 @NgModule({
@@ -26,9 +25,12 @@ const routes: Routes = [
     MDBBootstrapModule,
     ManagerDashBoardModule,
     FormsModule, ReactiveFormsModule,
-    CalendarModule,
-    RouterModule.forChild(routes)
+    IgxDatePickerModule,
+    NgDatepickerModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    RouterModule.forChild(routes),
+    ChartsModule
   ],
-  declarations: [ManagerinspectiontemplateComponent,FileSelectDirective]
+  declarations: [InventoryReportComponent]
 })
-export class ManagerinspectiontemplateModule { }
+export class InventoryReportModule { }

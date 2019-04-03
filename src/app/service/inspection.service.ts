@@ -325,5 +325,11 @@ export class InspectionService {
     .http
     .get(ConectionSettings.Url+'/getInspectionDetailsForEmail?inspectionorderKey=' +inspKey+  "&OrganizationID="+OrganizationID);
   }
+  delete_InspectionOrder(obj) {
+    const url = ConectionSettings.Url+'/deleteInspectionOrders';
+    return this
+      .http
+      .post(url, obj);
+  }
 }
 

@@ -97,10 +97,10 @@ export class SchedulingService {
     return this.http.post(url, obj);
   }
 
-  getSchedulingRoomList(scheduleKey, orgID, building, floor, zone, roomtype, room, floortype) {
+  getSchedulingRoomList(scheduleKey, orgID,building, floor, zone, roomtype, room, floortype) {
     const url = ConectionSettings.Url + "/getscheduledroomsbybatchschedulename";
-    const obj = {
-      batchschedulenamekey: scheduleKey,
+      const obj = {
+      batchschedulenamekey: scheduleKey ,
       OrganizationID: orgID,
       build: building,
       flr: floor,
@@ -108,7 +108,7 @@ export class SchedulingService {
       rmtype: roomtype,
       room: room,
       flrtyp: floortype
-    }
+    } 
     return this.http.post(url, obj);
   }
 
