@@ -325,5 +325,17 @@ export class ReportServiceService {
       .post(url, obj);
 
   }
+
+  generateDowntimeReportService(fromdate, EmployeeKey, OrganizationID) {
+    const url = ConectionSettings.Url+'/generatedowntimeReport';
+    const obj = {
+      fromdate: fromdate,
+      employeekey: EmployeeKey,
+      OrganizationID: OrganizationID
+    };
+    return this
+      .http
+      .post(url, obj);
+  }
   // @Author Rodney - For inventory ends
 }

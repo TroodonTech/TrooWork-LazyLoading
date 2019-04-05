@@ -14936,6 +14936,34 @@ app.get(securedpath + '/getEmployeesLocationWithSnapshot', function (req, res) {
         connection.release();
     });
 });
+
+app.post(securedpath + '/generatedowntimeReport', supportCrossOriginScript, function (req, res) {
+
+    var fromdate = req.body.fromdate;
+    var employeekey = req.body.employeekey;
+    var organizationid = req.body.OrganizationID;
+   
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @fromdate=?; set @employeekey=?; set @organizationid=?; call usp_reportdowntimeemployee(@fromdate,@employeekey,@organizationid)", [fromdate,employeekey,organizationid], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
 // 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 is your sendgrid api
 app.post(securedpath + '/sendmail', function (req, res) {
     var options = {
