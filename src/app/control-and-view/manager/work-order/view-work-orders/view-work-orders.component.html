@@ -192,7 +192,7 @@
               <button type="button" class="btn btn-default btn-xs" *ngIf="x.IsPhotoRequired === 1 && x.WorkorderStatus === 'Completed'">View
                 Image</button>
             </a> 
-            <button *ngIf="x.IsSnapshot==1"type="button" class="btn btn-success" (click)='passGpsValue(x.Latitude,x.Longitude);basicModal1.show()'><b>GPS Location</b></button>
+            <button *ngIf="x.IsSnapshot==1 && x.WorkorderStatus === 'Completed'"type="button" class="btn btn-success" (click)='passGpsValue(x.Latitude,x.Longitude);basicModal1.show()'><b>GPS Location</b></button>
           </td>
 
         </tr>

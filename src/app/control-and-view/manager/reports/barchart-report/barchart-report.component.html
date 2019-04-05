@@ -1,0 +1,86 @@
+<img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
+<div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div class="row col-md-12 ">
+    <h4 style="margin-left: 42%;">DOWN TIME REPORT</h4>
+  </div>
+
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
+    class="row bg-info col-md-12">
+    <div class="col-md-6">
+      <h3 style="text-align: right"></h3>
+      <div class="form-group" style="width: 85%;">
+        <label>Employee</label>
+        <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control">
+          <option value="">--Select--</option>
+          <option *ngFor="let e of employeeoption" [value]="e.EmployeeKey">
+            {{e.EmployeeText}}
+          </option>
+        </select>
+      </div>
+      <!-- </div>
+    <div class="col-md-6"> -->
+      <div class="form-group" style="width: 20rem;">
+        <label>Date</label>
+        <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
+      </div>
+    </div>
+    <div class="row col-md-12">
+      <div style="margin-left: 40%">
+        <button type="button" class="btn btn-success"
+          (click)="generateDowntimeReport(fromdate,EmployeeKey)"><b>GENERATE</b></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+    <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+    <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
+      class="row bg-info col-md-12">
+      <div *ngIf="barvalues?.length>0" style="display: block;width: 800px; height: 400px;margin-left: 10%" id="part1">
+        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
+          [colors]="chartColors" [options]="barChartOptions" [legend]="false" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+      <div *ngIf=tableflag>
+      <table  id="contentToConvert" style="margin-left: 50%" *ngIf='barvalues' class="table table-hover table-responsive table-bordered table">
+        <thead class="tableHead">
+          <tr>
+            <th> Label </th>
+            <th> Check In Time </th>
+            <th> Check Out Time</th>
+            <th>Down Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of barvalues; let i=index">
+            <td>{{i+1}} </td>
+            <td>{{x.checkout1}} </td>
+            <td>{{x.checkin1}}</td>
+            <td>{{x.DownTime}} </td>
+          </tr>
+          <tr *ngIf="barvalues?.length == 0">
+            <td colspan="5" class="no-data-available">No records found</td>
+          </tr>
+          <tr>
+            <td colspan="3">Total Down Time(in minutes)</td>
+            <td>
+              {{downtime}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+      <div class="row col-md-12">
+        <div *ngIf="((barvalues?.length> 0)&&(!loading))" style="margin-left: 40%;">
+          <button type="button" class="btn btn-success" value="CONVERT TO PDF" (click)="captureScreen()">CONVERT TO
+            PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
+  *ngIf="((barvalues?.length== 0)&&(!loading))">
+  <span style="margin-left: 35rem;"><b>No Records Found</b></span>
+</div>

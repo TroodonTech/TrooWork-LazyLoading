@@ -508,6 +508,12 @@ const routes: Routes = [
         outlet: 'ManagerOut',
         loadChildren: '../../../manager/reports/inventory-report/inventory-report.module#InventoryReportModule',
 
+      },
+      {
+        path: 'BarchartReport',
+        outlet: 'ManagerOut',
+        loadChildren: '../../../manager/reports/barchart-report/barchart-report.module#BarchartReportModule',
+
       }
     ]
   }

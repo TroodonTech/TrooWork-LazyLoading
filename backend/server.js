@@ -5393,6 +5393,41 @@ app.get(securedpath + '/workCompleted_Ang6', function (req, res) {
         connection.release();
     });
 });
+
+app.options('/pho1Snapshot_Ang6', supportCrossOriginScript);
+app.post(securedpath + '/pho1Snapshot_Ang6', supportCrossOriginScript, function (req, res) {
+    var pho = req.body.Filename;
+    var wdkey = req.body.Workorderkey;
+    var employeekey = req.body.EmployeeKey;
+    var OrganizationID = req.body.OrganizationID;
+    var complete_Time = req.body.complete_Time;
+    var newPath = pho;
+
+
+    console.log("pho" + pho + " wdkey " + wdkey + " employeekey " + employeekey);
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query(" set @wdk=?;set @imgname=?; set @employeekey=?; set @OrganizationID=?; set @complete_Time=?; call usp_WorkorderStatusUpdateByPhotoWithSnapshot_Ang6(@wdk,@imgname,@employeekey,@OrganizationID,@complete_Time)", [wdkey, newPath, employeekey, OrganizationID, complete_Time], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[5][0].WorkorderStatus));
+                }
+
+            });
+        }
+        connection.release();
+    });
+});
+
+
 //Photo upload starts
 function decodeBase64Image(dataString) {
     var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
@@ -9477,8 +9512,8 @@ app.post(securedpath + '/gpsSnapShot', supportCrossOriginScript, function (req, 
     var latitude = req.body.geolatitude;
     var longitude = req.body.geolongitude;
     var employeekey = req.body.EmployeeKey;
-    var workorderkey = req.body.WorkOrderKey;
-    var systime = req.body.systime;
+  	var workorderkey=req.body.WorkOrderKey;
+    var systime=req.body.systime;
     var OrganizationID = req.body.OrganizationID;
     pool.getConnection(function (err, connection) {
         if (err) {
@@ -9487,7 +9522,7 @@ app.post(securedpath + '/gpsSnapShot', supportCrossOriginScript, function (req, 
         }
         else {
             console.log("Success! Connection with Database spicnspan via connection pool succeeded");
-            connection.query('set @latitude=?; set @longitude=?; set @employeekey=?;set @workorderkey=?;  set @systime=?; set @OrganizationID=?; call usp_WorkorderStatusUpdateBySnapshot_Ang6(@latitude,@longitude,@employeekey,@workorderkey,@systime,@OrganizationID)', [latitude, longitude, employeekey, workorderkey, systime, OrganizationID], function (err, rows) {
+            connection.query('set @latitude=?; set @longitude=?; set @employeekey=?;set @workorderkey=?;  set @systime=?; set @OrganizationID=?; call usp_WorkorderStatusUpdateBySnapshot_Ang6(@latitude,@longitude,@employeekey,@workorderkey,@systime,@OrganizationID)', [latitude, longitude, employeekey, workorderkey,systime, OrganizationID], function (err, rows) {
                 if (err) {
                     console.log("Problem with MySQL" + err);
                 }
@@ -14843,6 +14878,64 @@ app.post(securedpath + '/employeeByJbtitleNempStatusFilter', supportCrossOriginS
 
 //old Sendmail Service
 
+//App snapShot ---API
+
+app.get(securedpath + '/barcodeRoomWithSnapshot_Ang', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var barcode = url.parse(req.url, true).query['barcode'];
+
+    var workorderkey = url.parse(req.url, true).query['wkey'];
+    var updatetype = url.parse(req.url, true).query['updatetype'];
+    var employeekey = url.parse(req.url, true).query['employeekey'];
+    var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    var complete_Time = url.parse(req.url, true).query['complete_Time'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @workdetail =?;set @barcode=?; set @empkey=?; set @updatetype=?; set @OrganizationID=?;set @complete_Time=?;call usp_WorkorderStatusUpdateByBarcodeWithSnapshot_Ang6(@workdetail,@barcode,@empkey,@updatetype,@OrganizationID,@complete_Time)", [workorderkey, barcode, employeekey, updatetype, OrganizationID, complete_Time], function (err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+
+                    res.end(JSON.stringify(rows[5][0]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+
+app.get(securedpath + '/getEmployeesLocationWithSnapshot', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    var workorderkey = url.parse(req.url, true).query['WorkOrderKey'];
+    // var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query(' set @workorderkey=?; call usp_getEmployeesLocationWithSnapshot(@workorderkey)', [workorderkey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("usp_getEmployeesLocation...from server.." + JSON.stringify(rows[1]));
+                    res.end(JSON.stringify(rows[1]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 // 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 is your sendgrid api
 app.post(securedpath + '/sendmail', function (req, res) {
     var options = {
