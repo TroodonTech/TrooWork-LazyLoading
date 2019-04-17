@@ -100,8 +100,10 @@
                         <td *ngIf="w.RoomId!=='Dummy'">{{w.RoomId}}</td>
                         <td>{{w.EquipmentName}}</td>
                         <td>{{w.WorkorderTime}}</td>
-                        <td (click)="viewWorkForEdit(w.WorkorderKey)" *ngIf="w.IsReccurring === 1 ">YES</td>
-                        <td (click)="viewWorkForEdit(w.WorkorderKey)" *ngIf="w.IsReccurring === 0 ">NO</td>
+                        <td>
+                                <span *ngIf="w.IsReccurring === 1 ">YES</span>
+                                <span *ngIf="w.IsReccurring === 0 ">NO</span>
+                        </td>
                         <td>{{w.WorkorderNotes}}</td>
                         <td>
                             <div *ngIf="FinishButton[i] == true ">

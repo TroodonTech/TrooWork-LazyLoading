@@ -274,6 +274,8 @@ export class ViewWorkOrderComponent implements OnInit {
   }
   viewEmployeeWorkorderByFilter() {
     this.loading = true;
+    this.showHide1=false;
+    this.showHide2=false;
     if (!this.WorkorderDate) {
       var date1 = this.convert_DT(new Date());
     }
