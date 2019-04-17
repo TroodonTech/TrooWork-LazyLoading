@@ -223,4 +223,55 @@ export class SchedulingService {
       .http
       .get(ConectionSettings.Url + '/allWorkOrderTypeWithOutQuickNew?empkey=' + emp_key + '&OrganizationID=' + org_id);
   }
+  //Pooja's code starts
+  createEmpShiftwithColourCode(Description,Abbrevation,publishas,newTime1,paidhours,newTime2,color,OrganizationID,employeekey){
+    const url = ConectionSettings.Url + "/saveEmployeeShift";
+    const obj = {
+     desc:Description,
+     abbr:Abbrevation,
+     publishas:publishas,
+     time1:newTime1,
+     paidhours:paidhours,
+     time2:newTime2,
+     color:color,
+     orgid:OrganizationID,
+     empkey:employeekey
+    }
+    return this.http.post(url, obj);
+  }
+
+  getShifts(employeekey,OrganizationID){
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getEmployeeShifts?empkey=' + employeekey + '&OrgID=' + OrganizationID);
+  }
+  removeEmployeeShift(delete_shiftKey,employeekey,OrganizationID){
+    return this
+    .http
+    .get(ConectionSettings.Url + '/removeEmployeeShift?dltkey='+delete_shiftKey+'&empkey=' + employeekey + '&OrgID=' + OrganizationID);
+  }
+
+  getShiftsforEditing(shiftk$,OrganizationID){
+    return this
+      .http
+      .get(ConectionSettings.Url + '/getShiftsforEditing?shiftkey=' + shiftk$ + '&OrgID=' + OrganizationID);
+  }
+  updateShiftDetails(shiftk$,Description,Abbrevation,PublishAs,newTime,PaidHours,newTime1,Colour,OrganizationID,employeekey)
+  {
+    const url = ConectionSettings.Url + "/updateEmployeeShiftDetails";
+    const obj = {
+     shiftkey:shiftk$,
+     desc:Description,
+     abbr:Abbrevation,
+     publishas:PublishAs,
+     time1:newTime,
+     paidhours:PaidHours,
+     time2:newTime1,
+     color:Colour,
+     orgid:OrganizationID,
+     empkey:employeekey
+    }
+    return this.http.post(url, obj);
+  }
+  //Pooja's code ends
 }
