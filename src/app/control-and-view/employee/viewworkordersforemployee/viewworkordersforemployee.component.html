@@ -105,7 +105,7 @@
                         <td>
                             <div *ngIf="FinishButton[i] == true ">
                                 <button type="button" class="btn btn-xs button-brown-{{w.WorkorderStatus !== 'Completed'}}"
-                                    (click)="workorderFinish(i)"><b>Finish</b></button>
+                                    (click)="workorderFinish(i)"><b>Complete</b></button>
                             </div>
                             <div *ngIf="showbutton[i] == true && showbutton[i] !== false">
                                 <button type="button" *ngIf="countCancel1" class="btn btn-warning" (click)="cancelWorkorderSubmission(i)">Cancel</button>&nbsp;

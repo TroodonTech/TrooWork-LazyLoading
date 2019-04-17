@@ -14196,6 +14196,154 @@ app.post(securedpath + '/getfloorTypeValue', function (req, res) {
     });
 });
 
+app.post(securedpath + '/saveEmployeeShift', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var desc = req.body.desc;
+    var abbr = req.body.abbr;
+    var publishas = req.body.publishas;
+    var time1 = req.body.time1;
+    var paidhours = req.body.paidhours;
+    var time2 = req.body.time2;
+    var color = req.body.color;
+    var orgid = req.body.orgid;
+    var empkey = req.body.empkey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @desc=?;set @abbr=?; set @publishas=?; set @time1=?; set @paidhours=?; set @time2=?; set @color=?; set @orgid=?; set @empkey=?;call usp_createEmpshift(@desc,@abbr,@publishas,@time1,@paidhours,@time2,@color,@orgid,@empkey)", [desc,abbr,publishas,time1,paidhours,time2,color,orgid,empkey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log(JSON.stringify(rows[5]));
+                    res.end(JSON.stringify(rows[5]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getEmployeeShifts', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+   
+    var toServeremployeekey = url.parse(req.url, true).query['empkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrgID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @toServeremployeekey=?; set @OrganizationID=?; call usp_getEmpShifts(@toServeremployeekey,@OrganizationID)', [toServeremployeekey,OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("welcomeMessage...from server.." + JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/removeEmployeeShift', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+   
+    var dltkey = url.parse(req.url, true).query['dltkey'];
+    var toServeremployeekey = url.parse(req.url, true).query['empkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrgID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @dltkey=?;set @toServeremployeekey=?; set @OrganizationID=?; call usp_deleteEmployeeShift(@dltkey,@toServeremployeekey,@OrganizationID)', [dltkey,toServeremployeekey,OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("welcomeMessage...from server.." + JSON.stringify(rows[3]));
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.get(securedpath + '/getShiftsforEditing', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+   
+    var shiftkey = url.parse(req.url, true).query['shiftkey'];
+    var OrganizationID = url.parse(req.url, true).query['OrgID'];
+
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @shiftkey=?; set @OrganizationID=?; call usp_getEmpShiftsforEditing(@shiftkey,@OrganizationID)', [shiftkey,OrganizationID], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("welcomeMessage...from server.." + JSON.stringify(rows[2]));
+                    res.end(JSON.stringify(rows[2]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
+
+app.post(securedpath + '/updateEmployeeShiftDetails', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    var shiftkey = req.body.shiftkey;
+    var desc = req.body.desc;
+    var abbr = req.body.abbr;
+    var publishas = req.body.publishas;
+    var time1 = req.body.time1;
+    var paidhours = req.body.paidhours;
+    var time2 = req.body.time2;
+    var color = req.body.color;
+    var orgid = req.body.orgid;
+    var empkey = req.body.empkey;
+    pool.getConnection(function (err, connection) {
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query("set @shiftkey=?;set @desc=?;set @abbr=?; set @publishas=?; set @time1=?; set @paidhours=?; set @time2=?; set @color=?; set @orgid=?; set @empkey=?;call usp_updateEmployeeShiftDetails(@shiftkey,@desc,@abbr,@publishas,@time1,@paidhours,@time2,@color,@orgid,@empkey)", [shiftkey,desc,abbr,publishas,time1,paidhours,time2,color,orgid,empkey], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log(JSON.stringify(rows[10]));
+                    res.end(JSON.stringify(rows[10]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 //Pooja's code ends
 //Roshni's code starts
 
