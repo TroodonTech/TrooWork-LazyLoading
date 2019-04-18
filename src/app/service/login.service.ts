@@ -71,4 +71,13 @@ export class LoginService {
       .http
       .get(ConectionSettings.Url+'/MaintnancUpdateMsg?empKey=' + empkey + '&OrganizationID=' + orgID);
   }
+  getimage(employeeid, organisid,imgid) {
+    const uri = ConectionSettings.Url+'/getprofileimgapi';
+    const obj = {
+      empid: employeeid,
+      orgid: organisid,
+      imgid:imgid
+    };
+    return this.http.post(uri, obj);
+  }
 }

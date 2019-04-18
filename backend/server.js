@@ -15137,7 +15137,90 @@ app.post(securedpath + '/sendmail', function (req, res) {
 
     });
 });
+// for profile photo upload--raima
+let imgstorage1 = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, '../dist/mdb-angular-free/imageupload');
+    },
+    filename: (req, file, cb) => {
 
+        // var idimageupload = url.parse(req.url, true).query['imgkey'];
+        var empkey = url.parse(req.url, true).query['empkey'];
+        var OrganizationID = url.parse(req.url, true).query['OrganizationID'];
+        var filename = file.originalname;
+
+        // console.log(" SSSSSSSSSSSSSSSSSS fid fdesc fname are  " + formtypeId + " " + formDesc + " " + filename + " " + multerUploadPath);
+
+
+        pool.getConnection(function (err, connection) {
+            if (err) {
+
+                console.log("Failed! Connection with Database spicnspan via connection pool failed");
+            }
+            else {
+                console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+                connection.query('set @empkey=?;set @OrganizationID=?;set @fileName=?; call usp_uploadimgFile(@empkey,@OrganizationID,@fileName)', [empkey, OrganizationID, filename], function (err) {
+                    if (err)
+                        console.log("my error" + err);
+                });
+            }
+            connection.release();
+        });
+
+
+        console.log(file.name);
+
+        cb(null, file.originalname);
+    }
+});
+
+let imgupload1 = multer({ storage: imgstorage1 });
+
+
+app.post(securedpath + '/imgupload', imgupload1.single('photo'), function (req, res) {
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+            success: false
+        });
+
+    } else {
+        console.log('file received');
+        return res.send({
+            success: true
+        })
+    }
+});
+//for profile photo get--raima
+app.post(securedpath + '/getprofileimgapi', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+
+    var employeeKey = req.body.empid;
+    var OrganisationId = req.body.orgid;
+    var imgid = req.body.imgid;
+    //var mDate = req.body.maintdate;
+
+    pool.getConnection(function (err, connection) {
+
+        if (err) {
+
+            console.log("Failed! Connection with Database spicnspan via connection pool failed");
+        }
+        else {
+            console.log("Success! Connection with Database spicnspan via connection pool succeeded");
+            connection.query('set @employeeKey=?; set @OrganisationId=?; set @imgid=?;call usp_getuploadimage(@employeeKey,@OrganisationId,@imgid)', [employeeKey, OrganisationId,imgid], function (err, rows) {
+                if (err) {
+                    console.log("Problem with MySQL" + err);
+                }
+                else {
+                    console.log("deleteScheduledRoomslistbyscheduleroomid " + JSON.stringify(rows[3]));
+                    res.end(JSON.stringify(rows[3]));
+                }
+            });
+        }
+        connection.release();
+    });
+});
 //varun-> Azure Email Service...
 // app.post(securedpath + '/sendmail', (req, res) => {
 //     res.header("Access-Control-Allow-Origin", "*");
