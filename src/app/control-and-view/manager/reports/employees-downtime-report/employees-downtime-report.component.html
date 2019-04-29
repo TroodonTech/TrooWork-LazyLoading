@@ -1,20 +1,18 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
 <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
   <div class="row col-md-12 ">
-    <h4 style="margin-left: 42%;">DOWN TIME REPORT</h4>
+    <h4 style="margin-left: 42%;margin-top: 3.5%;margin-bottom: 3%">DOWN TIME REPORT</h4>
   </div>
-  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 5rem"
-    class="row bg-info col-md-12">
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 2rem" class="row bg-info col-md-12">
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
       <div class="form-group">
-        <label>From Date</label>
+        <label>From Date*</label>
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
       <div class="form-group">
-        <label>Employee</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="employeeoption" [(ngModel)]="EmployeeKey"
-          [settings]="dropdownSettings">
+        <label>Employee*</label>
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="employeeoption" [(ngModel)]="EmployeeKey" [settings]="dropdownSettings">
         </ng-multiselect-dropdown>
         <!-- <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control">
           <option value="">--Select--</option>
@@ -27,14 +25,13 @@
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
       <div class="form-group">
-        <label>To Date</label>
+        <label>To Date*</label>
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate"></ng-datepicker>
       </div>
     </div>
   </div>
 
-  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
-    class="row bg-info col-md-12">
+  <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="row col-md-12">
       <div style="margin-left: 40%">
         <button type="button" class="btn btn-success" (click)=generateDowntimeReport()><b>GENERATE</b></button>
@@ -44,18 +41,13 @@
 </div>
 <div>
   <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
-    <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
-      class="row bg-info col-md-12">
-      <div *ngIf="barvalues?.length>0"
-        style="display: block;width: 800px; height: 400px;margin-left: 10%;margin-top: 10%" id="part1">
-        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
-          [colors]="chartColors" [options]="barChartOptions" [legend]="barChartLegend"
-          (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+    <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
+      <div *ngIf="barvalues?.length>0" style="display: block;width: 800px; height: 400px;margin-left: 10%;margin-top: 10%" id="part1">
+        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="barChartOptions" [legend]="barChartLegend" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
       <div>
-        <table id="contentToConvert" *ngIf='barvalues?.length>0'
-          class="table table-hover table-responsive table-bordered table">
+        <table id="contentToConvert" *ngIf='barvalues?.length>0' class="table table-hover table-responsive table-bordered table">
           <thead class="tableHead">
             <tr>
               <td>Label</td>
@@ -79,7 +71,6 @@
     </div>
   </div>
 </div>
-<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
-  *ngIf="((barvalues?.length== 0)&&(!loading))">
-  <span style="margin-left: 35rem;"><b>No Records Found</b></span>
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12" *ngIf="((barvalues?.length== 0)&&(!loading))">
+  <span style="margin-left: 40rem;margin-top: 1rem"><b>No Records Found</b></span>
 </div>

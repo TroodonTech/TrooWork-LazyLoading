@@ -115,7 +115,7 @@ export class EmployeesDowntimeReportComponent implements OnInit {
     var timeDiff = Math.abs(this.fromdate.getTime() - this.todate.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 7) {
-      alert("Select date between a week or between 7 days");
+      alert("Select date between 7 days");
       return;
     }
     if (this.EmployeeKey.length == 0) {
@@ -142,6 +142,8 @@ export class EmployeesDowntimeReportComponent implements OnInit {
 
         this.barvalues = data1;
         this.loading = false;
+        this.chartLabels=[];
+        this.downtimes=[];
 
         for (var i = 0; i < this.barvalues.length; i++) {
 
