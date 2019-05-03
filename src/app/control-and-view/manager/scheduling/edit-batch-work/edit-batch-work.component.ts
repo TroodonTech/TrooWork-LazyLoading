@@ -22,6 +22,8 @@ export class EditBatchWorkComponent implements OnInit {
   scheduleNameKey$: Object;
   scheduleDetails;
   schName: String;
+  BatchScheduleNameKey;
+  loading: boolean;
 
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
@@ -123,5 +125,18 @@ export class EditBatchWorkComponent implements OnInit {
   }
   goBack() {
     this._location.back();
+  }
+  deleteAssignName(BatchScheduleNameKey) {
+    this.BatchScheduleNameKey = BatchScheduleNameKey;
+
+  }
+
+  deleteAssignmentName() {
+    this.scheduleService.deleteAssignmentName(this.BatchScheduleNameKey, this.employeekey, this.OrganizationID)
+      .subscribe((data: any[]) => {
+        alert("Assignment Name deleted successfully");
+        this.loading = true;
+        this._location.back();
+      })
   }
 }
