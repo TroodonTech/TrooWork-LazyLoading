@@ -9,7 +9,7 @@
     <div class="col-md-6">
       <h3 style="text-align: right"></h3>
       <div class="form-group" style="width: 85%;">
-        <label>Employee</label>
+        <label>Employee*</label>
         <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control">
           <option value="">--Select--</option>
           <option *ngFor="let e of employeeoption" [value]="e.EmployeeKey">
@@ -20,7 +20,7 @@
       <!-- </div>
     <div class="col-md-6"> -->
       <div class="form-group" style="width: 20rem;">
-        <label>Date</label>
+        <label>Date*</label>
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate"></ng-datepicker>
       </div>
     </div>

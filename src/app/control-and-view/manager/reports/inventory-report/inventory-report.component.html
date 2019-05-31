@@ -6,7 +6,7 @@
     <div class="form-group col-md-6">
       <label>Building*</label><br>
       <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FacilityKey"
-        (change)="getFloorDisp($event.target.value);">
+        (change)="getFloorDisp($event.target.value);checkBuilding()">
         <option value="">--Select--</option>
         <option *ngFor="let b of building" [value]="b.FacilityKey">
           {{b.FacilityText}}
@@ -14,7 +14,7 @@
       </select>
     </div>
     <div class="form-group col-md-6">
-      <label>Floor*</label><br>
+      <label>Floor</label><br>
       <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="FloorKey" [disabled]="!FacilityKey"
         (change)="getZoneRoomTypeRoom($event.target.value,FacilityKey);">
         <option value="">--Select--</option>
@@ -54,7 +54,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group col-md-6">
+    <!-- <div class="form-group col-md-6">
       <label>Room</label><br>
       <select style="background-color: #D4F4FF ;" class="form-control" [(ngModel)]="RoomKey" [disabled]="!FloorKey">
         <option value="">--Select--</option>
@@ -62,7 +62,7 @@
           {{b.RoomName}}
         </option>
       </select>
-    </div>
+    </div> -->
   </div>
   <br>
   <div style="text-align:center">

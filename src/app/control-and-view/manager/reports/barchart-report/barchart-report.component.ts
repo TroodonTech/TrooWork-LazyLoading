@@ -112,8 +112,13 @@ export class BarchartReportComponent implements OnInit {
 // barchart code
 
 generateDowntimeReport(fromdate, EmployeeKey) {
-  if (!fromdate && !this.EmployeeKey) {
-    alert("Please choose any filter");
+  if(!(this.EmployeeKey)){
+    alert("Please choose Employee!");
+    return;
+  }
+  if (!fromdate ) {
+    alert("Please choose Date!");
+    return;
   }
   this.loading = true;
   this.tableflag=true;
@@ -125,7 +130,7 @@ generateDowntimeReport(fromdate, EmployeeKey) {
       this.loading = false;
       this.downtime=0;
       for (var i = 0; i < this.barvalues.length; i++) {
-        this.downtime=this.downtime + this.barvalues[i].DownTime;
+        this.downtime=this.downtime +parseInt(this.barvalues[i].DownTime) ;
         
         if(this.barvalues[i].DownTime<3){
           this.barChartCol.push('SlateBlue')

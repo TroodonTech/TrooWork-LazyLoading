@@ -127,12 +127,12 @@ export class InventoryReportComponent implements OnInit {
           this.RoomTypeList = data;
           this.RoomTypeKey = "";
         });
-      this.ReportServiceService
-        .getAllRooms(facility, floor, null, null, null, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.RoomList = data;
-          this.RoomKey = ""
-        });
+      // this.ReportServiceService
+      //   .getAllRooms(facility, floor, null, null, null, this.OrganizationID)
+      //   .subscribe((data: any[]) => {
+      //     this.RoomList = data;
+      //     this.RoomKey = ""
+      //   });
     }
     if (!(this.FloorKey)) {
       this.FloorKey = '';
@@ -155,12 +155,12 @@ export class InventoryReportComponent implements OnInit {
           this.RoomTypeList = data;
           this.RoomTypeKey = "";
         });
-      this.ReportServiceService
-        .getAllRooms(facility, floor, zone, null, null, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.RoomList = data;
-          this.RoomKey = ""
-        });
+      // this.ReportServiceService
+      //   .getAllRooms(facility, floor, zone, null, null, this.OrganizationID)
+      //   .subscribe((data: any[]) => {
+      //     this.RoomList = data;
+      //     this.RoomKey = ""
+      //   });
       this.ReportServiceService
         .getAllFloorType(facility, floor, zone, null, this.OrganizationID)
         .subscribe((data: any[]) => {
@@ -183,12 +183,12 @@ export class InventoryReportComponent implements OnInit {
     this.rTypeKey = roomtype;
     console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone && roomtype) {
-      this.ReportServiceService
-        .getAllRooms(facility, floor, zone, null, roomtype, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.RoomList = data;
-          this.RoomKey = ""
-        });
+      // this.ReportServiceService
+      //   .getAllRooms(facility, floor, zone, null, roomtype, this.OrganizationID)
+      //   .subscribe((data: any[]) => {
+      //     this.RoomList = data;
+      //     this.RoomKey = ""
+      //   });
     }
     if (!(facility)) {
       facility = null;
@@ -216,12 +216,12 @@ export class InventoryReportComponent implements OnInit {
     this.rTypeKey = roomtype;
     console.log("rtype..." + roomtype + "zone ..... " + zone + "flr ..... " + floor + "bldg ..... " + facility + "org ..... " + this.OrganizationID);
     if (facility && floor && zone && roomtype) {
-      this.ReportServiceService
-        .getAllRooms(facility, floor, zone, floortype, roomtype, this.OrganizationID)
-        .subscribe((data: any[]) => {
-          this.RoomList = data;
-          this.RoomKey = ""
-        });
+      // this.ReportServiceService
+      //   .getAllRooms(facility, floor, zone, floortype, roomtype, this.OrganizationID)
+      //   .subscribe((data: any[]) => {
+      //     this.RoomList = data;
+      //     this.RoomKey = ""
+      //   });
     }
     if (!(facility)) {
       facility = null;
@@ -301,7 +301,10 @@ export class InventoryReportComponent implements OnInit {
     this.name = profile.username;
     this.employeekey = profile.employeekey;
     this.OrganizationID = profile.OrganizationID;
-
+    this.FloorKey="";
+    this.ZoneKey="";
+    this.RoomTypeKey="";
+    this.FloorTypeKey="";
     this.inventoryService
       .getallBuildingList(this.employeekey, this.OrganizationID)
       .subscribe((data: any[]) => {
@@ -309,5 +312,10 @@ export class InventoryReportComponent implements OnInit {
         this.FacilityKey = "";
       });
   }
-
+  checkBuilding(){
+  
+    if(!(this.FacilityKey)){
+      this.viewInventoryReport=[];
+    }
+  }
 }

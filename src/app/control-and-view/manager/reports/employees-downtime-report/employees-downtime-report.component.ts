@@ -104,11 +104,11 @@ export class EmployeesDowntimeReportComponent implements OnInit {
   // barchart code
   generateDowntimeReport() {
     var employeeString;
-    if (!this.fromdate) {
+    if (!(this.fromdate)) {
       alert(" Please select from date");
       return;
     }
-    if (!this.todate) {
+    if (!(this.todate)) {
       alert(" Please select to date");
       return;
     }
@@ -116,6 +116,15 @@ export class EmployeesDowntimeReportComponent implements OnInit {
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays > 7) {
       alert("Select date between 7 days");
+      return;
+    }
+    if(this.convert_DT(this.fromdate)>this.convert_DT(this.todate)){
+      alert("Please check from Date & to date!");
+      return;
+    }
+    debugger;
+    if((this.convert_DT(this.fromdate)>=this.convert_DT(new Date()))||(this.convert_DT(this.todate)>=this.convert_DT(new Date()))){
+      alert("Please provide date less than current date!");
       return;
     }
     if (this.EmployeeKey.length == 0) {
