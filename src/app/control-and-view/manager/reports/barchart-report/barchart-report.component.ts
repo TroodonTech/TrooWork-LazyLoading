@@ -112,6 +112,11 @@ export class BarchartReportComponent implements OnInit {
 // barchart code
 
 generateDowntimeReport(fromdate, EmployeeKey) {
+  this.chartDatasets=[];
+  this.data4=[];
+  this.data5=[];
+  this.chartLabels=[];
+  this.downtimes=[];
   if(!(this.EmployeeKey)){
     alert("Please choose Employee!");
     return;
