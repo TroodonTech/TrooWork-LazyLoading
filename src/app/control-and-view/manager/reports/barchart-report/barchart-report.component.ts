@@ -117,6 +117,7 @@ export class BarchartReportComponent implements OnInit {
     this.data5 = [];
     this.chartLabels = [];
     this.downtimes = [];
+    this.barvalues=[];
     if (!(this.EmployeeKey)) {
       alert("Please choose Employee!");
       return;
@@ -129,6 +130,7 @@ export class BarchartReportComponent implements OnInit {
     this.ReportServiceService
       .generateDowntimeReportService(this.convert_DT(fromdate), EmployeeKey, this.OrganizationID)
       .subscribe((data1: any) => {
+        debugger;
         this.loading = false;
         if (data1.length > 0) {
           this.tableflag = true;
@@ -160,7 +162,7 @@ export class BarchartReportComponent implements OnInit {
           }
           console.log(this.chartLabels);
           console.log(this.downtimes);
-          this.chartDatasets = [{ data: this.downtimes, label: 'Down Time' }];
+          this.chartDatasets = [{ data: this.downtimes}];
           console.log(this.chartDatasets);
           this.chartColors = [
             {

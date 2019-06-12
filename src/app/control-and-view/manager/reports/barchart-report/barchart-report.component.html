@@ -33,7 +33,7 @@
   </div>
 </div>
 <div>
-  <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
+  <div *ngIf="((barvalues?.length> 0)&&(!loading))" style="padding-left: 9rem;padding-right: 9rem;">
     <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-bottom: 1rem;padding-top: 1rem"
       class="row bg-info col-md-12">
       <div class="row col-md-12">
@@ -58,7 +58,7 @@
         </canvas>
       </div>
       <div *ngIf="tableflag" class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 30%;margin-left: 30%">
-        <table id="contentToConvert" style="border: none" *ngIf='barvalues'
+        <table id="contentToConvert" style="border: none" *ngIf='barvalues?.length>0'
           class="table table-hover table-responsive table-bordered table">
           <thead class="tableHead">
             <tr>
