@@ -12,7 +12,8 @@
       </div>
       <div class="form-group">
         <label>Employee*</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="employeeoption" [(ngModel)]="EmployeeKey" [settings]="dropdownSettings">
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'" [data]="employeeoption" [(ngModel)]="EmployeeKey"
+          [settings]="dropdownSettings">
         </ng-multiselect-dropdown>
         <!-- <select [(ngModel)]="EmployeeKey" style="background-color: #d4f4ff;" class="form-control">
           <option value="">--Select--</option>
@@ -33,7 +34,7 @@
 
   <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
     <div class="row col-md-12">
-      <div style="margin-left: 40%">
+      <div style="margin-left: 43%">
         <button type="button" class="btn btn-success" (click)=generateDowntimeReport()><b>GENERATE</b></button>
       </div>
     </div>
@@ -42,12 +43,22 @@
 <div>
   <div *ngIf="!loading" style="padding-left: 9rem;padding-right: 9rem;">
     <div style="margin-left: 1.5rem;margin-right: 1.5rem;padding-top: 1rem" class="row bg-info col-md-12">
-      <div *ngIf="barvalues?.length>0" style="display: block;width: 800px; height: 400px;margin-left: 10%;margin-top: 10%" id="part1">
-        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels" [colors]="chartColors" [options]="barChartOptions" [legend]="barChartLegend" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      <div class="row col-md-12">
+        <div *ngIf="((barvalues?.length> 0)&&(!loading))" style="margin-left: 41%;">
+          <button type="button" class="btn btn-success" value="CONVERT TO PDF" (click)="captureScreen()">CONVERT TO
+            PDF</button>
+        </div>
+      </div>
+      <div *ngIf="barvalues?.length>0"
+        style="display: block;width: 800px; height: 400px;margin-left: 10%;margin-top: 5%" id="part1">
+        <canvas mdbChart [chartType]="chartType" [datasets]="chartDatasets" [labels]="chartLabels"
+          [colors]="chartColors" [options]="barChartOptions" [legend]="barChartLegend"
+          (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
         </canvas>
       </div>
-      <div>
-        <table id="contentToConvert" *ngIf='barvalues?.length>0' class="table table-hover table-responsive table-bordered table">
+      <div *ngIf="barvalues?.length>0" class="col-sm-12 col-md-12 col-lg-12" style="margin-left: 30%">
+        <table id="contentToConvert" *ngIf='barvalues?.length>0'
+          class="table table-hover table-responsive table-bordered table" style="border: none">
           <thead class="tableHead">
             <tr>
               <td>Label</td>
@@ -71,6 +82,7 @@
     </div>
   </div>
 </div>
-<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12" *ngIf="((barvalues?.length== 0)&&(!loading))">
-  <span style="margin-left: 40rem;margin-top: 1rem"><b>No Records Found</b></span>
+<div style="margin-left: 1.5rem;margin-right: 1.5rem;" class="row col-md-12"
+  *ngIf="((barvalues?.length== 0)&&(!loading))">
+  <span style="margin-left: 43%;margin-top: 1rem"><b>No Records Found</b></span>
 </div>

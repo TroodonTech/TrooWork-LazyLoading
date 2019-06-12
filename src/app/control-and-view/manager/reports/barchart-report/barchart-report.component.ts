@@ -47,12 +47,12 @@ export class BarchartReportComponent implements OnInit {
   viewBarchartReport = [];
   barvalues = [];
   downtimes = [];
-  chartLabels=[];
+  chartLabels = [];
   chartDatasets;
-  barChartCol=[];
-  chartColors=[];
-  ChartOptions=[];
-  tableflag=false;
+  barChartCol = [];
+  chartColors = [];
+  ChartOptions = [];
+  tableflag = false;
   downtime;
 
   constructor(private fb: FormBuilder, private ReportServiceService: ReportServiceService) {
@@ -109,126 +109,127 @@ export class BarchartReportComponent implements OnInit {
   }
   public date: Date = new Date(Date.now());
 
-// barchart code
+  // barchart code
 
-generateDowntimeReport(fromdate, EmployeeKey) {
-  this.chartDatasets=[];
-  this.data4=[];
-  this.data5=[];
-  this.chartLabels=[];
-  this.downtimes=[];
-  if(!(this.EmployeeKey)){
-    alert("Please choose Employee!");
-    return;
+  generateDowntimeReport(fromdate, EmployeeKey) {
+    this.chartDatasets = [];
+    this.data4 = [];
+    this.data5 = [];
+    this.chartLabels = [];
+    this.downtimes = [];
+    if (!(this.EmployeeKey)) {
+      alert("Please choose Employee!");
+      return;
+    }
+    if (!fromdate) {
+      alert("Please choose Date!");
+      return;
+    }
+    this.loading = true;
+    this.ReportServiceService
+      .generateDowntimeReportService(this.convert_DT(fromdate), EmployeeKey, this.OrganizationID)
+      .subscribe((data1: any) => {
+        this.loading = false;
+        if (data1.length > 0) {
+          this.tableflag = true;
+
+          this.barvalues = data1;
+          this.downtime = 0;
+          for (var i = 0; i < this.barvalues.length; i++) {
+            this.downtime = this.downtime + parseInt(this.barvalues[i].DownTime);
+
+            if (this.barvalues[i].DownTime < 3) {
+              this.barChartCol.push('SlateBlue')
+            }
+            else if (this.barvalues[i].DownTime >= 3 && this.barvalues[i].DownTime < 7) {
+              this.barChartCol.push('Yellow')
+            }
+            else if (this.barvalues[i].DownTime >= 7) {
+              this.barChartCol.push('Red')
+            }
+            // var test1=this.barvalues[i].checkin1;
+            // var test2=this.barvalues[i].checkout1;
+            // var status = test1 + " - " + test2;
+
+            var status = i + 1;
+            var downtimeval = this.barvalues[i].DownTime;
+            this.data4 = ([status]);
+            this.data5 = ([downtimeval]);
+            this.chartLabels[i] = (this.data4);
+            this.downtimes[i] = (this.data5);
+          }
+          console.log(this.chartLabels);
+          console.log(this.downtimes);
+          this.chartDatasets = [{ data: this.downtimes, label: 'Down Time' }];
+          console.log(this.chartDatasets);
+          this.chartColors = [
+            {
+              backgroundColor: this.barChartCol,
+              borderColor: this.barChartCol,
+              borderWidth: 2,
+              hoverBackgroundColor: '#66CCFF',
+              hoverBorderColor: '#66CCFF'
+            }
+          ];
+        }
+      });
   }
-  if (!fromdate ) {
-    alert("Please choose Date!");
-    return;
-  }
-  this.loading = true;
-  this.tableflag=true;
-  this.ReportServiceService
-    .generateDowntimeReportService(this.convert_DT(fromdate), EmployeeKey, this.OrganizationID)
-    .subscribe((data1: any) => {
-      
-      this.barvalues = data1;
-      this.loading = false;
-      this.downtime=0;
-      for (var i = 0; i < this.barvalues.length; i++) {
-        this.downtime=this.downtime +parseInt(this.barvalues[i].DownTime) ;
-        
-        if(this.barvalues[i].DownTime<3){
-          this.barChartCol.push('SlateBlue')
-        }
-        else if(this.barvalues[i].DownTime>=3 && this.barvalues[i].DownTime< 7){
-          this.barChartCol.push('Yellow')
-        }
-        else if(this.barvalues[i].DownTime>=7){
-          this.barChartCol.push('Red')
-        }
-        // var test1=this.barvalues[i].checkin1;
-        // var test2=this.barvalues[i].checkout1;
-        // var status = test1 + " - " + test2;
+  // totaldowntime(){
 
-        var status = i+1;
-        var downtimeval = this.barvalues[i].DownTime;
-        this.data4 = ([status]);
-        this.data5 = ([downtimeval]);
-        this.chartLabels[i]=(this.data4);
-        this.downtimes[i]=(this.data5);
-      }
-      console.log(this.chartLabels);
-      console.log(this.downtimes);
-      this.chartDatasets = [{ data: this.downtimes, label: 'Down Time' }];
-      console.log(this.chartDatasets);
-        this.chartColors = [
-        {
-          backgroundColor: this.barChartCol,
-          borderColor: this.barChartCol,
-          borderWidth: 2,
-          hoverBackgroundColor:'#66CCFF',
-          hoverBorderColor:'#66CCFF'
-        }
-      ];
+  //   this.downtime=0;
+  //   for(var i=0;i<this.barvalues.length;i++){
+  //     this.downtime=this.downtime + this.barvalues[i].DownTime;
+  //   }
+  // }
 
-    });
-}
-// totaldowntime(){
-
-//   this.downtime=0;
-//   for(var i=0;i<this.barvalues.length;i++){
-//     this.downtime=this.downtime + this.barvalues[i].DownTime;
-//   }
-// }
-
-public chartType: string = 'bar';
-public barChartOptions: ChartOptions = {
-  responsive: true,
-  scales: { 
-    xAxes: [{
-      // barPercentage: 0.5,
-      // barThickness: 10,
+  public chartType: string = 'bar';
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        // barPercentage: 0.5,
+        // barThickness: 10,
         categoryPercentage: 1.0,
         barPercentage: 0.5,
-      ticks: {
-        beginAtZero: true,
-        fontFamily: "'Open Sans Bold', sans-serif",
-        fontSize: 12,
-        // autoSkip: false,
-        // maxRotation: 90,
-        // minRotation: 90
+        ticks: {
+          beginAtZero: true,
+          fontFamily: "'Open Sans Bold', sans-serif",
+          fontSize: 12,
+          // autoSkip: false,
+          // maxRotation: 90,
+          // minRotation: 90
+        },
+        scaleLabel: {
+          display: true
+        },
+        // gridLines: {
+        //   display: true,
+        //   offsetGridLines: true
+        // },
+        // stacked: true
+      }],
+      yAxes: [{
+        barThickness: 100,
+        // gridLines: {
+        //     display: true,
+        //     color: "#fff",
+        //     zeroLineColor: "#fff",
+        //     zeroLineWidth: 0
+        // },
+        ticks: {
+          fontFamily: "'Open Sans Bold', sans-serif",
+          fontSize: 12
+        },
+        stacked: true
+      }]
     },
-    scaleLabel: {
-        display: true
-    },
-    // gridLines: {
-    //   display: true,
-    //   offsetGridLines: true
-    // },
-    // stacked: true
-  }], 
-  yAxes: [{
-    barThickness: 100,
-    // gridLines: {
-    //     display: true,
-    //     color: "#fff",
-    //     zeroLineColor: "#fff",
-    //     zeroLineWidth: 0
-    // },
-    ticks: {
-        fontFamily: "'Open Sans Bold', sans-serif",
-        fontSize: 12
-    },
-    stacked: true
-  }] 
-},
-};
-public chartClicked(e: any): void { }
-public chartHovered(e: any): void { }
+  };
+  public chartClicked(e: any): void { }
+  public chartHovered(e: any): void { }
 
-// barchart code ends
+  // barchart code ends
 
-//code for converting graph to pdf 
+  //code for converting graph to pdf 
 
   public captureScreen() {
     const doc = new jspdf();
@@ -246,7 +247,7 @@ public chartHovered(e: any): void { }
     });
   }
 
-//code for converting graph to pdf ends
+  //code for converting graph to pdf ends
 
   ngOnInit() {
     this.loading = false;

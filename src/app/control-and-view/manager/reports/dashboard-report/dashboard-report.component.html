@@ -16,7 +16,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group" style="width: 20rem;">
+      <div class="form-group" style="width: 68%;">
         <label>From Date</label>
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="fromdate" (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [(ngModel)]="fromdate" (onSelection)="dashboardreportbyfilter()"></igx-datePicker> -->
@@ -31,7 +31,7 @@
           (onSelectAll)="dashboardreportbyfilter()">
         </ng-multiselect-dropdown>
       </div>
-      <div class="form-group" style="width: 20rem;">
+      <div class="form-group" style="width: 68%;">
         <label>To Date</label>
         <ng-datepicker [options]="options" position="top-right" [(ngModel)]="todate" (ngModelChange)="dashboardreportbyfilter()"></ng-datepicker>
         <!-- <igx-datePicker cancelButtonLabel="CANCEL" todayButtonLabel="TODAY" [labelVisibility]="none" [value]="date" [(ngModel)]="todate"
