@@ -34,15 +34,15 @@
             <td>{{i.FacilityName}}-{{i.RoomId}} </td>
             <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)"
               style="text-align: center">
-              <a [routerLink]="['Supervsrinspectiontemplate',i.InspectionOrderKey]" class="btn btn-primary">Inspect</a>
+              <a [routerLink]="['Supervsrinspectiontemplate',i.InspectionOrderKey]" class="btn btn-primary" style="width:58%;">Inspect</a>
             </td>
             <td *ngIf="i.InspectionCompletedBy !== null" style="text-align: center">
               <!-- <a [routerLink]="['Supervsrinspectiontemplate',i.InspectionOrderKey]" class="btn btn-primary">Inspection
                 Completed </a> -->
-              <a (click)="inspectionDetail(i.InspectionOrderKey)" class="btn btn-primary">Inspection
+              <a (click)="inspectionDetail(i.InspectionOrderKey)"  class="btn btn-primary">Inspection
                 Completed </a>
             </td>
-            <td> <a href="Inspection-Upload/{{i.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
+            <td style="text-align: center"> <a href="Inspection-Upload/{{i.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
               return false;">
                 <button type="button" class="btn btn-default btn-xs" style="margin-top: -1%;"
                   *ngIf="i.IsPhoto === 1 && i.InspectionCompletedBy !== null ">View
@@ -50,11 +50,11 @@
               </a> </td>
             <td *ngIf="i.InspectionCompletedBy !== null"></td>
             <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)">
-              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 35%;margin-top: 30%"
+              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 40%;margin-top: 15%"
                 (change)="toggleVisibility($event);checkBoxValueForDelete(k,i.deletechkbox, i.InspectionOrderKey);">
             </td>
             <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey !== toServeremployeekey)">
-              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 35%;margin-top: 30%"
+              <input type="checkbox" [(ngModel)]="i.deletechkbox" style="margin-left: 40%;margin-top: 15%"
                 (change)="toggleVisibility($event);checkBoxValueForDelete(k,i.deletechkbox, i.InspectionOrderKey);">
             </td>
             <!-- <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)"> <a routerLink="/Managerinspectiontemplate/{{i.InspectionOrderKey}}" class="btn btn-primary">Inspect</a></td>
