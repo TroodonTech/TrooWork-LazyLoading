@@ -178,6 +178,13 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
           }
         });
     });
+
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('ImageUpload:uploaded:', item, status, response);
+      alert('File uploaded successfully');
+    };
+    
   }
   saveRatings(TemplateQuestionID, ScoreName) {
     if (ScoreName === 'Yes/No' || ScoreName === 'Pass/Fail') {
