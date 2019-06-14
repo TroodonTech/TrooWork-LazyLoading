@@ -130,7 +130,7 @@ export class BarchartReportComponent implements OnInit {
     this.ReportServiceService
       .generateDowntimeReportService(this.convert_DT(fromdate), EmployeeKey, this.OrganizationID)
       .subscribe((data1: any) => {
-        debugger;
+        // debugger;
         this.loading = false;
         if (data1.length > 0) {
           this.tableflag = true;
@@ -140,13 +140,13 @@ export class BarchartReportComponent implements OnInit {
           for (var i = 0; i < this.barvalues.length; i++) {
             this.downtime = this.downtime + parseInt(this.barvalues[i].DownTime);
 
-            if (this.barvalues[i].DownTime < 3) {
+            if ( parseInt(this.barvalues[i].DownTime) < 3) {
               this.barChartCol.push('SlateBlue')
             }
-            else if (this.barvalues[i].DownTime >= 3 && this.barvalues[i].DownTime < 7) {
+            else if ( parseInt(this.barvalues[i].DownTime) >= 3 &&  parseInt( this.barvalues[i].DownTime) < 7) {
               this.barChartCol.push('Yellow')
             }
-            else if (this.barvalues[i].DownTime >= 7) {
+            else if ( parseInt(this.barvalues[i].DownTime) >= 7) {
               this.barChartCol.push('Red')
             }
             // var test1=this.barvalues[i].checkin1;
