@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-6">
       <div class="form-group">
-        <label>Floor*</label><br>
+        <label>Floor</label><br>
         <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="FloorKey" (change)="getZoneRoom($event.target.value,FacilityKey)"
           [disabled]="!FacilityKey">
           <option value="">--Select--</option>
@@ -67,17 +67,17 @@
     </div>
     <div class="row col-md-12">
       <div class="col-md-6"></div>
-      <div style="text-align:center">
+      <div style="margin-left: 46.5%">
         <button type="button" class="btn btn-success" (click)=generateBarcodeReport(FacilityKey,FloorKey,RoomTypeKey,ZoneKey,EquipmentTypeKey,EquipmentKey)><b>GENERATE</b></button>
       </div>
     </div>
   </div>
   <br>
-  <div style="text-align:center" *ngIf="!loading">
+  <div style="margin-left: 42%" *ngIf="!loading">
     <button type="button" *ngIf='((Equipmentflag==true ) && (viewBarcodeEquipment?.length >0))' class="btn btn-success"
       (click)="exportToExcel()"><b>EXPORT TO EXCEL</b></button>
   </div>
-  <div style="text-align:center" *ngIf="!loading">
+  <div style="margin-left: 42%" *ngIf="!loading">
     <button type="button" *ngIf='((Roomflag==true) && (viewBarcodeReport?.length > 0))' class="btn btn-success" (click)="exportToExcel()"><b>EXPORT
         TO EXCEL</b></button>
   </div>

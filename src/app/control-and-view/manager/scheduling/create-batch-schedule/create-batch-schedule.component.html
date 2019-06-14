@@ -9,8 +9,8 @@
     <div class="row col-md-12">
       <span style="margin-top: 2rem;" class="col-md-2"><label for="scheduling">Assignment Name: </label></span>
       <div class="md-form col-md-4" style="text-align:left">
-        <select style="background-color: #D4F4FF !important;" class="form-control" [(ngModel)]="BatchScheduleNameKey"
-          (change)="getScheduleDetails($event.target.value)">
+        <select style="background-color: #D4F4FF !important;width: 101.5%" class="form-control"
+          [(ngModel)]="BatchScheduleNameKey" (change)="getScheduleDetails($event.target.value)">
           <option value="">--Select--</option>
           <option *ngFor="let f of scheduleNameList" [value]="f.BatchScheduleNameKey">
             {{f.ScheduleName}}
@@ -35,8 +35,10 @@
         </div>
         <span style="margin-top: 2rem;margin-left: 8.33%" class="col-md-2"><label for="scheduling">Time:
           </label></span>
-        <div class=" col-md-4 ">
-          <p-calendar [inputStyle]="{'width':'222%','margin-top':'2rem','margin-left':'0.2rem'}" [(ngModel)]="time1"
+        <!-- <div class=" col-md-4 "> -->
+        <!--removing this class for adjusting the time picker width-->
+        <div style="width: 10.7%;margin-left: 1.15%">
+          <p-calendar [inputStyle]="{'width':'300%','margin-top':'2rem','margin-left':'0.2rem'}" [(ngModel)]="time1"
             [timeOnly]="true" hourFormat="12"></p-calendar>
         </div>
       </div>
@@ -98,51 +100,52 @@
           <span *ngIf="x.MetricType != 'Minutes Per'">{{x.Minutes| number:'1.2-2'}}</span>
         </td>
         <td>
-          <select style="background-color: #D4F4FF !important" class="form-control" (change)='metricCal()' [(ngModel)]="x.dailyFrequency"
-            (change)="metricCal()">
+          <select style="background-color: #D4F4FF !important" class="form-control" (change)='metricCal()'
+            [(ngModel)]="x.dailyFrequency" (change)="metricCal()">
             <option *ngFor="let f of recurringFrequency">
               {{f}}
             </option>
           </select>
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_mon" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_tue" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_wed" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_thu" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_fri" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_sat" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.check_sun" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.photoReq">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.barcodeReq">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.snapshot">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="x.KeepActive">
         </td>
         <td>
           {{x.RoomType}}
         </td>
         <td>
-          <select style="background-color: #D4F4FF !important;" class="form-control" (change)='CalMetric(i,"roomList");metricCal();' [(ngModel)]="x.WorkorderTypeKey">
+          <select style="background-color: #D4F4FF !important;" class="form-control"
+            (change)='CalMetric(i,"roomList");metricCal();' [(ngModel)]="x.WorkorderTypeKey">
             <option value="">--Select--</option>
             <option *ngFor="let b of woList" [value]="b.WorkorderTypeKey">
               {{b.WorkorderTypeText}}
@@ -175,44 +178,45 @@
             </option>
           </select>
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_mon" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_tue" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_wed" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_thu" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_fri" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_sat" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.check_sun" (change)="metricCal()">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.photoReq">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.barcodeReq">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.snapshot">
         </td>
-        <td>
+        <td style="text-align: center;">
           <input type="checkbox" style="width: 1.5rem;height: 1.2rem;" [(ngModel)]="z.KeepActive">
         </td>
         <td>
           {{z.RoomType}}
         </td>
         <td>
-          <select style="background-color: #D4F4FF !important;" class="form-control" (change)='CalMetric(i,"roomTempList");metricCal();' [(ngModel)]="z.WorkorderTypeKey">
+          <select style="background-color: #D4F4FF !important;" class="form-control"
+            (change)='CalMetric(i,"roomTempList");metricCal();' [(ngModel)]="z.WorkorderTypeKey">
             <option value="">--Select--</option>
             <option *ngFor="let w of woList" [value]="w.WorkorderTypeKey">
               {{w.WorkorderTypeText}}

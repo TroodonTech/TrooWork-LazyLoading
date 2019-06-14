@@ -63,16 +63,16 @@
           <td>{{i.Inspectiondate}} {{i.InspectionTime}}</td>
           <td>{{i.LastName}},{{i.FirstName}} </td>
           <td>{{i.EmployeeName}}</td>
-          <td *ngIf="i.InspectionCompletedBy !== null"> <a (click)='GoView(i.InspectionOrderKey)'
+          <td *ngIf="i.InspectionCompletedBy !== null"> <a (click)='GoView(i.InspectionOrderKey)' style="width: 100%;"
               class="btn btn-primary"><b>Inspection
                 Completed </b></a></td>
-          <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)" style="text-align: center"> <a
-              [routerLink]="['Managerinspectiontemplate',i.InspectionOrderKey]"
+          <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey === toServeremployeekey)" > <a
+              [routerLink]="['Managerinspectiontemplate',i.InspectionOrderKey]" style="width: 100%;"
               class="btn btn-primary"><b>Inspect</b></a></td>
           <td *ngIf="i.InspectionCompletedBy === null && ('' + i.EmployeeKey !== toServeremployeekey)">Scheduled</td>
           <td> <a href="Inspection-Upload/{{i.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
             return false;">
-              <button type="button" class="btn btn-default btn-xs"
+              <button type="button" class="btn btn-default btn-xs" style="margin-top: -1%;"
                 *ngIf="i.IsPhoto === 1 && i.InspectionCompletedBy !== null ">View
                 Image</button>
             </a> </td>
