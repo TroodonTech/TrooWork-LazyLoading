@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { InspectionService } from '../../../service/inspection.service';
 import { Inspection } from '../../../model-class/Inspection';
-import { ActivatedRoute ,Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConectionSettings } from '../../../service/ConnectionSetting';
 import { HttpClient } from '@angular/common/http';
 // import { ViewinspectionmanagerComponent } from "../../manager/inspection/viewinspectionmanager/viewinspectionmanager.component";
+
+import { FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+const url = ConectionSettings.Url + '/inspection_Upload';
+
 @Component({
   selector: 'app-supervsrinspectiontemplate',
   templateUrl: './supervsrinspectiontemplate.component.html',
@@ -17,7 +21,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
   employeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-
+  public uploader: FileUploader = new FileUploader({ url: '', itemAlias: 'photo' });
   url_base64_decode(str) {
     var output = str.replace('-', '+').replace('_', '/');
     switch (output.length % 4) {
@@ -35,7 +39,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
     return window.atob(output);
   }
 
- 
+
   viewEmpInspectionDetails;
   inspKey$;
   names;
@@ -57,36 +61,37 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
   inspectionAssignEmp;
 
   // for star rating 
-  starList = []; 
-  rating = []; 
+  starList = [];
+  rating = [];
   value;
+  addUrl;
 
-  setStar3(k,data:any){
-       this.rating[k]=data+1;            
-       this.value = this.rating[k];                   
-       for(var i=0;i<=2;i++){  
-         if(i<=data){  
-           this.starList[k][i]=false;  
-         }  
-         else{  
-         this.starList[k][i]=true;  
-         }  
-      }  
-   } 
-   setStar(k,data:any){
-        this.rating[k]=data+1;    
-        this.value = this.rating[k];                               
-        for(var i=0;i<=4;i++){  
-          if(i<=data){  
-            this.starList[k][i]=false;  
-          }  
-          else{  
-          this.starList[k][i]=true;  
-          }  
-       }  
-    }  
-   
-// for star rating 
+  setStar3(k, data: any) {
+    this.rating[k] = data + 1;
+    this.value = this.rating[k];
+    for (var i = 0; i <= 2; i++) {
+      if (i <= data) {
+        this.starList[k][i] = false;
+      }
+      else {
+        this.starList[k][i] = true;
+      }
+    }
+  }
+  setStar(k, data: any) {
+    this.rating[k] = data + 1;
+    this.value = this.rating[k];
+    for (var i = 0; i <= 4; i++) {
+      if (i <= data) {
+        this.starList[k][i] = false;
+      }
+      else {
+        this.starList[k][i] = true;
+      }
+    }
+  }
+
+  // for star rating 
 
   convert_DT(str) {
     var date = new Date(str),
@@ -124,7 +129,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
   count = 0;
   saveInspection = {};
 
-  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router,private http: HttpClient) {
+  constructor(private inspectionService: InspectionService, private route: ActivatedRoute, private router: Router, private http: HttpClient) {
     this.route.params.subscribe(params => this.inspKey$ = params.InspectionOrderKey);
   }
 
@@ -144,7 +149,7 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
       this.viewEmpInspectionDetails = data;
       this.questionsCount = this.viewEmpInspectionDetails.length;
       this.val = data;
-      this.inspectionAssignEmp=this.viewEmpInspectionDetails[0].employeeID;
+      this.inspectionAssignEmp = this.viewEmpInspectionDetails[0].employeeID;
       if (this.viewEmpInspectionDetails[0].ScoreName === 'Yes/No') {
         this.names = ['Yes', 'No'];
         this.ScoreName = this.viewEmpInspectionDetails[0].ScoreName;
@@ -159,18 +164,18 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
       // else if(this.viewEmpInspectionDetails[0].ScoreName === '3 Star'){
       //   this.starList = [true,true,true]; 
       // }
-       this.Temp_templateId=this.viewEmpInspectionDetails[0].TemplateID;
+      this.Temp_templateId = this.viewEmpInspectionDetails[0].TemplateID;
       this.inspectionService
         .templateQuestionService(this.viewEmpInspectionDetails[0].TemplateID, this.OrganizationID).subscribe((data: any[]) => {
           this.TemplateDetails = data;
-          for(var i=0;i< this.TemplateDetails.length;i++){
+          for (var i = 0; i < this.TemplateDetails.length; i++) {
             if (this.viewEmpInspectionDetails[0].ScoreName === '5 Star') {
-             this.starList[i] = [true, true, true, true, true];
-           }
-           else if (this.viewEmpInspectionDetails[0].ScoreName === '3 Star') {
-             this.starList[i] = [true, true, true];
-           }
-         }
+              this.starList[i] = [true, true, true, true, true];
+            }
+            else if (this.viewEmpInspectionDetails[0].ScoreName === '3 Star') {
+              this.starList[i] = [true, true, true];
+            }
+          }
         });
     });
   }
@@ -178,19 +183,19 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
     if (ScoreName === 'Yes/No' || ScoreName === 'Pass/Fail') {
       var length = Object.keys(this.Scoringtype.rating_yn).length;
       var arrayLength = this.Scoringtype.rating_yn.length;
-      var value =this.Scoringtype.rating_yn[arrayLength - 1];
-      this.Scoringtype.ratingValue.push({rating:value,questionID:TemplateQuestionID});
-  }
-  else if (ScoreName === '5 Star') {
-    this.Scoringtype.ratingValue.push({rating: this.value, questionID: TemplateQuestionID});
-  }
-  else if (ScoreName === '3 Star') {
-    this.Scoringtype.ratingValue.push({rating: this.value, questionID: TemplateQuestionID});
-  }
-  console.log(this.Scoringtype);
+      var value = this.Scoringtype.rating_yn[arrayLength - 1];
+      this.Scoringtype.ratingValue.push({ rating: value, questionID: TemplateQuestionID });
+    }
+    else if (ScoreName === '5 Star') {
+      this.Scoringtype.ratingValue.push({ rating: this.value, questionID: TemplateQuestionID });
+    }
+    else if (ScoreName === '3 Star') {
+      this.Scoringtype.ratingValue.push({ rating: this.value, questionID: TemplateQuestionID });
+    }
+    console.log(this.Scoringtype);
   }
   inspectionCompleted() {
-    
+
     var temp = [];
     var choices1 = [];
     choices1[0] = this.Scoringtype;
@@ -277,54 +282,54 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
 
         };
       this.inspectionService
-        .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
-          if(this.isMailed==true){//varun-> sending Email for inspection
-            this.inspectionService.emailForInspectionComp( this.inspectionAssignEmp,this.employeekey,this.OrganizationID).subscribe((data : any[])=>{
-             
-             this.emp_EmailId= data[0].AssignEmpEmailId;
-             this.audit_EmailId=data[0].EmailID;
-             if(!(this.emp_EmailId)){
-               alert('Employee Has No Email ID');
-               return;
-             }
-             if(!(this.audit_EmailId)){
-               alert('Auditor Has No Email ID');
-               return;
-             }
-               this.inspectionService.getInspectionDetailsForEmail(this.inspKey$,this.OrganizationID).subscribe((inspectionEmail :any[])=>{
-                
-                 var emailBody;
-                 emailBody='<b>'+inspectionEmail[0].TemplateName+'</b>'+'('+inspectionEmail[0].ScoreName+')'+'<br>'
+        .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          if (this.isMailed == true) {//varun-> sending Email for inspection
+            this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 
-                 for(var i=0;i<inspectionEmail.length;i++){
-                  emailBody=emailBody+inspectionEmail[i].Question+' : '+inspectionEmail[i].Value+'<br>';
+              this.emp_EmailId = data[0].AssignEmpEmailId;
+              this.audit_EmailId = data[0].EmailID;
+              if (!(this.emp_EmailId)) {
+                alert('Employee Has No Email ID');
+                return;
+              }
+              if (!(this.audit_EmailId)) {
+                alert('Auditor Has No Email ID');
+                return;
+              }
+              this.inspectionService.getInspectionDetailsForEmail(this.inspKey$, this.OrganizationID).subscribe((inspectionEmail: any[]) => {
 
-                 }
+                var emailBody;
+                emailBody = '<b>' + inspectionEmail[0].TemplateName + '</b>' + '(' + inspectionEmail[0].ScoreName + ')' + '<br>'
 
-                 const obj = {
-                   from:  this.audit_EmailId,
-                   to:  this.emp_EmailId,
-                   subject: 'Inspection By -'+inspectionEmail[0].InspectorName,
-                   html: emailBody
-                 };
-                 const url = ConectionSettings.Url+"/sendmail";
-                 return this.http.post(url, obj)
-                   .subscribe(res =>  alert('Mail Sent Successfully...'));
-               
-               });
+                for (var i = 0; i < inspectionEmail.length; i++) {
+                  emailBody = emailBody + inspectionEmail[i].Question + ' : ' + inspectionEmail[i].Value + '<br>';
+
+                }
+
+                const obj = {
+                  from: this.audit_EmailId,
+                  to: this.emp_EmailId,
+                  subject: 'Inspection By -' + inspectionEmail[0].InspectorName,
+                  html: emailBody
+                };
+                const url = ConectionSettings.Url + "/sendmail";
+                return this.http.post(url, obj)
+                  .subscribe(res => alert('Mail Sent Successfully...'));
+
+              });
             });
-         }
+          }
           // this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
 
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
-         
+
           if (this.role == 'Manager') {
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager', this.inspKey$] } }]);
           }
           else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewInspectionManager',this.inspKey$] } }]);
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewInspectionManager', this.inspKey$] } }]);
           }
-     });
+        });
 
     }
     else if (questionidList.length === totalQuestions && this.ScoreName !== 'Pass/Fail') {
@@ -383,55 +388,62 @@ export class SupervsrinspectiontemplateComponent implements OnInit {
 
         };
       this.inspectionService
-        .inspectionCompletedService(this.inspectionDetail1).subscribe(res =>{
-          if(this.isMailed==true){//varun-> sending Email for inspection
-            this.inspectionService.emailForInspectionComp( this.inspectionAssignEmp,this.employeekey,this.OrganizationID).subscribe((data : any[])=>{
-             
-             this.emp_EmailId= data[0].AssignEmpEmailId;
-             this.audit_EmailId=data[0].EmailID;
-             if(!(this.emp_EmailId)){
-               alert('Employee Has No Email ID');
-               return;
-             }
-             if(!(this.audit_EmailId)){
-               alert('Auditor Has No Email ID');
-               return;
-             }
-               this.inspectionService.getInspectionDetailsForEmail(this.inspKey$,this.OrganizationID).subscribe((inspectionEmail :any[])=>{
-                
-                 var emailBody;
-                 emailBody='<b>'+inspectionEmail[0].TemplateName+'</b>'+'('+inspectionEmail[0].ScoreName+')'+'<br>'
+        .inspectionCompletedService(this.inspectionDetail1).subscribe(res => {
+          if (this.isMailed == true) {//varun-> sending Email for inspection
+            this.inspectionService.emailForInspectionComp(this.inspectionAssignEmp, this.employeekey, this.OrganizationID).subscribe((data: any[]) => {
 
-                 for(var i=0;i<inspectionEmail.length;i++){
-                  emailBody=emailBody+inspectionEmail[i].Question+' : '+inspectionEmail[i].Value+'<br>';
+              this.emp_EmailId = data[0].AssignEmpEmailId;
+              this.audit_EmailId = data[0].EmailID;
+              if (!(this.emp_EmailId)) {
+                alert('Employee Has No Email ID');
+                return;
+              }
+              if (!(this.audit_EmailId)) {
+                alert('Auditor Has No Email ID');
+                return;
+              }
+              this.inspectionService.getInspectionDetailsForEmail(this.inspKey$, this.OrganizationID).subscribe((inspectionEmail: any[]) => {
 
-                 }
+                var emailBody;
+                emailBody = '<b>' + inspectionEmail[0].TemplateName + '</b>' + '(' + inspectionEmail[0].ScoreName + ')' + '<br>'
 
-                 const obj = {
-                   from:  this.audit_EmailId,
-                   to:  this.emp_EmailId,
-                   subject: 'Inspection By -'+inspectionEmail[0].InspectorName,
-                   html: emailBody
-                 };
-                 const url = ConectionSettings.Url+"/sendmail";
-                 return this.http.post(url, obj)
-                   .subscribe(res =>  alert('Mail Sent Successfully...'));
-               
-               });
+                for (var i = 0; i < inspectionEmail.length; i++) {
+                  emailBody = emailBody + inspectionEmail[i].Question + ' : ' + inspectionEmail[i].Value + '<br>';
+
+                }
+
+                const obj = {
+                  from: this.audit_EmailId,
+                  to: this.emp_EmailId,
+                  subject: 'Inspection By -' + inspectionEmail[0].InspectorName,
+                  html: emailBody
+                };
+                const url = ConectionSettings.Url + "/sendmail";
+                return this.http.post(url, obj)
+                  .subscribe(res => alert('Mail Sent Successfully...'));
+
+              });
             });
-         }
+          }
           // this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['Viewinspctnbysprvsr'] } }]);
           // this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
           if (this.role == 'Manager') {
-            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager',this.inspKey$] } }]);
+            this.router.navigate(['/ManagerDashBoard', { outlets: { ManagerOut: ['ViewInspectionManager', this.inspKey$] } }]);
           }
           else if (this.role == 'Employee' && this.IsSupervisor == 1) {
-            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout:['ViewInspectionManager',this.inspKey$] } }]);
+            this.router.navigate(['/SupervisorDashboard', { outlets: { Superout: ['ViewInspectionManager', this.inspKey$] } }]);
           }
-     });
+        });
 
     }
   }
 
-
+  FileSelected() {
+    this.addUrl = '?IoKey=' + this.inspKey$ + '&empkey=' + this.employeekey + '&OrganizationID=' + this.OrganizationID;
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+      item.url = url + this.addUrl;
+    }
+    this.uploader.uploadAll();
+  }
 }

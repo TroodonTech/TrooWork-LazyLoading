@@ -1,11 +1,11 @@
 <img *ngIf="loading" src="../../../../../assets/img/loader.gif" style="margin-left: 35rem; width: 20%" />
-<div *ngIf="!loading" style="margin-left: 10.5rem;margin-right: 15rem; padding-bottom: 2rem;width: 74.5%">
+<div *ngIf="!loading" style="margin-left: 10.5rem;margin-right: 15rem; padding-bottom: 2rem;width: 78.5%">
 
   <div style="text-align:center">
     <h4 style="color: #174a5e;">VIEW DOCUMENTS</h4>
   </div>
   <br>
-  <div class="row col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 2rem">
+  <div class="row col-md-12 bg-info" style="padding-top: 2rem;padding-bottom: 2rem;margin-left: 0rem">
     <label class="col-sm-3 col-md-3 col-lg-3 col" style="margin-right: -2rem"> Document Folder</label><br>
     <select style="background-color: #D4F4FF !important;" class="form-control col-sm-6 col-md-6 col-lg-6 col"
       [(ngModel)]="FormtypeId" (change)="showFileDetailsTablebydropdown($event.target.value)">

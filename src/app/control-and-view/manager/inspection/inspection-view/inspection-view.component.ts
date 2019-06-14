@@ -25,8 +25,8 @@ export class InspectionViewComponent implements OnInit {
   toServeremployeekey: Number;
   IsSupervisor: Number;
   OrganizationID: Number;
-  checkflag:boolean;
-  marked= false;
+  checkflag: boolean;
+  marked = false;
   checkValue = [];
   inspectionorderKey = [];
   deleteInspection;
@@ -239,7 +239,7 @@ export class InspectionViewComponent implements OnInit {
     this.loading = true;// loading
     this.fromdate = new Date();
     var curr_date = this.convert_DT(new Date());
-    this.checkflag=false;
+    this.checkflag = false;
 
     this.inspectionService
       .getInspectionOrderTablewithFromCurrentDateFilter(curr_date, this.pageNo, this.itemsPerPage, this.toServeremployeekey, this.OrganizationID)
@@ -271,29 +271,25 @@ export class InspectionViewComponent implements OnInit {
       this.marked = false;
     }
   }
-   //for deleting inspection
-   checkBoxValueForDelete(index, CheckValue, inspectionorderkey) {
-     
+  //for deleting inspection
+  checkBoxValueForDelete(index, CheckValue, inspectionorderkey) {
+
     this.checkValue[index] = CheckValue;
     this.inspectionorderKey[index] = inspectionorderkey;
-    for(var i=0;i<this.checkValue.length;)
-    {
-        if(this.checkValue[i]==true)
-        {
-          this.checkflag=true;
+    for (var i = 0; i < this.checkValue.length;) {
+      if (this.checkValue[i] == true) {
+        this.checkflag = true;
+        return;
+      }
+      else {
+        if (i == (this.checkValue.length - 1)) {
+          this.checkValue = [];
+          this.checkflag = false;
           return;
         }
-        else
-        {
-          if(i==(this.checkValue.length-1))
-          {
-            this.checkValue=[];
-            this.checkflag=false;
-            return;
-          }
-          i++;
-        }
+        i++;
       }
+    }
   }
   deleteInspectionOrder() {
 
@@ -303,7 +299,7 @@ export class InspectionViewComponent implements OnInit {
     if (this.checkValue.length > 0) {
       for (var j = 0; j < this.checkValue.length; j++) {
         if (this.checkValue[j] === true)
-        deleteInspectionOrderList.push(this.inspectionorderKey[j]);
+          deleteInspectionOrderList.push(this.inspectionorderKey[j]);
       }
       deleteInspectionOrderString = deleteInspectionOrderList.join(',');
     }
@@ -317,7 +313,7 @@ export class InspectionViewComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.inspectionordertable.deletechkbox = false;
         this.checkValue = [];
-        this.checkflag=false;
+        this.checkflag = false;
         this.inspectionorderKey = [];
         alert("Inspection deleted successfully");
         this.filteringInspectionManagerByDate();
