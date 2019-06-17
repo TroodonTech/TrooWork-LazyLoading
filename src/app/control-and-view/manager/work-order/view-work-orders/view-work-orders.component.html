@@ -193,7 +193,7 @@
           <td *ngIf="x.WorkorderStatus === 'Scheduled'"> <input type="checkbox" [(ngModel)]="x.workorderCheckValue"
               (change)="toggleVisibility($event);checkBoxValueForDelete(i,x.workorderCheckValue, x.WorkorderKey);"></td>
 
-          <td style="width:15%;word-break: break-all;">{{x.WorkorderNotes}}</td>
+          <td style="width:15%;word-wrap: break-word;">{{x.WorkorderNotes}}</td>
           <td> <a href="pho1/{{x.ImageName}}" target="_self" onclick="window.open(this.href, 'popup', 'width=600,height=600,scrollbars=no,resizable=no');
                               return false;">
               <button type="button" class="btn btn-default btn-xs" *ngIf="x.IsPhotoRequired === 1 && x.WorkorderStatus === 'Completed'">View
