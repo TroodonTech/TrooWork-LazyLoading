@@ -408,13 +408,36 @@ export class CreateWorkOrderComponent implements OnInit {
   createWorkOrder() {
 
     if (this.showEqTypes === false) {//function for creating workorder without equipment
-      this.createWorkorder1();
-      console.log('Equipment***Not');
+      if (this.RoomKey) {
+        this.createWorkorder1();
+        console.log('Equipment***Not');
+      }
+      else {
+        var k = confirm("By clicking the submit button, you are gonna create 100's of work orders since no rooms are selected from the dropdown. Do you really want to continue ?")
+        if (k) {
+          this.createWorkorder1();
+          console.log('Equipment***Not');
+        } else {
+          return;
+        }
+      }
 
     } else {
-      this.createWorkorder2();//function for creating workorder with equipment
-
+      if (this.EquipmentKey) {
+        this.createWorkorder2();//function for creating workorder with equipment this.EquipmentKey
+        console.log('Equipment***');
+      }
+      else {
+        var k = confirm("By clicking the submit button, you are gonna create 100's of work orders since no equipments are selected from the dropdown. Do you really want to continue ?")
+        if (k) {
+          this.createWorkorder2();//function for creating workorder with equipment this.EquipmentKey
+          console.log('Equipment***');
+        } else {
+          return;
+        }
+      }
     }
+
   }
   createWorkorder1() {
     ;

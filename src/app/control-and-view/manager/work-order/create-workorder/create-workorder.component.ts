@@ -377,7 +377,7 @@ export class CreateWorkorderComponent implements OnInit {
     else {
       this.RoomTypeKey = "";
       this.RoomKey = "";
-      this.getZoneRoomTypeRoom(this.FloorKey,this.FacilityKey);
+      this.getZoneRoomTypeRoom(this.FloorKey, this.FacilityKey);
     }
   }
   getRoom(roomtype, zone, facility, floor) {//get room based on zone,facility,floor,roomtype
@@ -410,13 +410,36 @@ export class CreateWorkorderComponent implements OnInit {
   createWorkOrder() {
 
     if (this.showEqTypes === false) {//function for creating workorder without equipment
-      this.createWorkorder1();
-      console.log('Equipment***Not');
+      if (this.RoomKey) {
+        this.createWorkorder1();
+        console.log('Equipment***Not');
+      }
+      else {
+        var k = confirm("By clicking the submit button, you are gonna create 100's of work orders since no rooms are selected from the dropdown. Do you really want to continue ?")
+        if (k) {
+          this.createWorkorder1();
+          console.log('Equipment***Not');
+        } else {
+          return;
+        }
+      }
 
     } else {
-      this.createWorkorder2();//function for creating workorder with equipment
-
+      if (this.EquipmentKey) {
+        this.createWorkorder2();//function for creating workorder with equipment this.EquipmentKey
+        console.log('Equipment***');
+      }
+      else {
+        var k = confirm("By clicking the submit button, you are gonna create 100's of work orders since no equipments are selected from the dropdown. Do you really want to continue ?")
+        if (k) {
+          this.createWorkorder2();//function for creating workorder with equipment this.EquipmentKey
+          console.log('Equipment***');
+        } else {
+          return;
+        }
+      }
     }
+
   }
   createWorkorder1() {
     ;
@@ -780,18 +803,18 @@ export class CreateWorkorderComponent implements OnInit {
           }
         }
       }
-      if( this.keepActive ==true){
-            this.keep_active=1;
+      if (this.keepActive == true) {
+        this.keep_active = 1;
       }
-      else{
-        this.keep_active=0;
+      else {
+        this.keep_active = 0;
       }
-      if( this.GpsSnapShot ==true){
-        this.Gps_SnapShot=1;
-       }
-        else{
-         this.Gps_SnapShot=0;
-       }
+      if (this.GpsSnapShot == true) {
+        this.Gps_SnapShot = 1;
+      }
+      else {
+        this.Gps_SnapShot = 0;
+      }
       if (this.newType == true) {//checking for new workorder type
         if (this.newworkordertypetext) {
           this.WorkOrderServiceService
@@ -830,8 +853,8 @@ export class CreateWorkorderComponent implements OnInit {
                       repeatinterval: this.rep_interval,
                       occursonday: this.occurs_on,
                       occurstype: this.occurs_type,
-                      keepActive:this.keep_active,
-                      IsSnapshot:this.Gps_SnapShot
+                      keepActive: this.keep_active,
+                      IsSnapshot: this.Gps_SnapShot
                     };
                     this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -869,7 +892,7 @@ export class CreateWorkorderComponent implements OnInit {
           occursonday: this.occurs_on,
           occurstype: this.occurs_type,
           keepActive: this.keep_active,
-          IsSnapshot:this.Gps_SnapShot
+          IsSnapshot: this.Gps_SnapShot
         };
         this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -1241,18 +1264,18 @@ export class CreateWorkorderComponent implements OnInit {
           }
         }
       }
-      if( this.keepActive ==true){
-        this.keep_active=1;
-       }
-      else{
-         this.keep_active=0;
+      if (this.keepActive == true) {
+        this.keep_active = 1;
       }
-      if( this.GpsSnapShot ==true){
-        this.Gps_SnapShot=1;
-       }
-        else{
-         this.Gps_SnapShot=0;
-       }
+      else {
+        this.keep_active = 0;
+      }
+      if (this.GpsSnapShot == true) {
+        this.Gps_SnapShot = 1;
+      }
+      else {
+        this.Gps_SnapShot = 0;
+      }
       if (this.newType == true) {
         if (this.newworkordertypetext) {
           this.WorkOrderServiceService
@@ -1292,7 +1315,7 @@ export class CreateWorkorderComponent implements OnInit {
                       occursonday: this.occurs_on,
                       occurstype: this.occurs_type,
                       keepActive: this.keep_active,
-                      IsSnapshot:this.Gps_SnapShot
+                      IsSnapshot: this.Gps_SnapShot
                     };
                     this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                       alert("Work-order created successfully");
@@ -1328,8 +1351,8 @@ export class CreateWorkorderComponent implements OnInit {
           repeatinterval: this.rep_interval,
           occursonday: this.occurs_on,
           occurstype: this.occurs_type,
-          keepActive:this.keep_active,
-          IsSnapshot:this.Gps_SnapShot
+          keepActive: this.keep_active,
+          IsSnapshot: this.Gps_SnapShot
         };
         this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
           alert("Work-order created successfully");
@@ -1600,18 +1623,18 @@ export class CreateWorkorderComponent implements OnInit {
         }
       }
     }
-    if( this.keepActive ==true){
-      this.keep_active=1;
+    if (this.keepActive == true) {
+      this.keep_active = 1;
     }
-    else{
-       this.keep_active=0;
-     }
-     if( this.GpsSnapShot ==true){
-      this.Gps_SnapShot=1;
-     }
-      else{
-       this.Gps_SnapShot=0;
-     }
+    else {
+      this.keep_active = 0;
+    }
+    if (this.GpsSnapShot == true) {
+      this.Gps_SnapShot = 1;
+    }
+    else {
+      this.Gps_SnapShot = 0;
+    }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -1650,8 +1673,8 @@ export class CreateWorkorderComponent implements OnInit {
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
                     occurstype: this.occurs_type,
-                    keepActive:this.keep_active,
-                    IsSnapshot:this.Gps_SnapShot
+                    keepActive: this.keep_active,
+                    IsSnapshot: this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
@@ -1689,8 +1712,8 @@ export class CreateWorkorderComponent implements OnInit {
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
         occurstype: this.occurs_type,
-        keepActive:this.keep_active,
-        IsSnapshot:this.Gps_SnapShot
+        keepActive: this.keep_active,
+        IsSnapshot: this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addWorkOrderEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
@@ -2002,18 +2025,18 @@ export class CreateWorkorderComponent implements OnInit {
         }
       }
     }
-    if( this.keepActive ==true){
-      this.keep_active=1;
+    if (this.keepActive == true) {
+      this.keep_active = 1;
     }
-    else{
-       this.keep_active=0;
-     }
-     if( this.GpsSnapShot ==true){
-      this.Gps_SnapShot=1;
-     }
-      else{
-       this.Gps_SnapShot=0;
-     }
+    else {
+      this.keep_active = 0;
+    }
+    if (this.GpsSnapShot == true) {
+      this.Gps_SnapShot = 1;
+    }
+    else {
+      this.Gps_SnapShot = 0;
+    }
     if (this.newType == true) {
       if (this.newworkordertypetext) {
         this.WorkOrderServiceService
@@ -2052,8 +2075,8 @@ export class CreateWorkorderComponent implements OnInit {
                     repeatinterval: this.rep_interval,
                     occursonday: this.occurs_on,
                     occurstype: this.occurs_type,
-                    keepActive:this.keep_active,
-                    IsSnapshot:this.Gps_SnapShot
+                    keepActive: this.keep_active,
+                    IsSnapshot: this.Gps_SnapShot
                   };
                   this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
                     alert("Work-order created successfully");
@@ -2089,8 +2112,8 @@ export class CreateWorkorderComponent implements OnInit {
         repeatinterval: this.rep_interval,
         occursonday: this.occurs_on,
         occurstype: this.occurs_type,
-        keepActive:this.keep_active,
-        IsSnapshot:this.Gps_SnapShot
+        keepActive: this.keep_active,
+        IsSnapshot: this.Gps_SnapShot
       };
       this.WorkOrderServiceService.addWorkOrderWithOutEqup(this.workorderCreation).subscribe(res => {
         alert("Work-order created successfully");
